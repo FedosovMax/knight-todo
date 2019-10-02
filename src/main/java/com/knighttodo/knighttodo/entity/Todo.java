@@ -22,4 +22,5 @@ public class Todo {
     @JoinColumn(name = "todoBlock_id")
     @JsonBackReference
     private TodoBlock todoBlock;
+
 }

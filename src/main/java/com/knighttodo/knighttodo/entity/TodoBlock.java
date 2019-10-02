@@ -20,7 +20,13 @@ public class TodoBlock {
     @Column(name = "block_name")
     private String blockName;
 
-    @OneToMany(mappedBy = "todo")
+    @OneToMany(mappedBy = "todoBlock")
     @JsonManagedReference
     private List<Todo> todoList = new ArrayList<>();
+
+    public void addTodo(final Todo todo){
+		todoList.add(todo);
+
+		todo.setTodoBlock(this);
+	}
 }
