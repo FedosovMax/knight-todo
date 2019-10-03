@@ -26,7 +26,6 @@ public class TodoBlock {
 
     public void addTodo(final Todo todo){
 		todoList.add(todo);
-
 		todo.setTodoBlock(this);
 	}
 }
