@@ -42,7 +42,6 @@ public class TodoBlockServiceImpl implements TodoBlockService {
         }else {
             throw new RuntimeException("Did not find TodoBlock id - " + todoBlockId );
         }
-
         return todoBlock;
     }
 

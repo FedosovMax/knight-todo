@@ -1,7 +1,7 @@
 package com.knighttodo.knighttodo.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import junit.runner.Version;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,7 +30,6 @@ public class TodoBlock {
     @OneToMany(mappedBy = "todoBlock")
     @JsonManagedReference
     private List<Todo> todoList = new ArrayList<>();
-
 
     public void addTodo(final Todo todo){
 		todoList.add(todo);

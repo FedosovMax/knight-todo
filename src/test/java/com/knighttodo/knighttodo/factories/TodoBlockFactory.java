@@ -22,5 +22,4 @@ public final class TodoBlockFactory {
                 .todoList(TODO_LIST)
                 .build();
     }
-
 }

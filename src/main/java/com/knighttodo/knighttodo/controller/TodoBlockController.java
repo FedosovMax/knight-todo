@@ -26,12 +26,7 @@ public class TodoBlockController {
         this.todoBlockRepository = todoBlockRepository;
     }
 
-    @GetMapping(name = "hello")
-    public String getHello() {
-        return "Hello!";
-    }
-
-    @GetMapping("/list")
+    @GetMapping("/block")
     public ResponseEntity<List<TodoBlock>> findAll(){
         List<TodoBlock> todoBlocks = todoBlockService.findAll();
 
@@ -44,19 +39,14 @@ public class TodoBlockController {
             return new ResponseEntity<>(todoBlocksAfterCheck, HttpStatus.FOUND);
         }
     }
-
-
-
-    @PostMapping("/list")
+    @PostMapping("/block")
     public ResponseEntity<TodoBlock> addCategory(@RequestBody TodoBlock todoBlock){
         todoBlockService.save(todoBlock);
 
         return new ResponseEntity<>(todoBlock, HttpStatus.CREATED);
     }
 
-
-
-    @GetMapping("/list/{todoBlockId}")
+    @GetMapping("/block/{todoBlockId}")
     public ResponseEntity<TodoBlock> getCategoryById(@PathVariable long todoBlockId){
 
         TodoBlock todoBlock = todoBlockService.findById(todoBlockId);
@@ -68,20 +58,16 @@ public class TodoBlockController {
         return new ResponseEntity<>(todoBlock, HttpStatus.FOUND);
     }
 
-    @PutMapping("/list/{id}")
+    @PutMapping("/block/{id}")
     public ResponseEntity<TodoBlock> updateCategory(@PathVariable("id") Long id, @Valid @RequestBody TodoBlock todoBlock){
 
         return new ResponseEntity<>(this.todoBlockService.updateTodoBlock(todoBlock), HttpStatus.OK);
     }
 
-    @DeleteMapping("/list/{todoBlockId}")
+    @DeleteMapping("/block/{todoBlockId}")
     public ResponseEntity<String> deleteCategory(@PathVariable long todoBlockId){
 
         TodoBlock todoBlock = todoBlockService.findById(todoBlockId);
-
-//        if (todoBlock == null){
-//            throw new RuntimeException("TodoBlock id not found - " + todoBlockId);
-//        }
 
         todoBlockService.deleteById(todoBlockId);
 
