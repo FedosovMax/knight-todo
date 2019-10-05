@@ -9,4 +9,10 @@ public interface TodoBlockService {
     void save(TodoBlock todoBlock);
 
     List<TodoBlock> findAll();
+
+    TodoBlock findById(long todoBlockId);
+
+    TodoBlock updateTodoBlock(TodoBlock changedTodoBlock);
+
+    void deleteById(long TodoBlockId);
 }

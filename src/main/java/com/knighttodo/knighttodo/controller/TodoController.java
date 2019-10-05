@@ -19,12 +19,12 @@ public class TodoController {
         this.todoService = todoService;
     }
 
-    @GetMapping("todo")
+    @GetMapping("/hello")
     public String getHello() {
         return "Hello!";
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/list")
     public ResponseEntity<List<Todo>> findAll(){
         List<Todo> todos = todoService.findAll();
 
@@ -38,7 +38,7 @@ public class TodoController {
         }
     }
 
-    @PostMapping("/add")
+    @PostMapping("/list")
     public ResponseEntity<Todo> addCategory(@RequestBody Todo todo){
         todoService.save(todo);
 
