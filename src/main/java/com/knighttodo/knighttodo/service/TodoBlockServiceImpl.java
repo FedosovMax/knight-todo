@@ -50,8 +50,9 @@ public class TodoBlockServiceImpl implements TodoBlockService {
     public TodoBlock updateTodoBlock(TodoBlock changedTodoBlock) {
 
         final TodoBlock todoBlock = this.todoBlockRepository.findById(changedTodoBlock.getId()).
-        orElseThrow(TodoNotFoundException::new); // ???????????????????????
+        orElseThrow(TodoNotFoundException::new);
 
+        todoBlock.setId(changedTodoBlock.getId());
         todoBlock.setBlockName(changedTodoBlock.getBlockName());
         todoBlock.setTodoList(changedTodoBlock.getTodoList());
 

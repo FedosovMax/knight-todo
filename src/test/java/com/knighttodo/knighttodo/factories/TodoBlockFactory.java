@@ -14,8 +14,8 @@ public final class TodoBlockFactory {
     public static final String BLOCK_NAME = "for sunday";
     public static final List<Todo> TODO_LIST = Arrays.asList(TodoFactory.firstTodo());
 
-    public static final Long UPDATE_TODO_BLOCK_ID = 2L;
-    public static final String UPDATE_BLOCK_NAME = "for sunday";
+    public static final Long UPDATE_TODO_BLOCK_ID = 1L;
+    public static final String UPDATE_BLOCK_NAME = "for friday";
     public static final List<Todo> UPDATE_TODO_LIST = Arrays.asList(TodoFactory.updateTodo());
 
     public static TodoBlock firstTodoBlock() {

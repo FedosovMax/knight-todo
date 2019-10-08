@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.result.StatusResultMatchersExtension
 import org.springframework.transaction.annotation.Transactional;
 
 import static java.util.Arrays.asList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
@@ -29,8 +30,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(value = TodoBlockController.class, secure = false)
@@ -58,7 +57,7 @@ public class TodoBlockControllerTest {
     }
 
     @Test
-    public void deleteTodoBlockTest() throws Exception { // NOT GOOD
+    public void deleteTodoBlockTest() throws Exception { // GOOD
 
         todoBlockRepository.save(TodoBlockFactory.firstTodoBlock());
 
@@ -75,20 +74,18 @@ public class TodoBlockControllerTest {
     @Test
     public void updateTodoBlockTest() throws Exception { // NOT GOOD
 
-        TodoBlock todoBlock = TodoBlockFactory.firstTodoBlock();
+        todoBlockRepository.save(TodoBlockFactory.firstTodoBlock());
 
-        todoBlockRepository.save(TodoBlockFactory.updateTodoBlock());
-
-        when(todoBlockService.updateTodoBlock(eq(todoBlock)))
-                .thenReturn(todoBlock);
+        TodoBlock updateBlock = TodoBlockFactory.updateTodoBlock();
 
         mockMvc.perform(
                 put("/todoBlockController/block/")
-                        .content(TestUtils.convertObjectToJsonBytes(todoBlock))
+                        .content(TestUtils.convertObjectToJsonBytes(updateBlock))
                         .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                         .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
         )
                 .andExpect(status().isOk());
+        assertThat(todoBlockRepository.getOne(updateBlock.getId())).isEqualTo(updateBlock);
     }
 
     @Test
