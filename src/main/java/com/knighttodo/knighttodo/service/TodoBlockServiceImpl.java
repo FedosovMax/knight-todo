@@ -42,11 +42,11 @@ public class TodoBlockServiceImpl implements TodoBlockService {
         }else {
             throw new RuntimeException("Did not find TodoBlock id - " + todoBlockId );
         }
+
         return todoBlock;
     }
 
     @Override
-    @Transactional
     public TodoBlock updateTodoBlock(TodoBlock changedTodoBlock) {
 
         final TodoBlock todoBlock = this.todoBlockRepository.findById(changedTodoBlock.getId()).

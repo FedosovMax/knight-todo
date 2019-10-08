@@ -58,16 +58,14 @@ public class TodoBlockController {
         return new ResponseEntity<>(todoBlock, HttpStatus.FOUND);
     }
 
-    @PutMapping("/block/{id}")
-    public ResponseEntity<TodoBlock> updateCategory(@PathVariable("id") Long id, @Valid @RequestBody TodoBlock todoBlock){
+    @PutMapping("/block/")
+    public ResponseEntity<TodoBlock> updateCategory(@Valid @RequestBody TodoBlock todoBlock){
 
         return new ResponseEntity<>(this.todoBlockService.updateTodoBlock(todoBlock), HttpStatus.OK);
     }
 
     @DeleteMapping("/block/{todoBlockId}")
     public ResponseEntity<String> deleteCategory(@PathVariable long todoBlockId){
-
-        TodoBlock todoBlock = todoBlockService.findById(todoBlockId);
 
         todoBlockService.deleteById(todoBlockId);
 
