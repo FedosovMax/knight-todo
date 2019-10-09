@@ -4,6 +4,7 @@ package com.knighttodo.knighttodo.service;
 import com.knighttodo.knighttodo.entity.TodoBlock;
 import com.knighttodo.knighttodo.entity.exeptions.TodoNotFoundException;
 import com.knighttodo.knighttodo.repository.TodoBlockRepository;
+import java.util.Objects;
 import javassist.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,14 +50,15 @@ public class TodoBlockServiceImpl implements TodoBlockService {
     @Override
     public TodoBlock updateTodoBlock(TodoBlock changedTodoBlock) {
 
-        final TodoBlock todoBlock = this.todoBlockRepository.findById(changedTodoBlock.getId()).
+        TodoBlock todoBlock = todoBlockRepository.findById(changedTodoBlock.getId()).
         orElseThrow(TodoNotFoundException::new);
 
         todoBlock.setId(changedTodoBlock.getId());
         todoBlock.setBlockName(changedTodoBlock.getBlockName());
-        todoBlock.setTodoList(changedTodoBlock.getTodoList());
 
-        return changedTodoBlock;
+        todoBlockRepository.save(Objects.requireNonNull(todoBlock));
+
+        return todoBlock;
     }
 
     @Override
