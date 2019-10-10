@@ -1,7 +1,11 @@
 package com.knighttodo.knighttodo.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -10,6 +14,9 @@ import java.util.List;
 @Entity
 @Table(name = "todoBlock")
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class TodoBlock {
 
     @Id
@@ -26,7 +33,6 @@ public class TodoBlock {
 
     public void addTodo(final Todo todo){
 		todoList.add(todo);
-
 		todo.setTodoBlock(this);
 	}
 }
