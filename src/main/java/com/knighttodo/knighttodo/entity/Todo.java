@@ -1,19 +1,12 @@
 package com.knighttodo.knighttodo.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "todo")
@@ -24,7 +17,7 @@ import lombok.NoArgsConstructor;
 public class Todo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
 
@@ -33,6 +26,6 @@ public class Todo {
 
     @ManyToOne
     @JoinColumn(name = "todoBlock_id")
-    @JsonIgnore
+    @JsonBackReference
     private TodoBlock todoBlock;
 }
