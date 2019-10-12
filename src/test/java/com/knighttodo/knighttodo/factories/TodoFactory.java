@@ -11,7 +11,7 @@ public class TodoFactory {
     public static final Long TODO_ID = 1L;
     public static final String TODO_NAME = "hard working";
     public static final Scaryness SCARYNESS_TODO = Scaryness.fromText("NOT_SCARY");
-    public static final Hardness HARDNESS_TODO = Hardness.fromText("NOT_HARD");
+    public static final Hardness HARDNESS_TODO = Hardness.fromText("EXTRAORDINARILY");
     public static final TodoBlock TODO_BLOCK = new TodoBlock(TODO_ID,TODO_NAME, TodoBlockFactory.TODO_LIST);
 
     public static final Long UPDATE_TODO_ID = 2L;

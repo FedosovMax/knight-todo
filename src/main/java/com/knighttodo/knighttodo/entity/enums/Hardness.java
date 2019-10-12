@@ -11,7 +11,10 @@ import java.util.Arrays;
 public enum Hardness {
     NOT_HARD("NOT_HARD"),
     HARD("HARD"),
-    VERY_HARD("VERY_HARD");
+    VERY_HARD("VERY_HARD"),
+    EXTRAORDINARILY("EXTRAORDINARILY"),
+    IMPOSSIBLE("IMPOSSIBLE");
+
 
     private String text;
 
