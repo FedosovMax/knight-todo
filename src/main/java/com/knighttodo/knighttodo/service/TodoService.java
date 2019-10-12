@@ -9,4 +9,10 @@ public interface TodoService {
     void save(Todo Todo);
 
     List<Todo> findAll();
+
+    Todo findById(long todoId);
+
+    Todo updateTodo(Todo changedTodo);
+
+    void deleteById(long TodoId);
 }
