@@ -52,7 +52,7 @@ public class TodoBlockControllerTest {
         )
             .andExpect(status().isOk());
 
-        assertThat(todoBlockRepository.count()).isEqualTo(0);
+        assertThat(todoBlockRepository.count()).isEqualTo(1);
     }
 
     @Transactional
