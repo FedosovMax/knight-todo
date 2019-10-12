@@ -1,6 +1,7 @@
 package com.knighttodo.knighttodo.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.knighttodo.knighttodo.entity.enums.Scaryness;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,6 +24,9 @@ public class Todo {
 
     @Column(name = "todo_name")
     private String todoName;
+
+    @Enumerated (EnumType.STRING)
+    private Scaryness scaryness;
 
     @ManyToOne
     @JoinColumn(name = "todoBlock_id")

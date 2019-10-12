@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,9 +35,33 @@ public class TodoController {
     }
 
     @PostMapping("/todo")
-    public ResponseEntity<Todo> addCategory(@RequestBody Todo todo){
+    public ResponseEntity<Todo> addTodo(@RequestBody Todo todo){
         todoService.save(todo);
 
         return new ResponseEntity<>(todo, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/todo/{todoId}")
+    public ResponseEntity<Todo> getTodoById(@PathVariable long todoId){
+        Todo todo = todoService.findById(todoId);
+
+        if (todo == null){
+            throw new RuntimeException("Todo id not found - " + todoId);
+        }
+        return new ResponseEntity<>(todo, HttpStatus.FOUND);
+    }
+
+    @PutMapping("/todo/")
+    public ResponseEntity<Todo> updateTodo(@Valid @RequestBody Todo todo){
+
+        return new ResponseEntity<>(this.todoService.updateTodo(todo), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/todo/{todoId}")
+    public ResponseEntity<String> deleteTodo(@PathVariable long todoId){
+
+        todoService.deleteById(todoId);
+
+        return new ResponseEntity<>("Deleted Todo id " + todoId, HttpStatus.OK);
     }
 }
