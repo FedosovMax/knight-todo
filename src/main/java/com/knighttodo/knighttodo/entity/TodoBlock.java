@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "todoBlock")
+@Table(name = "todo_block")
 @Data
 @Builder
 @AllArgsConstructor
