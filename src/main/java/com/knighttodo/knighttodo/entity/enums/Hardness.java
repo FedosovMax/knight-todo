@@ -15,7 +15,6 @@ public enum Hardness {
     EXTRAORDINARY("EXTRAORDINARY"),
     IMPOSSIBLE("IMPOSSIBLE");
 
-
     private String text;
 
     Hardness(String text) {
