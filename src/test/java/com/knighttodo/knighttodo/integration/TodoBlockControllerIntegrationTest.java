@@ -1,21 +1,10 @@
-package com.knighttodo.knighttodo;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+package com.knighttodo.knighttodo.integration;
 
 import com.knighttodo.knighttodo.entity.TodoBlock;
 import com.knighttodo.knighttodo.factories.TodoBlockFactory;
 import com.knighttodo.knighttodo.repository.TodoBlockRepository;
 import com.knighttodo.knighttodo.service.TodoBlockService;
 import com.knighttodo.knighttodo.utilis.TestUtils;
-import javax.transaction.Transactional;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +14,17 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import javax.transaction.Transactional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class TodoBlockControllerTest {
+public class TodoBlockControllerIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -46,7 +42,7 @@ public class TodoBlockControllerTest {
         todoBlockRepository.save(todoBlock);
 
         mockMvc.perform(
-            delete("/todoBlockController/block/" + todoBlock.getId())
+            delete("/blocks/block/" + todoBlock.getId())
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
         )
@@ -66,7 +62,7 @@ public class TodoBlockControllerTest {
         TodoBlock updateBlock = TodoBlockFactory.updateTodoBlock();
 
         mockMvc.perform(
-            put("/todoBlockController/block/")
+            put("/blocks/block")
                 .content(TestUtils.convertObjectToJsonBytes(updateBlock))
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE))
@@ -82,7 +78,7 @@ public class TodoBlockControllerTest {
 
         todoBlockRepository.save(todoBlock);
 
-        mockMvc.perform(get("/todoBlockController/block/" + todoBlock.getId())
+        mockMvc.perform(get("/blocks/block/" + todoBlock.getId())
             .content(TestUtils.convertObjectToJsonBytes(todoBlock))
             .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
             .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -97,7 +93,7 @@ public class TodoBlockControllerTest {
         TodoBlock todoBlock = TodoBlockFactory.firstTodoBlock();
 
         mockMvc.perform(
-            post("/todoBlockController/block")
+         post("/blocks/block")
                 .content(TestUtils.convertObjectToJsonBytes(todoBlock))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isCreated());
