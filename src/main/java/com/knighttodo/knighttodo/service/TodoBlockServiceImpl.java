@@ -4,22 +4,17 @@ package com.knighttodo.knighttodo.service;
 import com.knighttodo.knighttodo.entity.TodoBlock;
 import com.knighttodo.knighttodo.entity.exeptions.TodoNotFoundException;
 import com.knighttodo.knighttodo.repository.TodoBlockRepository;
-import javassist.NotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 public class TodoBlockServiceImpl implements TodoBlockService {
 
     final private TodoBlockRepository todoBlockRepository;
-
-    public TodoBlockServiceImpl(TodoBlockRepository todoBlockRepository) {
-        this.todoBlockRepository = todoBlockRepository;
-    }
 
     @Override
     public void save(TodoBlock todoBlock) {
