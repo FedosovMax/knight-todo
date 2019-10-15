@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("todoController")
+@RequestMapping("todos")
 public class TodoController {
 
     final private TodoService todoService;
