@@ -14,11 +14,11 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/ready")
-public class ItReadyController {
+public class IsReadyController {
 
     private TodoService todoService;
 
-    public ItReadyController(TodoService todoService){
+    public IsReadyController(TodoService todoService){
         this.todoService = todoService;
     }
 
