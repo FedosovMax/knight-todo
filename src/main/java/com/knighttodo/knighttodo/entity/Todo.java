@@ -26,11 +26,16 @@ public class Todo {
     @Column(name = "todo_name")
     private String todoName;
 
+    @Column(name = "scaryness")
     @Enumerated (EnumType.STRING)
     private Scaryness scaryness;
 
+    @Column(name = "hardness")
     @Enumerated (EnumType.STRING)
     private Hardness hardness;
+
+    @Column(name = "ready")
+    private boolean ready;
 
     @ManyToOne
     @JoinColumn(name = "todoBlock_id")

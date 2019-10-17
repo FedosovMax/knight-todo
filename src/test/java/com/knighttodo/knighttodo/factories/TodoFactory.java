@@ -12,6 +12,7 @@ public class TodoFactory {
     public static final String TODO_NAME = "hard working";
     public static final Scaryness SCARYNESS_TODO = Scaryness.fromText("NOT_SCARY");
     public static final Hardness HARDNESS_TODO = Hardness.fromText("EXTRAORDINARY");
+    public static final Boolean IS_TODO_READY = false;
     public static final TodoBlock TODO_BLOCK = new TodoBlock(TODO_ID,TODO_NAME, TodoBlockFactory.TODO_LIST);
 
     public static final Long UPDATE_TODO_ID = 2L;
@@ -28,6 +29,7 @@ public class TodoFactory {
                 .todoName(TODO_NAME)
                 .scaryness(SCARYNESS_TODO)
                 .hardness(HARDNESS_TODO)
+                .ready(IS_TODO_READY)
                 .todoBlock(TODO_BLOCK)
                 .build();
     }
@@ -39,6 +41,7 @@ public class TodoFactory {
                 .todoName(UPDATE_TODO_NAME)
                 .scaryness(UPDATE_SCARYNESS_TODO)
                 .hardness(UPDATE_HARDNESS_TODO)
+                .ready(IS_TODO_READY)
                 .todoBlock(UPDATE_TODO_BLOCK)
                 .build();
     }
