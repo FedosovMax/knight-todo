@@ -20,7 +20,7 @@ import java.util.List;
 public class TodoBlock {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
 
@@ -31,8 +31,13 @@ public class TodoBlock {
     @JsonManagedReference
     private List<Todo> todoList = new ArrayList<>();
 
-    public void addTodo(final Todo todo){
-		todoList.add(todo);
-		todo.setTodoBlock(this);
-	}
+    public void addTodo(final Todo todo) {
+        todoList.add(todo);
+        todo.setTodoBlock(this);
+    }
+
+    public void removeTodo(Todo todo) {
+        todoList.remove(todo);
+        todo.setTodoBlock(null);
+    }
 }
