@@ -2,6 +2,7 @@ package com.knighttodo.knighttodo.controller;
 
 import com.knighttodo.knighttodo.entity.Todo;
 import com.knighttodo.knighttodo.service.TodoService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -13,14 +14,11 @@ import javax.validation.Valid;
 
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/ready")
 public class IsReadyController {
 
     private TodoService todoService;
-
-    public IsReadyController(TodoService todoService){
-        this.todoService = todoService;
-    }
 
     @PutMapping("/update")
     public ResponseEntity<Todo> updateTodo(@Valid @RequestBody Todo todo){

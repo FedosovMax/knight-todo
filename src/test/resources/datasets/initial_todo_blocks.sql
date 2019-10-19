@@ -1,5 +1,5 @@
-
-delete from todoBlock;
-
-insert into todoBlock (block_name)
-values ('firstBlock');
+--
+--delete from todoBlock;
+--
+--insert into todoBlock (block_name)
+--values ('firstBlock');

@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class TodoBlockControllerIntegrationTest {
+public class TodoBlockIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;

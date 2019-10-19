@@ -45,9 +45,6 @@ public class TodoController {
     public ResponseEntity<Todo> getTodoById(@PathVariable long todoId){
         Todo todo = todoService.findById(todoId);
 
-        if (todo == null){
-            throw new RuntimeException("Todo id not found - " + todoId);
-        }
         return new ResponseEntity<>(todo, HttpStatus.FOUND);
     }
 
