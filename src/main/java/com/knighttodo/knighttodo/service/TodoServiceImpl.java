@@ -55,7 +55,9 @@ public class TodoServiceImpl implements TodoService {
         todo.setTodoName(changedTodo.getTodoName());
         todo.setTodoBlock(changedTodo.getTodoBlock());
 
-        return changedTodo;
+        todoRepository.save(todo);
+
+        return todo;
     }
 
     @Override
