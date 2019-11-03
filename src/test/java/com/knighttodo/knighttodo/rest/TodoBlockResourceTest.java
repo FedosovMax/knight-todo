@@ -1,8 +1,18 @@
-package com.knighttodo.knighttodo.controller;
+package com.knighttodo.knighttodo.rest;
+
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.knighttodo.knighttodo.factories.TodoBlockFactory;
-import com.knighttodo.knighttodo.repository.TodoBlockRepository;
+import com.knighttodo.knighttodo.gateway.privatedb.repository.TodoBlockRepository;
 import com.knighttodo.knighttodo.service.TodoBlockService;
 import com.knighttodo.knighttodo.service.TodoService;
 import org.junit.Test;
@@ -14,16 +24,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 @RunWith(SpringRunner.class)
 @WebMvcTest
-public class TodoBlockControllerTest {
+public class TodoBlockResourceTest {
 
     @Autowired
     private MockMvc mockMvc;

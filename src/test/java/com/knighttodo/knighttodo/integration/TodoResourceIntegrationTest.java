@@ -1,9 +1,16 @@
 package com.knighttodo.knighttodo.integration;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.knighttodo.knighttodo.entity.Todo;
 import com.knighttodo.knighttodo.factories.TodoFactory;
-import com.knighttodo.knighttodo.repository.TodoRepository;
+import com.knighttodo.knighttodo.gateway.privatedb.repository.TodoRepository;
+import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
 import com.knighttodo.knighttodo.service.TodoService;
 import com.knighttodo.knighttodo.utilis.TestUtils;
 import org.junit.Test;
@@ -15,14 +22,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class TodoIntegrationTest {
+public class TodoResourceIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;

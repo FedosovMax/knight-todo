@@ -1,8 +1,8 @@
 package com.knighttodo.knighttodo.factories;
 
-import com.knighttodo.knighttodo.entity.Todo;
-import com.knighttodo.knighttodo.entity.enums.Hardness;
-import com.knighttodo.knighttodo.entity.enums.Scaryness;
+import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
+import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
+import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scaryness;
 
 public class TodoFactory {
     private TodoFactory() {

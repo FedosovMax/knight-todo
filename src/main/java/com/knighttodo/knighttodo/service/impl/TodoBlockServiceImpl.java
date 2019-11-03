@@ -1,14 +1,14 @@
-package com.knighttodo.knighttodo.service;
+package com.knighttodo.knighttodo.service.impl;
 
 
-import com.knighttodo.knighttodo.entity.TodoBlock;
-import com.knighttodo.knighttodo.entity.exeptions.TodoNotFoundException;
-import com.knighttodo.knighttodo.repository.TodoBlockRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
+import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
+import com.knighttodo.knighttodo.exception.TodoNotFoundException;
+import com.knighttodo.knighttodo.gateway.privatedb.repository.TodoBlockRepository;
+import com.knighttodo.knighttodo.service.TodoBlockService;
 import java.util.List;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service

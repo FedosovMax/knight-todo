@@ -1,6 +1,6 @@
-package com.knighttodo.knighttodo.controller;
+package com.knighttodo.knighttodo.rest;
 
-import com.knighttodo.knighttodo.entity.Todo;
+import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
 import com.knighttodo.knighttodo.service.TodoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("todos")
 @Slf4j
-public class TodoController {
+public class TodoResource {
 
     final private TodoService todoService;
 
@@ -66,5 +66,11 @@ public class TodoController {
         todoService.deleteById(todoId);
 
         return new ResponseEntity<>("Deleted Todo id " + todoId, HttpStatus.OK);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<Todo> makeReady(@Valid @RequestBody Todo todo){
+        log.info("Rest request to make todo : {} ready", todo);
+        return new ResponseEntity<>(this.todoService.updateTodo(todo), HttpStatus.OK);
     }
 }
