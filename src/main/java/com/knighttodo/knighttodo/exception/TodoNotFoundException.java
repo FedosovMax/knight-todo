@@ -1,5 +1,4 @@
-package com.knighttodo.knighttodo.entity.exeptions;
-
+package com.knighttodo.knighttodo.exception;
 
 public class TodoNotFoundException extends RuntimeException {
 }

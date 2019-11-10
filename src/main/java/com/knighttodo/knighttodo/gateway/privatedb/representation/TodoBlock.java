@@ -1,4 +1,4 @@
-package com.knighttodo.knighttodo.entity;
+package com.knighttodo.knighttodo.gateway.privatedb.representation;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 

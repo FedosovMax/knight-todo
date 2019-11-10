@@ -1,8 +1,8 @@
-package com.knighttodo.knighttodo.entity;
+package com.knighttodo.knighttodo.gateway.privatedb.representation;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.knighttodo.knighttodo.entity.enums.Hardness;
-import com.knighttodo.knighttodo.entity.enums.Scaryness;
+import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
+import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scaryness;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

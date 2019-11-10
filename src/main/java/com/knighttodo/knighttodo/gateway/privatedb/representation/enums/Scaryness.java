@@ -1,4 +1,4 @@
-package com.knighttodo.knighttodo.entity.enums;
+package com.knighttodo.knighttodo.gateway.privatedb.representation.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;

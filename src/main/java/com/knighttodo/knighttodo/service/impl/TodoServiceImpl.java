@@ -1,13 +1,13 @@
-package com.knighttodo.knighttodo.service;
+package com.knighttodo.knighttodo.service.impl;
 
-import com.knighttodo.knighttodo.entity.Todo;
-import com.knighttodo.knighttodo.entity.TodoBlock;
-import com.knighttodo.knighttodo.entity.exeptions.TodoNotFoundException;
-import com.knighttodo.knighttodo.repository.TodoRepository;
-import org.springframework.stereotype.Service;
-
+import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
+import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
+import com.knighttodo.knighttodo.exception.TodoNotFoundException;
+import com.knighttodo.knighttodo.gateway.privatedb.repository.TodoRepository;
+import com.knighttodo.knighttodo.service.TodoService;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.stereotype.Service;
 
 @Service
 public class TodoServiceImpl implements TodoService {
@@ -36,10 +36,10 @@ public class TodoServiceImpl implements TodoService {
 
         Todo todo;
 
-        if (result.isPresent()){
+        if (result.isPresent()) {
             todo = result.get();
-        }else {
-            throw new RuntimeException("Did not find Todo id - " + todoId );
+        } else {
+            throw new RuntimeException("Did not find Todo id - " + todoId);
         }
 
         return todo;
@@ -48,8 +48,8 @@ public class TodoServiceImpl implements TodoService {
     @Override
     public Todo updateTodo(Todo changedTodo) {
 
-        final Todo todo = this.todoRepository.findById(changedTodo.getId()).
-                orElseThrow(TodoNotFoundException::new);
+        final Todo todo = this.todoRepository.findById(changedTodo.getId())
+            .orElseThrow(TodoNotFoundException::new);
 
         todo.setId(changedTodo.getId());
         todo.setTodoName(changedTodo.getTodoName());

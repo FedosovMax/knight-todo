@@ -1,8 +1,8 @@
 package com.knighttodo.knighttodo.integration;
 
-import com.knighttodo.knighttodo.entity.TodoBlock;
+import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
 import com.knighttodo.knighttodo.factories.TodoBlockFactory;
-import com.knighttodo.knighttodo.repository.TodoBlockRepository;
+import com.knighttodo.knighttodo.gateway.privatedb.repository.TodoBlockRepository;
 import com.knighttodo.knighttodo.service.TodoBlockService;
 import com.knighttodo.knighttodo.utilis.TestUtils;
 import org.junit.Test;
@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class TodoBlockControllerIntegrationTest {
+public class TodoBlockResourceIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;

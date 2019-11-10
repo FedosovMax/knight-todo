@@ -1,8 +1,8 @@
 package com.knighttodo.knighttodo.factories;
 
 
-import com.knighttodo.knighttodo.entity.Todo;
-import com.knighttodo.knighttodo.entity.TodoBlock;
+import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
+import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
 
 import java.util.ArrayList;
 import java.util.Arrays;

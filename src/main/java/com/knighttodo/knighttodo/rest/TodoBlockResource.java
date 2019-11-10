@@ -1,6 +1,6 @@
-package com.knighttodo.knighttodo.controller;
+package com.knighttodo.knighttodo.rest;
 
-import com.knighttodo.knighttodo.entity.TodoBlock;
+import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
 import com.knighttodo.knighttodo.service.TodoBlockService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("blocks")
 @Slf4j
-public class TodoBlockController {
+public class TodoBlockResource {
 
     final private TodoBlockService todoBlockService;
 

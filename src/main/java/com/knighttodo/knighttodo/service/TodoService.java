@@ -1,6 +1,6 @@
 package com.knighttodo.knighttodo.service;
 
-import com.knighttodo.knighttodo.entity.Todo;
+import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
 
 import java.util.List;
 
