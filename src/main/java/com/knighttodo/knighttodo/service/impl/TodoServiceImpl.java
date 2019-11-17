@@ -81,9 +81,25 @@ public class TodoServiceImpl implements TodoService {
 
 
     @Override
-    public List<Todo> getAllTodoByBlockId() {
+    public List<Todo> getAllTodoByBlockId(long blockId) {
+        TodoBlock todoBlock = new TodoBlock();
 
-        return todoRepository.findAllTodoByTodoBlockId();
+
+        List<Todo> allTodos = todoRepository.findAll();
+        List<Todo> todosForBlock = new ArrayList<>();
+
+        System.out.println(allTodos.toString());
+
+        for (Todo todo : allTodos) {
+            if (todo.getTodoBlock().getId() == todoBlock.getId()) {
+                todosForBlock.add(todo);
+            }
+        }
+
+        System.out.println(todosForBlock.toString());
+
+
+        return todosForBlock;
     }
 
     @Override

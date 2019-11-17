@@ -93,11 +93,11 @@ public class TodoResource {
 
     // send request to TodoBlock
 
-    @GetMapping("/getAllTodo")
-    public ResponseEntity<List<Todo>> getAllTodoByBlockId() {
+    @GetMapping("/getAllTodo/{blockId}")
+    public ResponseEntity<List<Todo>> getAllTodoByBlockId(@PathVariable long blockId) {
         log.info("request for TodoBlock to get all todo by todoBlock id");
 
-        List<Todo> todos = todoService.getAllTodoByBlockId();
+        List<Todo> todos = todoService.getAllTodoByBlockId(blockId);
 
         return new ResponseEntity<>(todos, HttpStatus.FOUND);
 
