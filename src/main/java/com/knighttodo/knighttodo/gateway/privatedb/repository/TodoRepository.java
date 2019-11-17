@@ -4,4 +4,11 @@ import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TodoRepository extends JpaRepository<Todo, Long> {
+//
+//    @Query(value = "FROM Todo as t todo td WHERE todoBlock = 'firstBlock'")
+//    List<Todo> findAllTodoByTodoBlockId();
+//
+//    @Query(value = "SELECT todo_name FROM todo", nativeQuery = true)
+//    List<String> findAllStringTodo();
+
 }

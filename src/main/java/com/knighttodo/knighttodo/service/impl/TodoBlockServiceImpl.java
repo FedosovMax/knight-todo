@@ -1,9 +1,9 @@
 package com.knighttodo.knighttodo.service.impl;
 
 
-import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
 import com.knighttodo.knighttodo.exception.TodoNotFoundException;
-import com.knighttodo.knighttodo.gateway.privatedb.repository.TodoBlockRepository;
+import com.knighttodo.knighttodo.gateway.TodoBlockGateway;
+import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
 import com.knighttodo.knighttodo.service.TodoBlockService;
 import java.util.List;
 import java.util.Optional;
@@ -14,28 +14,28 @@ import org.springframework.stereotype.Service;
 @Service
 public class TodoBlockServiceImpl implements TodoBlockService {
 
-    final private TodoBlockRepository todoBlockRepository;
+    private final TodoBlockGateway todoBlockGateway;
 
     @Override
     public void save(TodoBlock todoBlock) {
-        todoBlockRepository.save(todoBlock);
+        todoBlockGateway.save(todoBlock);
     }
 
     @Override
     public List<TodoBlock> findAll() {
-        return todoBlockRepository.findAll();
+        return todoBlockGateway.findAll();
     }
 
     @Override
     public TodoBlock findById(long todoBlockId) {
-        Optional<TodoBlock> result = todoBlockRepository.findById(todoBlockId);
+        Optional<TodoBlock> result = todoBlockGateway.findById(todoBlockId);
 
         TodoBlock todoBlock;
 
-        if (result.isPresent()){
+        if (result.isPresent()) {
             todoBlock = result.get();
-        }else {
-            throw new RuntimeException("Did not find TodoBlock id - " + todoBlockId );
+        } else {
+            throw new RuntimeException("Did not find TodoBlock id - " + todoBlockId);
         }
 
         return todoBlock;
@@ -44,8 +44,8 @@ public class TodoBlockServiceImpl implements TodoBlockService {
     @Override
     public TodoBlock updateTodoBlock(TodoBlock changedTodoBlock) {
 
-        final TodoBlock todoBlock = this.todoBlockRepository.findById(changedTodoBlock.getId()).
-        orElseThrow(TodoNotFoundException::new);
+        final TodoBlock todoBlock = this.todoBlockGateway.findById(changedTodoBlock.getId()).
+            orElseThrow(TodoNotFoundException::new);
 
         todoBlock.setId(changedTodoBlock.getId());
         todoBlock.setBlockName(changedTodoBlock.getBlockName());
@@ -56,6 +56,7 @@ public class TodoBlockServiceImpl implements TodoBlockService {
 
     @Override
     public void deleteById(long todoBlockId) {
-        todoBlockRepository.deleteById(todoBlockId);
+        todoBlockGateway.deleteById(todoBlockId);
     }
+
 }
