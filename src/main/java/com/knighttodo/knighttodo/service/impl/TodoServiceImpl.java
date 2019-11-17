@@ -5,17 +5,31 @@ import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
 import com.knighttodo.knighttodo.exception.TodoNotFoundException;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.TodoRepository;
 import com.knighttodo.knighttodo.service.TodoService;
+
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.data.jpa.provider.HibernateUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 public class TodoServiceImpl implements TodoService {
 
     final private TodoRepository todoRepository;
+    private final RestTemplate restTemplate;
 
-    public TodoServiceImpl(TodoRepository todoRepository) {
+
+
+    public TodoServiceImpl(TodoRepository todoRepository, RestTemplateBuilder restTemplateBuilder) {
         this.todoRepository = todoRepository;
+        this.restTemplate = restTemplateBuilder.build();
     }
 
     @Override
@@ -64,5 +78,19 @@ public class TodoServiceImpl implements TodoService {
     public void deleteById(long todoId) {
         todoRepository.deleteById(todoId);
     }
+
+
+    @Override
+    public List<Todo> getAllTodoByBlockId() {
+
+        return todoRepository.findAllTodoByTodoBlockId();
+    }
+
+    @Override
+    public List<String> getAllStringTodo() {
+
+        return todoRepository.findAllStringTodo();
+    }
+
 }
 
