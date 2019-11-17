@@ -1,13 +1,11 @@
 package com.knighttodo.knighttodo.service;
 
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
-
-import java.util.Collection;
 import java.util.List;
 
 public interface TodoService {
 
-    void save(Todo Todo);
+    Todo save(Todo Todo);
 
     List<Todo> findAll();
 
@@ -19,5 +17,4 @@ public interface TodoService {
 
     List<Todo> getAllTodoByBlockId(long blockId);
 
-    List<String> getAllStringTodo();
 }

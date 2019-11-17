@@ -1,10 +1,9 @@
 package com.knighttodo.knighttodo.gateway.privatedb.representation.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import java.util.Arrays;
 import lombok.Getter;
 import lombok.ToString;
-
-import java.util.Arrays;
 
 @ToString
 @Getter

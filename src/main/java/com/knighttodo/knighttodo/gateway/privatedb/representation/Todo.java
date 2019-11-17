@@ -3,13 +3,20 @@ package com.knighttodo.knighttodo.gateway.privatedb.representation;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scaryness;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
-
-import javax.persistence.*;
 
 @Entity
 @Table(name = "todo")
@@ -39,7 +46,7 @@ public class Todo {
     private boolean ready;
 
     @ManyToOne
-    @JoinColumn(name = "todoBlock_id")
+    @JoinColumn(name = "todoBlock")
     @JsonBackReference
     private TodoBlock todoBlock;
 }

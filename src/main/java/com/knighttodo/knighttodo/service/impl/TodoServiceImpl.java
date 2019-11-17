@@ -1,52 +1,37 @@
 package com.knighttodo.knighttodo.service.impl;
 
+import com.knighttodo.knighttodo.exception.TodoNotFoundException;
+import com.knighttodo.knighttodo.gateway.TodoGateway;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
-import com.knighttodo.knighttodo.exception.TodoNotFoundException;
-import com.knighttodo.knighttodo.gateway.privatedb.repository.TodoRepository;
+import com.knighttodo.knighttodo.service.TodoBlockService;
 import com.knighttodo.knighttodo.service.TodoService;
-
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.data.jpa.provider.HibernateUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 @Service
+@RequiredArgsConstructor
 public class TodoServiceImpl implements TodoService {
 
-    final private TodoRepository todoRepository;
-    private final RestTemplate restTemplate;
-
-
-
-    public TodoServiceImpl(TodoRepository todoRepository, RestTemplateBuilder restTemplateBuilder) {
-        this.todoRepository = todoRepository;
-        this.restTemplate = restTemplateBuilder.build();
-    }
+    private final TodoGateway todoGateway;
+    private final TodoBlockService todoBlockService;
 
     @Override
-    public void save(Todo todo) {
-        todoRepository.save(todo);
-        TodoBlock todoBlock = new TodoBlock();
-        todoBlock.addTodo(todo);
+    public Todo save(Todo todo) {
+        return todoGateway.save(todo); // need to add todoBlockId from requestEntity
     }
 
     @Override
     public List<Todo> findAll() {
-        return todoRepository.findAll();
+        return todoGateway.findAll();
     }
 
     @Override
     public Todo findById(long todoId) {
-        Optional<Todo> result = todoRepository.findById(todoId);
+        Optional<Todo> result = todoGateway.findById(todoId);
 
         Todo todo;
 
@@ -62,21 +47,21 @@ public class TodoServiceImpl implements TodoService {
     @Override
     public Todo updateTodo(Todo changedTodo) {
 
-        final Todo todo = this.todoRepository.findById(changedTodo.getId())
+        final Todo todo = this.todoGateway.findById(changedTodo.getId())
             .orElseThrow(TodoNotFoundException::new);
 
         todo.setId(changedTodo.getId());
         todo.setTodoName(changedTodo.getTodoName());
         todo.setTodoBlock(changedTodo.getTodoBlock());
 
-        todoRepository.save(todo);
+        todoGateway.save(todo);
 
         return todo;
     }
 
     @Override
     public void deleteById(long todoId) {
-        todoRepository.deleteById(todoId);
+        todoGateway.deleteById(todoId);
     }
 
 
@@ -84,11 +69,8 @@ public class TodoServiceImpl implements TodoService {
     public List<Todo> getAllTodoByBlockId(long blockId) {
         TodoBlock todoBlock = new TodoBlock();
 
-
-        List<Todo> allTodos = todoRepository.findAll();
+        List<Todo> allTodos = todoGateway.findAll();
         List<Todo> todosForBlock = new ArrayList<>();
-
-        System.out.println(allTodos.toString());
 
         for (Todo todo : allTodos) {
             if (todo.getTodoBlock().getId() == todoBlock.getId()) {
@@ -96,16 +78,7 @@ public class TodoServiceImpl implements TodoService {
             }
         }
 
-        System.out.println(todosForBlock.toString());
-
-
         return todosForBlock;
-    }
-
-    @Override
-    public List<String> getAllStringTodo() {
-
-        return todoRepository.findAllStringTodo();
     }
 
 }

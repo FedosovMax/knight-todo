@@ -1,39 +1,30 @@
 package com.knighttodo.knighttodo.rest;
 
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
-import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
 import com.knighttodo.knighttodo.service.TodoService;
+import java.util.ArrayList;
+import java.util.List;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-
-import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("todos")
 @Slf4j
-
 public class TodoResource {
 
-    final private TodoService todoService;
-
-    private final RestTemplate rest;
-
-    @Autowired
-    public TodoResource(TodoService todoService, RestTemplateBuilder restTemplateBuilder) {
-        this.todoService = todoService;
-        this.rest = restTemplateBuilder.build();
-    }
-
+    private final TodoService todoService;
 
     @GetMapping("/todo")
     public ResponseEntity<List<Todo>> findAll() {
@@ -53,9 +44,9 @@ public class TodoResource {
     @PostMapping("/todo")
     public ResponseEntity<Todo> addTodo(@RequestBody Todo todo) {
         log.info("Rest request to add todo : {}", todo);
-        todoService.save(todo);
+        Todo responseTodo = todoService.save(todo);
 
-        return new ResponseEntity<>(todo, HttpStatus.CREATED);
+        return new ResponseEntity<>(responseTodo, HttpStatus.CREATED);
     }
 
     @GetMapping("/todo/{todoId}")
@@ -103,11 +94,4 @@ public class TodoResource {
 
     }
 
-    @GetMapping("/getAllString")
-    public ResponseEntity<List<String>> getAllTodoString(){
-
-        List<String> strings = todoService.getAllStringTodo();
-
-        return new ResponseEntity<>(strings, HttpStatus.OK);
-    }
 }
