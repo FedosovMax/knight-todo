@@ -3,7 +3,8 @@ package com.knighttodo.knighttodo.service.impl;
 import com.knighttodo.knighttodo.exception.TodoNotFoundException;
 import com.knighttodo.knighttodo.gateway.TodoGateway;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
-import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
+import com.knighttodo.knighttodo.rest.request.TodoRequest;
+import com.knighttodo.knighttodo.rest.response.TodoResponse;
 import com.knighttodo.knighttodo.service.TodoBlockService;
 import com.knighttodo.knighttodo.service.TodoService;
 import java.util.ArrayList;
@@ -20,43 +21,58 @@ public class TodoServiceImpl implements TodoService {
     private final TodoBlockService todoBlockService;
 
     @Override
-    public Todo save(Todo todo) {
-        return todoGateway.save(todo); // need to add todoBlockId from requestEntity
+    public TodoResponse save(TodoRequest todoRequest) {
+
+        Todo todo = todoRequestToTodo(todoRequest);
+
+        return todoToTodoResponse(todoGateway.save(todo)); // need to add todoBlockId from requestEntity
     }
 
     @Override
-    public List<Todo> findAll() {
-        return todoGateway.findAll();
+    public List<TodoResponse> findAll() {
+
+        List<Todo> todos = todoGateway.findAll();
+
+        List<TodoResponse> todoResponses = new ArrayList<>();
+
+        for (Todo todo : todos) {
+            todoToTodoResponse(todo);
+            todoResponses.add(todoToTodoResponse(todo));
+        }
+
+        return todoResponses;
     }
 
     @Override
-    public Todo findById(long todoId) {
-        Optional<Todo> result = todoGateway.findById(todoId);
+    public TodoResponse findById(long todoId) {
+        Optional<Todo> todos = todoGateway.findById(todoId);
 
-        Todo todo;
+        TodoResponse todoResponse;
 
-        if (result.isPresent()) {
-            todo = result.get();
+        if (todos.isPresent()) {
+            todoResponse = todoToTodoResponse(todos.get());
         } else {
             throw new RuntimeException("Did not find Todo id - " + todoId);
         }
 
-        return todo;
+        return todoResponse;
     }
 
     @Override
-    public Todo updateTodo(Todo changedTodo) {
+    public TodoResponse updateTodo(TodoRequest changedTodoRequest) {
 
-        final Todo todo = this.todoGateway.findById(changedTodo.getId())
-            .orElseThrow(TodoNotFoundException::new);
+        final TodoResponse todoResponse = todoToTodoResponse(this.todoGateway.findById(changedTodoRequest.getId())
+                .orElseThrow(TodoNotFoundException::new));
 
-        todo.setId(changedTodo.getId());
-        todo.setTodoName(changedTodo.getTodoName());
-        todo.setTodoBlock(changedTodo.getTodoBlock());
+        todoResponse.setId(changedTodoRequest.getId());
+        todoResponse.setTodoName(changedTodoRequest.getTodoName());
+        todoResponse.setTodoBlock(changedTodoRequest.getTodoBlock());
 
-        todoGateway.save(todo);
+        Todo todo = todoRequestToTodo(changedTodoRequest);
 
-        return todo;
+        todoToTodoResponse(todoGateway.save(todo));
+
+        return todoResponse;
     }
 
     @Override
@@ -66,20 +82,46 @@ public class TodoServiceImpl implements TodoService {
 
 
     @Override
-    public List<Todo> getAllTodoByBlockId(long blockId) {
+    public List<TodoResponse> getAllTodoByBlockId(long blockId) {
 
         List<Todo> beforeTodos = todoGateway.findAll();
 
-        List<Todo> todos = new ArrayList<>();
-        for (int i = 0; i < beforeTodos.size(); i++) {
-
-            if (beforeTodos.get(i).getTodoBlock().getId() == blockId){
-                todos.add(beforeTodos.get(i));
+        List<TodoResponse> todosRespons = new ArrayList<>();
+        for (Todo beforeTodo : beforeTodos) {
+            if (beforeTodo.getTodoBlock().getId() == blockId) {
+                todosRespons.add(todoToTodoResponse(beforeTodo));
             }
         }
 
-        return todos;
+        return todosRespons;
     }
+
+    private Todo todoRequestToTodo(TodoRequest todoRequest){
+        Todo todo = new Todo();
+
+        todo.setId(todoRequest.getId());
+        todo.setTodoName(todoRequest.getTodoName());
+        todo.setScaryness(todoRequest.getScaryness());
+        todo.setHardness(todoRequest.getHardness());
+        todo.setReady(todoRequest.isReady());
+        todo.setTodoBlock(todoRequest.getTodoBlock());
+
+        return todo;
+    }
+
+    private TodoResponse todoToTodoResponse(Todo todo){
+        TodoResponse todoResponse = new TodoResponse();
+
+        todoResponse.setId(todo.getId());
+        todoResponse.setTodoName(todo.getTodoName());
+        todoResponse.setScaryness(todo.getScaryness());
+        todoResponse.setHardness(todo.getHardness());
+        todoResponse.setReady(todo.isReady());
+        todoResponse.setTodoBlock(todo.getTodoBlock());
+
+        return todoResponse;
+    }
+
 
 }
 

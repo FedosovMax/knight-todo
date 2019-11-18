@@ -1,6 +1,8 @@
 package com.knighttodo.knighttodo.gateway;
 
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
+import com.knighttodo.knighttodo.rest.response.TodoResponse;
+
 import java.util.List;
 import java.util.Optional;
 

@@ -1,20 +1,23 @@
 package com.knighttodo.knighttodo.service;
 
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
+import com.knighttodo.knighttodo.rest.request.TodoRequest;
+import com.knighttodo.knighttodo.rest.response.TodoResponse;
+
 import java.util.List;
 
 public interface TodoService {
 
-    Todo save(Todo Todo);
+    TodoResponse save(TodoRequest todoRequset);
 
-    List<Todo> findAll();
+    List<TodoResponse> findAll();
 
-    Todo findById(long todoId);
+    TodoResponse findById(long todoId);
 
-    Todo updateTodo(Todo changedTodo);
+    TodoResponse updateTodo(TodoRequest changedTodoRequest);
 
     void deleteById(long TodoId);
 
-    List<Todo> getAllTodoByBlockId(long blockId);
+    List<TodoResponse> getAllTodoByBlockId(long blockId);
 
 }
