@@ -3,6 +3,7 @@ package com.knighttodo.knighttodo.gateway.privatedb.representation;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,7 +32,7 @@ public class TodoBlock {
     @Column(name = "block_name")
     private String blockName;
 
-    @OneToMany(mappedBy = "todoBlock")
+    @OneToMany(mappedBy = "todoBlock", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Todo> todoList = new ArrayList<>();
 

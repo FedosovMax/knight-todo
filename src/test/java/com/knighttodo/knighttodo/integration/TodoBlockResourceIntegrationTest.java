@@ -8,7 +8,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.knighttodo.knighttodo.factories.TodoBlockFactory;
+import com.knighttodo.knighttodo.factories.TodoFactory;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.TodoBlockRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
 import com.knighttodo.knighttodo.service.TodoBlockService;
@@ -40,7 +40,7 @@ public class TodoBlockResourceIntegrationTest {
     @Test
     public void deleteTodoBlockTest() throws Exception {
 
-        TodoBlock todoBlock = TodoBlockFactory.firstTodoBlock();
+        TodoBlock todoBlock = TodoFactory.firstTodoBlock();
         todoBlockRepository.save(todoBlock);
 
         mockMvc.perform(
@@ -57,11 +57,11 @@ public class TodoBlockResourceIntegrationTest {
     @Test
     public void updateTodoBlockTest() throws Exception {
 
-        TodoBlock firstTodoBlock = TodoBlockFactory.firstTodoBlock();
+        TodoBlock firstTodoBlock = TodoFactory.firstTodoBlock();
 
         todoBlockRepository.save(firstTodoBlock);
 
-        TodoBlock updateBlock = TodoBlockFactory.updateTodoBlock();
+        TodoBlock updateBlock = TodoFactory.updateTodoBlock();
 
         mockMvc.perform(
             put("/blocks/block")
@@ -76,7 +76,7 @@ public class TodoBlockResourceIntegrationTest {
 
     @Test
     public void loadTodoBlockByIdTest() throws Exception {
-        TodoBlock todoBlock = TodoBlockFactory.firstTodoBlock();
+        TodoBlock todoBlock = TodoFactory.firstTodoBlock();
 
         todoBlockRepository.save(todoBlock);
 
@@ -92,15 +92,15 @@ public class TodoBlockResourceIntegrationTest {
     @Test
     public void saveTodoBlockTest() throws Exception {
 
-        TodoBlock todoBlock = TodoBlockFactory.firstTodoBlock();
+        TodoBlock todoBlock = TodoFactory.firstTodoBlock();
 
         mockMvc.perform(
-         post("/blocks/block")
+            post("/blocks/block")
                 .content(TestUtils.convertObjectToJsonBytes(todoBlock))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isCreated());
 
-        assertThat(todoBlockRepository.getOne(TodoBlockFactory.firstTodoBlock().getId())).isNotNull();
+        assertThat(todoBlockRepository.getOne(TodoFactory.firstTodoBlock().getId())).isNotNull();
     }
 
 }
