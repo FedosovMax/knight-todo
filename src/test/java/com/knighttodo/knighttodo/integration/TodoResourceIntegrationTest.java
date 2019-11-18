@@ -28,16 +28,13 @@ import org.springframework.test.web.servlet.MockMvc;
 public class TodoResourceIntegrationTest {
 
     @Autowired
+    ObjectMapper objectMapper;
+    @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private TodoService todoService;
-
     @Autowired
     private TodoRepository todoRepository;
-
-    @Autowired
-    ObjectMapper objectMapper;
 
     @Test
     public void deleteTodoTest() throws Exception {
@@ -46,11 +43,11 @@ public class TodoResourceIntegrationTest {
         todoRepository.save(todo);
 
         mockMvc.perform(
-                delete("/todos/todo/" + todo.getId())
-                        .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
-                        .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
+            delete("/todos/todo/" + todo.getId())
+                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+                .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
         )
-                .andExpect(status().isOk());
+            .andExpect(status().isOk());
 
         assertThat(todoRepository.count()).isEqualTo(0);
     }
@@ -65,13 +62,13 @@ public class TodoResourceIntegrationTest {
         Todo updateTodo = TodoFactory.updateTodo();
 
         mockMvc.perform(
-                put("/todos/todo")
-                        .content(objectMapper.writeValueAsString(updateTodo))
-                        .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(status().isOk());
+            put("/todos/todo")
+                .content(objectMapper.writeValueAsString(updateTodo))
+                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(status().isOk());
 
         assertThat(todoRepository.findById(updateTodo.getId()).get().getTodoName())
-                .isEqualTo(updateTodo.getTodoName());
+            .isEqualTo(updateTodo.getTodoName());
     }
 
     @Test
@@ -81,11 +78,11 @@ public class TodoResourceIntegrationTest {
         todoRepository.save(todo);
 
         mockMvc.perform(get("/todos/todo/" + 1L)
-                .content(TestUtils.convertObjectToJsonBytes(todo))
-                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
-                .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
+            .content(TestUtils.convertObjectToJsonBytes(todo))
+            .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+            .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
         )
-                .andExpect(status().isFound());
+            .andExpect(status().isFound());
 //            .andExpect(jsonPath("$.todoName").value("hard working"));
     }
 
@@ -95,10 +92,10 @@ public class TodoResourceIntegrationTest {
         Todo todo = TodoFactory.firstTodo();
 
         mockMvc.perform(
-                post("/todos/todo")
-                        .content(objectMapper.writeValueAsString(todo))
-                        .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isCreated());
+            post("/todos/todo")
+                .content(objectMapper.writeValueAsString(todo))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(status().isCreated());
 
         assertThat(todoRepository.getOne(TodoFactory.firstTodo().getId())).isNotNull();
     }

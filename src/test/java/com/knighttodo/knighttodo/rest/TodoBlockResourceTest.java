@@ -11,7 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.knighttodo.knighttodo.factories.TodoBlockFactory;
+import com.knighttodo.knighttodo.factories.TodoFactory;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.TodoBlockRepository;
 import com.knighttodo.knighttodo.service.TodoBlockService;
 import com.knighttodo.knighttodo.service.TodoService;
@@ -47,7 +47,7 @@ public class TodoBlockResourceTest {
     public void addTodoBlockTest() throws Exception {
         mockMvc.perform(
                 post("/blocks/block")
-                        .content(objectMapper.writeValueAsString(TodoBlockFactory.firstTodoBlock()))
+                        .content(objectMapper.writeValueAsString(TodoFactory.firstTodoBlock()))
                         .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists());
@@ -55,7 +55,7 @@ public class TodoBlockResourceTest {
 
     @Test
     public void getTodoBlockByIdTest() throws Exception {
-        given(todoBlockService.findById(1L)).willReturn(TodoBlockFactory.firstTodoBlock());
+        given(todoBlockService.findById(1L)).willReturn(TodoFactory.firstTodoBlock());
 
         mockMvc.perform(get("/blocks/block/" + 1L))
                 .andExpect(status().isFound())
@@ -64,11 +64,11 @@ public class TodoBlockResourceTest {
 
     @Test
     public void updateTodoBlockTest() throws Exception {
-        when(todoBlockService.updateTodoBlock(eq(TodoBlockFactory.updateTodoBlock())))
-                .thenReturn(TodoBlockFactory.updateTodoBlock());
+        when(todoBlockService.updateTodoBlock(eq(TodoFactory.updateTodoBlock())))
+                .thenReturn(TodoFactory.updateTodoBlock());
         mockMvc.perform(
                 put("/blocks/block")
-                        .content(objectMapper.writeValueAsBytes(TodoBlockFactory.updateTodoBlock()))
+                        .content(objectMapper.writeValueAsBytes(TodoFactory.updateTodoBlock()))
                         .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists());
