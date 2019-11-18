@@ -67,18 +67,18 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public List<Todo> getAllTodoByBlockId(long blockId) {
-        TodoBlock todoBlock = new TodoBlock();
 
-        List<Todo> allTodos = todoGateway.findAll();
-        List<Todo> todosForBlock = new ArrayList<>();
+        List<Todo> beforeTodos = todoGateway.findAll();
 
-        for (Todo todo : allTodos) {
-            if (todo.getTodoBlock().getId() == todoBlock.getId()) {
-                todosForBlock.add(todo);
+        List<Todo> todos = new ArrayList<>();
+        for (int i = 0; i < beforeTodos.size(); i++) {
+
+            if (beforeTodos.get(i).getTodoBlock().getId() == blockId){
+                todos.add(beforeTodos.get(i));
             }
         }
 
-        return todosForBlock;
+        return todos;
     }
 
 }
