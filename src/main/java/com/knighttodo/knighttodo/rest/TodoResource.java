@@ -1,5 +1,7 @@
 package com.knighttodo.knighttodo.rest;
 
+import com.knighttodo.knighttodo.domain.TodoVO;
+import com.knighttodo.knighttodo.gateway.privatedb.mapper.TodoMapper;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
 import com.knighttodo.knighttodo.rest.request.TodoRequest;
 import com.knighttodo.knighttodo.rest.response.TodoResponse;
@@ -27,26 +29,34 @@ import org.springframework.web.bind.annotation.RestController;
 public class TodoResource {
 
     private final TodoService todoService;
+    private final TodoMapper todoMapper;
 
     @GetMapping("/todo")
     public ResponseEntity<List<TodoResponse>> findAll() {
         log.info("Rest request to get all todo");
 
-        List<TodoResponse> todosResponse = todoService.findAll();
+        List<TodoVO> todoVOS = todoService.findAll();
+        List<TodoResponse> todoResponses = new ArrayList<>();
 
-        if (todosResponse.isEmpty()) {
+        if (todoVOS.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
-            List<TodoResponse> todosResponseAfterCheck = new ArrayList<>(todosResponse);
+            List<TodoVO> todosResponseAfterCheck = new ArrayList<>(todoVOS);
+            for (TodoVO todoVO : todosResponseAfterCheck) {
+                todoResponses.add(todoMapper.todoResponseFromTodoVO(todoVO));
+            }
 
-            return new ResponseEntity<>(todosResponseAfterCheck, HttpStatus.FOUND);
+            return new ResponseEntity<>(todoResponses, HttpStatus.FOUND);
         }
     }
 
     @PostMapping("/todo")
     public ResponseEntity<TodoResponse> addTodo(@RequestBody TodoRequest todoRequest) {
         log.info("Rest request to add todo : {}", todoRequest);
-        TodoResponse todoResponse = todoService.save(todoRequest);
+
+        TodoVO todoVO = todoMapper.toTodoVO(todoRequest);
+        todoService.save(todoVO);
+        TodoResponse todoResponse = todoMapper.todoResponseFromTodoVO(todoVO);
 
         return new ResponseEntity<>(todoResponse, HttpStatus.CREATED);
     }
@@ -54,7 +64,8 @@ public class TodoResource {
     @GetMapping("/todo/{todoId}")
     public ResponseEntity<TodoResponse> getTodoById(@PathVariable long todoId) {
         log.info("Rest request to get todo by id : {}", todoId);
-        TodoResponse todoResponse = todoService.findById(todoId);
+
+        TodoResponse todoResponse = todoMapper.todoResponseFromTodoVO(todoService.findById(todoId));
 
         if (todoResponse == null) {
             throw new RuntimeException("Todo id not found - " + todoId);
@@ -65,12 +76,18 @@ public class TodoResource {
     @PutMapping("/todo")
     public ResponseEntity<TodoResponse> updateTodo(@Valid @RequestBody TodoRequest todoRequest) {
         log.info("Rest request to update todo : {}", todoRequest);
-        return new ResponseEntity<>(this.todoService.updateTodo(todoRequest), HttpStatus.OK);
+
+        TodoVO todoVO = todoMapper.toTodoVO(todoRequest);
+        todoService.updateTodo(todoVO);
+        TodoResponse todoResponse = todoMapper.todoResponseFromTodoVO(todoVO);
+
+        return new ResponseEntity<>(todoResponse, HttpStatus.OK);
     }
 
     @DeleteMapping("/todo/{todoId}")
     public ResponseEntity<String> deleteTodo(@PathVariable long todoId) {
         log.info("Rest request to delete todo by id : {}", todoId);
+
         todoService.deleteById(todoId);
 
         return new ResponseEntity<>("Deleted Todo id " + todoId, HttpStatus.OK);
@@ -79,7 +96,12 @@ public class TodoResource {
     @PutMapping("/update")
     public ResponseEntity<TodoResponse> makeReady(@Valid @RequestBody TodoRequest todoRequest) {
         log.info("Rest request to make todo : {} ready", todoRequest);
-        return new ResponseEntity<>(this.todoService.updateTodo(todoRequest), HttpStatus.OK);
+
+        TodoVO todoVO = todoMapper.toTodoVO(todoRequest);
+        todoService.updateTodo(todoVO);
+        TodoResponse todoResponse = todoMapper.todoResponseFromTodoVO(todoVO);
+
+        return new ResponseEntity<>(todoResponse, HttpStatus.OK);
     }
 
     // MICROSERVICES
@@ -90,10 +112,14 @@ public class TodoResource {
     public ResponseEntity<List<TodoResponse>> getAllTodoByBlockId(@PathVariable long blockId) {
         log.info("request for TodoBlock to get all todo by todoBlock id");
 
-        List<TodoResponse> todosResponse = todoService.getAllTodoByBlockId(blockId);
+        List<TodoVO> todosVO = todoService.getAllTodoByBlockId(blockId);
+        List<TodoResponse> todosResponses = new ArrayList<>();
 
-        return new ResponseEntity<>(todosResponse, HttpStatus.FOUND);
+        for (TodoVO todoVO : todosVO) {
+            todosResponses.add(todoMapper.todoResponseFromTodoVO(todoVO));
+        }
 
+        return new ResponseEntity<>(todosResponses, HttpStatus.FOUND);
     }
 
 }

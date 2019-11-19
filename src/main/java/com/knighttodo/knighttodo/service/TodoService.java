@@ -1,5 +1,6 @@
 package com.knighttodo.knighttodo.service;
 
+import com.knighttodo.knighttodo.domain.TodoVO;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
 import com.knighttodo.knighttodo.rest.request.TodoRequest;
 import com.knighttodo.knighttodo.rest.response.TodoResponse;
@@ -8,16 +9,16 @@ import java.util.List;
 
 public interface TodoService {
 
-    TodoResponse save(TodoRequest todoRequset);
+    TodoVO save(TodoVO todoVO);
 
-    List<TodoResponse> findAll();
+    List<TodoVO> findAll();
 
-    TodoResponse findById(long todoId);
+    TodoVO findById(long todoId);
 
-    TodoResponse updateTodo(TodoRequest changedTodoRequest);
+    TodoVO updateTodo(TodoVO changedTodoVO);
 
     void deleteById(long TodoId);
 
-    List<TodoResponse> getAllTodoByBlockId(long blockId);
+    List<TodoVO> getAllTodoByBlockId(long blockId);
 
 }

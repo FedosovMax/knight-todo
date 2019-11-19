@@ -1,5 +1,7 @@
 package com.knighttodo.knighttodo.gateway;
 
+import com.knighttodo.knighttodo.domain.TodoVO;
+import com.knighttodo.knighttodo.gateway.privatedb.mapper.TodoMapper;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.TodoRepository;
 
 import java.util.List;
@@ -7,7 +9,6 @@ import java.util.Optional;
 
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
 
-import com.knighttodo.knighttodo.rest.response.TodoResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,21 +17,20 @@ import org.springframework.stereotype.Service;
 public class TodoGatewayImpl implements TodoGateway {
 
     private final TodoRepository todoRepository;
-
+    private final TodoMapper todoMapper;
 
     @Override
-    public Todo save(Todo todo) {
-        return todoRepository.save(todo);
+    public TodoVO save(Todo todo) {
+        return todoRepository.save(todoMapper.toTodoVO(todo));
     }
 
-
     @Override
-    public List<Todo> findAll() {
+    public List<TodoVO> findAll() {
         return todoRepository.findAll();
     }
 
     @Override
-    public Optional<Todo> findById(long todoId) {
+    public Optional<TodoVO> findById(long todoId) {
         return todoRepository.findById(todoId);
     }
 
