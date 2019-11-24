@@ -20,18 +20,23 @@ public class TodoGatewayImpl implements TodoGateway {
     private final TodoMapper todoMapper;
 
     @Override
-    public TodoVO save(Todo todo) {
-        return todoRepository.save(todoMapper.toTodoVO(todo));
+    public Todo save(Todo todo) {
+
+        return todoRepository.save(todo);
     }
 
     @Override
-    public List<TodoVO> findAll() {
+    public List<Todo> findAll() {
+
         return todoRepository.findAll();
     }
 
     @Override
-    public Optional<TodoVO> findById(long todoId) {
-        return todoRepository.findById(todoId);
+    public Optional<Todo> findById(long todoId) {
+
+        Optional<Todo> todo = todoRepository.findById(todoId);
+
+        return todo;
     }
 
     @Override

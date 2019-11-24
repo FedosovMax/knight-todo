@@ -4,9 +4,8 @@ import com.knighttodo.knighttodo.domain.TodoVO;
 import com.knighttodo.knighttodo.exception.TodoNotFoundException;
 import com.knighttodo.knighttodo.gateway.TodoGateway;
 import com.knighttodo.knighttodo.gateway.privatedb.mapper.TodoMapper;
+
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
-import com.knighttodo.knighttodo.rest.request.TodoRequest;
-import com.knighttodo.knighttodo.rest.response.TodoResponse;
 import com.knighttodo.knighttodo.service.TodoBlockService;
 import com.knighttodo.knighttodo.service.TodoService;
 import java.util.ArrayList;
@@ -25,25 +24,34 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public TodoVO save(TodoVO todoVO) {
-        return todoGateway.save(todoMapper.toTodo(todoVO)); // need to add todoBlockId from requestEntity
+
+        Todo todo = todoGateway.save(todoMapper.toTodo(todoVO));
+
+        return todoMapper.toTodoVO(todo); // need to add todoBlockId from requestEntity
     }
 
     @Override
     public List<TodoVO> findAll() {
 
-        List<TodoVO> todos = todoGateway.findAll();
+        List<Todo> todos = todoGateway.findAll();
 
-        return todos;
+        List<TodoVO> todoVOS = new ArrayList<>();
+
+        for (int i = 0; i < todos.size(); i++) {
+            todoVOS.add(todoMapper.toTodoVO(todos.get(i)));
+        }
+
+        return todoVOS;
     }
 
     @Override
     public TodoVO findById(long todoId) {
-        Optional<TodoVO> todos = todoGateway.findById(todoId);
+        Optional<Todo> todos = todoGateway.findById(todoId);
 
         TodoVO todoVO;
 
         if (todos.isPresent()) {
-            todoVO = todos.get();
+            todoVO = todoMapper.toTodoVO(todos.get());
         } else {
             throw new RuntimeException("Did not find Todo id - " + todoId);
         }
@@ -54,12 +62,14 @@ public class TodoServiceImpl implements TodoService {
     @Override
     public TodoVO updateTodo(TodoVO changedTodoVO) {
 
-        final TodoVO todoVO = this.todoGateway.findById(changedTodoVO.getId())
+        final Todo todo = this.todoGateway.findById(todoMapper.toTodo(changedTodoVO).getId())
                 .orElseThrow(TodoNotFoundException::new);
 
-        todoVO.setId(changedTodoVO.getId());
-        todoVO.setTodoName(changedTodoVO.getTodoName());
-        todoVO.setTodoBlock(changedTodoVO.getTodoBlock());
+        TodoVO todoVO = new TodoVO();
+
+        todoVO.setId(todo.getId());
+        todoVO.setTodoName(todo.getTodoName());
+        todoVO.setTodoBlock(todo.getTodoBlock());
 
 
         todoGateway.save(todoMapper.toTodo(changedTodoVO));
@@ -76,19 +86,19 @@ public class TodoServiceImpl implements TodoService {
     @Override
     public List<TodoVO> getAllTodoByBlockId(long blockId) {
 
-        List<TodoVO> beforeTodos = todoGateway.findAll();
+        List<Todo> beforeTodos = todoGateway.findAll();
+
 
         List<TodoVO> resultTodos = new ArrayList<>();
-        for (TodoVO beforeTodo : beforeTodos) {
+
+        for (Todo beforeTodo : beforeTodos) {
             if (beforeTodo.getTodoBlock().getId() == blockId) {
-                resultTodos.add(beforeTodo);
+                resultTodos.add(todoMapper.toTodoVO(beforeTodo));
             }
         }
 
         return resultTodos;
     }
-
-
 
 }
 

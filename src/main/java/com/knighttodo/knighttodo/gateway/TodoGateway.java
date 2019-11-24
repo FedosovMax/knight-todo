@@ -8,11 +8,11 @@ import java.util.Optional;
 
 public interface TodoGateway {
 
-    TodoVO save(Todo todo);
+    Todo save(Todo todo);
 
-    List<TodoVO> findAll();
+    List<Todo> findAll();
 
-    Optional<TodoVO> findById(long todoId);
+    Optional<Todo> findById(long todoId);
 
     void deleteById(long todoId);
 }
