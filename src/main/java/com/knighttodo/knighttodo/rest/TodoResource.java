@@ -1,14 +1,20 @@
 package com.knighttodo.knighttodo.rest;
 
 import com.knighttodo.knighttodo.domain.TodoVO;
-import com.knighttodo.knighttodo.gateway.privatedb.mapper.TodoMapper;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
+import com.knighttodo.knighttodo.rest.mapper.TodoMapper;
 import com.knighttodo.knighttodo.rest.request.TodoRequest;
+import com.knighttodo.knighttodo.rest.request.todo.CreateTodoRequest;
+import com.knighttodo.knighttodo.rest.request.todo.UpdateTodoRequest;
 import com.knighttodo.knighttodo.rest.response.TodoResponse;
+import com.knighttodo.knighttodo.rest.response.todo.CreateTodoResponse;
+import com.knighttodo.knighttodo.rest.response.todo.UpdateTodoResponse;
 import com.knighttodo.knighttodo.service.TodoService;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,6 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TodoResource {
 
     private final TodoService todoService;
+    private final com.knighttodo.knighttodo.gateway.privatedb.mapper.TodoMapper oldTodoMapper;
     private final TodoMapper todoMapper;
 
     @GetMapping("/todo")
@@ -43,7 +50,7 @@ public class TodoResource {
         } else {
             List<TodoVO> todosResponseAfterCheck = new ArrayList<>(todoVOS);
             for (TodoVO todoVO : todosResponseAfterCheck) {
-                todoResponses.add(todoMapper.todoResponseFromTodoVO(todoVO));
+                todoResponses.add(oldTodoMapper.todoResponseFromTodoVO(todoVO));
             }
 
             return new ResponseEntity<>(todoResponses, HttpStatus.FOUND);
@@ -51,21 +58,21 @@ public class TodoResource {
     }
 
     @PostMapping("/todo")
-    public ResponseEntity<TodoResponse> addTodo(@RequestBody TodoRequest todoRequest) {
-        log.info("Rest request to add todo : {}", todoRequest);
+    public ResponseEntity<CreateTodoResponse> addTodo(@RequestBody CreateTodoRequest request) {
+        log.info("Rest request to add todo : {}", request);
+        TodoVO todoVO = todoMapper.toTodoVO(request);
 
-        TodoVO todoVO = todoMapper.toTodoVO(todoRequest);
         todoService.save(todoVO);
-        TodoResponse todoResponse = todoMapper.todoResponseFromTodoVO(todoVO);
+        CreateTodoResponse response = todoMapper.toCreateTodoResponse(todoVO);
 
-        return new ResponseEntity<>(todoResponse, HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @GetMapping("/todo/{todoId}")
     public ResponseEntity<TodoResponse> getTodoById(@PathVariable long todoId) {
         log.info("Rest request to get todo by id : {}", todoId);
 
-        TodoResponse todoResponse = todoMapper.todoResponseFromTodoVO(todoService.findById(todoId));
+        TodoResponse todoResponse = oldTodoMapper.todoResponseFromTodoVO(todoService.findById(todoId));
 
         if (todoResponse == null) {
             throw new RuntimeException("Todo id not found - " + todoId);
@@ -74,14 +81,14 @@ public class TodoResource {
     }
 
     @PutMapping("/todo")
-    public ResponseEntity<TodoResponse> updateTodo(@Valid @RequestBody TodoRequest todoRequest) {
-        log.info("Rest request to update todo : {}", todoRequest);
+    public ResponseEntity<UpdateTodoResponse> updateTodo(@Valid @RequestBody UpdateTodoRequest request) {
+        log.info("Rest request to update todo : {}", request);
+        TodoVO todoVO = todoMapper.toTodoVO(request);
 
-        TodoVO todoVO = todoMapper.toTodoVO(todoRequest);
         todoService.updateTodo(todoVO);
-        TodoResponse todoResponse = todoMapper.todoResponseFromTodoVO(todoVO);
+        UpdateTodoResponse response = todoMapper.toUpdateTodoResponse(todoVO);
 
-        return new ResponseEntity<>(todoResponse, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/todo/{todoId}")
@@ -97,9 +104,9 @@ public class TodoResource {
     public ResponseEntity<TodoResponse> makeReady(@Valid @RequestBody TodoRequest todoRequest) {
         log.info("Rest request to make todo : {} ready", todoRequest);
 
-        TodoVO todoVO = todoMapper.toTodoVO(todoRequest);
+        TodoVO todoVO = oldTodoMapper.toTodoVO(todoRequest);
         todoService.updateTodo(todoVO);
-        TodoResponse todoResponse = todoMapper.todoResponseFromTodoVO(todoVO);
+        TodoResponse todoResponse = oldTodoMapper.todoResponseFromTodoVO(todoVO);
 
         return new ResponseEntity<>(todoResponse, HttpStatus.OK);
     }
@@ -116,7 +123,7 @@ public class TodoResource {
         List<TodoResponse> todosResponses = new ArrayList<>();
 
         for (TodoVO todoVO : todosVO) {
-            todosResponses.add(todoMapper.todoResponseFromTodoVO(todoVO));
+            todosResponses.add(oldTodoMapper.todoResponseFromTodoVO(todoVO));
         }
 
         return new ResponseEntity<>(todosResponses, HttpStatus.FOUND);
