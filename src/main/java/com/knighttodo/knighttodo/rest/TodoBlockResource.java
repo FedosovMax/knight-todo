@@ -1,10 +1,17 @@
 package com.knighttodo.knighttodo.rest;
 
 import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
+import com.knighttodo.knighttodo.rest.mapper.TodoBlockMapper;
+import com.knighttodo.knighttodo.rest.request.todoblock.CreateTodoBlockRequest;
+import com.knighttodo.knighttodo.rest.request.todoblock.UpdateTodoBlockRequest;
+import com.knighttodo.knighttodo.rest.response.todoblock.CreateTodoBlockResponse;
+import com.knighttodo.knighttodo.rest.response.todoblock.UpdateTodoBlockResponse;
 import com.knighttodo.knighttodo.service.TodoBlockService;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -25,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TodoBlockResource {
 
     final private TodoBlockService todoBlockService;
+    final private TodoBlockMapper todoBlockMapper;
 
     @GetMapping("/block")
     public ResponseEntity<List<TodoBlock>> findAll() {
@@ -41,11 +49,14 @@ public class TodoBlockResource {
     }
 
     @PostMapping("/block")
-    public ResponseEntity<TodoBlock> addTodoBlock(@RequestBody TodoBlock todoBlock) {
-        log.info("Rest request to add todoBlock : {}", todoBlock);
-        todoBlockService.save(todoBlock);
+    public ResponseEntity<CreateTodoBlockResponse> addTodoBlock(@RequestBody CreateTodoBlockRequest request) {
+        log.info("Rest request to add todoBlock : {}", request);
+        TodoBlock todoBlock = todoBlockMapper.toTodoBlock(request);
 
-        return new ResponseEntity<>(todoBlock, HttpStatus.CREATED);
+        todoBlockService.save(todoBlock);
+        CreateTodoBlockResponse response = todoBlockMapper.toCreateTodoBlockResponse(todoBlock);
+
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @GetMapping("/block/{todoBlockId}")
@@ -61,9 +72,14 @@ public class TodoBlockResource {
     }
 
     @PutMapping("/block")
-    public ResponseEntity<TodoBlock> updateTodoBlock(@Valid @RequestBody TodoBlock todoBlock) {
-        log.info("Rest request to update todo block : {}", todoBlock );
-        return new ResponseEntity<>(this.todoBlockService.updateTodoBlock(todoBlock), HttpStatus.OK);
+    public ResponseEntity<UpdateTodoBlockResponse> updateTodoBlock(@Valid @RequestBody UpdateTodoBlockRequest request) {
+        log.info("Rest request to update todo block : {}", request);
+        TodoBlock todoBlock = todoBlockMapper.toTodoBlock(request);
+
+        TodoBlock updatedTodoBlock = todoBlockService.updateTodoBlock(todoBlock);
+        UpdateTodoBlockResponse response = todoBlockMapper.toUpdateTodoBlockResponse(updatedTodoBlock);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/block/{todoBlockId}")
