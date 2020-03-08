@@ -9,5 +9,4 @@ public class KnightTodoApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(KnightTodoApplication.class, args);
 	}
-
 }

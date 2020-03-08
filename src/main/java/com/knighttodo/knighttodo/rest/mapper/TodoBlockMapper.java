@@ -1,20 +1,23 @@
 package com.knighttodo.knighttodo.rest.mapper;
 
-import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
+import com.knighttodo.knighttodo.domain.TodoBlockVO;
 import com.knighttodo.knighttodo.rest.request.todoblock.CreateTodoBlockRequest;
 import com.knighttodo.knighttodo.rest.request.todoblock.UpdateTodoBlockRequest;
 import com.knighttodo.knighttodo.rest.response.todoblock.CreateTodoBlockResponse;
+import com.knighttodo.knighttodo.rest.response.todoblock.GetTodoBlockResponse;
 import com.knighttodo.knighttodo.rest.response.todoblock.UpdateTodoBlockResponse;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface TodoBlockMapper {
 
-    TodoBlock toTodoBlock(CreateTodoBlockRequest request);
+    TodoBlockVO toTodoBlockVO(CreateTodoBlockRequest request);
 
-    CreateTodoBlockResponse toCreateTodoBlockResponse(TodoBlock todoBlock);
+    CreateTodoBlockResponse toCreateTodoBlockResponse(TodoBlockVO todoBlockVO);
 
-    TodoBlock toTodoBlock(UpdateTodoBlockRequest request);
+    TodoBlockVO toTodoBlockVO(UpdateTodoBlockRequest request);
 
-    UpdateTodoBlockResponse toUpdateTodoBlockResponse(TodoBlock todoBlock);
+    UpdateTodoBlockResponse toUpdateTodoBlockResponse(TodoBlockVO todoBlockVO);
+
+    GetTodoBlockResponse toGetTodoBlockResponse(TodoBlockVO todoBlockVO);
 }
