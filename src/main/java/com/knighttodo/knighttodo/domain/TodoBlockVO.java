@@ -17,5 +17,5 @@ public class TodoBlockVO {
 
     private String blockName;
 
-    private List<TodoVO> todoList;
+    private List<TodoVO> todos;
 }

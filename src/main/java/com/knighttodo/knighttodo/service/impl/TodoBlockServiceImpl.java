@@ -61,7 +61,7 @@ public class TodoBlockServiceImpl implements TodoBlockService {
 
         todoBlock.setId(changedTodoBlockVO.getId());
         todoBlock.setBlockName(changedTodoBlockVO.getBlockName());
-        todoBlock.setTodoList(changedTodoBlockVO.getTodoList()
+        todoBlock.setTodoList(changedTodoBlockVO.getTodos()
                                   .stream()
                                   .map(todoMapper::toTodo)
                                   .collect(Collectors.toList()));
