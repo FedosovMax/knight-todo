@@ -1,12 +1,18 @@
 package com.knighttodo.knighttodo.service.impl;
 
 
+import com.knighttodo.knighttodo.domain.TodoBlockVO;
 import com.knighttodo.knighttodo.exception.TodoNotFoundException;
 import com.knighttodo.knighttodo.gateway.TodoBlockGateway;
+import com.knighttodo.knighttodo.gateway.privatedb.mapper.TodoBlockMapper;
+import com.knighttodo.knighttodo.gateway.privatedb.mapper.TodoMapper;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
 import com.knighttodo.knighttodo.service.TodoBlockService;
+
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,25 +21,31 @@ import org.springframework.stereotype.Service;
 public class TodoBlockServiceImpl implements TodoBlockService {
 
     private final TodoBlockGateway todoBlockGateway;
+    private final TodoBlockMapper todoBlockMapper;
+    private final TodoMapper todoMapper;
 
     @Override
-    public void save(TodoBlock todoBlock) {
-        todoBlockGateway.save(todoBlock);
+    public TodoBlockVO save(TodoBlockVO todoBlockVO) {
+        TodoBlock todoBlock = todoBlockGateway.save(todoBlockMapper.toTodoBlock(todoBlockVO));
+
+        return todoBlockMapper.toTodoBlockVO(todoBlock);
     }
 
     @Override
-    public List<TodoBlock> findAll() {
-        return todoBlockGateway.findAll();
+    public List<TodoBlockVO> findAll() {
+        return todoBlockGateway.findAll()
+            .stream()
+            .map(todoBlockMapper::toTodoBlockVO)
+            .collect(Collectors.toList());
     }
 
     @Override
-    public TodoBlock findById(long todoBlockId) {
+    public TodoBlockVO findById(long todoBlockId) {
         Optional<TodoBlock> result = todoBlockGateway.findById(todoBlockId);
-
-        TodoBlock todoBlock;
+        TodoBlockVO todoBlock;
 
         if (result.isPresent()) {
-            todoBlock = result.get();
+            todoBlock = todoBlockMapper.toTodoBlockVO(result.get());
         } else {
             throw new RuntimeException("Did not find TodoBlock id - " + todoBlockId);
         }
@@ -42,21 +54,25 @@ public class TodoBlockServiceImpl implements TodoBlockService {
     }
 
     @Override
-    public TodoBlock updateTodoBlock(TodoBlock changedTodoBlock) {
+    public TodoBlockVO updateTodoBlock(TodoBlockVO changedTodoBlockVO) {
 
-        final TodoBlock todoBlock = this.todoBlockGateway.findById(changedTodoBlock.getId()).
-            orElseThrow(TodoNotFoundException::new);
+        TodoBlock todoBlock = todoBlockGateway.findById(todoBlockMapper.toTodoBlock(changedTodoBlockVO).getId())
+            .orElseThrow(TodoNotFoundException::new);
 
-        todoBlock.setId(changedTodoBlock.getId());
-        todoBlock.setBlockName(changedTodoBlock.getBlockName());
-        todoBlock.setTodoList(changedTodoBlock.getTodoList());
+        todoBlock.setId(changedTodoBlockVO.getId());
+        todoBlock.setBlockName(changedTodoBlockVO.getBlockName());
+        todoBlock.setTodoList(changedTodoBlockVO.getTodos()
+                                  .stream()
+                                  .map(todoMapper::toTodo)
+                                  .collect(Collectors.toList()));
 
-        return changedTodoBlock;
+        todoBlockGateway.save(todoBlock);
+
+        return todoBlockMapper.toTodoBlockVO(todoBlock);
     }
 
     @Override
     public void deleteById(long todoBlockId) {
         todoBlockGateway.deleteById(todoBlockId);
     }
-
 }

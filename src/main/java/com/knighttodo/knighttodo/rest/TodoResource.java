@@ -1,19 +1,18 @@
 package com.knighttodo.knighttodo.rest;
 
 import com.knighttodo.knighttodo.domain.TodoVO;
-import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
 import com.knighttodo.knighttodo.rest.mapper.TodoMapper;
-import com.knighttodo.knighttodo.rest.request.TodoRequest;
 import com.knighttodo.knighttodo.rest.request.todo.CreateTodoRequest;
 import com.knighttodo.knighttodo.rest.request.todo.UpdateTodoRequest;
-import com.knighttodo.knighttodo.rest.response.TodoResponse;
 import com.knighttodo.knighttodo.rest.response.todo.CreateTodoResponse;
+import com.knighttodo.knighttodo.rest.response.todo.TodoResponse;
 import com.knighttodo.knighttodo.rest.response.todo.UpdateTodoResponse;
 import com.knighttodo.knighttodo.service.TodoService;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,98 +34,73 @@ import org.springframework.web.bind.annotation.RestController;
 public class TodoResource {
 
     private final TodoService todoService;
-    private final com.knighttodo.knighttodo.gateway.privatedb.mapper.TodoMapper oldTodoMapper;
     private final TodoMapper todoMapper;
 
     @GetMapping("/todo")
     public ResponseEntity<List<TodoResponse>> findAll() {
         log.info("Rest request to get all todo");
 
-        List<TodoVO> todoVOS = todoService.findAll();
-        List<TodoResponse> todoResponses = new ArrayList<>();
-
-        if (todoVOS.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            List<TodoVO> todosResponseAfterCheck = new ArrayList<>(todoVOS);
-            for (TodoVO todoVO : todosResponseAfterCheck) {
-                todoResponses.add(oldTodoMapper.todoResponseFromTodoVO(todoVO));
-            }
-
-            return new ResponseEntity<>(todoResponses, HttpStatus.FOUND);
-        }
+        return ResponseEntity.status(HttpStatus.FOUND)
+            .body(todoService.findAll()
+                      .stream()
+                      .map(todoMapper::toTodoResponse)
+                      .collect(Collectors.toList()));
     }
 
     @PostMapping("/todo")
-    public ResponseEntity<CreateTodoResponse> addTodo(@RequestBody CreateTodoRequest request) {
-        log.info("Rest request to add todo : {}", request);
-        TodoVO todoVO = todoMapper.toTodoVO(request);
+    public ResponseEntity<CreateTodoResponse> addTodo(@RequestBody CreateTodoRequest createRequest) {
+        log.info("Rest request to add todo : {}", createRequest);
+        TodoVO todoVO = todoMapper.toTodoVO(createRequest);
 
-        todoService.save(todoVO);
-        CreateTodoResponse response = todoMapper.toCreateTodoResponse(todoVO);
+        TodoVO savedTodoVO = todoService.save(todoVO);
 
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(todoMapper.toCreateTodoResponse(savedTodoVO));
     }
 
     @GetMapping("/todo/{todoId}")
-    public ResponseEntity<TodoResponse> getTodoById(@PathVariable long todoId) {
+    public ResponseEntity<TodoResponse> getTodoById(@PathVariable @Min(1) long todoId) {
         log.info("Rest request to get todo by id : {}", todoId);
+        TodoVO todoVO = todoService.findById(todoId);
 
-        TodoResponse todoResponse = oldTodoMapper.todoResponseFromTodoVO(todoService.findById(todoId));
-
-        if (todoResponse == null) {
-            throw new RuntimeException("Todo id not found - " + todoId);
-        }
-        return new ResponseEntity<>(todoResponse, HttpStatus.FOUND);
+        return ResponseEntity.status(HttpStatus.FOUND).body(todoMapper.toTodoResponse(todoVO));
     }
 
     @PutMapping("/todo")
-    public ResponseEntity<UpdateTodoResponse> updateTodo(@Valid @RequestBody UpdateTodoRequest request) {
-        log.info("Rest request to update todo : {}", request);
-        TodoVO todoVO = todoMapper.toTodoVO(request);
+    public ResponseEntity<UpdateTodoResponse> updateTodo(@Valid @RequestBody UpdateTodoRequest updateRequest) {
+        log.info("Rest request to update todo : {}", updateRequest);
+        TodoVO todoVO = todoMapper.toTodoVO(updateRequest);
 
-        todoService.updateTodo(todoVO);
-        UpdateTodoResponse response = todoMapper.toUpdateTodoResponse(todoVO);
+        TodoVO updatedTodoVO = todoService.updateTodo(todoVO);
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return ResponseEntity.ok().body(todoMapper.toUpdateTodoResponse(updatedTodoVO));
     }
 
     @DeleteMapping("/todo/{todoId}")
-    public ResponseEntity<String> deleteTodo(@PathVariable long todoId) {
+    public ResponseEntity<String> deleteTodo(@PathVariable @Min(1) long todoId) {
         log.info("Rest request to delete todo by id : {}", todoId);
-
         todoService.deleteById(todoId);
 
-        return new ResponseEntity<>("Deleted Todo id " + todoId, HttpStatus.OK);
+        return ResponseEntity.ok().body("Deleted Todo id " + todoId);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<TodoResponse> makeReady(@Valid @RequestBody TodoRequest todoRequest) {
-        log.info("Rest request to make todo : {} ready", todoRequest);
+    public ResponseEntity<UpdateTodoResponse> makeReady(@Valid @RequestBody UpdateTodoRequest updateRequest) {
+        log.info("Rest request to make todo : {} ready", updateRequest);
+        TodoVO todoVO = todoMapper.toTodoVO(updateRequest);
 
-        TodoVO todoVO = oldTodoMapper.toTodoVO(todoRequest);
-        todoService.updateTodo(todoVO);
-        TodoResponse todoResponse = oldTodoMapper.todoResponseFromTodoVO(todoVO);
+        TodoVO updatedTodoVO = todoService.updateTodo(todoVO);
 
-        return new ResponseEntity<>(todoResponse, HttpStatus.OK);
+        return ResponseEntity.ok().body(todoMapper.toUpdateTodoResponse(updatedTodoVO));
     }
-
-    // MICROSERVICES
-
-    // send request to TodoBlock
 
     @GetMapping("/getAllTodo/{blockId}")
-    public ResponseEntity<List<TodoResponse>> getAllTodoByBlockId(@PathVariable long blockId) {
+    public ResponseEntity<List<TodoResponse>> getAllTodoByBlockId(@PathVariable @Min(1) long blockId) {
         log.info("request for TodoBlock to get all todo by todoBlock id");
 
-        List<TodoVO> todosVO = todoService.getAllTodoByBlockId(blockId);
-        List<TodoResponse> todosResponses = new ArrayList<>();
-
-        for (TodoVO todoVO : todosVO) {
-            todosResponses.add(oldTodoMapper.todoResponseFromTodoVO(todoVO));
-        }
-
-        return new ResponseEntity<>(todosResponses, HttpStatus.FOUND);
+        return ResponseEntity.status(HttpStatus.FOUND)
+            .body(todoService.getAllTodoByBlockId(blockId)
+                      .stream()
+                      .map(todoMapper::toTodoResponse)
+                      .collect(Collectors.toList()));
     }
-
 }

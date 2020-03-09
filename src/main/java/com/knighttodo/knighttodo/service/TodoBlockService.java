@@ -1,18 +1,17 @@
 package com.knighttodo.knighttodo.service;
 
-import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
+import com.knighttodo.knighttodo.domain.TodoBlockVO;
 import java.util.List;
 
 public interface TodoBlockService {
 
-    void save(TodoBlock todoBlock);
+    TodoBlockVO save(TodoBlockVO todoBlockVO);
 
-    List<TodoBlock> findAll();
+    List<TodoBlockVO> findAll();
 
-    TodoBlock findById(long todoBlockId);
+    TodoBlockVO findById(long todoBlockId);
 
-    TodoBlock updateTodoBlock(TodoBlock changedTodoBlock);
+    TodoBlockVO updateTodoBlock(TodoBlockVO changedTodoBlock);
 
-    void deleteById(long TodoBlockId);
-
+    void deleteById(long todoBlockId);
 }

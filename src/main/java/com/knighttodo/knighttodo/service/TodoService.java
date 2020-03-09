@@ -1,9 +1,6 @@
 package com.knighttodo.knighttodo.service;
 
 import com.knighttodo.knighttodo.domain.TodoVO;
-import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
-import com.knighttodo.knighttodo.rest.request.TodoRequest;
-import com.knighttodo.knighttodo.rest.response.TodoResponse;
 
 import java.util.List;
 
@@ -20,5 +17,4 @@ public interface TodoService {
     void deleteById(long TodoId);
 
     List<TodoVO> getAllTodoByBlockId(long blockId);
-
 }
