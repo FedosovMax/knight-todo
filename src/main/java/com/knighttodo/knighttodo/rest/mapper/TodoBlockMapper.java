@@ -4,7 +4,7 @@ import com.knighttodo.knighttodo.domain.TodoBlockVO;
 import com.knighttodo.knighttodo.rest.request.todoblock.CreateTodoBlockRequest;
 import com.knighttodo.knighttodo.rest.request.todoblock.UpdateTodoBlockRequest;
 import com.knighttodo.knighttodo.rest.response.todoblock.CreateTodoBlockResponse;
-import com.knighttodo.knighttodo.rest.response.todoblock.GetTodoBlockResponse;
+import com.knighttodo.knighttodo.rest.response.todoblock.TodoBlockResponse;
 import com.knighttodo.knighttodo.rest.response.todoblock.UpdateTodoBlockResponse;
 import org.mapstruct.Mapper;
 
@@ -19,5 +19,5 @@ public interface TodoBlockMapper {
 
     UpdateTodoBlockResponse toUpdateTodoBlockResponse(TodoBlockVO todoBlockVO);
 
-    GetTodoBlockResponse toGetTodoBlockResponse(TodoBlockVO todoBlockVO);
+    TodoBlockResponse toTodoBlockResponse(TodoBlockVO todoBlockVO);
 }

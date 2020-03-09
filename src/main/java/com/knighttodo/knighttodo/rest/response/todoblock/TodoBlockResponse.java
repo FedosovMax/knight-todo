@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class GetTodoBlockResponse {
+public class TodoBlockResponse {
 
     private long id;
 

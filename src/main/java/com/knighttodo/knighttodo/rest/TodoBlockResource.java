@@ -5,7 +5,7 @@ import com.knighttodo.knighttodo.rest.mapper.TodoBlockMapper;
 import com.knighttodo.knighttodo.rest.request.todoblock.CreateTodoBlockRequest;
 import com.knighttodo.knighttodo.rest.request.todoblock.UpdateTodoBlockRequest;
 import com.knighttodo.knighttodo.rest.response.todoblock.CreateTodoBlockResponse;
-import com.knighttodo.knighttodo.rest.response.todoblock.GetTodoBlockResponse;
+import com.knighttodo.knighttodo.rest.response.todoblock.TodoBlockResponse;
 import com.knighttodo.knighttodo.rest.response.todoblock.UpdateTodoBlockResponse;
 import com.knighttodo.knighttodo.service.TodoBlockService;
 
@@ -37,15 +37,14 @@ public class TodoBlockResource {
     private final TodoBlockMapper todoBlockMapper;
 
     @GetMapping("/block")
-    public ResponseEntity<List<GetTodoBlockResponse>> findAll() {
+    public ResponseEntity<List<TodoBlockResponse>> findAll() {
         log.info("Rest request to get all todo blocks");
 
-        List<GetTodoBlockResponse> response = todoBlockService.findAll()
-            .stream()
-            .map(todoBlockMapper::toGetTodoBlockResponse)
-            .collect(Collectors.toList());
-
-        return new ResponseEntity<>(response, HttpStatus.FOUND);
+        return ResponseEntity.status(HttpStatus.FOUND)
+            .body(todoBlockService.findAll()
+                      .stream()
+                      .map(todoBlockMapper::toTodoBlockResponse)
+                      .collect(Collectors.toList()));
     }
 
     @PostMapping("/block")
@@ -54,19 +53,17 @@ public class TodoBlockResource {
         TodoBlockVO todoBlockVO = todoBlockMapper.toTodoBlockVO(createRequest);
 
         TodoBlockVO savedTodoBlockVO = todoBlockService.save(todoBlockVO);
-        CreateTodoBlockResponse response = todoBlockMapper.toCreateTodoBlockResponse(savedTodoBlockVO);
 
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(todoBlockMapper.toCreateTodoBlockResponse(savedTodoBlockVO));
     }
 
     @GetMapping("/block/{todoBlockId}")
-    public ResponseEntity<GetTodoBlockResponse> getTodoBlockById(@PathVariable @Min(1) long todoBlockId) {
+    public ResponseEntity<TodoBlockResponse> getTodoBlockById(@PathVariable @Min(1) long todoBlockId) {
         log.info("Rest request to get todoBlock by id : {}", todoBlockId);
         TodoBlockVO todoBlockVO = todoBlockService.findById(todoBlockId);
 
-        GetTodoBlockResponse response = todoBlockMapper.toGetTodoBlockResponse(todoBlockVO);
-
-        return new ResponseEntity<>(response, HttpStatus.FOUND);
+        return ResponseEntity.status(HttpStatus.FOUND).body(todoBlockMapper.toTodoBlockResponse(todoBlockVO));
     }
 
     @PutMapping("/block")
@@ -77,9 +74,8 @@ public class TodoBlockResource {
         TodoBlockVO todoBlockVO = todoBlockMapper.toTodoBlockVO(updateRequest);
 
         TodoBlockVO updatedTodoBlockVO = todoBlockService.updateTodoBlock(todoBlockVO);
-        UpdateTodoBlockResponse response = todoBlockMapper.toUpdateTodoBlockResponse(updatedTodoBlockVO);
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return ResponseEntity.ok().body(todoBlockMapper.toUpdateTodoBlockResponse(updatedTodoBlockVO));
     }
 
     @DeleteMapping("/block/{todoBlockId}")
@@ -87,6 +83,6 @@ public class TodoBlockResource {
         log.info("Rest request to delete todoBlock by id : {}", todoBlockId);
         todoBlockService.deleteById(todoBlockId);
 
-        return new ResponseEntity<>("Deleted TodoBlock id " + todoBlockId, HttpStatus.OK);
+        return ResponseEntity.ok().body("Deleted TodoBlock id " + todoBlockId);
     }
 }

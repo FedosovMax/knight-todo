@@ -57,7 +57,7 @@ public class TodoServiceImpl implements TodoService {
     @Override
     public TodoVO updateTodo(TodoVO changedTodoVO) {
 
-        final Todo todo = todoGateway.findById(todoMapper.toTodo(changedTodoVO).getId())
+        Todo todo = todoGateway.findById(todoMapper.toTodo(changedTodoVO).getId())
                 .orElseThrow(TodoNotFoundException::new);
 
         TodoVO todoVO = new TodoVO();

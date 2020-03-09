@@ -56,7 +56,7 @@ public class TodoBlockServiceImpl implements TodoBlockService {
     @Override
     public TodoBlockVO updateTodoBlock(TodoBlockVO changedTodoBlockVO) {
 
-        final TodoBlock todoBlock = todoBlockGateway.findById(todoBlockMapper.toTodoBlock(changedTodoBlockVO).getId())
+        TodoBlock todoBlock = todoBlockGateway.findById(todoBlockMapper.toTodoBlock(changedTodoBlockVO).getId())
             .orElseThrow(TodoNotFoundException::new);
 
         todoBlock.setId(changedTodoBlockVO.getId());
