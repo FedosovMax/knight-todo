@@ -52,7 +52,6 @@ public class TodoResource {
     public ResponseEntity<CreateTodoResponse> addTodo(@Valid @NotEmpty @RequestBody CreateTodoRequest createRequest) {
         log.info("Rest request to add todo : {}", createRequest);
         TodoVO todoVO = todoMapper.toTodoVO(createRequest);
-
         TodoVO savedTodoVO = todoService.save(todoVO);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(todoMapper.toCreateTodoResponse(savedTodoVO));
@@ -71,7 +70,6 @@ public class TodoResource {
         @Valid @NotEmpty @RequestBody UpdateTodoRequest updateRequest) {
         log.info("Rest request to update todo : {}", updateRequest);
         TodoVO todoVO = todoMapper.toTodoVO(updateRequest);
-
         TodoVO updatedTodoVO = todoService.updateTodo(todoVO);
 
         return ResponseEntity.ok().body(todoMapper.toUpdateTodoResponse(updatedTodoVO));
@@ -89,7 +87,6 @@ public class TodoResource {
     public ResponseEntity<UpdateTodoResponse> makeReady(@Valid @NotEmpty @RequestBody UpdateTodoRequest updateRequest) {
         log.info("Rest request to make todo : {} ready", updateRequest);
         TodoVO todoVO = todoMapper.toTodoVO(updateRequest);
-
         TodoVO updatedTodoVO = todoService.updateTodo(todoVO);
 
         return ResponseEntity.ok().body(todoMapper.toUpdateTodoResponse(updatedTodoVO));
