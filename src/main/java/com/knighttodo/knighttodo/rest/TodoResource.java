@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +48,7 @@ public class TodoResource {
     }
 
     @PostMapping("/todo")
-    public ResponseEntity<CreateTodoResponse> addTodo(@Valid @NotEmpty @RequestBody CreateTodoRequest createRequest) {
+    public ResponseEntity<CreateTodoResponse> addTodo(@Valid @RequestBody CreateTodoRequest createRequest) {
         log.info("Rest request to add todo : {}", createRequest);
         TodoVO todoVO = todoMapper.toTodoVO(createRequest);
         TodoVO savedTodoVO = todoService.save(todoVO);
@@ -67,7 +66,7 @@ public class TodoResource {
 
     @PutMapping("/todo")
     public ResponseEntity<UpdateTodoResponse> updateTodo(
-        @Valid @NotEmpty @RequestBody UpdateTodoRequest updateRequest) {
+        @Valid @RequestBody UpdateTodoRequest updateRequest) {
         log.info("Rest request to update todo : {}", updateRequest);
         TodoVO todoVO = todoMapper.toTodoVO(updateRequest);
         TodoVO updatedTodoVO = todoService.updateTodo(todoVO);
@@ -84,7 +83,7 @@ public class TodoResource {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<UpdateTodoResponse> makeReady(@Valid @NotEmpty @RequestBody UpdateTodoRequest updateRequest) {
+    public ResponseEntity<UpdateTodoResponse> makeReady(@Valid @RequestBody UpdateTodoRequest updateRequest) {
         log.info("Rest request to make todo : {} ready", updateRequest);
         TodoVO todoVO = todoMapper.toTodoVO(updateRequest);
         TodoVO updatedTodoVO = todoService.updateTodo(todoVO);

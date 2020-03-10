@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Data
@@ -14,9 +16,12 @@ import java.util.List;
 @Builder
 public class UpdateTodoBlockRequest {
 
+    @Min(1)
     private long id;
 
+    @NotBlank
     private String blockName;
 
+    @NotBlank
     private List<Todo> todoList;
 }
