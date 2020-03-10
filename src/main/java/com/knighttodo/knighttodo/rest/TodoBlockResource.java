@@ -48,10 +48,10 @@ public class TodoBlockResource {
     }
 
     @PostMapping("/block")
-    public ResponseEntity<CreateTodoBlockResponse> addTodoBlock(@RequestBody CreateTodoBlockRequest createRequest) {
+    public ResponseEntity<CreateTodoBlockResponse> addTodoBlock(
+        @Valid @RequestBody CreateTodoBlockRequest createRequest) {
         log.info("Rest request to add todoBlock : {}", createRequest);
         TodoBlockVO todoBlockVO = todoBlockMapper.toTodoBlockVO(createRequest);
-
         TodoBlockVO savedTodoBlockVO = todoBlockService.save(todoBlockVO);
 
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -69,10 +69,8 @@ public class TodoBlockResource {
     @PutMapping("/block")
     public ResponseEntity<UpdateTodoBlockResponse> updateTodoBlock(
         @Valid @RequestBody UpdateTodoBlockRequest updateRequest) {
-
         log.info("Rest request to update todo block : {}", updateRequest);
         TodoBlockVO todoBlockVO = todoBlockMapper.toTodoBlockVO(updateRequest);
-
         TodoBlockVO updatedTodoBlockVO = todoBlockService.updateTodoBlock(todoBlockVO);
 
         return ResponseEntity.ok().body(todoBlockMapper.toUpdateTodoBlockResponse(updatedTodoBlockVO));
