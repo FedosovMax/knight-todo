@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +49,8 @@ public class TodoBlockResource {
     }
 
     @PostMapping("/block")
-    public ResponseEntity<CreateTodoBlockResponse> addTodoBlock(@RequestBody CreateTodoBlockRequest createRequest) {
+    public ResponseEntity<CreateTodoBlockResponse> addTodoBlock(
+        @Valid @NotEmpty @RequestBody CreateTodoBlockRequest createRequest) {
         log.info("Rest request to add todoBlock : {}", createRequest);
         TodoBlockVO todoBlockVO = todoBlockMapper.toTodoBlockVO(createRequest);
 
@@ -68,7 +70,7 @@ public class TodoBlockResource {
 
     @PutMapping("/block")
     public ResponseEntity<UpdateTodoBlockResponse> updateTodoBlock(
-        @Valid @RequestBody UpdateTodoBlockRequest updateRequest) {
+        @Valid @NotEmpty @RequestBody UpdateTodoBlockRequest updateRequest) {
 
         log.info("Rest request to update todo block : {}", updateRequest);
         TodoBlockVO todoBlockVO = todoBlockMapper.toTodoBlockVO(updateRequest);
