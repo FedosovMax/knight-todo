@@ -1,4 +1,4 @@
-package com.knighttodo.knighttodo.rest.dto.response.todoblock;
+package com.knighttodo.knighttodo.rest.dto.todoblock.response;
 
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TodoBlockResponseDto {
+public class UpdateTodoBlockResponseDto {
 
     private long id;
 

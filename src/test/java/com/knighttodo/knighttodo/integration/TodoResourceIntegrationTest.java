@@ -6,8 +6,8 @@ import com.knighttodo.knighttodo.gateway.privatedb.repository.TodoBlockRepositor
 import com.knighttodo.knighttodo.gateway.privatedb.repository.TodoRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
-import com.knighttodo.knighttodo.rest.dto.request.todo.CreateTodoRequestDto;
-import com.knighttodo.knighttodo.rest.dto.request.todo.UpdateTodoRequestDto;
+import com.knighttodo.knighttodo.rest.dto.todo.request.CreateTodoRequestDto;
+import com.knighttodo.knighttodo.rest.dto.todo.request.UpdateTodoRequestDto;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

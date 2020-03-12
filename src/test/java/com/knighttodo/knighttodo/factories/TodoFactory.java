@@ -4,10 +4,10 @@ import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scaryness;
-import com.knighttodo.knighttodo.rest.dto.request.todo.CreateTodoRequestDto;
-import com.knighttodo.knighttodo.rest.dto.request.todo.UpdateTodoRequestDto;
-import com.knighttodo.knighttodo.rest.dto.request.todoblock.CreateTodoBlockRequestDto;
-import com.knighttodo.knighttodo.rest.dto.request.todoblock.UpdateTodoBlockRequestDto;
+import com.knighttodo.knighttodo.rest.dto.todo.request.CreateTodoRequestDto;
+import com.knighttodo.knighttodo.rest.dto.todo.request.UpdateTodoRequestDto;
+import com.knighttodo.knighttodo.rest.dto.todoblock.request.CreateTodoBlockRequestDto;
+import com.knighttodo.knighttodo.rest.dto.todoblock.request.UpdateTodoBlockRequestDto;
 
 import java.util.ArrayList;
 import java.util.List;

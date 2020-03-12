@@ -1,4 +1,4 @@
-package com.knighttodo.knighttodo.rest.dto.request.todoblock;
+package com.knighttodo.knighttodo.rest.dto.todoblock.request;
 
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
 import lombok.AllArgsConstructor;

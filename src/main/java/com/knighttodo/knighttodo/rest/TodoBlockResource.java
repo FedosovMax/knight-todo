@@ -2,13 +2,13 @@ package com.knighttodo.knighttodo.rest;
 
 import com.knighttodo.knighttodo.domain.TodoBlockVO;
 import com.knighttodo.knighttodo.rest.mapper.TodoBlockRestMapper;
-import com.knighttodo.knighttodo.rest.dto.request.todoblock.CreateTodoBlockRequestDto;
-import com.knighttodo.knighttodo.rest.dto.request.todoblock.DeleteTodoBlockRequestDto;
-import com.knighttodo.knighttodo.rest.dto.request.todoblock.GetTodoBlockRequestDto;
-import com.knighttodo.knighttodo.rest.dto.request.todoblock.UpdateTodoBlockRequestDto;
-import com.knighttodo.knighttodo.rest.dto.response.todoblock.CreateTodoBlockResponseDto;
-import com.knighttodo.knighttodo.rest.dto.response.todoblock.TodoBlockResponseDto;
-import com.knighttodo.knighttodo.rest.dto.response.todoblock.UpdateTodoBlockResponseDto;
+import com.knighttodo.knighttodo.rest.dto.todoblock.request.CreateTodoBlockRequestDto;
+import com.knighttodo.knighttodo.rest.dto.todoblock.request.DeleteTodoBlockRequestDto;
+import com.knighttodo.knighttodo.rest.dto.todoblock.request.GetTodoBlockRequestDto;
+import com.knighttodo.knighttodo.rest.dto.todoblock.request.UpdateTodoBlockRequestDto;
+import com.knighttodo.knighttodo.rest.dto.todoblock.response.CreateTodoBlockResponseDto;
+import com.knighttodo.knighttodo.rest.dto.todoblock.response.TodoBlockResponseDto;
+import com.knighttodo.knighttodo.rest.dto.todoblock.response.UpdateTodoBlockResponseDto;
 import com.knighttodo.knighttodo.service.TodoBlockService;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.knighttodo.knighttodo.rest.dto.request.todo;
+package com.knighttodo.knighttodo.rest.dto.todo.request;
 
 import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;

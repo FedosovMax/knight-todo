@@ -12,8 +12,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.knighttodo.knighttodo.factories.TodoFactory;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.TodoBlockRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
-import com.knighttodo.knighttodo.rest.dto.request.todoblock.CreateTodoBlockRequestDto;
-import com.knighttodo.knighttodo.rest.dto.request.todoblock.UpdateTodoBlockRequestDto;
+import com.knighttodo.knighttodo.rest.dto.todoblock.request.CreateTodoBlockRequestDto;
+import com.knighttodo.knighttodo.rest.dto.todoblock.request.UpdateTodoBlockRequestDto;
 
 import org.junit.Before;
 import org.junit.Test;
