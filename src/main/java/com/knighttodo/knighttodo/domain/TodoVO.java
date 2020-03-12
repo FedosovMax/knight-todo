@@ -1,5 +1,6 @@
 package com.knighttodo.knighttodo.domain;
 
+import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scaryness;
 import lombok.AllArgsConstructor;
@@ -23,5 +24,5 @@ public class TodoVO {
 
     private boolean ready;
 
-    private TodoBlockVO todoBlock;
+    private TodoBlock todoBlock;
 }

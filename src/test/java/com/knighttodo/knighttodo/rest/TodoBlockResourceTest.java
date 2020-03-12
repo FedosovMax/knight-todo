@@ -46,39 +46,39 @@ public class TodoBlockResourceTest {
     @Test
     public void addTodoBlockTest() throws Exception {
         mockMvc.perform(
-                post("/blocks/block")
-                        .content(objectMapper.writeValueAsString(TodoFactory.firstTodoBlock()))
-                        .contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").exists());
+            post("/blocks/block")
+//                .content(objectMapper.writeValueAsString(TodoFactory.notSavedTodoBlock()))
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.id").exists());
     }
 
     @Test
     public void getTodoBlockByIdTest() throws Exception {
-        given(todoBlockService.findById(1L)).willReturn(TodoFactory.firstTodoBlock());
+//        given(todoBlockService.findById(1L)).willReturn(TodoFactory.firstTodoBlock());
 
         mockMvc.perform(get("/blocks/block/" + 1L))
-                .andExpect(status().isFound())
-                .andExpect(jsonPath("$.id").exists());
+            .andExpect(status().isFound())
+            .andExpect(jsonPath("$.id").exists());
     }
 
     @Test
     public void updateTodoBlockTest() throws Exception {
-        when(todoBlockService.updateTodoBlock(eq(TodoFactory.updateTodoBlock())))
-                .thenReturn(TodoFactory.updateTodoBlock());
+//        when(todoBlockService.updateTodoBlock(eq(TodoFactory.updateTodoBlock())))
+//            .thenReturn(TodoFactory.updateTodoBlock());
         mockMvc.perform(
-                put("/blocks/block")
-                        .content(objectMapper.writeValueAsBytes(TodoFactory.updateTodoBlock()))
-                        .contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").exists());
+            put("/blocks/block")
+//                .content(objectMapper.writeValueAsBytes(TodoFactory.updateTodoBlock()))
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id").exists());
     }
 
     @Test
     public void deleteTodoBlockTest() throws Exception {
         mockMvc.perform(delete("/blocks/block/" + 1L))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").doesNotExist());
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id").doesNotExist());
     }
 
 }

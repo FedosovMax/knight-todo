@@ -1,4 +1,4 @@
-package com.knighttodo.knighttodo.rest.request.todoblock;
+package com.knighttodo.knighttodo.rest.dto.response.todoblock;
 
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
 import lombok.AllArgsConstructor;
@@ -6,22 +6,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CreateTodoBlockRequest {
+public class CreateTodoBlockResponseDto {
 
-    @Min(1)
     private long id;
 
-    @NotBlank
     private String blockName;
 
-    @NotBlank
-    private List<Todo> todoList;
+    private List<Todo> todos;
 }

@@ -1,4 +1,4 @@
-package com.knighttodo.knighttodo.rest.request.todoblock;
+package com.knighttodo.knighttodo.rest.dto.request.todoblock;
 
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
 import lombok.AllArgsConstructor;
@@ -8,13 +8,14 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UpdateTodoBlockRequest {
+public class UpdateTodoBlockRequestDto {
 
     @Min(1)
     private long id;
@@ -22,6 +23,6 @@ public class UpdateTodoBlockRequest {
     @NotBlank
     private String blockName;
 
-    @NotBlank
-    private List<Todo> todoList;
+    @NotNull
+    private List<Todo> todos;
 }

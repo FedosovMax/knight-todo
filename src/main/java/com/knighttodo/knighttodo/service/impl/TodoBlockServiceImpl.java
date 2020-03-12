@@ -35,7 +35,7 @@ public class TodoBlockServiceImpl implements TodoBlockService {
     public List<TodoBlockVO> findAll() {
         return todoBlockGateway.findAll()
             .stream()
-            .map(todoBlockMapper::toTodoBlockVO)
+            .map(todoBlock -> todoBlockMapper.toTodoBlockVO(todoBlock))
             .collect(Collectors.toList());
     }
 
@@ -61,14 +61,11 @@ public class TodoBlockServiceImpl implements TodoBlockService {
 
         todoBlock.setId(changedTodoBlockVO.getId());
         todoBlock.setBlockName(changedTodoBlockVO.getBlockName());
-        todoBlock.setTodoList(changedTodoBlockVO.getTodos()
-                                  .stream()
-                                  .map(todoMapper::toTodo)
-                                  .collect(Collectors.toList()));
+        todoBlock.setTodos(changedTodoBlockVO.getTodos());
 
-        todoBlockGateway.save(todoBlock);
+        TodoBlock updatedTodoBlock = todoBlockGateway.save(todoBlock);
 
-        return todoBlockMapper.toTodoBlockVO(todoBlock);
+        return todoBlockMapper.toTodoBlockVO(updatedTodoBlock);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.knighttodo.knighttodo.domain;
 
+import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,5 +18,5 @@ public class TodoBlockVO {
 
     private String blockName;
 
-    private List<TodoVO> todos;
+    private List<Todo> todos;
 }

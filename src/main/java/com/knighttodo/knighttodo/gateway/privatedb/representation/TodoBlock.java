@@ -1,6 +1,7 @@
 package com.knighttodo.knighttodo.gateway.privatedb.representation;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -11,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,15 +36,15 @@ public class TodoBlock {
 
     @OneToMany(mappedBy = "todoBlock", cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<Todo> todoList = new ArrayList<>();
+    private List<Todo> todos = new ArrayList<>();
 
     public void addTodo(final Todo todo) {
-        todoList.add(todo);
+        todos.add(todo);
         todo.setTodoBlock(this);
     }
 
     public void removeTodo(Todo todo) {
-        todoList.remove(todo);
+        todos.remove(todo);
         todo.setTodoBlock(null);
     }
 }
