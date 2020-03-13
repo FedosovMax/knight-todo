@@ -1,18 +1,17 @@
 package com.knighttodo.knighttodo.rest;
 
 import com.knighttodo.knighttodo.domain.TodoBlockVO;
-import com.knighttodo.knighttodo.rest.mapper.TodoBlockMapper;
-import com.knighttodo.knighttodo.rest.request.todoblock.CreateTodoBlockRequest;
-import com.knighttodo.knighttodo.rest.request.todoblock.UpdateTodoBlockRequest;
-import com.knighttodo.knighttodo.rest.response.todoblock.CreateTodoBlockResponse;
-import com.knighttodo.knighttodo.rest.response.todoblock.TodoBlockResponse;
-import com.knighttodo.knighttodo.rest.response.todoblock.UpdateTodoBlockResponse;
+import com.knighttodo.knighttodo.rest.mapper.TodoBlockRestMapper;
+import com.knighttodo.knighttodo.rest.dto.todoblock.request.CreateTodoBlockRequestDto;
+import com.knighttodo.knighttodo.rest.dto.todoblock.request.UpdateTodoBlockRequestDto;
+import com.knighttodo.knighttodo.rest.dto.todoblock.response.CreateTodoBlockResponseDto;
+import com.knighttodo.knighttodo.rest.dto.todoblock.response.TodoBlockResponseDto;
+import com.knighttodo.knighttodo.rest.dto.todoblock.response.UpdateTodoBlockResponseDto;
 import com.knighttodo.knighttodo.service.TodoBlockService;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,53 +33,53 @@ import org.springframework.web.bind.annotation.RestController;
 public class TodoBlockResource {
 
     private final TodoBlockService todoBlockService;
-    private final TodoBlockMapper todoBlockMapper;
+    private final TodoBlockRestMapper todoBlockRestMapper;
 
-    @GetMapping("/block")
-    public ResponseEntity<List<TodoBlockResponse>> findAll() {
+    @GetMapping
+    public ResponseEntity<List<TodoBlockResponseDto>> getAllTodoBlocks() {
         log.info("Rest request to get all todo blocks");
 
         return ResponseEntity.status(HttpStatus.FOUND)
             .body(todoBlockService.findAll()
                       .stream()
-                      .map(todoBlockMapper::toTodoBlockResponse)
+                      .map(todoBlockRestMapper::toTodoBlockResponseDto)
                       .collect(Collectors.toList()));
     }
 
-    @PostMapping("/block")
-    public ResponseEntity<CreateTodoBlockResponse> addTodoBlock(
-        @Valid @RequestBody CreateTodoBlockRequest createRequest) {
-        log.info("Rest request to add todoBlock : {}", createRequest);
-        TodoBlockVO todoBlockVO = todoBlockMapper.toTodoBlockVO(createRequest);
+    @PostMapping
+    public ResponseEntity<CreateTodoBlockResponseDto> addTodoBlock(
+        @Valid @RequestBody CreateTodoBlockRequestDto createRequestDto) {
+        log.info("Rest request to add todoBlock : {}", createRequestDto);
+        TodoBlockVO todoBlockVO = todoBlockRestMapper.toTodoBlockVO(createRequestDto);
         TodoBlockVO savedTodoBlockVO = todoBlockService.save(todoBlockVO);
 
         return ResponseEntity.status(HttpStatus.CREATED)
-            .body(todoBlockMapper.toCreateTodoBlockResponse(savedTodoBlockVO));
+            .body(todoBlockRestMapper.toCreateTodoBlockResponseDto(savedTodoBlockVO));
     }
 
-    @GetMapping("/block/{todoBlockId}")
-    public ResponseEntity<TodoBlockResponse> getTodoBlockById(@PathVariable @Min(1) long todoBlockId) {
-        log.info("Rest request to get todoBlock by id : {}", todoBlockId);
-        TodoBlockVO todoBlockVO = todoBlockService.findById(todoBlockId);
+    @GetMapping("/{id}")
+    public ResponseEntity<TodoBlockResponseDto> getTodoBlockById(@PathVariable long id) {
+        log.info("Rest request to get todoBlock by id : {}", id);
+        TodoBlockVO todoBlockVO = todoBlockService.findById(id);
 
-        return ResponseEntity.status(HttpStatus.FOUND).body(todoBlockMapper.toTodoBlockResponse(todoBlockVO));
+        return ResponseEntity.status(HttpStatus.FOUND).body(todoBlockRestMapper.toTodoBlockResponseDto(todoBlockVO));
     }
 
-    @PutMapping("/block")
-    public ResponseEntity<UpdateTodoBlockResponse> updateTodoBlock(
-        @Valid @RequestBody UpdateTodoBlockRequest updateRequest) {
-        log.info("Rest request to update todo block : {}", updateRequest);
-        TodoBlockVO todoBlockVO = todoBlockMapper.toTodoBlockVO(updateRequest);
+    @PutMapping
+    public ResponseEntity<UpdateTodoBlockResponseDto> updateTodoBlock(
+        @Valid @RequestBody UpdateTodoBlockRequestDto updateRequestDto) {
+        log.info("Rest request to update todo block : {}", updateRequestDto);
+        TodoBlockVO todoBlockVO = todoBlockRestMapper.toTodoBlockVO(updateRequestDto);
         TodoBlockVO updatedTodoBlockVO = todoBlockService.updateTodoBlock(todoBlockVO);
 
-        return ResponseEntity.ok().body(todoBlockMapper.toUpdateTodoBlockResponse(updatedTodoBlockVO));
+        return ResponseEntity.ok().body(todoBlockRestMapper.toUpdateTodoBlockResponseDto(updatedTodoBlockVO));
     }
 
-    @DeleteMapping("/block/{todoBlockId}")
-    public ResponseEntity<String> deleteTodoBlock(@PathVariable @Min(1) long todoBlockId) {
-        log.info("Rest request to delete todoBlock by id : {}", todoBlockId);
-        todoBlockService.deleteById(todoBlockId);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteTodoBlock(@PathVariable long id) {
+        log.info("Rest request to delete todoBlock by id : {}", id);
+        todoBlockService.deleteById(id);
 
-        return ResponseEntity.ok().body("Deleted TodoBlock id " + todoBlockId);
+        return ResponseEntity.ok().body("Deleted TodoBlock id " + id);
     }
 }

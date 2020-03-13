@@ -8,12 +8,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.knighttodo.knighttodo.factories.TodoFactory;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.TodoBlockRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
-import com.knighttodo.knighttodo.service.TodoBlockService;
-import com.knighttodo.knighttodo.utilis.TestUtils;
-import javax.transaction.Transactional;
+import com.knighttodo.knighttodo.rest.dto.todoblock.request.CreateTodoBlockRequestDto;
+import com.knighttodo.knighttodo.rest.dto.todoblock.request.UpdateTodoBlockRequestDto;
+
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,75 +34,156 @@ public class TodoBlockResourceIntegrationTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private TodoBlockService todoBlockService;
+    private ObjectMapper objectMapper;
 
     @Autowired
     private TodoBlockRepository todoBlockRepository;
 
-    @Test
-    public void deleteTodoBlockTest() throws Exception {
+    @Before
+    public void setUp() {
+        todoBlockRepository.deleteAll();
+    }
 
-        TodoBlock todoBlock = TodoFactory.firstTodoBlock();
-        todoBlockRepository.save(todoBlock);
+    @Test
+    public void addTodoBlock_shouldAddTodoBlockAndReturnIt_whenRequestIsCorrect() throws Exception {
+        CreateTodoBlockRequestDto requestDto = TodoFactory.createTodoBlockRequestDto();
 
         mockMvc.perform(
-            delete("/blocks/block/" + todoBlock.getId())
-                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
-                .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
-        )
-            .andExpect(status().isOk());
+            post("/blocks")
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.id").exists());
 
         assertThat(todoBlockRepository.count()).isEqualTo(1);
     }
 
-    @Transactional
     @Test
-    public void updateTodoBlockTest() throws Exception {
+    public void addTodoBlock_shouldRespondWithBadRequestStatus_whenNameIsNull() throws Exception {
+        CreateTodoBlockRequestDto requestDto = TodoFactory.createTodoBlockRequestDtoWithoutName();
 
-        TodoBlock firstTodoBlock = TodoFactory.firstTodoBlock();
+        expectBadRequestStatusResponseOnCreateRequest(requestDto);
+    }
 
-        todoBlockRepository.save(firstTodoBlock);
+    private void expectBadRequestStatusResponseOnCreateRequest(CreateTodoBlockRequestDto requestDto) throws Exception {
+        mockMvc.perform(
+            post("/blocks")
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(status().isBadRequest());
 
-        TodoBlock updateBlock = TodoFactory.updateTodoBlock();
+        assertThat(todoBlockRepository.count()).isEqualTo(0);
+    }
+
+    @Test
+    public void addTodoBlock_shouldRespondWithBadRequestStatus_whenNameConsistsOfSpaces() throws Exception {
+        CreateTodoBlockRequestDto requestDto = TodoFactory.createTodoBlockRequestDtoWithNameConsistingOfSpaces();
+
+        expectBadRequestStatusResponseOnCreateRequest(requestDto);
+    }
+
+    @Test
+    public void addTodoBlock_shouldRespondWithBadRequestStatus_whenTodosIsNull() throws Exception {
+        CreateTodoBlockRequestDto requestDto = TodoFactory.createTodoBlockRequestDtoWithoutTodos();
+
+        expectBadRequestStatusResponseOnCreateRequest(requestDto);
+    }
+
+    @Test
+    public void getAllTodoBlocks_shouldReturnAllTodoBlocks() throws Exception {
+        todoBlockRepository.save(TodoFactory.notSavedTodoBlock());
+        todoBlockRepository.save(TodoFactory.notSavedTodoBlock());
 
         mockMvc.perform(
-            put("/blocks/block")
-                .content(TestUtils.convertObjectToJsonBytes(updateBlock))
-                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
-                .accept(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            get("/blocks"))
+            .andExpect(status().isFound())
+            .andExpect(jsonPath("$.length()").value(2));
+    }
+
+    @Test
+    public void getTodoBlockById_shouldReturnExistingTodoBlock_whenIdIsCorrect() throws Exception {
+        TodoBlock todoBlock = todoBlockRepository.save(TodoFactory.notSavedTodoBlock());
+
+        mockMvc.perform(
+            get("/blocks/" + todoBlock.getId()))
+            .andExpect(status().isFound())
+            .andExpect(jsonPath("$.id").value(todoBlock.getId()));
+    }
+
+    @Test
+    public void updateTodoBlock_shouldUpdateTodoBlockAndReturnIt_whenRequestIsCorrect() throws Exception {
+        TodoBlock todoBlock = todoBlockRepository.save(TodoFactory.notSavedTodoBlock());
+        UpdateTodoBlockRequestDto requestDto = TodoFactory.updateTodoBlockRequestDto(todoBlock);
+
+        mockMvc.perform(
+            put("/blocks")
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.blockName").value(requestDto.getBlockName()))
+            .andExpect(jsonPath("$.todos.length()").value(requestDto.getTodos().size()));
+
+        assertThat(todoBlockRepository.findById(todoBlock.getId()).get().getBlockName())
+            .isEqualTo(requestDto.getBlockName());
+    }
+
+    @Test
+    public void updateTodoBlock_shouldRespondWithBadRequestStatus_whenIdIsIncorrect() throws Exception {
+        TodoBlock todoBlock = todoBlockRepository.save(TodoFactory.notSavedTodoBlock());
+        UpdateTodoBlockRequestDto requestDto = TodoFactory.updateTodoBlockRequestDtoWithIncorrectId(todoBlock);
+
+        expectBadRequestStatusResponseOnUpdateRequest(requestDto);
+    }
+
+    private void expectBadRequestStatusResponseOnUpdateRequest(UpdateTodoBlockRequestDto requestDto) throws Exception {
+        mockMvc.perform(
+            put("/todos")
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(status().isBadRequest());
+    }
+
+    private void expectThatTodoBlockWasNotUpdated(UpdateTodoBlockRequestDto requestDto) {
+        assertThat(todoBlockRepository.findById(requestDto.getId()).get().getBlockName())
+            .isNotEqualTo(requestDto.getBlockName());
+    }
+
+    @Test
+    public void updateTodoBlock_shouldRespondWithBadRequestStatus_whenBlockNameIsNull() throws Exception {
+        TodoBlock todoBlock = todoBlockRepository.save(TodoFactory.notSavedTodoBlock());
+        UpdateTodoBlockRequestDto requestDto = TodoFactory.updateTodoBlockRequestDtoWithoutName(todoBlock);
+
+        expectBadRequestStatusResponseOnUpdateRequest(requestDto);
+        expectThatTodoBlockWasNotUpdated(requestDto);
+    }
+
+    @Test
+    public void updateTodoBlock_shouldRespondWithBadRequestStatus_whenBlockNameConsistsOfSpaces() throws Exception {
+        TodoBlock todoBlock = todoBlockRepository.save(TodoFactory.notSavedTodoBlock());
+        UpdateTodoBlockRequestDto requestDto = TodoFactory
+            .updateTodoBlockRequestDtoWithNameConsistingOfSpaces(todoBlock);
+
+        expectBadRequestStatusResponseOnUpdateRequest(requestDto);
+        expectThatTodoBlockWasNotUpdated(requestDto);
+    }
+
+    @Test
+    public void updateTodoBlock_shouldRespondWithBadRequestStatus_whenTodosIsNull() throws Exception {
+        TodoBlock todoBlock = todoBlockRepository.save(TodoFactory.notSavedTodoBlock());
+        UpdateTodoBlockRequestDto requestDto = TodoFactory.updateTodoBlockRequestDtoWithoutTodos(todoBlock);
+
+        expectBadRequestStatusResponseOnUpdateRequest(requestDto);
+        expectThatTodoBlockWasNotUpdated(requestDto);
+    }
+
+    @Test
+    public void deleteTodoBlock_shouldDeleteTodoBlock_whenIdIsCorrect() throws Exception {
+        TodoBlock todoBlock = todoBlockRepository.save(TodoFactory.notSavedTodoBlock());
+
+        mockMvc.perform(
+            delete("/blocks/" + todoBlock.getId()))
             .andExpect(status().isOk());
 
-        assertThat(todoBlockRepository.findById(updateBlock.getId()).get().getBlockName())
-            .isEqualTo(updateBlock.getBlockName());
+        assertThat(todoBlockRepository.findById(todoBlock.getId())).isEmpty();
     }
-
-    @Test
-    public void loadTodoBlockByIdTest() throws Exception {
-        TodoBlock todoBlock = TodoFactory.firstTodoBlock();
-
-        todoBlockRepository.save(todoBlock);
-
-        mockMvc.perform(get("/blocks/block/" + todoBlock.getId())
-            .content(TestUtils.convertObjectToJsonBytes(todoBlock))
-            .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
-            .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
-        )
-            .andExpect(status().isFound())
-            .andExpect(jsonPath("$.blockName").value("for sunday"));
-    }
-
-    @Test
-    public void saveTodoBlockTest() throws Exception {
-
-        TodoBlock todoBlock = TodoFactory.firstTodoBlock();
-
-        mockMvc.perform(
-            post("/blocks/block")
-                .content(TestUtils.convertObjectToJsonBytes(todoBlock))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(status().isCreated());
-
-        assertThat(todoBlockRepository.getOne(TodoFactory.firstTodoBlock().getId())).isNotNull();
-    }
-
 }

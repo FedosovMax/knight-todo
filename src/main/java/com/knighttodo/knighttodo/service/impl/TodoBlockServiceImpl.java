@@ -1,11 +1,9 @@
 package com.knighttodo.knighttodo.service.impl;
 
-
 import com.knighttodo.knighttodo.domain.TodoBlockVO;
 import com.knighttodo.knighttodo.exception.TodoNotFoundException;
 import com.knighttodo.knighttodo.gateway.TodoBlockGateway;
 import com.knighttodo.knighttodo.gateway.privatedb.mapper.TodoBlockMapper;
-import com.knighttodo.knighttodo.gateway.privatedb.mapper.TodoMapper;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
 import com.knighttodo.knighttodo.service.TodoBlockService;
 
@@ -22,7 +20,6 @@ public class TodoBlockServiceImpl implements TodoBlockService {
 
     private final TodoBlockGateway todoBlockGateway;
     private final TodoBlockMapper todoBlockMapper;
-    private final TodoMapper todoMapper;
 
     @Override
     public TodoBlockVO save(TodoBlockVO todoBlockVO) {
@@ -61,14 +58,11 @@ public class TodoBlockServiceImpl implements TodoBlockService {
 
         todoBlock.setId(changedTodoBlockVO.getId());
         todoBlock.setBlockName(changedTodoBlockVO.getBlockName());
-        todoBlock.setTodoList(changedTodoBlockVO.getTodos()
-                                  .stream()
-                                  .map(todoMapper::toTodo)
-                                  .collect(Collectors.toList()));
+        todoBlock.setTodos(changedTodoBlockVO.getTodos());
 
-        todoBlockGateway.save(todoBlock);
+        TodoBlock updatedTodoBlock = todoBlockGateway.save(todoBlock);
 
-        return todoBlockMapper.toTodoBlockVO(todoBlock);
+        return todoBlockMapper.toTodoBlockVO(updatedTodoBlock);
     }
 
     @Override

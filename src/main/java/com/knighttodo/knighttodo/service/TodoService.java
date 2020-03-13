@@ -16,5 +16,5 @@ public interface TodoService {
 
     void deleteById(long TodoId);
 
-    List<TodoVO> getAllTodoByBlockId(long blockId);
+    List<TodoVO> findByBlockId(long blockId);
 }

@@ -1,4 +1,4 @@
-package com.knighttodo.knighttodo.rest.response.todo;
+package com.knighttodo.knighttodo.rest.dto.todo.response;
 
 import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UpdateTodoResponse {
+public class UpdateTodoResponseDto {
 
     private long id;
 

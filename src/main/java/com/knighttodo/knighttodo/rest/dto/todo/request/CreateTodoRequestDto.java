@@ -1,4 +1,4 @@
-package com.knighttodo.knighttodo.rest.request.todo;
+package com.knighttodo.knighttodo.rest.dto.todo.request;
 
 import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
@@ -8,30 +8,26 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UpdateTodoRequest {
-
-    @Min(1)
-    private long id;
+public class CreateTodoRequestDto {
 
     @NotBlank
     private String todoName;
 
-    @NotBlank
+    @NotNull
     private Scaryness scaryness;
 
-    @NotBlank
+    @NotNull
     private Hardness hardness;
 
-    @NotBlank
     private boolean ready;
 
-    @NotBlank
+    @NotNull
     private TodoBlock todoBlock;
 }
