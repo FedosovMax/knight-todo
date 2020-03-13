@@ -3,8 +3,6 @@ package com.knighttodo.knighttodo.rest;
 import com.knighttodo.knighttodo.domain.TodoBlockVO;
 import com.knighttodo.knighttodo.rest.mapper.TodoBlockRestMapper;
 import com.knighttodo.knighttodo.rest.dto.todoblock.request.CreateTodoBlockRequestDto;
-import com.knighttodo.knighttodo.rest.dto.todoblock.request.DeleteTodoBlockRequestDto;
-import com.knighttodo.knighttodo.rest.dto.todoblock.request.GetTodoBlockRequestDto;
 import com.knighttodo.knighttodo.rest.dto.todoblock.request.UpdateTodoBlockRequestDto;
 import com.knighttodo.knighttodo.rest.dto.todoblock.response.CreateTodoBlockResponseDto;
 import com.knighttodo.knighttodo.rest.dto.todoblock.response.TodoBlockResponseDto;
@@ -21,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -59,9 +58,9 @@ public class TodoBlockResource {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TodoBlockResponseDto> getTodoBlockById(@Valid GetTodoBlockRequestDto getRequestDto) {
-        log.info("Rest request to get todoBlock by id : {}", getRequestDto.getId());
-        TodoBlockVO todoBlockVO = todoBlockService.findById(getRequestDto.getId());
+    public ResponseEntity<TodoBlockResponseDto> getTodoBlockById(@PathVariable long id) {
+        log.info("Rest request to get todoBlock by id : {}", id);
+        TodoBlockVO todoBlockVO = todoBlockService.findById(id);
 
         return ResponseEntity.status(HttpStatus.FOUND).body(todoBlockRestMapper.toTodoBlockResponseDto(todoBlockVO));
     }
@@ -77,10 +76,10 @@ public class TodoBlockResource {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteTodoBlock(@Valid DeleteTodoBlockRequestDto deleteRequestDto) {
-        log.info("Rest request to delete todoBlock by id : {}", deleteRequestDto.getId());
-        todoBlockService.deleteById(deleteRequestDto.getId());
+    public ResponseEntity<String> deleteTodoBlock(@PathVariable long id) {
+        log.info("Rest request to delete todoBlock by id : {}", id);
+        todoBlockService.deleteById(id);
 
-        return ResponseEntity.ok().body("Deleted TodoBlock id " + deleteRequestDto.getId());
+        return ResponseEntity.ok().body("Deleted TodoBlock id " + id);
     }
 }

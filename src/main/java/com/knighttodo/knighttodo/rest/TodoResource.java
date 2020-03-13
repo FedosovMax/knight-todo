@@ -3,8 +3,6 @@ package com.knighttodo.knighttodo.rest;
 import com.knighttodo.knighttodo.domain.TodoVO;
 import com.knighttodo.knighttodo.rest.mapper.TodoRestMapper;
 import com.knighttodo.knighttodo.rest.dto.todo.request.CreateTodoRequestDto;
-import com.knighttodo.knighttodo.rest.dto.todo.request.DeleteTodoRequestDto;
-import com.knighttodo.knighttodo.rest.dto.todo.request.GetTodoRequestDto;
 import com.knighttodo.knighttodo.rest.dto.todo.request.UpdateTodoRequestDto;
 import com.knighttodo.knighttodo.rest.dto.todo.response.CreateTodoResponseDto;
 import com.knighttodo.knighttodo.rest.dto.todo.response.TodoResponseDto;
@@ -21,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -57,9 +56,9 @@ public class TodoResource {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TodoResponseDto> getTodoById(@Valid GetTodoRequestDto getRequestDto) {
-        log.info("Rest request to get todo by id : {}", getRequestDto.getId());
-        TodoVO todoVO = todoService.findById(getRequestDto.getId());
+    public ResponseEntity<TodoResponseDto> getTodoById(@PathVariable long id) {
+        log.info("Rest request to get todo by id : {}", id);
+        TodoVO todoVO = todoService.findById(id);
 
         return ResponseEntity.status(HttpStatus.FOUND).body(todoRestMapper.toTodoResponseDto(todoVO));
     }
@@ -75,19 +74,19 @@ public class TodoResource {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteTodo(@Valid DeleteTodoRequestDto deleteRequestDto) {
-        log.info("Rest request to delete todo by id : {}", deleteRequestDto.getId());
-        todoService.deleteById(deleteRequestDto.getId());
+    public ResponseEntity<String> deleteTodo(@PathVariable long id) {
+        log.info("Rest request to delete todo by id : {}", id);
+        todoService.deleteById(id);
 
-        return ResponseEntity.ok().body("Deleted Todo id " + deleteRequestDto.getId());
+        return ResponseEntity.ok().body("Deleted Todo id " + id);
     }
 
     @GetMapping("/byBlockId/{id}")
-    public ResponseEntity<List<TodoResponseDto>> getTodosByBlockId(@Valid GetTodoRequestDto getRequestDto) {
+    public ResponseEntity<List<TodoResponseDto>> getTodosByBlockId(@PathVariable long id) {
         log.info("request for TodoBlock to get all todo by todoBlock id");
 
         return ResponseEntity.status(HttpStatus.FOUND)
-            .body(todoService.findByBlockId(getRequestDto.getId())
+            .body(todoService.findByBlockId(id)
                       .stream()
                       .map(todoRestMapper::toTodoResponseDto)
                       .collect(Collectors.toList()));

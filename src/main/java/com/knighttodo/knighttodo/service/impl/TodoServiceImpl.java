@@ -35,7 +35,7 @@ public class TodoServiceImpl implements TodoService {
     public List<TodoVO> findAll() {
         return todoGateway.findAll()
             .stream()
-            .map(todo -> todoMapper.toTodoVO(todo))
+            .map(todoMapper::toTodoVO)
             .collect(Collectors.toList());
     }
 

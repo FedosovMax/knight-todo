@@ -135,13 +135,6 @@ public class TodoResourceIntegrationTest {
     }
 
     @Test
-    public void getTodoById_shouldRespondWithBadRequestStatus_whenIdIsLessThanOne() throws Exception {
-        mockMvc.perform(
-            get("/todos/-1"))
-            .andExpect(status().isBadRequest());
-    }
-
-    @Test
     public void updateTodo_shouldUpdateTodoAndReturnIt_whenRequestIsCorrect() throws Exception {
         Todo todo = todoRepository.save(TodoFactory.notSavedTodo(savedTodoBlock));
         UpdateTodoRequestDto requestDto = TodoFactory.updateTodoRequestDto(todo, savedUpdatedTodoBlock);
@@ -238,13 +231,6 @@ public class TodoResourceIntegrationTest {
     }
 
     @Test
-    public void deleteTodo_shouldRespondWithBadRequestStatus_whenIdIsLessThanOne() throws Exception {
-        mockMvc.perform(
-            delete("/todos/-1"))
-            .andExpect(status().isBadRequest());
-    }
-
-    @Test
     public void getTodosByBlockId_shouldReturnExistingTodo_whenIdIsCorrect() throws Exception {
         Todo firstTodo = todoRepository.save(TodoFactory.notSavedTodo(savedTodoBlock));
         todoRepository.save(TodoFactory.notSavedTodo(savedTodoBlock));
@@ -253,12 +239,5 @@ public class TodoResourceIntegrationTest {
             get("/todos/byBlockId/" + firstTodo.getTodoBlock().getId()))
             .andExpect(status().isFound())
             .andExpect(jsonPath("$.length()").value(2));
-    }
-
-    @Test
-    public void getTodosByBlockId_shouldRespondWithBadRequestStatus_whenIdIsLessThanOne() throws Exception {
-        mockMvc.perform(
-            get("/todos/byBlockId/-1"))
-            .andExpect(status().isBadRequest());
     }
 }

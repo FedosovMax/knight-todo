@@ -111,13 +111,6 @@ public class TodoBlockResourceIntegrationTest {
     }
 
     @Test
-    public void getTodoBlockById_shouldRespondWithBadRequestStatus_whenIdIsLessThanOne() throws Exception {
-        mockMvc.perform(
-            get("/blocks/-1"))
-            .andExpect(status().isBadRequest());
-    }
-
-    @Test
     public void updateTodoBlock_shouldUpdateTodoBlockAndReturnIt_whenRequestIsCorrect() throws Exception {
         TodoBlock todoBlock = todoBlockRepository.save(TodoFactory.notSavedTodoBlock());
         UpdateTodoBlockRequestDto requestDto = TodoFactory.updateTodoBlockRequestDto(todoBlock);
@@ -192,12 +185,5 @@ public class TodoBlockResourceIntegrationTest {
             .andExpect(status().isOk());
 
         assertThat(todoBlockRepository.findById(todoBlock.getId())).isEmpty();
-    }
-
-    @Test
-    public void deleteTodoBlock_shouldRespondWithBadRequestStatus_whenIdIsLessThanOne() throws Exception {
-        mockMvc.perform(
-            delete("/blocks/-1"))
-            .andExpect(status().isBadRequest());
     }
 }
