@@ -18,10 +18,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static com.knighttodo.knighttodo.TestConstants.API_BASE_BLOCKS;
-import static com.knighttodo.knighttodo.TestConstants.JSON_PATH_BLOCK_NAME;
-import static com.knighttodo.knighttodo.TestConstants.JSON_PATH_ID;
-import static com.knighttodo.knighttodo.TestConstants.JSON_PATH_LENGTH;
-import static com.knighttodo.knighttodo.TestConstants.JSON_PATH_TODOS_LENGTH;
+import static com.knighttodo.knighttodo.TestConstants.getJsonPathToBlockName;
+import static com.knighttodo.knighttodo.TestConstants.getJsonPathToId;
+import static com.knighttodo.knighttodo.TestConstants.getJsonPathToLength;
+import static com.knighttodo.knighttodo.TestConstants.getJsonPathToTodosLength;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -59,7 +59,7 @@ public class TodoBlockResourceIntegrationTest {
                 .content(objectMapper.writeValueAsString(requestDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isCreated())
-            .andExpect(jsonPath(JSON_PATH_ID).exists());
+            .andExpect(jsonPath(getJsonPathToId()).exists());
 
         assertThat(todoBlockRepository.count()).isEqualTo(1);
     }
@@ -103,7 +103,7 @@ public class TodoBlockResourceIntegrationTest {
         mockMvc.perform(
             get(API_BASE_BLOCKS))
             .andExpect(status().isFound())
-            .andExpect(jsonPath(JSON_PATH_LENGTH).value(2));
+            .andExpect(jsonPath(getJsonPathToLength()).value(2));
     }
 
     @Test
@@ -111,9 +111,9 @@ public class TodoBlockResourceIntegrationTest {
         TodoBlock todoBlock = todoBlockRepository.save(TodoFactory.notSavedTodoBlock());
 
         mockMvc.perform(
-            get(API_BASE_BLOCKS + todoBlock.getId()))
+            get(API_BASE_BLOCKS + "/" + todoBlock.getId()))
             .andExpect(status().isFound())
-            .andExpect(jsonPath(JSON_PATH_ID).value(todoBlock.getId()));
+            .andExpect(jsonPath(getJsonPathToId()).value(todoBlock.getId()));
     }
 
     @Test
@@ -126,8 +126,8 @@ public class TodoBlockResourceIntegrationTest {
                 .content(objectMapper.writeValueAsString(requestDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isOk())
-            .andExpect(jsonPath(JSON_PATH_BLOCK_NAME).value(requestDto.getBlockName()))
-            .andExpect(jsonPath(JSON_PATH_TODOS_LENGTH).value(requestDto.getTodos().size()));
+            .andExpect(jsonPath(getJsonPathToBlockName()).value(requestDto.getBlockName()))
+            .andExpect(jsonPath(getJsonPathToTodosLength()).value(requestDto.getTodos().size()));
 
         assertThat(todoBlockRepository.findById(todoBlock.getId()).get().getBlockName())
             .isEqualTo(requestDto.getBlockName());
@@ -187,7 +187,7 @@ public class TodoBlockResourceIntegrationTest {
         TodoBlock todoBlock = todoBlockRepository.save(TodoFactory.notSavedTodoBlock());
 
         mockMvc.perform(
-            delete(API_BASE_BLOCKS + todoBlock.getId()))
+            delete(API_BASE_BLOCKS + "/" + todoBlock.getId()))
             .andExpect(status().isOk());
 
         assertThat(todoBlockRepository.findById(todoBlock.getId())).isEmpty();

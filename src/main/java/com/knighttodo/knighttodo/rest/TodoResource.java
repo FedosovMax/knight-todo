@@ -27,8 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.knighttodo.knighttodo.Constants.API_BASE_TODOS;
-import static com.knighttodo.knighttodo.Constants.API_GET_TODOS_BY_PATH_VARIABLE_BLOCK_ID;
-import static com.knighttodo.knighttodo.Constants.API_PATH_VARIABLE_ID;
+import static com.knighttodo.knighttodo.Constants.API_GET_TODOS_BY_BLOCK_ID;
 
 @RequiredArgsConstructor
 @RestController
@@ -59,7 +58,7 @@ public class TodoResource {
         return ResponseEntity.status(HttpStatus.CREATED).body(todoRestMapper.toCreateTodoResponseDto(savedTodoVO));
     }
 
-    @GetMapping(API_PATH_VARIABLE_ID)
+    @GetMapping("/{id}")
     public ResponseEntity<TodoResponseDto> getTodoById(@PathVariable long id) {
         log.info("Rest request to get todo by id : {}", id);
         TodoVO todoVO = todoService.findById(id);
@@ -77,7 +76,7 @@ public class TodoResource {
         return ResponseEntity.ok().body(todoRestMapper.toUpdateTodoResponseDto(updatedTodoVO));
     }
 
-    @DeleteMapping(API_PATH_VARIABLE_ID)
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteTodo(@PathVariable long id) {
         log.info("Rest request to delete todo by id : {}", id);
         todoService.deleteById(id);
@@ -85,7 +84,7 @@ public class TodoResource {
         return ResponseEntity.ok().body("Deleted Todo id " + id);
     }
 
-    @GetMapping(API_GET_TODOS_BY_PATH_VARIABLE_BLOCK_ID)
+    @GetMapping(API_GET_TODOS_BY_BLOCK_ID + "/{id}")
     public ResponseEntity<List<TodoResponseDto>> getTodosByBlockId(@PathVariable long id) {
         log.info("request for TodoBlock to get all todo by todoBlock id");
 

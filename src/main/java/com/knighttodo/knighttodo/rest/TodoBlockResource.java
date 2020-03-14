@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.knighttodo.knighttodo.Constants.API_BASE_BLOCKS;
-import static com.knighttodo.knighttodo.Constants.API_PATH_VARIABLE_ID;
 
 @RequiredArgsConstructor
 @RestController
@@ -60,7 +59,7 @@ public class TodoBlockResource {
             .body(todoBlockRestMapper.toCreateTodoBlockResponseDto(savedTodoBlockVO));
     }
 
-    @GetMapping(API_PATH_VARIABLE_ID)
+    @GetMapping("/{id}")
     public ResponseEntity<TodoBlockResponseDto> getTodoBlockById(@PathVariable long id) {
         log.info("Rest request to get todoBlock by id : {}", id);
         TodoBlockVO todoBlockVO = todoBlockService.findById(id);
@@ -78,7 +77,7 @@ public class TodoBlockResource {
         return ResponseEntity.ok().body(todoBlockRestMapper.toUpdateTodoBlockResponseDto(updatedTodoBlockVO));
     }
 
-    @DeleteMapping(API_PATH_VARIABLE_ID)
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteTodoBlock(@PathVariable long id) {
         log.info("Rest request to delete todoBlock by id : {}", id);
         todoBlockService.deleteById(id);
