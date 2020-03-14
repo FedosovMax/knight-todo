@@ -13,8 +13,8 @@ public class TestConstants {
     public static final String JSON_PATH_HARDNESS = JSON_ROOT + "hardness";
     public static final String JSON_PATH_TODO_BLOCK_ID = JSON_ROOT + "todoBlock.id";
 
-    public static final String API_BASE_BLOCKS = "/blocks";
-    
+    public static final String API_BASE_BLOCKS = "/blocks/";
+
     public static final String JSON_PATH_BLOCK_NAME = JSON_ROOT + "blockName";
     public static final String JSON_PATH_TODOS_LENGTH = JSON_ROOT + "todos.length()";
 }
