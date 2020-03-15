@@ -11,9 +11,9 @@ public interface TodoGateway {
 
     List<TodoVO> findAll();
 
-    Optional<TodoVO> findById(long id);
+    Optional<TodoVO> findById(long todoId);
 
-    void deleteById(long id);
+    void deleteById(long todoId);
 
-    List<TodoVO> findByTodoBlockId(long id);
+    List<TodoVO> findByTodoBlockId(long blockId);
 }

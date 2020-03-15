@@ -10,7 +10,7 @@ public interface TodoBlockGateway {
 
     List<TodoBlockVO> findAll();
 
-    Optional<TodoBlockVO> findById(long id);
+    Optional<TodoBlockVO> findById(long blockId);
 
-    void deleteById(long id);
+    void deleteById(long blockId);
 }

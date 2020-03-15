@@ -28,13 +28,13 @@ public class TodoBlockServiceImpl implements TodoBlockService {
     }
 
     @Override
-    public TodoBlockVO findById(long id) {
-        Optional<TodoBlockVO> result = todoBlockGateway.findById(id);
+    public TodoBlockVO findById(long blockId) {
+        Optional<TodoBlockVO> result = todoBlockGateway.findById(blockId);
 
         if (result.isPresent()) {
             return result.get();
         }
-        throw new RuntimeException("Did not find TodoBlock id - " + id);
+        throw new RuntimeException("Did not find TodoBlock id - " + blockId);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class TodoBlockServiceImpl implements TodoBlockService {
     }
 
     @Override
-    public void deleteById(long id) {
-        todoBlockGateway.deleteById(id);
+    public void deleteById(long blockId) {
+        todoBlockGateway.deleteById(blockId);
     }
 }

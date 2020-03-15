@@ -14,7 +14,7 @@ public interface TodoService {
 
     TodoVO updateTodo(TodoVO changedTodoVO);
 
-    void deleteById(long TodoId);
+    void deleteById(long todoId);
 
     List<TodoVO> findByBlockId(long blockId);
 }
