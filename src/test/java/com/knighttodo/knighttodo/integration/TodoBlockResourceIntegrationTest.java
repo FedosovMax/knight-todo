@@ -16,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.knighttodo.knighttodo.TestConstants.API_BASE_BLOCKS;
 import static com.knighttodo.knighttodo.TestConstants.buildDeleteBlockByIdUrl;
@@ -136,9 +137,17 @@ public class TodoBlockResourceIntegrationTest {
     }
 
     @Test
-    public void updateTodoBlock_shouldRespondWithBadRequestStatus_whenIdIsIncorrect() throws Exception {
+    public void updateTodoBlock_shouldRespondWithBadRequestStatus_whenIdIsNull() throws Exception {
         TodoBlock todoBlock = todoBlockRepository.save(TodoFactory.notSavedTodoBlock());
-        UpdateTodoBlockRequestDto requestDto = TodoFactory.updateTodoBlockRequestDtoWithIncorrectId(todoBlock);
+        UpdateTodoBlockRequestDto requestDto = TodoFactory.updateTodoBlockRequestDtoWithoutId(todoBlock);
+
+        expectBadRequestStatusResponseOnUpdateRequest(requestDto);
+    }
+
+    @Test
+    public void updateTodoBlock_shouldRespondWithBadRequestStatus_whenIdConsistsOfSpaces() throws Exception {
+        TodoBlock todoBlock = todoBlockRepository.save(TodoFactory.notSavedTodoBlock());
+        UpdateTodoBlockRequestDto requestDto = TodoFactory.updateTodoBlockRequestDtoWithIdConsistingOfSpaces(todoBlock);
 
         expectBadRequestStatusResponseOnUpdateRequest(requestDto);
     }
@@ -185,9 +194,9 @@ public class TodoBlockResourceIntegrationTest {
     }
 
     @Test
+    @Transactional
     public void deleteTodoBlock_shouldDeleteTodoBlock_whenIdIsCorrect() throws Exception {
         TodoBlock todoBlock = todoBlockRepository.save(TodoFactory.notSavedTodoBlock());
-
         mockMvc.perform(
             delete(buildDeleteBlockByIdUrl(todoBlock.getId())))
             .andExpect(status().isOk());

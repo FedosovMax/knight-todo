@@ -59,7 +59,7 @@ public class TodoResource {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TodoResponseDto> getTodoById(@PathVariable long id) {
+    public ResponseEntity<TodoResponseDto> getTodoById(@PathVariable String id) {
         log.info("Rest request to get todo by id : {}", id);
         TodoVO todoVO = todoService.findById(id);
 
@@ -77,7 +77,7 @@ public class TodoResource {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteTodo(@PathVariable long id) {
+    public ResponseEntity<String> deleteTodo(@PathVariable String id) {
         log.info("Rest request to delete todo by id : {}", id);
         todoService.deleteById(id);
 
@@ -85,7 +85,7 @@ public class TodoResource {
     }
 
     @GetMapping(API_GET_TODOS_BY_BLOCK_ID + "/{id}")
-    public ResponseEntity<List<TodoResponseDto>> getTodosByBlockId(@PathVariable long id) {
+    public ResponseEntity<List<TodoResponseDto>> getTodosByBlockId(@PathVariable String id) {
         log.info("request for TodoBlock to get all todo by todoBlock id");
 
         return ResponseEntity.status(HttpStatus.FOUND)

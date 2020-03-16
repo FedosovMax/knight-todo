@@ -9,9 +9,9 @@ public interface TodoBlockService {
 
     List<TodoBlockVO> findAll();
 
-    TodoBlockVO findById(long blockId);
+    TodoBlockVO findById(String blockId);
 
     TodoBlockVO updateTodoBlock(TodoBlockVO changedTodoBlockVO);
 
-    void deleteById(long blockId);
+    void deleteById(String blockId);
 }
