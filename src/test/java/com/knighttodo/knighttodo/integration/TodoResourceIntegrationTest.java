@@ -18,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.knighttodo.knighttodo.TestConstants.API_BASE_TODOS;
 import static com.knighttodo.knighttodo.TestConstants.buildDeleteTodoByIdUrl;
@@ -241,6 +242,7 @@ public class TodoResourceIntegrationTest {
     }
 
     @Test
+    @Transactional
     public void deleteTodo_shouldDeleteTodo_whenIdIsCorrect() throws Exception {
         Todo todo = todoRepository.save(TodoFactory.notSavedTodo(savedTodoBlock));
 
