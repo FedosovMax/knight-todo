@@ -165,9 +165,18 @@ public class TodoResourceIntegrationTest {
     }
 
     @Test
-    public void updateTodo_shouldRespondWithBadRequestStatus_whenIdIsIncorrect() throws Exception {
+    public void updateTodo_shouldRespondWithBadRequestStatus_whenIdIsNull() throws Exception {
         Todo todo = todoRepository.save(TodoFactory.notSavedTodo(savedTodoBlock));
-        UpdateTodoRequestDto requestDto = TodoFactory.updateTodoRequestDtoWithIncorrectId(todo, savedUpdatedTodoBlock);
+        UpdateTodoRequestDto requestDto = TodoFactory.updateTodoRequestDtoWithoutId(todo, savedUpdatedTodoBlock);
+
+        expectBadRequestStatusResponseOnUpdateRequest(requestDto);
+    }
+
+    @Test
+    public void updateTodo_shouldRespondWithBadRequestStatus_whenIdConsistsOfSpaces() throws Exception {
+        Todo todo = todoRepository.save(TodoFactory.notSavedTodo(savedTodoBlock));
+        UpdateTodoRequestDto requestDto = TodoFactory
+            .updateTodoRequestDtoWithIdConsistingOfSpaces(todo, savedUpdatedTodoBlock);
 
         expectBadRequestStatusResponseOnUpdateRequest(requestDto);
     }
@@ -246,7 +255,7 @@ public class TodoResourceIntegrationTest {
     public void getTodosByBlockId_shouldReturnExistingTodo_whenIdIsCorrect() throws Exception {
         Todo firstTodo = todoRepository.save(TodoFactory.notSavedTodo(savedTodoBlock));
         todoRepository.save(TodoFactory.notSavedTodo(savedTodoBlock));
-
+        System.out.println(firstTodo.getId());
         mockMvc.perform(
             get(buildGetTodosByBlockIdUrl(firstTodo.getTodoBlock().getId())))
             .andExpect(status().isFound())

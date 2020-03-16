@@ -31,12 +31,13 @@ public class TodoBlockGatewayImpl implements TodoBlockGateway {
     }
 
     @Override
-    public Optional<TodoBlockVO> findById(long blockId) {
+    public Optional<TodoBlockVO> findById(String blockId) {
         return todoBlockRepository.findById(blockId).map(todoBlockMapper::toTodoBlockVO);
     }
 
     @Override
-    public void deleteById(long blockId) {
+    public void deleteById(String blockId) {
+        System.out.println(blockId);
         todoBlockRepository.deleteById(blockId);
     }
 }

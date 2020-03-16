@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 public class TodoBlockVO {
 
-    private long id;
+    private String id;
 
     private String blockName;
 

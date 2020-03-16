@@ -10,7 +10,7 @@ public interface TodoBlockGateway {
 
     List<TodoBlockVO> findAll();
 
-    Optional<TodoBlockVO> findById(long blockId);
+    Optional<TodoBlockVO> findById(String blockId);
 
-    void deleteById(long blockId);
+    void deleteById(String blockId);
 }

@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CreateTodoResponseDto {
 
-    private long id;
+    private String id;
 
     private String todoName;
 

@@ -17,8 +17,8 @@ import java.util.List;
 @Builder
 public class UpdateTodoBlockRequestDto {
 
-    @Min(1)
-    private long id;
+    @NotBlank
+    private String id;
 
     @NotBlank
     private String blockName;

@@ -136,9 +136,17 @@ public class TodoBlockResourceIntegrationTest {
     }
 
     @Test
-    public void updateTodoBlock_shouldRespondWithBadRequestStatus_whenIdIsIncorrect() throws Exception {
+    public void updateTodoBlock_shouldRespondWithBadRequestStatus_whenIdIsNull() throws Exception {
         TodoBlock todoBlock = todoBlockRepository.save(TodoFactory.notSavedTodoBlock());
-        UpdateTodoBlockRequestDto requestDto = TodoFactory.updateTodoBlockRequestDtoWithIncorrectId(todoBlock);
+        UpdateTodoBlockRequestDto requestDto = TodoFactory.updateTodoBlockRequestDtoWithoutId(todoBlock);
+
+        expectBadRequestStatusResponseOnUpdateRequest(requestDto);
+    }
+
+    @Test
+    public void updateTodoBlock_shouldRespondWithBadRequestStatus_whenIdConsistsOfSpaces() throws Exception {
+        TodoBlock todoBlock = todoBlockRepository.save(TodoFactory.notSavedTodoBlock());
+        UpdateTodoBlockRequestDto requestDto = TodoFactory.updateTodoBlockRequestDtoWithIdConsistingOfSpaces(todoBlock);
 
         expectBadRequestStatusResponseOnUpdateRequest(requestDto);
     }
@@ -187,7 +195,7 @@ public class TodoBlockResourceIntegrationTest {
     @Test
     public void deleteTodoBlock_shouldDeleteTodoBlock_whenIdIsCorrect() throws Exception {
         TodoBlock todoBlock = todoBlockRepository.save(TodoFactory.notSavedTodoBlock());
-
+        System.out.println(todoBlock.getId());
         mockMvc.perform(
             delete(buildDeleteBlockByIdUrl(todoBlock.getId())))
             .andExpect(status().isOk());
