@@ -89,9 +89,16 @@ public class TodoFactory {
             .build();
     }
 
-    public static UpdateTodoRequestDto updateTodoRequestDtoWithIncorrectId(Todo todo, TodoBlock savedTodoBlock) {
+    public static UpdateTodoRequestDto updateTodoRequestDtoWithoutId(Todo todo, TodoBlock savedTodoBlock) {
         UpdateTodoRequestDto request = updateTodoRequestDto(todo, savedTodoBlock);
-        request.setId(-1L);
+        request.setId(null);
+        return request;
+    }
+
+    public static UpdateTodoRequestDto updateTodoRequestDtoWithIdConsistingOfSpaces(Todo todo,
+                                                                                    TodoBlock savedTodoBlock) {
+        UpdateTodoRequestDto request = updateTodoRequestDto(todo, savedTodoBlock);
+        request.setId("    ");
         return request;
     }
 
@@ -188,9 +195,15 @@ public class TodoFactory {
             .build();
     }
 
-    public static UpdateTodoBlockRequestDto updateTodoBlockRequestDtoWithIncorrectId(TodoBlock todoBlock) {
+    public static UpdateTodoBlockRequestDto updateTodoBlockRequestDtoWithoutId(TodoBlock todoBlock) {
         UpdateTodoBlockRequestDto request = updateTodoBlockRequestDto(todoBlock);
-        request.setId(-1L);
+        request.setId(null);
+        return request;
+    }
+
+    public static UpdateTodoBlockRequestDto updateTodoBlockRequestDtoWithIdConsistingOfSpaces(TodoBlock todoBlock) {
+        UpdateTodoBlockRequestDto request = updateTodoBlockRequestDto(todoBlock);
+        request.setId("    ");
         return request;
     }
 

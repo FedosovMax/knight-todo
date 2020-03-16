@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 public class TodoBlockResponseDto {
 
-    private long id;
+    private String id;
 
     private String blockName;
 

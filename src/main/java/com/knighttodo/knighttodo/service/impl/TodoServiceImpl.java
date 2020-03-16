@@ -33,7 +33,7 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public TodoVO findById(long todoId) {
+    public TodoVO findById(String todoId) {
         Optional<TodoVO> result = todoGateway.findById(todoId);
 
         if (result.isPresent()) {
@@ -55,12 +55,12 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public void deleteById(long todoId) {
+    public void deleteById(String todoId) {
         todoGateway.deleteById(todoId);
     }
 
     @Override
-    public List<TodoVO> findByBlockId(long blockId) {
+    public List<TodoVO> findByBlockId(String blockId) {
         return todoGateway.findByTodoBlockId(blockId);
     }
 

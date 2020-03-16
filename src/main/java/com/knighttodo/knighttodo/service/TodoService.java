@@ -9,13 +9,13 @@ public interface TodoService {
 
     List<TodoVO> findAll();
 
-    TodoVO findById(long todoId);
+    TodoVO findById(String todoId);
 
     TodoVO updateTodo(TodoVO changedTodoVO);
 
-    void deleteById(long todoId);
+    void deleteById(String todoId);
 
-    List<TodoVO> findByBlockId(long blockId);
+    List<TodoVO> findByBlockId(String blockId);
 
     void updateIsReady(long todoId, boolean isReady);
 }

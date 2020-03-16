@@ -9,23 +9,23 @@ public class TestConstants {
 
     public static final String JSON_ROOT = "$.";
 
-    public static String buildGetBlockByIdUrl(long id) {
+    public static String buildGetBlockByIdUrl(String id) {
         return API_BASE_BLOCKS + "/" + id;
     }
 
-    public static String buildDeleteBlockByIdUrl(long id) {
+    public static String buildDeleteBlockByIdUrl(String id) {
         return API_BASE_BLOCKS + "/" + id;
     }
 
-    public static String buildGetTodoByIdUrl(long id) {
+    public static String buildGetTodoByIdUrl(String id) {
         return API_BASE_TODOS + "/" + id;
     }
 
-    public static String buildDeleteTodoByIdUrl(long id) {
+    public static String buildDeleteTodoByIdUrl(String id) {
         return API_BASE_TODOS + "/" + id;
     }
 
-    public static String buildGetTodosByBlockIdUrl(long id) {
+    public static String buildGetTodosByBlockIdUrl(String id) {
         return API_BASE_TODOS + API_GET_BY_BLOCK_ID + "/" + id;
     }
 

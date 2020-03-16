@@ -31,7 +31,7 @@ public class TodoBlockServiceImpl implements TodoBlockService {
     }
 
     @Override
-    public TodoBlockVO findById(long blockId) {
+    public TodoBlockVO findById(String blockId) {
         Optional<TodoBlockVO> result = todoBlockGateway.findById(blockId);
 
         if (result.isPresent()) {
@@ -53,7 +53,7 @@ public class TodoBlockServiceImpl implements TodoBlockService {
     }
 
     @Override
-    public void deleteById(long blockId) {
+    public void deleteById(String blockId) {
         todoBlockGateway.deleteById(blockId);
     }
 }

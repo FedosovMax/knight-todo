@@ -8,7 +8,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -18,8 +17,8 @@ import javax.validation.constraints.NotNull;
 @Builder
 public class UpdateTodoRequestDto {
 
-    @Min(1)
-    private long id;
+    @NotBlank
+    private String id;
 
     @NotBlank
     private String todoName;

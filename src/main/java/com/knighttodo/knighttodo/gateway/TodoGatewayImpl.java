@@ -30,17 +30,17 @@ public class TodoGatewayImpl implements TodoGateway {
     }
 
     @Override
-    public Optional<TodoVO> findById(long todoId) {
+    public Optional<TodoVO> findById(String todoId) {
         return todoRepository.findById(todoId).map(todoMapper::toTodoVO);
     }
 
     @Override
-    public void deleteById(long todoId) {
+    public void deleteById(String todoId) {
         todoRepository.deleteById(todoId);
     }
 
     @Override
-    public List<TodoVO> findByTodoBlockId(long blockId) {
+    public List<TodoVO> findByTodoBlockId(String blockId) {
         return todoRepository.findByTodoBlockId(blockId).stream().map(todoMapper::toTodoVO)
             .collect(Collectors.toList());
     }

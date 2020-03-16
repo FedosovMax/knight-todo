@@ -11,9 +11,9 @@ public interface TodoGateway {
 
     List<TodoVO> findAll();
 
-    Optional<TodoVO> findById(long todoId);
+    Optional<TodoVO> findById(String todoId);
 
-    void deleteById(long todoId);
+    void deleteById(String todoId);
 
-    List<TodoVO> findByTodoBlockId(long blockId);
+    List<TodoVO> findByTodoBlockId(String blockId);
 }
