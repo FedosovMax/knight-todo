@@ -35,7 +35,7 @@ public class TodoFactory {
             .scaryness(SCARYNESS_TODO)
             .hardness(HARDNESS_TODO)
             .todoBlock(savedTodoBlock)
-            .ready(IS_TODO_READY)
+            .isReady(IS_TODO_READY)
             .build();
     }
 
@@ -85,7 +85,7 @@ public class TodoFactory {
             .scaryness(UPDATED_SCARYNESS_TODO)
             .hardness(UPDATED_HARDNESS_TODO)
             .todoBlock(savedTodoBlock)
-            .ready(IS_TODO_READY)
+            .isReady(IS_TODO_READY)
             .build();
     }
 

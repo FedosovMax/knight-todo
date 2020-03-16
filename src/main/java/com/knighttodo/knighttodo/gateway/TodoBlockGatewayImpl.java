@@ -1,5 +1,7 @@
 package com.knighttodo.knighttodo.gateway;
 
+import com.knighttodo.knighttodo.domain.TodoBlockVO;
+import com.knighttodo.knighttodo.gateway.privatedb.mapper.TodoBlockMapper;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.TodoBlockRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
 import java.util.List;
@@ -12,10 +14,12 @@ import org.springframework.stereotype.Service;
 public class TodoBlockGatewayImpl implements TodoBlockGateway {
 
     private final TodoBlockRepository todoBlockRepository;
+    private final TodoBlockMapper todoBlockMapper;
 
     @Override
-    public TodoBlock save(TodoBlock todoBlock) {
-        return todoBlockRepository.save(todoBlock);
+    public TodoBlockVO save(TodoBlockVO todoBlockVO) {
+        TodoBlock todoBlock = todoBlockRepository.save(todoBlockMapper.toTodoBlock(todoBlockVO));
+        return todoBlockMapper.toTodoBlockVO(todoBlock);
     }
 
     @Override
@@ -24,8 +28,8 @@ public class TodoBlockGatewayImpl implements TodoBlockGateway {
     }
 
     @Override
-    public Optional<TodoBlock> findById(long todoBlockId) {
-        return todoBlockRepository.findById(todoBlockId);
+    public Optional<TodoBlockVO> findById(long todoBlockId) {
+        return todoBlockRepository.findById(todoBlockId).map(todoBlockMapper::toTodoBlockVO);
     }
 
     @Override

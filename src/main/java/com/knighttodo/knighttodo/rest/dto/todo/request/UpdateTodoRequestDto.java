@@ -30,7 +30,7 @@ public class UpdateTodoRequestDto {
     @NotNull
     private Hardness hardness;
 
-    private boolean ready;
+    private Boolean isReady;
 
     @NotNull
     private TodoBlock todoBlock;

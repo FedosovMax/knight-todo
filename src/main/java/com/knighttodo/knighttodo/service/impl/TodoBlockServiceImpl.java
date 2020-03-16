@@ -1,6 +1,7 @@
 package com.knighttodo.knighttodo.service.impl;
 
 import com.knighttodo.knighttodo.domain.TodoBlockVO;
+import com.knighttodo.knighttodo.exception.TodoBlockNotFoundException;
 import com.knighttodo.knighttodo.exception.TodoNotFoundException;
 import com.knighttodo.knighttodo.gateway.TodoBlockGateway;
 import com.knighttodo.knighttodo.gateway.privatedb.mapper.TodoBlockMapper;
@@ -23,9 +24,7 @@ public class TodoBlockServiceImpl implements TodoBlockService {
 
     @Override
     public TodoBlockVO save(TodoBlockVO todoBlockVO) {
-        TodoBlock todoBlock = todoBlockGateway.save(todoBlockMapper.toTodoBlock(todoBlockVO));
-
-        return todoBlockMapper.toTodoBlockVO(todoBlock);
+        return todoBlockGateway.save(todoBlockVO);
     }
 
     @Override
@@ -38,11 +37,11 @@ public class TodoBlockServiceImpl implements TodoBlockService {
 
     @Override
     public TodoBlockVO findById(long todoBlockId) {
-        Optional<TodoBlock> result = todoBlockGateway.findById(todoBlockId);
+        Optional<TodoBlockVO> result = todoBlockGateway.findById(todoBlockId);
         TodoBlockVO todoBlock;
 
         if (result.isPresent()) {
-            todoBlock = todoBlockMapper.toTodoBlockVO(result.get());
+            todoBlock = result.get();
         } else {
             throw new RuntimeException("Did not find TodoBlock id - " + todoBlockId);
         }
@@ -53,16 +52,15 @@ public class TodoBlockServiceImpl implements TodoBlockService {
     @Override
     public TodoBlockVO updateTodoBlock(TodoBlockVO changedTodoBlockVO) {
 
-        TodoBlock todoBlock = todoBlockGateway.findById(todoBlockMapper.toTodoBlock(changedTodoBlockVO).getId())
-            .orElseThrow(TodoNotFoundException::new);
+        TodoBlockVO todoBlockVO = todoBlockGateway.findById(todoBlockMapper.toTodoBlock(changedTodoBlockVO).getId())
+            .orElseThrow(() -> new TodoBlockNotFoundException(
+                String.format("Block with such id:%s is not found", changedTodoBlockVO.getId())));
 
-        todoBlock.setId(changedTodoBlockVO.getId());
-        todoBlock.setBlockName(changedTodoBlockVO.getBlockName());
-        todoBlock.setTodos(changedTodoBlockVO.getTodos());
+        todoBlockVO.setId(changedTodoBlockVO.getId());
+        todoBlockVO.setBlockName(changedTodoBlockVO.getBlockName());
+        todoBlockVO.setTodos(changedTodoBlockVO.getTodos());
 
-        TodoBlock updatedTodoBlock = todoBlockGateway.save(todoBlock);
-
-        return todoBlockMapper.toTodoBlockVO(updatedTodoBlock);
+        return todoBlockGateway.save(todoBlockVO);
     }
 
     @Override

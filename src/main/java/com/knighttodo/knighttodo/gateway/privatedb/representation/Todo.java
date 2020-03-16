@@ -45,7 +45,7 @@ public class Todo {
     private Hardness hardness;
 
     @Column(name = "ready")
-    private boolean ready;
+    private boolean ready = false;
 
     @ManyToOne
     @JoinColumn(name = "todoBlock")

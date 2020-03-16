@@ -1,7 +1,6 @@
 package com.knighttodo.knighttodo.service;
 
 import com.knighttodo.knighttodo.domain.TodoVO;
-
 import java.util.List;
 
 public interface TodoService {
@@ -14,7 +13,9 @@ public interface TodoService {
 
     TodoVO updateTodo(TodoVO changedTodoVO);
 
-    void deleteById(long TodoId);
+    void deleteById(long todoId);
 
     List<TodoVO> findByBlockId(long blockId);
+
+    void updateIsReady(long todoId, boolean isReady);
 }

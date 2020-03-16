@@ -12,13 +12,28 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import static com.knighttodo.knighttodo.Constants.API_BASE_TODOS;
+import static com.knighttodo.knighttodo.Constants.API_BASE_URL;
+import static com.knighttodo.knighttodo.Constants.BASE_READY;
+import static com.knighttodo.knighttodo.Constants.PARAM_IS_READY;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -44,8 +59,13 @@ public class TodoResourceIntegrationTest {
     private TodoBlockRepository todoBlockRepository;
 
     private TodoBlock savedTodoBlock;
-
     private TodoBlock savedUpdatedTodoBlock;
+
+    @MockBean
+    private RestTemplate restTemplate;
+
+    @Value("${baseUrl.experience}")
+    private String experienceUrl;
 
     @Before
     public void setUp() {
@@ -239,5 +259,20 @@ public class TodoResourceIntegrationTest {
             get("/todos/byBlockId/" + firstTodo.getTodoBlock().getId()))
             .andExpect(status().isFound())
             .andExpect(jsonPath("$.length()").value(2));
+    }
+
+    @Test
+    public void updateIsReady_shouldReturnOk_shouldMakeIsReadyTrue_whenTodoIdIsCorrect() throws Exception {
+        Todo firstTodo = todoRepository.save(TodoFactory.notSavedTodo(savedTodoBlock));
+
+        when(restTemplate.exchange(anyString(), eq(HttpMethod.POST), any(), eq(Void.class)))
+            .thenReturn(new ResponseEntity<>(null, HttpStatus.OK));
+
+        mockMvc.perform(
+            put(API_BASE_TODOS + "/" + firstTodo.getId() + BASE_READY)
+                .param(PARAM_IS_READY, "true"))
+            .andExpect(status().isOk());
+
+        assertThat(todoRepository.findById(firstTodo.getId()).get().isReady()).isEqualTo(true);
     }
 }

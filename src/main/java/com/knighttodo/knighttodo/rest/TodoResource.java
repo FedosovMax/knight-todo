@@ -1,5 +1,7 @@
 package com.knighttodo.knighttodo.rest;
 
+import static com.knighttodo.knighttodo.Constants.BASE_READY;
+
 import com.knighttodo.knighttodo.domain.TodoVO;
 import com.knighttodo.knighttodo.rest.mapper.TodoRestMapper;
 import com.knighttodo.knighttodo.rest.dto.todo.request.CreateTodoRequestDto;
@@ -13,6 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 
+import javax.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -40,10 +44,7 @@ public class TodoResource {
         log.info("Rest request to get all todo");
 
         return ResponseEntity.status(HttpStatus.FOUND)
-            .body(todoService.findAll()
-                      .stream()
-                      .map(todoRestMapper::toTodoResponseDto)
-                      .collect(Collectors.toList()));
+            .body(todoService.findAll().stream().map(todoRestMapper::toTodoResponseDto).collect(Collectors.toList()));
     }
 
     @PostMapping
@@ -64,8 +65,7 @@ public class TodoResource {
     }
 
     @PutMapping
-    public ResponseEntity<UpdateTodoResponseDto> updateTodo(
-        @Valid @RequestBody UpdateTodoRequestDto updateRequestDto) {
+    public ResponseEntity<UpdateTodoResponseDto> updateTodo(@Valid @RequestBody UpdateTodoRequestDto updateRequestDto) {
         log.info("Rest request to update todo : {}", updateRequestDto);
         TodoVO todoVO = todoRestMapper.toTodoVO(updateRequestDto);
         TodoVO updatedTodoVO = todoService.updateTodo(todoVO);
@@ -87,8 +87,15 @@ public class TodoResource {
 
         return ResponseEntity.status(HttpStatus.FOUND)
             .body(todoService.findByBlockId(id)
-                      .stream()
-                      .map(todoRestMapper::toTodoResponseDto)
-                      .collect(Collectors.toList()));
+                .stream()
+                .map(todoRestMapper::toTodoResponseDto)
+                .collect(Collectors.toList()));
+    }
+
+    @PutMapping("/{todoId}" + BASE_READY)
+    public ResponseEntity<Void> updateIsReady(@PathVariable long todoId, @NotBlank @RequestParam String isReady){
+        boolean isReadyBoolean = Boolean.getBoolean(isReady);
+        todoService.updateIsReady(todoId, isReadyBoolean);
+        return ResponseEntity.ok().build();
     }
 }

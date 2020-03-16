@@ -7,12 +7,14 @@ import com.knighttodo.knighttodo.rest.dto.todo.response.CreateTodoResponseDto;
 import com.knighttodo.knighttodo.rest.dto.todo.response.TodoResponseDto;
 import com.knighttodo.knighttodo.rest.dto.todo.response.UpdateTodoResponseDto;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface TodoRestMapper {
 
     TodoVO toTodoVO(CreateTodoRequestDto requestDto);
 
+//    @Mapping(target = "ready", source = "data", qualifiedByName = "toVerifiableCredential")
     CreateTodoResponseDto toCreateTodoResponseDto(TodoVO todoVO);
 
     TodoVO toTodoVO(UpdateTodoRequestDto requestDto);
