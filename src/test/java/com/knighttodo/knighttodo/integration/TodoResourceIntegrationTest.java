@@ -8,6 +8,7 @@ import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
 import com.knighttodo.knighttodo.rest.dto.todo.request.CreateTodoRequestDto;
 import com.knighttodo.knighttodo.rest.dto.todo.request.UpdateTodoRequestDto;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,6 +30,17 @@ import static com.knighttodo.knighttodo.Constants.API_BASE_TODOS;
 import static com.knighttodo.knighttodo.Constants.API_BASE_URL;
 import static com.knighttodo.knighttodo.Constants.BASE_READY;
 import static com.knighttodo.knighttodo.Constants.PARAM_IS_READY;
+import static com.knighttodo.knighttodo.TestConstants.API_BASE_TODOS;
+import static com.knighttodo.knighttodo.TestConstants.buildDeleteTodoByIdUrl;
+import static com.knighttodo.knighttodo.TestConstants.buildGetTodoByIdUrl;
+import static com.knighttodo.knighttodo.TestConstants.buildGetTodosByBlockIdUrl;
+import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToHardness;
+import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToId;
+import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToLength;
+import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToScaryness;
+import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToTodoBlockId;
+import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToTodoName;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -79,11 +91,11 @@ public class TodoResourceIntegrationTest {
         CreateTodoRequestDto requestDto = TodoFactory.createTodoRequestDto(savedTodoBlock);
 
         mockMvc.perform(
-            post("/todos")
+            post(API_BASE_TODOS)
                 .content(objectMapper.writeValueAsString(requestDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.id").exists());
+            .andExpect(jsonPath(buildJsonPathToId()).exists());
 
         assertThat(todoRepository.count()).isEqualTo(1);
     }
@@ -97,7 +109,7 @@ public class TodoResourceIntegrationTest {
 
     private void expectBadRequestStatusResponseOnCreateRequest(CreateTodoRequestDto requestDto) throws Exception {
         mockMvc.perform(
-            post("/todos")
+            post(API_BASE_TODOS)
                 .content(objectMapper.writeValueAsString(requestDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isBadRequest());
@@ -139,9 +151,9 @@ public class TodoResourceIntegrationTest {
         todoRepository.save(TodoFactory.notSavedTodo(savedTodoBlock));
 
         mockMvc.perform(
-            get("/todos"))
+            get(API_BASE_TODOS))
             .andExpect(status().isFound())
-            .andExpect(jsonPath("$.length()").value(2));
+            .andExpect(jsonPath(buildJsonPathToLength()).value(2));
     }
 
     @Test
@@ -149,9 +161,9 @@ public class TodoResourceIntegrationTest {
         Todo todo = todoRepository.save(TodoFactory.notSavedTodo(savedTodoBlock));
 
         mockMvc.perform(
-            get("/todos/" + todo.getId()))
+            get(buildGetTodoByIdUrl(todo.getId())))
             .andExpect(status().isFound())
-            .andExpect(jsonPath("$.id").value(todo.getId()));
+            .andExpect(jsonPath(buildJsonPathToId()).value(todo.getId()));
     }
 
     @Test
@@ -160,14 +172,14 @@ public class TodoResourceIntegrationTest {
         UpdateTodoRequestDto requestDto = TodoFactory.updateTodoRequestDto(todo, savedUpdatedTodoBlock);
 
         mockMvc.perform(
-            put("/todos")
+            put(API_BASE_TODOS)
                 .content(objectMapper.writeValueAsString(requestDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.todoName").value(requestDto.getTodoName()))
-            .andExpect(jsonPath("$.scaryness").value(requestDto.getScaryness().getText()))
-            .andExpect(jsonPath("$.hardness").value(requestDto.getHardness().getText()))
-            .andExpect(jsonPath("$.todoBlock.id").value(requestDto.getTodoBlock().getId()));
+            .andExpect(jsonPath(buildJsonPathToTodoName()).value(requestDto.getTodoName()))
+            .andExpect(jsonPath(buildJsonPathToScaryness()).value(requestDto.getScaryness().getText()))
+            .andExpect(jsonPath(buildJsonPathToHardness()).value(requestDto.getHardness().getText()))
+            .andExpect(jsonPath(buildJsonPathToTodoBlockId()).value(requestDto.getTodoBlock().getId()));
 
         assertThat(todoRepository.findById(todo.getId()).get().getTodoName()).isEqualTo(requestDto.getTodoName());
     }
@@ -182,7 +194,7 @@ public class TodoResourceIntegrationTest {
 
     private void expectBadRequestStatusResponseOnUpdateRequest(UpdateTodoRequestDto requestDto) throws Exception {
         mockMvc.perform(
-            put("/todos")
+            put(API_BASE_TODOS)
                 .content(objectMapper.writeValueAsString(requestDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isBadRequest());
@@ -244,7 +256,7 @@ public class TodoResourceIntegrationTest {
         Todo todo = todoRepository.save(TodoFactory.notSavedTodo(savedTodoBlock));
 
         mockMvc.perform(
-            delete("/todos/" + todo.getId()))
+            delete(buildDeleteTodoByIdUrl(todo.getId())))
             .andExpect(status().isOk());
 
         assertThat(todoRepository.findById(todo.getId())).isEmpty();
@@ -256,9 +268,9 @@ public class TodoResourceIntegrationTest {
         todoRepository.save(TodoFactory.notSavedTodo(savedTodoBlock));
 
         mockMvc.perform(
-            get("/todos/byBlockId/" + firstTodo.getTodoBlock().getId()))
+            get(buildGetTodosByBlockIdUrl(firstTodo.getTodoBlock().getId())))
             .andExpect(status().isFound())
-            .andExpect(jsonPath("$.length()").value(2));
+            .andExpect(jsonPath(buildJsonPathToLength()).value(2));
     }
 
     @Test

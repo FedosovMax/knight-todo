@@ -30,9 +30,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.knighttodo.knighttodo.Constants.API_BASE_TODOS;
+import static com.knighttodo.knighttodo.Constants.API_GET_TODOS_BY_BLOCK_ID;
+
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("todos")
+@RequestMapping(API_BASE_TODOS)
 @Slf4j
 public class TodoResource {
 
@@ -81,7 +84,7 @@ public class TodoResource {
         return ResponseEntity.ok().body("Deleted Todo id " + id);
     }
 
-    @GetMapping("/byBlockId/{id}")
+    @GetMapping(API_GET_TODOS_BY_BLOCK_ID + "/{id}")
     public ResponseEntity<List<TodoResponseDto>> getTodosByBlockId(@PathVariable long id) {
         log.info("request for TodoBlock to get all todo by todoBlock id");
 

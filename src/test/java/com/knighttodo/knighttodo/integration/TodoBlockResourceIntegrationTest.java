@@ -1,13 +1,5 @@
 package com.knighttodo.knighttodo.integration;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.knighttodo.knighttodo.factories.TodoFactory;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.TodoBlockRepository;
@@ -24,6 +16,22 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+
+import static com.knighttodo.knighttodo.TestConstants.API_BASE_BLOCKS;
+import static com.knighttodo.knighttodo.TestConstants.buildDeleteBlockByIdUrl;
+import static com.knighttodo.knighttodo.TestConstants.buildGetBlockByIdUrl;
+import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToBlockName;
+import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToId;
+import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToLength;
+import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToTodosLength;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -49,11 +57,11 @@ public class TodoBlockResourceIntegrationTest {
         CreateTodoBlockRequestDto requestDto = TodoFactory.createTodoBlockRequestDto();
 
         mockMvc.perform(
-            post("/blocks")
+            post(API_BASE_BLOCKS)
                 .content(objectMapper.writeValueAsString(requestDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.id").exists());
+            .andExpect(jsonPath(buildJsonPathToId()).exists());
 
         assertThat(todoBlockRepository.count()).isEqualTo(1);
     }
@@ -67,7 +75,7 @@ public class TodoBlockResourceIntegrationTest {
 
     private void expectBadRequestStatusResponseOnCreateRequest(CreateTodoBlockRequestDto requestDto) throws Exception {
         mockMvc.perform(
-            post("/blocks")
+            post(API_BASE_BLOCKS)
                 .content(objectMapper.writeValueAsString(requestDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isBadRequest());
@@ -95,9 +103,9 @@ public class TodoBlockResourceIntegrationTest {
         todoBlockRepository.save(TodoFactory.notSavedTodoBlock());
 
         mockMvc.perform(
-            get("/blocks"))
+            get(API_BASE_BLOCKS))
             .andExpect(status().isFound())
-            .andExpect(jsonPath("$.length()").value(2));
+            .andExpect(jsonPath(buildJsonPathToLength()).value(2));
     }
 
     @Test
@@ -105,9 +113,9 @@ public class TodoBlockResourceIntegrationTest {
         TodoBlock todoBlock = todoBlockRepository.save(TodoFactory.notSavedTodoBlock());
 
         mockMvc.perform(
-            get("/blocks/" + todoBlock.getId()))
+            get(buildGetBlockByIdUrl(todoBlock.getId())))
             .andExpect(status().isFound())
-            .andExpect(jsonPath("$.id").value(todoBlock.getId()));
+            .andExpect(jsonPath(buildJsonPathToId()).value(todoBlock.getId()));
     }
 
     @Test
@@ -116,12 +124,12 @@ public class TodoBlockResourceIntegrationTest {
         UpdateTodoBlockRequestDto requestDto = TodoFactory.updateTodoBlockRequestDto(todoBlock);
 
         mockMvc.perform(
-            put("/blocks")
+            put(API_BASE_BLOCKS)
                 .content(objectMapper.writeValueAsString(requestDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.blockName").value(requestDto.getBlockName()))
-            .andExpect(jsonPath("$.todos.length()").value(requestDto.getTodos().size()));
+            .andExpect(jsonPath(buildJsonPathToBlockName()).value(requestDto.getBlockName()))
+            .andExpect(jsonPath(buildJsonPathToTodosLength()).value(requestDto.getTodos().size()));
 
         assertThat(todoBlockRepository.findById(todoBlock.getId()).get().getBlockName())
             .isEqualTo(requestDto.getBlockName());
@@ -137,7 +145,7 @@ public class TodoBlockResourceIntegrationTest {
 
     private void expectBadRequestStatusResponseOnUpdateRequest(UpdateTodoBlockRequestDto requestDto) throws Exception {
         mockMvc.perform(
-            put("/todos")
+            put(API_BASE_BLOCKS)
                 .content(objectMapper.writeValueAsString(requestDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isBadRequest());
@@ -181,7 +189,7 @@ public class TodoBlockResourceIntegrationTest {
         TodoBlock todoBlock = todoBlockRepository.save(TodoFactory.notSavedTodoBlock());
 
         mockMvc.perform(
-            delete("/blocks/" + todoBlock.getId()))
+            delete(buildDeleteBlockByIdUrl(todoBlock.getId())))
             .andExpect(status().isOk());
 
         assertThat(todoBlockRepository.findById(todoBlock.getId())).isEmpty();

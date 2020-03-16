@@ -26,9 +26,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.knighttodo.knighttodo.Constants.API_BASE_BLOCKS;
+
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("blocks")
+@RequestMapping(API_BASE_BLOCKS)
 @Slf4j
 public class TodoBlockResource {
 
