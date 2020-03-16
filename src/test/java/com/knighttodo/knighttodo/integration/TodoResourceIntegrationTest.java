@@ -255,7 +255,6 @@ public class TodoResourceIntegrationTest {
     public void getTodosByBlockId_shouldReturnExistingTodo_whenIdIsCorrect() throws Exception {
         Todo firstTodo = todoRepository.save(TodoFactory.notSavedTodo(savedTodoBlock));
         todoRepository.save(TodoFactory.notSavedTodo(savedTodoBlock));
-        System.out.println(firstTodo.getId());
         mockMvc.perform(
             get(buildGetTodosByBlockIdUrl(firstTodo.getTodoBlock().getId())))
             .andExpect(status().isFound())

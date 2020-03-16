@@ -12,7 +12,7 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
     Optional<Todo> findById(String todoId);
 
     @Transactional
-    void deleteById(String id);
+    void deleteById(String todoId);
 
-    List<Todo> findByTodoBlockId(String id);
+    List<Todo> findByTodoBlockId(String blockId);
 }

@@ -11,5 +11,5 @@ public interface TodoBlockRepository extends JpaRepository<TodoBlock, Long> {
     Optional<TodoBlock> findById(String blockId);
 
     @Transactional
-    void deleteById(String id);
+    void deleteById(String blockId);
 }

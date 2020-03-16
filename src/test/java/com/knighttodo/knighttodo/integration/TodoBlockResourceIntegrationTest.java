@@ -195,7 +195,6 @@ public class TodoBlockResourceIntegrationTest {
     @Test
     public void deleteTodoBlock_shouldDeleteTodoBlock_whenIdIsCorrect() throws Exception {
         TodoBlock todoBlock = todoBlockRepository.save(TodoFactory.notSavedTodoBlock());
-        System.out.println(todoBlock.getId());
         mockMvc.perform(
             delete(buildDeleteBlockByIdUrl(todoBlock.getId())))
             .andExpect(status().isOk());

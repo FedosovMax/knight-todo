@@ -37,7 +37,6 @@ public class TodoBlockGatewayImpl implements TodoBlockGateway {
 
     @Override
     public void deleteById(String blockId) {
-        System.out.println(blockId);
         todoBlockRepository.deleteById(blockId);
     }
 }
