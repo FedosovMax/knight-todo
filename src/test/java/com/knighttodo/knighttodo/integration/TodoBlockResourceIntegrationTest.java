@@ -130,7 +130,10 @@ public class TodoBlockResourceIntegrationTest {
         TodoBlock todoBlock = todoBlockRepository.save(TodoFactory.todoBlockInstance());
         UpdateTodoBlockRequestDto requestDto = TodoFactory.updateTodoBlockRequestDtoWithoutId(todoBlock);
 
-        expectBadRequestStatusResponseOnUpdateRequest(requestDto);
+        mockMvc.perform(put(API_BASE_BLOCKS)
+            .content(objectMapper.writeValueAsString(requestDto))
+            .contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -138,10 +141,6 @@ public class TodoBlockResourceIntegrationTest {
         TodoBlock todoBlock = todoBlockRepository.save(TodoFactory.todoBlockInstance());
         UpdateTodoBlockRequestDto requestDto = TodoFactory.updateTodoBlockRequestDtoWithIdConsistingOfSpaces(todoBlock);
 
-        expectBadRequestStatusResponseOnUpdateRequest(requestDto);
-    }
-
-    private void expectBadRequestStatusResponseOnUpdateRequest(UpdateTodoBlockRequestDto requestDto) throws Exception {
         mockMvc.perform(
             put(API_BASE_BLOCKS)
                 .content(objectMapper.writeValueAsString(requestDto))
@@ -149,18 +148,18 @@ public class TodoBlockResourceIntegrationTest {
             .andExpect(status().isBadRequest());
     }
 
-    private void expectThatTodoBlockWasNotUpdated(UpdateTodoBlockRequestDto requestDto) {
-        assertThat(todoBlockRepository.findById(requestDto.getId()).get().getBlockName())
-            .isNotEqualTo(requestDto.getBlockName());
-    }
-
     @Test
     public void updateTodoBlock_shouldRespondWithBadRequestStatus_whenBlockNameIsNull() throws Exception {
         TodoBlock todoBlock = todoBlockRepository.save(TodoFactory.todoBlockInstance());
         UpdateTodoBlockRequestDto requestDto = TodoFactory.updateTodoBlockRequestDtoWithoutName(todoBlock);
 
-        expectBadRequestStatusResponseOnUpdateRequest(requestDto);
-        expectThatTodoBlockWasNotUpdated(requestDto);
+        mockMvc.perform(
+            put(API_BASE_BLOCKS)
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(status().isBadRequest());
+        assertThat(todoBlockRepository.findById(requestDto.getId()).get().getBlockName())
+            .isNotEqualTo(requestDto.getBlockName());
     }
 
     @Test
@@ -169,17 +168,13 @@ public class TodoBlockResourceIntegrationTest {
         UpdateTodoBlockRequestDto requestDto = TodoFactory
             .updateTodoBlockRequestDtoWithNameConsistingOfSpaces(todoBlock);
 
-        expectBadRequestStatusResponseOnUpdateRequest(requestDto);
-        expectThatTodoBlockWasNotUpdated(requestDto);
-    }
-
-    @Test
-    public void updateTodoBlock_shouldRespondWithBadRequestStatus_whenTodosIsNull() throws Exception {
-        TodoBlock todoBlock = todoBlockRepository.save(TodoFactory.todoBlockInstance());
-        UpdateTodoBlockRequestDto requestDto = TodoFactory.updateTodoBlockRequestDtoWithoutTodos(todoBlock);
-
-        expectBadRequestStatusResponseOnUpdateRequest(requestDto);
-        expectThatTodoBlockWasNotUpdated(requestDto);
+        mockMvc.perform(
+            put(API_BASE_BLOCKS)
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(status().isBadRequest());
+        assertThat(todoBlockRepository.findById(requestDto.getId()).get().getBlockName())
+            .isNotEqualTo(requestDto.getBlockName());
     }
 
     @Test
