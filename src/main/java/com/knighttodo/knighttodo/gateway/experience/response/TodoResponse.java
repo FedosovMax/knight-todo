@@ -11,13 +11,13 @@ import lombok.NoArgsConstructor;
 @Builder
 public class TodoResponse {
 
-    private long id;
+    private String todoId;
 
-    private Long userId;
+    private String userId;
 
     private String scaryness;
 
     private String hardness;
 
-    private Long experience;
+    private String experience;
 }

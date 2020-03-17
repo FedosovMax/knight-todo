@@ -1,6 +1,5 @@
 package com.knighttodo.knighttodo.rest.dto.todo.response;
 
-import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scaryness;
 import lombok.AllArgsConstructor;
@@ -24,5 +23,5 @@ public class UpdateTodoResponseDto {
 
     private boolean ready;
 
-    private TodoBlock todoBlock;
+    private String todoBlockId;
 }

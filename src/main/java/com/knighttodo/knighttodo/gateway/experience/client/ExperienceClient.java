@@ -10,11 +10,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 @RequiredArgsConstructor
 @Slf4j
+@Component
 public class ExperienceClient {
 
     private final RestTemplate restTemplate;
@@ -26,7 +28,8 @@ public class ExperienceClient {
     public void calculateTodo(TodoRequest todoRequest) {
         try {
             restTemplate
-                .exchange(buildCalculateExperienceBaseUrl(), HttpMethod.POST, new HttpEntity<>(todoRequest),  Void.class);
+                .exchange(buildCalculateExperienceBaseUrl(), HttpMethod.POST, new HttpEntity<>(todoRequest),
+                    Void.class);
         } catch (HttpClientErrorException e) {
             log.error(e.getResponseBodyAsString(), e);
             throw new ExperienceClientException(e.getStatusCode(), e.getStatusText(), e.getResponseBodyAsByteArray(),

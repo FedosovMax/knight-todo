@@ -11,13 +11,13 @@ import lombok.NoArgsConstructor;
 @Builder
 public class TodoRequest {
 
-    private long id;
+    private String todoId;
 
-    private Long userId;
+    private String userId;
 
     private String scaryness;
 
     private String hardness;
 
-    private Boolean isReady;
+    private boolean ready;
 }

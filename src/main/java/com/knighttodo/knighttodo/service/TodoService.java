@@ -5,17 +5,17 @@ import java.util.List;
 
 public interface TodoService {
 
-    TodoVO save(TodoVO todoVO);
+    TodoVO save(String blockId, TodoVO todoVO);
 
     List<TodoVO> findAll();
 
     TodoVO findById(String todoId);
 
-    TodoVO updateTodo(TodoVO changedTodoVO);
+    TodoVO updateTodo(String todoId, TodoVO changedTodoVO);
 
     void deleteById(String todoId);
 
     List<TodoVO> findByBlockId(String blockId);
 
-    void updateIsReady(long todoId, boolean isReady);
+    void updateIsReady(String blockId, String todoId, boolean isReady);
 }

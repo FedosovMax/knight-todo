@@ -10,14 +10,14 @@ import com.knighttodo.knighttodo.rest.dto.todoblock.request.CreateTodoBlockReque
 import com.knighttodo.knighttodo.rest.dto.todoblock.request.UpdateTodoBlockRequestDto;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class TodoFactory {
 
     public static final String TODO_NAME = "Write integration tests";
     public static final Scaryness SCARYNESS_TODO = Scaryness.fromText("NOT_SCARY");
     public static final Hardness HARDNESS_TODO = Hardness.fromText("EXTRAORDINARY");
-    public static final Boolean IS_TODO_READY = false;
+    public static final boolean FALSE_TODO_READY = false;
+    public static final boolean TRUE_TODO_READY = true;
     public static final String UPDATED_TODO_NAME = "Write more integration tests";
     public static final Scaryness UPDATED_SCARYNESS_TODO = Scaryness.fromText("SCARY");
     public static final Hardness UPDATED_HARDNESS_TODO = Hardness.fromText("HARD");
@@ -34,8 +34,7 @@ public class TodoFactory {
             .todoName(TODO_NAME)
             .scaryness(SCARYNESS_TODO)
             .hardness(HARDNESS_TODO)
-            .todoBlock(savedTodoBlock)
-            .isReady(IS_TODO_READY)
+            .isReady(FALSE_TODO_READY)
             .build();
     }
 
@@ -63,73 +62,68 @@ public class TodoFactory {
         return request;
     }
 
-    public static CreateTodoRequestDto createTodoRequestDtoWithoutTodoBlock() {
-        return createTodoRequestDto(null);
+    public static CreateTodoRequestDto createTodoRequestDtoWithoutTodoBlockId() {
+        return CreateTodoRequestDto
+            .builder()
+            .todoName(TODO_NAME)
+            .scaryness(SCARYNESS_TODO)
+            .hardness(HARDNESS_TODO)
+            .isReady(FALSE_TODO_READY)
+            .build();
     }
 
-    public static Todo notSavedTodo(TodoBlock todoBlock) {
+    public static Todo todoWithBlockIdInstance(TodoBlock todoBlock) {
         return Todo
             .builder()
             .todoName(TODO_NAME)
             .scaryness(SCARYNESS_TODO)
             .hardness(HARDNESS_TODO)
             .todoBlock(todoBlock)
-            .ready(IS_TODO_READY)
+            .ready(FALSE_TODO_READY)
             .build();
     }
 
-    public static UpdateTodoRequestDto updateTodoRequestDto(Todo todo, TodoBlock savedTodoBlock) {
+    public static Todo todoWithBlockIdReadyInstance(TodoBlock todoBlock) {
+        return Todo
+            .builder()
+            .todoName(TODO_NAME)
+            .scaryness(SCARYNESS_TODO)
+            .hardness(HARDNESS_TODO)
+            .todoBlock(todoBlock)
+            .ready(TRUE_TODO_READY)
+            .build();
+    }
+
+    public static UpdateTodoRequestDto updateTodoRequestDto(TodoBlock savedTodoBlock) {
         return UpdateTodoRequestDto.builder()
-            .id(todo.getId())
             .todoName(UPDATED_TODO_NAME)
             .scaryness(UPDATED_SCARYNESS_TODO)
             .hardness(UPDATED_HARDNESS_TODO)
-            .todoBlock(savedTodoBlock)
-            .isReady(IS_TODO_READY)
+            .ready(FALSE_TODO_READY)
             .build();
     }
 
-    public static UpdateTodoRequestDto updateTodoRequestDtoWithoutId(Todo todo, TodoBlock savedTodoBlock) {
-        UpdateTodoRequestDto request = updateTodoRequestDto(todo, savedTodoBlock);
-        request.setId(null);
-        return request;
-    }
-
-    public static UpdateTodoRequestDto updateTodoRequestDtoWithIdConsistingOfSpaces(Todo todo,
-                                                                                    TodoBlock savedTodoBlock) {
-        UpdateTodoRequestDto request = updateTodoRequestDto(todo, savedTodoBlock);
-        request.setId("    ");
-        return request;
-    }
-
-    public static UpdateTodoRequestDto updateTodoRequestDtoWithoutName(Todo todo, TodoBlock savedTodoBlock) {
-        UpdateTodoRequestDto request = updateTodoRequestDto(todo, savedTodoBlock);
+    public static UpdateTodoRequestDto updateTodoRequestDtoWithoutName(TodoBlock savedTodoBlock) {
+        UpdateTodoRequestDto request = updateTodoRequestDto(savedTodoBlock);
         request.setTodoName(null);
         return request;
     }
 
-    public static UpdateTodoRequestDto updateTodoRequestDtoWithNameConsistingOfSpaces(Todo todo,
-                                                                                      TodoBlock savedTodoBlock) {
-        UpdateTodoRequestDto request = updateTodoRequestDto(todo, savedTodoBlock);
+    public static UpdateTodoRequestDto updateTodoRequestDtoWithNameConsistingOfSpaces(TodoBlock savedTodoBlock) {
+        UpdateTodoRequestDto request = updateTodoRequestDto(savedTodoBlock);
         request.setTodoName("    ");
         return request;
     }
 
-    public static UpdateTodoRequestDto updateTodoRequestDtoWithoutScaryness(Todo todo, TodoBlock savedTodoBlock) {
-        UpdateTodoRequestDto request = updateTodoRequestDto(todo, savedTodoBlock);
+    public static UpdateTodoRequestDto updateTodoRequestDtoWithoutScaryness(TodoBlock savedTodoBlock) {
+        UpdateTodoRequestDto request = updateTodoRequestDto(savedTodoBlock);
         request.setScaryness(null);
         return request;
     }
 
-    public static UpdateTodoRequestDto updateTodoRequestDtoWithoutHardness(Todo todo, TodoBlock savedTodoBlock) {
-        UpdateTodoRequestDto request = updateTodoRequestDto(todo, savedTodoBlock);
+    public static UpdateTodoRequestDto updateTodoRequestDtoWithoutHardness(TodoBlock savedTodoBlock) {
+        UpdateTodoRequestDto request = updateTodoRequestDto(savedTodoBlock);
         request.setHardness(null);
-        return request;
-    }
-
-    public static UpdateTodoRequestDto updateTodoRequestDtoWithoutTodoBlock(Todo todo, TodoBlock savedTodoBlock) {
-        UpdateTodoRequestDto request = updateTodoRequestDto(todo, savedTodoBlock);
-        request.setTodoBlock(null);
         return request;
     }
 
@@ -145,7 +139,6 @@ public class TodoFactory {
         return CreateTodoBlockRequestDto
             .builder()
             .blockName(BLOCK_NAME)
-            .todos(new ArrayList<>())
             .build();
     }
 
@@ -161,13 +154,7 @@ public class TodoFactory {
         return request;
     }
 
-    public static CreateTodoBlockRequestDto createTodoBlockRequestDtoWithoutTodos() {
-        CreateTodoBlockRequestDto request = createTodoBlockRequestDto();
-        request.setTodos(null);
-        return request;
-    }
-
-    public static TodoBlock notSavedTodoBlock() {
+    public static TodoBlock todoBlockInstance() {
         return TodoBlock
             .builder()
             .blockName(BLOCK_NAME)
@@ -180,7 +167,6 @@ public class TodoFactory {
             .builder()
             .id(todoBlock.getId())
             .blockName(UPDATED_BLOCK_NAME)
-            .todos(List.of(notSavedUpdatedTodo(todoBlock)))
             .build();
     }
 
@@ -191,7 +177,7 @@ public class TodoFactory {
             .scaryness(UPDATED_SCARYNESS_TODO)
             .hardness(UPDATED_HARDNESS_TODO)
             .todoBlock(todoBlock)
-            .ready(IS_TODO_READY)
+            .ready(FALSE_TODO_READY)
             .build();
     }
 
@@ -221,7 +207,6 @@ public class TodoFactory {
 
     public static UpdateTodoBlockRequestDto updateTodoBlockRequestDtoWithoutTodos(TodoBlock todoBlock) {
         UpdateTodoBlockRequestDto request = updateTodoBlockRequestDto(todoBlock);
-        request.setTodos(null);
         return request;
     }
 }

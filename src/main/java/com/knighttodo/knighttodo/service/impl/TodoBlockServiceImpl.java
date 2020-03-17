@@ -2,14 +2,11 @@ package com.knighttodo.knighttodo.service.impl;
 
 import com.knighttodo.knighttodo.domain.TodoBlockVO;
 import com.knighttodo.knighttodo.exception.TodoBlockNotFoundException;
-import com.knighttodo.knighttodo.exception.TodoNotFoundException;
 import com.knighttodo.knighttodo.gateway.TodoBlockGateway;
 import com.knighttodo.knighttodo.gateway.privatedb.mapper.TodoBlockMapper;
 import com.knighttodo.knighttodo.service.TodoBlockService;
-
 import java.util.List;
 import java.util.Optional;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +45,6 @@ public class TodoBlockServiceImpl implements TodoBlockService {
 
         todoBlockVO.setId(changedTodoBlockVO.getId());
         todoBlockVO.setBlockName(changedTodoBlockVO.getBlockName());
-        todoBlockVO.setTodos(changedTodoBlockVO.getTodos());
         return todoBlockGateway.save(todoBlockVO);
     }
 

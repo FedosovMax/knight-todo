@@ -14,12 +14,16 @@ public interface TodoRestMapper {
 
     TodoVO toTodoVO(CreateTodoRequestDto requestDto);
 
-//    @Mapping(target = "ready", source = "data", qualifiedByName = "toVerifiableCredential")
+    @Mapping(target = "ready", source = "ready")
     CreateTodoResponseDto toCreateTodoResponseDto(TodoVO todoVO);
 
+    @Mapping(target = "ready", source = "ready")
     TodoVO toTodoVO(UpdateTodoRequestDto requestDto);
 
+    @Mapping(target = "ready", source = "ready")
     UpdateTodoResponseDto toUpdateTodoResponseDto(TodoVO todoVO);
 
+    @Mapping(target = "ready", source = "ready")
     TodoResponseDto toTodoResponseDto(TodoVO todoVO);
+
 }

@@ -54,7 +54,7 @@ public class Todo {
     private boolean ready = false;
 
     @ManyToOne
-    @JoinColumn(name = "todoBlock")
+    @JoinColumn(name = "block_id")
     @JsonBackReference
     private TodoBlock todoBlock;
 }
