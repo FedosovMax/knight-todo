@@ -8,7 +8,6 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface TodoVOMapper {
 
-    @Mapping(target = "ready", source = "ready")
     @Mapping(target = "todoId", source = "id")
     @Mapping(target = "userId", ignore = true)
     TodoRequest toTodoRequest(TodoVO todoVO);
