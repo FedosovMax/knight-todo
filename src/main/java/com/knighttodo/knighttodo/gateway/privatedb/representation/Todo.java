@@ -9,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -19,6 +18,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "todo")
@@ -29,9 +30,14 @@ import lombok.NoArgsConstructor;
 public class Todo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(
+        name = "uuid",
+        strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @ColumnDefault("random_uuid()")
     @Column(name = "id")
-    private long id;
+    private String id;
 
     @Column(name = "todo_name")
     private String todoName;
@@ -45,10 +51,10 @@ public class Todo {
     private Hardness hardness;
 
     @Column(name = "ready")
-    private boolean ready;
+    private boolean ready = false;
 
     @ManyToOne
-    @JoinColumn(name = "todoBlock")
+    @JoinColumn(name = "block_id")
     @JsonBackReference
     private TodoBlock todoBlock;
 }

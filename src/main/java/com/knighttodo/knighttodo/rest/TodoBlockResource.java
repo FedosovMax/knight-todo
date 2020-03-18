@@ -60,7 +60,7 @@ public class TodoBlockResource {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TodoBlockResponseDto> getTodoBlockById(@PathVariable long id) {
+    public ResponseEntity<TodoBlockResponseDto> getTodoBlockById(@PathVariable String id) {
         log.info("Rest request to get todoBlock by id : {}", id);
         TodoBlockVO todoBlockVO = todoBlockService.findById(id);
 
@@ -78,7 +78,7 @@ public class TodoBlockResource {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteTodoBlock(@PathVariable long id) {
+    public ResponseEntity<String> deleteTodoBlock(@PathVariable String id) {
         log.info("Rest request to delete todoBlock by id : {}", id);
         todoBlockService.deleteById(id);
 

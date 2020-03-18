@@ -20,4 +20,5 @@ public interface TodoRestMapper {
     UpdateTodoResponseDto toUpdateTodoResponseDto(TodoVO todoVO);
 
     TodoResponseDto toTodoResponseDto(TodoVO todoVO);
+
 }

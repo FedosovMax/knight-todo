@@ -1,20 +1,21 @@
 package com.knighttodo.knighttodo.service;
 
 import com.knighttodo.knighttodo.domain.TodoVO;
-
 import java.util.List;
 
 public interface TodoService {
 
-    TodoVO save(TodoVO todoVO);
+    TodoVO save(String blockId, TodoVO todoVO);
 
     List<TodoVO> findAll();
 
-    TodoVO findById(long todoId);
+    TodoVO findById(String todoId);
 
-    TodoVO updateTodo(TodoVO changedTodoVO);
+    TodoVO updateTodo(String todoId, TodoVO changedTodoVO);
 
-    void deleteById(long TodoId);
+    void deleteById(String todoId);
 
-    List<TodoVO> findByBlockId(long blockId);
+    List<TodoVO> findByBlockId(String blockId);
+
+    void updateIsReady(String blockId, String todoId, boolean isReady);
 }

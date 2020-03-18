@@ -3,16 +3,9 @@ package com.knighttodo.knighttodo.service.impl;
 import com.knighttodo.knighttodo.domain.TodoVO;
 import com.knighttodo.knighttodo.exception.TodoNotFoundException;
 import com.knighttodo.knighttodo.gateway.TodoGateway;
-import com.knighttodo.knighttodo.gateway.privatedb.mapper.TodoMapper;
-
-import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
+import com.knighttodo.knighttodo.gateway.experience.ExperienceGateway;
 import com.knighttodo.knighttodo.service.TodoService;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,71 +14,55 @@ import org.springframework.stereotype.Service;
 public class TodoServiceImpl implements TodoService {
 
     private final TodoGateway todoGateway;
-    private final TodoMapper todoMapper;
+    private final ExperienceGateway experienceGateway;
 
     @Override
-    public TodoVO save(TodoVO todoVO) {
-
-        Todo todo = todoGateway.save(todoMapper.toTodo(todoVO));
-
-        return todoMapper.toTodoVO(todo); // need to add todoBlockId from requestEntity
+    public TodoVO save(String blockId, TodoVO todoVO) {
+        todoVO.setTodoBlockId(blockId);
+        return todoGateway.save(todoVO);
     }
 
     @Override
     public List<TodoVO> findAll() {
-        return todoGateway.findAll()
-            .stream()
-            .map(todoMapper::toTodoVO)
-            .collect(Collectors.toList());
+        return todoGateway.findAll();
     }
 
     @Override
-    public TodoVO findById(long todoId) {
-        Optional<Todo> todos = todoGateway.findById(todoId);
-        TodoVO todoVO;
-
-        if (todos.isPresent()) {
-            todoVO = todoMapper.toTodoVO(todos.get());
-        } else {
-            throw new RuntimeException("Did not find Todo id - " + todoId);
-        }
-
-        return todoVO;
+    public TodoVO findById(String todoId) {
+        return todoGateway.findById(todoId)
+            .orElseThrow(() -> new TodoNotFoundException(String.format("Todo with such id:%s can't be found", todoId)));
     }
 
     @Override
-    public TodoVO updateTodo(TodoVO changedTodoVO) {
-        Todo changedTodo = todoMapper.toTodo(changedTodoVO);
-        Todo todo = todoGateway.findById(changedTodo.getId()).orElseThrow(TodoNotFoundException::new);
-        todo.setTodoName(changedTodo.getTodoName());
-        todo.setTodoBlock(changedTodo.getTodoBlock());
-        todo.setScaryness(changedTodo.getScaryness());
-        todo.setHardness(changedTodo.getHardness());
+    public TodoVO updateTodo(String todoId, TodoVO changedTodoVO) {
+        TodoVO todoVO = todoGateway.findById(todoId)
+            .orElseThrow(() -> new TodoNotFoundException(String.format("Todo with such id:%s can't be found", todoId)));
 
-        Todo updatedTodo = todoGateway.save(todo);
-        return todoMapper.toTodoVO(updatedTodo);
+        todoVO.setTodoName(changedTodoVO.getTodoName());
+        todoVO.setTodoBlockId(changedTodoVO.getTodoBlockId());
+        todoVO.setScaryness(changedTodoVO.getScaryness());
+        todoVO.setHardness(changedTodoVO.getHardness());
+        return todoGateway.save(todoVO);
     }
 
     @Override
-    public void deleteById(long todoId) {
+    public void deleteById(String todoId) {
         todoGateway.deleteById(todoId);
     }
 
+    @Override
+    public List<TodoVO> findByBlockId(String blockId) {
+        return todoGateway.findByTodoBlockId(blockId);
+    }
 
     @Override
-    public List<TodoVO> findByBlockId(long blockId) {
+    public void updateIsReady(String blockId, String todoId, boolean isReady) {
+        TodoVO todoVO = findById(todoId);
+        todoVO.setTodoBlockId(blockId);
+        todoVO.setReady(isReady);
+        experienceGateway.calculateExperience(todoVO);
+        todoGateway.save(todoVO);
 
-        List<Todo> beforeTodos = todoGateway.findAll();
-
-        List<TodoVO> resultTodos = new ArrayList<>();
-
-        for (Todo beforeTodo : beforeTodos) {
-            if (beforeTodo.getTodoBlock().getId() == blockId) {
-                resultTodos.add(todoMapper.toTodoVO(beforeTodo));
-            }
-        }
-
-        return resultTodos;
     }
 }
 
