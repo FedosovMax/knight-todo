@@ -60,10 +60,10 @@ public class TodoResource {
         return ResponseEntity.status(HttpStatus.CREATED).body(todoRestMapper.toCreateTodoResponseDto(savedTodoVO));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<TodoResponseDto> getTodoById(@PathVariable String id) {
-        log.info("Rest request to get todo by id : {}", id);
-        TodoVO todoVO = todoService.findById(id);
+    @GetMapping("/{todoId}")
+    public ResponseEntity<TodoResponseDto> getTodoById(@PathVariable String todoId) {
+        log.info("Rest request to get todo by id : {}", todoId);
+        TodoVO todoVO = todoService.findById(todoId);
 
         return ResponseEntity.status(HttpStatus.FOUND).body(todoRestMapper.toTodoResponseDto(todoVO));
     }
@@ -77,20 +77,19 @@ public class TodoResource {
         return ResponseEntity.ok().body(todoRestMapper.toUpdateTodoResponseDto(updatedTodoVO));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteTodo(@PathVariable String id) {
-        log.info("Rest request to delete todo by id : {}", id);
-        todoService.deleteById(id);
-
-        return ResponseEntity.ok().body("Deleted Todo id " + id);
+    @DeleteMapping("/{todoId}")
+    public ResponseEntity<Void> deleteTodo(@PathVariable String todoId) {
+        log.info("Rest request to delete todo by id : {}", todoId);
+        todoService.deleteById(todoId);
+        return ResponseEntity.ok().build();
     }
 
-    @GetMapping(API_GET_TODOS_BY_BLOCK_ID + "/{id}")
-    public ResponseEntity<List<TodoResponseDto>> getTodosByBlockId(@PathVariable String id) {
+    @GetMapping(API_GET_TODOS_BY_BLOCK_ID)
+    public ResponseEntity<List<TodoResponseDto>> getTodosByBlockId(@PathVariable String blockId) {
         log.info("request for TodoBlock to get all todo by todoBlock id");
 
         return ResponseEntity.status(HttpStatus.FOUND)
-            .body(todoService.findByBlockId(id)
+            .body(todoService.findByBlockId(blockId)
                 .stream()
                 .map(todoRestMapper::toTodoResponseDto)
                 .collect(Collectors.toList()));

@@ -68,10 +68,6 @@ public class TodoBlockResourceIntegrationTest {
     public void addTodoBlock_shouldRespondWithBadRequestStatus_whenNameIsNull() throws Exception {
         CreateTodoBlockRequestDto requestDto = TodoFactory.createTodoBlockRequestDtoWithoutName();
 
-        expectBadRequestStatusResponseOnCreateRequest(requestDto);
-    }
-
-    private void expectBadRequestStatusResponseOnCreateRequest(CreateTodoBlockRequestDto requestDto) throws Exception {
         mockMvc.perform(
             post(API_BASE_BLOCKS)
                 .content(objectMapper.writeValueAsString(requestDto))
@@ -85,7 +81,13 @@ public class TodoBlockResourceIntegrationTest {
     public void addTodoBlock_shouldRespondWithBadRequestStatus_whenNameConsistsOfSpaces() throws Exception {
         CreateTodoBlockRequestDto requestDto = TodoFactory.createTodoBlockRequestDtoWithNameConsistingOfSpaces();
 
-        expectBadRequestStatusResponseOnCreateRequest(requestDto);
+        mockMvc.perform(
+            post(API_BASE_BLOCKS)
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(status().isBadRequest());
+
+        assertThat(todoBlockRepository.count()).isEqualTo(0);
     }
 
     @Test
@@ -131,8 +133,8 @@ public class TodoBlockResourceIntegrationTest {
         UpdateTodoBlockRequestDto requestDto = TodoFactory.updateTodoBlockRequestDtoWithoutId(todoBlock);
 
         mockMvc.perform(put(API_BASE_BLOCKS)
-            .content(objectMapper.writeValueAsString(requestDto))
-            .contentType(MediaType.APPLICATION_JSON_VALUE))
+                            .content(objectMapper.writeValueAsString(requestDto))
+                            .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isBadRequest());
     }
 
@@ -181,6 +183,7 @@ public class TodoBlockResourceIntegrationTest {
     @Transactional
     public void deleteTodoBlock_shouldDeleteTodoBlock_whenIdIsCorrect() throws Exception {
         TodoBlock todoBlock = todoBlockRepository.save(TodoFactory.todoBlockInstance());
+
         mockMvc.perform(
             delete(buildDeleteBlockByIdUrl(todoBlock.getId())))
             .andExpect(status().isOk());

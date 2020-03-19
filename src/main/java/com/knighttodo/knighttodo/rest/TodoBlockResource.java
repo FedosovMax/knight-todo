@@ -59,10 +59,10 @@ public class TodoBlockResource {
             .body(todoBlockRestMapper.toCreateTodoBlockResponseDto(savedTodoBlockVO));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<TodoBlockResponseDto> getTodoBlockById(@PathVariable String id) {
-        log.info("Rest request to get todoBlock by id : {}", id);
-        TodoBlockVO todoBlockVO = todoBlockService.findById(id);
+    @GetMapping("/{blockId}")
+    public ResponseEntity<TodoBlockResponseDto> getTodoBlockById(@PathVariable String blockId) {
+        log.info("Rest request to get todoBlock by id : {}", blockId);
+        TodoBlockVO todoBlockVO = todoBlockService.findById(blockId);
 
         return ResponseEntity.status(HttpStatus.FOUND).body(todoBlockRestMapper.toTodoBlockResponseDto(todoBlockVO));
     }
@@ -77,11 +77,10 @@ public class TodoBlockResource {
         return ResponseEntity.ok().body(todoBlockRestMapper.toUpdateTodoBlockResponseDto(updatedTodoBlockVO));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteTodoBlock(@PathVariable String id) {
-        log.info("Rest request to delete todoBlock by id : {}", id);
-        todoBlockService.deleteById(id);
-
-        return ResponseEntity.ok().body("Deleted TodoBlock id " + id);
+    @DeleteMapping("/{blockId}")
+    public ResponseEntity<Void> deleteTodoBlock(@PathVariable String blockId) {
+        log.info("Rest request to delete todoBlock by id : {}", blockId);
+        todoBlockService.deleteById(blockId);
+        return ResponseEntity.ok().build();
     }
 }

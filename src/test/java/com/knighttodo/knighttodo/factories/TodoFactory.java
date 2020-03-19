@@ -8,18 +8,19 @@ import com.knighttodo.knighttodo.rest.dto.todo.request.CreateTodoRequestDto;
 import com.knighttodo.knighttodo.rest.dto.todo.request.UpdateTodoRequestDto;
 import com.knighttodo.knighttodo.rest.dto.todoblock.request.CreateTodoBlockRequestDto;
 import com.knighttodo.knighttodo.rest.dto.todoblock.request.UpdateTodoBlockRequestDto;
+
 import java.util.ArrayList;
 
 public class TodoFactory {
 
     public static final String TODO_NAME = "Write integration tests";
-    public static final Scaryness SCARYNESS_TODO = Scaryness.fromText("NOT_SCARY");
-    public static final Hardness HARDNESS_TODO = Hardness.fromText("EXTRAORDINARY");
+    public static final Scaryness SCARYNESS_TODO = Scaryness.NOT_SCARY;
+    public static final Hardness HARDNESS_TODO = Hardness.EXTRAORDINARY;
     public static final boolean FALSE_TODO_READY = false;
     public static final boolean TRUE_TODO_READY = true;
     public static final String UPDATED_TODO_NAME = "Write more integration tests";
-    public static final Scaryness UPDATED_SCARYNESS_TODO = Scaryness.fromText("SCARY");
-    public static final Hardness UPDATED_HARDNESS_TODO = Hardness.fromText("HARD");
+    public static final Scaryness UPDATED_SCARYNESS_TODO = Scaryness.SCARY;
+    public static final Hardness UPDATED_HARDNESS_TODO = Hardness.HARD;
 
     public static final String BLOCK_NAME = "Sunday Todos";
     public static final String UPDATED_BLOCK_NAME = "Friday Todos";

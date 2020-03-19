@@ -32,8 +32,8 @@ public class TestConstants {
         return API_BASE_BLOCKS + "/" + blockId + API_BASE_TODOS + "/" + id;
     }
 
-    public static String buildGetTodosByBlockIdUrl(String blockId, String id) {
-        return API_BASE_BLOCKS + "/" + blockId + API_BASE_TODOS + API_GET_TODOS_BY_BLOCK_ID + "/" + id;
+    public static String buildGetTodosByBlockIdUrl(String blockId) {
+        return API_BASE_BLOCKS + "/" + blockId + API_BASE_TODOS + API_GET_TODOS_BY_BLOCK_ID;
     }
 
     public static String buildUpdateTodoReadyBaseUrl(TodoBlock todoBlock, Todo todo) {
