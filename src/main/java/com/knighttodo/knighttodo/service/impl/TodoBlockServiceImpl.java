@@ -5,8 +5,9 @@ import com.knighttodo.knighttodo.exception.TodoBlockNotFoundException;
 import com.knighttodo.knighttodo.gateway.TodoBlockGateway;
 import com.knighttodo.knighttodo.gateway.privatedb.mapper.TodoBlockMapper;
 import com.knighttodo.knighttodo.service.TodoBlockService;
+
 import java.util.List;
-import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,12 +30,9 @@ public class TodoBlockServiceImpl implements TodoBlockService {
 
     @Override
     public TodoBlockVO findById(String blockId) {
-        Optional<TodoBlockVO> result = todoBlockGateway.findById(blockId);
-
-        if (result.isPresent()) {
-            return result.get();
-        }
-        throw new RuntimeException("Did not find TodoBlock id - " + blockId);
+        return todoBlockGateway.findById(blockId)
+            .orElseThrow(() -> new TodoBlockNotFoundException(
+                String.format("TodoBlock with such id:%s can't be " + "found", blockId)));
     }
 
     @Override

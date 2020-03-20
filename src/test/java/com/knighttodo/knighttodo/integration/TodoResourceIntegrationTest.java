@@ -181,8 +181,8 @@ public class TodoResourceIntegrationTest {
             .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isOk())
             .andExpect(jsonPath(buildJsonPathToTodoName()).value(requestDto.getTodoName()))
-            .andExpect(jsonPath(buildJsonPathToScaryness()).value(requestDto.getScaryness().getText()))
-            .andExpect(jsonPath(buildJsonPathToHardness()).value(requestDto.getHardness().getText()));
+            .andExpect(jsonPath(buildJsonPathToScaryness()).value(requestDto.getScaryness().toString()))
+            .andExpect(jsonPath(buildJsonPathToHardness()).value(requestDto.getHardness().toString()));
 
         assertThat(todoRepository.findById(todo.getId()).get().getTodoName()).isEqualTo(requestDto.getTodoName());
     }
@@ -253,7 +253,8 @@ public class TodoResourceIntegrationTest {
         TodoBlock todoBlock = todoBlockRepository.save(TodoFactory.todoBlockInstance());
         Todo firstTodo = todoRepository.save(TodoFactory.todoWithBlockIdInstance(todoBlock));
         todoRepository.save(TodoFactory.todoWithBlockIdInstance(todoBlock));
-        mockMvc.perform(get(buildGetTodosByBlockIdUrl(todoBlock.getId(), firstTodo.getTodoBlock().getId())))
+
+        mockMvc.perform(get(buildGetTodosByBlockIdUrl(todoBlock.getId())))
             .andExpect(status().isFound())
             .andExpect(jsonPath(buildJsonPathToLength()).value(2));
     }
