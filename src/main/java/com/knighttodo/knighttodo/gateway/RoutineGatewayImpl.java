@@ -11,10 +11,10 @@ import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
-@Service
+@Component
 public class RoutineGatewayImpl implements RoutineGateway {
 
     private final RoutineRepository routineRepository;

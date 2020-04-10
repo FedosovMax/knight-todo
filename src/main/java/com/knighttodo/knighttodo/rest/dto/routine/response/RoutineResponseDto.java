@@ -3,7 +3,6 @@ package com.knighttodo.knighttodo.rest.dto.routine.response;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scaryness;
 import com.knighttodo.knighttodo.rest.dto.todo.response.TodoResponseDto;
-import com.knighttodo.knighttodo.rest.dto.todoblock.response.TodoBlockResponseDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +28,9 @@ public class RoutineResponseDto {
 
     private boolean ready;
 
-    private String parentTemplateId;
+    private String templateId;
 
-    private TodoBlockResponseDto todoBlock;
+    private String todoBlockId;
 
     private List<TodoResponseDto> todos = new ArrayList<>();
 }

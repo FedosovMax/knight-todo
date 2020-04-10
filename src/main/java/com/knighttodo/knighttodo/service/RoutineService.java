@@ -12,7 +12,7 @@ public interface RoutineService {
 
     RoutineVO findById(String routineId);
 
-    RoutineVO updateRoutine(RoutineVO changedRoutineVO);
+    RoutineVO updateRoutine(String routineId, RoutineVO changedRoutineVO);
 
     void deleteById(String routineId);
 }

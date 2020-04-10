@@ -51,8 +51,8 @@ public class Routine {
 
     private boolean ready;
 
-    @Column(name = "parent_template_id")
-    private String parentTemplateId;
+    @Column(name = "template_id")
+    private String templateId;
 
     @ManyToOne
     @JoinColumn(name = "block_id")

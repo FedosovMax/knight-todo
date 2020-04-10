@@ -6,9 +6,7 @@ import static com.knighttodo.knighttodo.Constants.API_BASE_ROUTINES;
 import com.knighttodo.knighttodo.domain.RoutineVO;
 import com.knighttodo.knighttodo.rest.dto.routine.request.CreateRoutineRequestDto;
 import com.knighttodo.knighttodo.rest.dto.routine.request.UpdateRoutineRequestDto;
-import com.knighttodo.knighttodo.rest.dto.routine.response.CreateRoutineResponseDto;
 import com.knighttodo.knighttodo.rest.dto.routine.response.RoutineResponseDto;
-import com.knighttodo.knighttodo.rest.dto.routine.response.UpdateRoutineResponseDto;
 import com.knighttodo.knighttodo.rest.mapper.RoutineRestMapper;
 import com.knighttodo.knighttodo.service.RoutineService;
 
@@ -41,7 +39,7 @@ public class RoutineResource {
     private final RoutineRestMapper routineRestMapper;
 
     @GetMapping
-    public ResponseEntity<List<RoutineResponseDto>> getAllRoutines() {
+    public ResponseEntity<List<RoutineResponseDto>> getAllRoutines(@PathVariable String blockId) {
         log.info("Rest request to get all routines");
 
         return ResponseEntity.status(HttpStatus.FOUND)
@@ -52,36 +50,38 @@ public class RoutineResource {
     }
 
     @PostMapping
-    public ResponseEntity<CreateRoutineResponseDto> addRoutine(
-        @Valid @RequestBody CreateRoutineRequestDto createRequestDto) {
+    public ResponseEntity<RoutineResponseDto> addRoutine(
+        @Valid @RequestBody CreateRoutineRequestDto createRequestDto, @PathVariable String blockId) {
         log.info("Rest request to add routine : {}", createRequestDto);
         RoutineVO routineVO = routineRestMapper.toRoutineVO(createRequestDto);
         RoutineVO savedRoutineVO = routineService.save(routineVO);
 
         return ResponseEntity.status(HttpStatus.CREATED)
-            .body(routineRestMapper.toCreateRoutineResponseDto(savedRoutineVO));
+            .body(routineRestMapper.toRoutineResponseDto(savedRoutineVO));
     }
 
     @GetMapping("/{routineId}")
-    public ResponseEntity<RoutineResponseDto> getRoutineById(@PathVariable String routineId) {
+    public ResponseEntity<RoutineResponseDto> getRoutineById(@PathVariable String routineId,
+                                                             @PathVariable String blockId) {
         log.info("Rest request to get routine by id : {}", routineId);
         RoutineVO routineVO = routineService.findById(routineId);
 
         return ResponseEntity.status(HttpStatus.FOUND).body(routineRestMapper.toRoutineResponseDto(routineVO));
     }
 
-    @PutMapping
-    public ResponseEntity<UpdateRoutineResponseDto> updateRoutine(
-        @Valid @RequestBody UpdateRoutineRequestDto updateRequestDto) {
+    @PutMapping("/{routineId")
+    public ResponseEntity<RoutineResponseDto> updateRoutine(@PathVariable String routineId,
+                                                            @Valid @RequestBody UpdateRoutineRequestDto updateRequestDto,
+                                                            @PathVariable String blockId) {
         log.info("Rest request to update routine : {}", updateRequestDto);
         RoutineVO routineVO = routineRestMapper.toRoutineVO(updateRequestDto);
-        RoutineVO updatedRoutineVO = routineService.updateRoutine(routineVO);
+        RoutineVO updatedRoutineVO = routineService.updateRoutine(routineId, routineVO);
 
-        return ResponseEntity.ok().body(routineRestMapper.toUpdateRoutineResponseDto(updatedRoutineVO));
+        return ResponseEntity.ok().body(routineRestMapper.toRoutineResponseDto(updatedRoutineVO));
     }
 
     @DeleteMapping("/{routineId}")
-    public ResponseEntity<Void> deleteRoutine(@PathVariable String routineId) {
+    public ResponseEntity<Void> deleteRoutine(@PathVariable String routineId, @PathVariable String blockId) {
         log.info("Rest request to delete routine by id : {}", routineId);
         routineService.deleteById(routineId);
         return ResponseEntity.ok().build();

@@ -35,8 +35,8 @@ public class RoutineServiceImpl implements RoutineService {
     }
 
     @Override
-    public RoutineVO updateRoutine(RoutineVO changedRoutineVO) {
-        RoutineVO routineVO = findById(changedRoutineVO.getId());
+    public RoutineVO updateRoutine(String routineId, RoutineVO changedRoutineVO) {
+        RoutineVO routineVO = findById(routineId);
         routineVO.setName(changedRoutineVO.getName());
         routineVO.setHardness(changedRoutineVO.getHardness());
         routineVO.setScaryness(changedRoutineVO.getScaryness());

@@ -25,5 +25,9 @@ public class RoutineVO {
 
     private Scaryness scaryness;
 
+    private String templateId;
+
+    private TodoBlockVO todoBlock;
+
     private List<TodoVO> todos = new ArrayList<>();
 }

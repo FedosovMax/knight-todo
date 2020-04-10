@@ -18,9 +18,6 @@ import lombok.NoArgsConstructor;
 public class UpdateRoutineRequestDto {
 
     @NotBlank
-    private String id;
-
-    @NotBlank
     private String name;
 
     @NotNull
