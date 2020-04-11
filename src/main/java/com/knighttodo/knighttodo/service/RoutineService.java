@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface RoutineService {
 
-    RoutineVO save(RoutineVO routineVO);
+    RoutineVO save(String blockId, RoutineVO routineVO);
 
     List<RoutineVO> findAll();
 

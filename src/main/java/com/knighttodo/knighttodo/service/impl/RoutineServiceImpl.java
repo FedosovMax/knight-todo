@@ -4,6 +4,7 @@ import com.knighttodo.knighttodo.domain.RoutineVO;
 import com.knighttodo.knighttodo.exception.RoutineNotFoundException;
 import com.knighttodo.knighttodo.gateway.RoutineGateway;
 import com.knighttodo.knighttodo.service.RoutineService;
+import com.knighttodo.knighttodo.service.TodoBlockService;
 
 import java.util.List;
 
@@ -16,9 +17,11 @@ import org.springframework.stereotype.Service;
 public class RoutineServiceImpl implements RoutineService {
 
     private final RoutineGateway routineGateway;
+    private final TodoBlockService todoBlockService;
 
     @Override
-    public RoutineVO save(RoutineVO routineVO) {
+    public RoutineVO save(String blockId, RoutineVO routineVO) {
+        routineVO.setTodoBlock(todoBlockService.findById(blockId));
         return routineGateway.save(routineVO);
     }
 
