@@ -1,6 +1,5 @@
 package com.knighttodo.knighttodo.gateway.privatedb.representation;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scaryness;
 
@@ -18,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -55,6 +55,9 @@ public class Todo {
 
     @ManyToOne
     @JoinColumn(name = "block_id")
-    @JsonBackReference
     private TodoBlock todoBlock;
+
+    @ManyToOne
+    @JoinColumn(name = "routine_id")
+    private Routine routine;
 }
