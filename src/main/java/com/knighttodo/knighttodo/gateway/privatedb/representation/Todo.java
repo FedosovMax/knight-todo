@@ -2,8 +2,7 @@ package com.knighttodo.knighttodo.gateway.privatedb.representation;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
-import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scaryness;
-
+import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scariness;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -44,7 +42,7 @@ public class Todo {
 
     @Column(name = "scaryness")
     @Enumerated(EnumType.STRING)
-    private Scaryness scaryness;
+    private Scariness scariness;
 
     @Column(name = "hardness")
     @Enumerated(EnumType.STRING)

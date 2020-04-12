@@ -11,7 +11,7 @@ import static com.knighttodo.knighttodo.TestConstants.buildGetTodosByBlockIdUrl;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToHardness;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToId;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToLength;
-import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToScaryness;
+import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToScariness;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToTodoName;
 import static com.knighttodo.knighttodo.TestConstants.buildUpdateTodoReadyBaseUrl;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -28,6 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.knighttodo.knighttodo.factories.TodoFactory;
+import com.knighttodo.knighttodo.gateway.experience.response.ExperienceResponse;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.TodoBlockRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.TodoRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
@@ -42,7 +43,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -89,6 +89,7 @@ public class TodoResourceIntegrationTest {
                 .content(objectMapper.writeValueAsString(requestDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isCreated())
+            .andExpect(jsonPath("todoBlockId").isNotEmpty())
             .andExpect(jsonPath(buildJsonPathToId()).exists());
 
         assertThat(todoRepository.count()).isEqualTo(1);
@@ -123,10 +124,10 @@ public class TodoResourceIntegrationTest {
     }
 
     @Test
-    public void addTodo_shouldRespondWithBadRequestStatus_whenScarynessIsNull() throws Exception {
+    public void addTodo_shouldRespondWithBadRequestStatus_whenScarinessIsNull() throws Exception {
         TodoBlock todoBlock = todoBlockRepository.save(TodoFactory.todoBlockInstance());
         CreateTodoRequestDto requestDto = TodoFactory
-            .createTodoRequestDtoWithoutScaryness(todoBlock);
+            .createTodoRequestDtoWithoutScariness(todoBlock);
 
         mockMvc.perform(post(API_BASE_BLOCKS + "/" + todoBlock.getId() + API_BASE_TODOS)
             .content(objectMapper.writeValueAsString(requestDto))
@@ -181,7 +182,7 @@ public class TodoResourceIntegrationTest {
             .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isOk())
             .andExpect(jsonPath(buildJsonPathToTodoName()).value(requestDto.getTodoName()))
-            .andExpect(jsonPath(buildJsonPathToScaryness()).value(requestDto.getScaryness().toString()))
+            .andExpect(jsonPath(buildJsonPathToScariness()).value(requestDto.getScariness().toString()))
             .andExpect(jsonPath(buildJsonPathToHardness()).value(requestDto.getHardness().toString()));
 
         assertThat(todoRepository.findById(todo.getId()).get().getTodoName()).isEqualTo(requestDto.getTodoName());
@@ -213,10 +214,10 @@ public class TodoResourceIntegrationTest {
     }
 
     @Test
-    public void updateTodo_shouldRespondWithBadRequestStatus_whenScarynessIsNull() throws Exception {
+    public void updateTodo_shouldRespondWithBadRequestStatus_whenScarinessIsNull() throws Exception {
         TodoBlock todoBlock = todoBlockRepository.save(TodoFactory.todoBlockInstance());
         Todo todo = todoRepository.save(TodoFactory.todoWithBlockIdInstance(todoBlock));
-        UpdateTodoRequestDto requestDto = TodoFactory.updateTodoRequestDtoWithoutScaryness(todoBlock);
+        UpdateTodoRequestDto requestDto = TodoFactory.updateTodoRequestDtoWithoutScariness(todoBlock);
 
         mockMvc.perform(put(API_BASE_BLOCKS + "/" + todoBlock.getId() + API_BASE_TODOS + "/" + todo.getId())
             .content(objectMapper.writeValueAsString(requestDto))
@@ -263,13 +264,17 @@ public class TodoResourceIntegrationTest {
     public void updateIsReady_shouldReturnOk_shouldMakeIsReadyTrue_whenTodoIdIsCorrect() throws Exception {
         TodoBlock todoBlock = todoBlockRepository.save(TodoFactory.todoBlockInstance());
         Todo todo = todoRepository.save(TodoFactory.todoWithBlockIdInstance(todoBlock));
+        ExperienceResponse experienceResponse = TodoFactory.experienceResponseInstance(todo.getId());
 
-        when(restTemplate.exchange(anyString(), eq(HttpMethod.POST), any(), eq(Void.class)))
-            .thenReturn(new ResponseEntity<>(null, HttpStatus.OK));
+        when(restTemplate.postForEntity(anyString(), any(), eq(ExperienceResponse.class)))
+            .thenReturn(new ResponseEntity<>(experienceResponse, HttpStatus.OK));
 
         mockMvc.perform(put(buildUpdateTodoReadyBaseUrl(todoBlock, todo))
             .param(PARAM_READY, PARAMETER_TRUE))
-            .andExpect(status().isOk());
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("todoBlockId").isNotEmpty())
+            .andExpect(jsonPath("experience").isNotEmpty())
+            .andExpect(jsonPath("ready").value(true));
 
         assertThat(todoRepository.findById(todo.getId()).get().isReady()).isEqualTo(true);
     }
@@ -278,9 +283,10 @@ public class TodoResourceIntegrationTest {
     public void updateIsReady_shouldReturnOk_shouldMakeIsReadyFalse_whenTodoIdIsCorrect() throws Exception {
         TodoBlock todoBlock = todoBlockRepository.save(TodoFactory.todoBlockInstance());
         Todo todoWithReadyTrue = todoRepository.save(TodoFactory.todoWithBlockIdReadyInstance(todoBlock));
+        ExperienceResponse experienceResponse = TodoFactory.experienceResponseInstance(todoWithReadyTrue.getId());
 
-        when(restTemplate.exchange(anyString(), eq(HttpMethod.POST), any(), eq(Void.class)))
-            .thenReturn(new ResponseEntity<>(null, HttpStatus.OK));
+        when(restTemplate.postForEntity(anyString(), any(), eq(ExperienceResponse.class)))
+            .thenReturn(new ResponseEntity<>(experienceResponse, HttpStatus.OK));
 
         mockMvc.perform(put(buildUpdateTodoReadyBaseUrl(todoBlock, todoWithReadyTrue))
             .param(PARAM_READY, PARAMETER_FALSE))

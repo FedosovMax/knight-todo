@@ -1,25 +1,26 @@
 package com.knighttodo.knighttodo.factories;
 
+import com.knighttodo.knighttodo.gateway.experience.response.ExperienceResponse;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
-import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scaryness;
+import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scariness;
 import com.knighttodo.knighttodo.rest.dto.todo.request.CreateTodoRequestDto;
 import com.knighttodo.knighttodo.rest.dto.todo.request.UpdateTodoRequestDto;
 import com.knighttodo.knighttodo.rest.dto.todoblock.request.CreateTodoBlockRequestDto;
 import com.knighttodo.knighttodo.rest.dto.todoblock.request.UpdateTodoBlockRequestDto;
-
 import java.util.ArrayList;
 
 public class TodoFactory {
 
     public static final String TODO_NAME = "Write integration tests";
-    public static final Scaryness SCARYNESS_TODO = Scaryness.NOT_SCARY;
+    public static final Scariness SCARINESS_TODO = Scariness.NOT_SCARY;
     public static final Hardness HARDNESS_TODO = Hardness.EXTRAORDINARY;
     public static final boolean FALSE_TODO_READY = false;
     public static final boolean TRUE_TODO_READY = true;
     public static final String UPDATED_TODO_NAME = "Write more integration tests";
-    public static final Scaryness UPDATED_SCARYNESS_TODO = Scaryness.SCARY;
+    public static final Integer HARD_SCARY_EXPERIENCE = 37;
+    public static final Scariness UPDATED_SCARINESS_TODO = Scariness.SCARY;
     public static final Hardness UPDATED_HARDNESS_TODO = Hardness.HARD;
 
     public static final String BLOCK_NAME = "Sunday Todos";
@@ -32,7 +33,7 @@ public class TodoFactory {
         return CreateTodoRequestDto
             .builder()
             .todoName(TODO_NAME)
-            .scaryness(SCARYNESS_TODO)
+            .scariness(SCARINESS_TODO)
             .hardness(HARDNESS_TODO)
             .isReady(FALSE_TODO_READY)
             .build();
@@ -50,9 +51,9 @@ public class TodoFactory {
         return request;
     }
 
-    public static CreateTodoRequestDto createTodoRequestDtoWithoutScaryness(TodoBlock savedTodoBlock) {
+    public static CreateTodoRequestDto createTodoRequestDtoWithoutScariness(TodoBlock savedTodoBlock) {
         CreateTodoRequestDto request = createTodoRequestDto(savedTodoBlock);
-        request.setScaryness(null);
+        request.setScariness(null);
         return request;
     }
 
@@ -62,21 +63,11 @@ public class TodoFactory {
         return request;
     }
 
-    public static CreateTodoRequestDto createTodoRequestDtoWithoutTodoBlockId() {
-        return CreateTodoRequestDto
-            .builder()
-            .todoName(TODO_NAME)
-            .scaryness(SCARYNESS_TODO)
-            .hardness(HARDNESS_TODO)
-            .isReady(FALSE_TODO_READY)
-            .build();
-    }
-
     public static Todo todoWithBlockIdInstance(TodoBlock todoBlock) {
         return Todo
             .builder()
             .todoName(TODO_NAME)
-            .scaryness(SCARYNESS_TODO)
+            .scariness(SCARINESS_TODO)
             .hardness(HARDNESS_TODO)
             .todoBlock(todoBlock)
             .ready(FALSE_TODO_READY)
@@ -87,7 +78,7 @@ public class TodoFactory {
         return Todo
             .builder()
             .todoName(TODO_NAME)
-            .scaryness(SCARYNESS_TODO)
+            .scariness(SCARINESS_TODO)
             .hardness(HARDNESS_TODO)
             .todoBlock(todoBlock)
             .ready(TRUE_TODO_READY)
@@ -97,7 +88,7 @@ public class TodoFactory {
     public static UpdateTodoRequestDto updateTodoRequestDto(TodoBlock savedTodoBlock) {
         return UpdateTodoRequestDto.builder()
             .todoName(UPDATED_TODO_NAME)
-            .scaryness(UPDATED_SCARYNESS_TODO)
+            .scariness(UPDATED_SCARINESS_TODO)
             .hardness(UPDATED_HARDNESS_TODO)
             .ready(FALSE_TODO_READY)
             .build();
@@ -115,9 +106,9 @@ public class TodoFactory {
         return request;
     }
 
-    public static UpdateTodoRequestDto updateTodoRequestDtoWithoutScaryness(TodoBlock savedTodoBlock) {
+    public static UpdateTodoRequestDto updateTodoRequestDtoWithoutScariness(TodoBlock savedTodoBlock) {
         UpdateTodoRequestDto request = updateTodoRequestDto(savedTodoBlock);
-        request.setScaryness(null);
+        request.setScariness(null);
         return request;
     }
 
@@ -125,14 +116,6 @@ public class TodoFactory {
         UpdateTodoRequestDto request = updateTodoRequestDto(savedTodoBlock);
         request.setHardness(null);
         return request;
-    }
-
-    public static TodoBlock notSavedUpdatedTodoBlock() {
-        return TodoBlock
-            .builder()
-            .blockName(BLOCK_NAME)
-            .todos(new ArrayList<>())
-            .build();
     }
 
     public static CreateTodoBlockRequestDto createTodoBlockRequestDto() {
@@ -170,17 +153,6 @@ public class TodoFactory {
             .build();
     }
 
-    public static Todo notSavedUpdatedTodo(TodoBlock todoBlock) {
-        return Todo
-            .builder()
-            .todoName(UPDATED_TODO_NAME)
-            .scaryness(UPDATED_SCARYNESS_TODO)
-            .hardness(UPDATED_HARDNESS_TODO)
-            .todoBlock(todoBlock)
-            .ready(FALSE_TODO_READY)
-            .build();
-    }
-
     public static UpdateTodoBlockRequestDto updateTodoBlockRequestDtoWithoutId(TodoBlock todoBlock) {
         UpdateTodoBlockRequestDto request = updateTodoBlockRequestDto(todoBlock);
         request.setId(null);
@@ -205,8 +177,7 @@ public class TodoFactory {
         return request;
     }
 
-    public static UpdateTodoBlockRequestDto updateTodoBlockRequestDtoWithoutTodos(TodoBlock todoBlock) {
-        UpdateTodoBlockRequestDto request = updateTodoBlockRequestDto(todoBlock);
-        return request;
+    public static ExperienceResponse experienceResponseInstance(String todoId) {
+        return ExperienceResponse.builder().todoId(todoId).experience(HARD_SCARY_EXPERIENCE).build();
     }
 }

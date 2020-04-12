@@ -9,15 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TodoResponse {
+public class ExperienceResponse {
 
     private String todoId;
-
-    private String userId;
-
-    private String scaryness;
-
-    private String hardness;
-
-    private String experience;
+    private Integer experience;
 }

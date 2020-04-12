@@ -97,6 +97,7 @@
             <artifactId>problem-spring-web</artifactId>
             <version>${zalando.version}</version>
         </dependency>
+
     </dependencies>
 
     <build>

@@ -9,15 +9,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TodoRequest {
+public class ExperienceRequest {
 
     private String todoId;
 
     private String userId;
 
-    private String scaryness;
+    private String scariness;
 
     private String hardness;
-
-    private boolean ready;
 }

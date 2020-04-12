@@ -16,8 +16,4 @@ public class Constants {
     public static final String BASE_READY = "/ready";
 
     public static final String PARAM_READY = "ready";
-
-    public static String buildCalculateExperienceBaseUrl() {
-        return API_BASE_URL + BASE_EXPERIENCE_URL;
-    }
 }
