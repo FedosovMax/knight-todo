@@ -17,7 +17,7 @@ public class ExperienceGatewayImpl implements ExperienceGateway {
 
     @Override
     public TodoVO calculateExperience(TodoVO todoVO) {
-        ExperienceRequest experienceRequest = todoVOMapper.toTodoRequest(todoVO);
+        ExperienceRequest experienceRequest = todoVOMapper.toExperienceRequest(todoVO);
         experienceRequest.setUserId("fakeUserId");
         ExperienceResponse experienceResponse = experienceClient.calculateExperience(experienceRequest);
         todoVO.setExperience(experienceResponse.getExperience());

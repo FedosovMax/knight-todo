@@ -10,5 +10,5 @@ public interface TodoVOMapper {
 
     @Mapping(target = "todoId", source = "id")
     @Mapping(target = "userId", ignore = true)
-    ExperienceRequest toTodoRequest(TodoVO todoVO);
+    ExperienceRequest toExperienceRequest(TodoVO todoVO);
 }
