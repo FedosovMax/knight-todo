@@ -1,6 +1,6 @@
 package com.knighttodo.knighttodo.gateway.privatedb.representation.enums;
 
-public enum Scaryness {
+public enum Scariness {
     NOT_SCARY,
     SCARY,
     VERY_SCARY;

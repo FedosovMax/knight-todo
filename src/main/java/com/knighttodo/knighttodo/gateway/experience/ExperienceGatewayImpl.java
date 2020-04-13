@@ -3,7 +3,8 @@ package com.knighttodo.knighttodo.gateway.experience;
 import com.knighttodo.knighttodo.domain.TodoVO;
 import com.knighttodo.knighttodo.gateway.experience.client.ExperienceClient;
 import com.knighttodo.knighttodo.gateway.experience.mapper.TodoVOMapper;
-import com.knighttodo.knighttodo.gateway.experience.request.TodoRequest;
+import com.knighttodo.knighttodo.gateway.experience.request.ExperienceRequest;
+import com.knighttodo.knighttodo.gateway.experience.response.ExperienceResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -15,9 +16,11 @@ public class ExperienceGatewayImpl implements ExperienceGateway {
     private final TodoVOMapper todoVOMapper;
 
     @Override
-    public void calculateExperience(TodoVO todoVO) {
-        TodoRequest todoRequest = todoVOMapper.toTodoRequest(todoVO);
-        todoRequest.setUserId("fakeUserId");
-        experienceClient.calculateTodo(todoRequest);
+    public TodoVO calculateExperience(TodoVO todoVO) {
+        ExperienceRequest experienceRequest = todoVOMapper.toExperienceRequest(todoVO);
+        experienceRequest.setUserId("fakeUserId");
+        ExperienceResponse experienceResponse = experienceClient.calculateExperience(experienceRequest);
+        todoVO.setExperience(experienceResponse.getExperience());
+        return todoVO;
     }
 }

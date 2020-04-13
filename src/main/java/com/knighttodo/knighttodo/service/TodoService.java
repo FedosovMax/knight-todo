@@ -17,5 +17,5 @@ public interface TodoService {
 
     List<TodoVO> findByBlockId(String blockId);
 
-    void updateIsReady(String blockId, String todoId, boolean isReady);
+    TodoVO updateIsReady(String blockId, String todoId, boolean isReady);
 }

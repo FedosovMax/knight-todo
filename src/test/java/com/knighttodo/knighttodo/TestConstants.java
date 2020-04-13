@@ -52,8 +52,8 @@ public class TestConstants {
         return JSON_ROOT + "todoName";
     }
 
-    public static String buildJsonPathToScaryness() {
-        return JSON_ROOT + "scaryness";
+    public static String buildJsonPathToScariness() {
+        return JSON_ROOT + "scariness";
     }
 
     public static String buildJsonPathToHardness() {

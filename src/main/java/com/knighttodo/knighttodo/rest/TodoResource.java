@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(API_BASE_BLOCKS + "/{blockId}" + API_BASE_TODOS)
 @Slf4j
-public class TodoResource {
+public class  TodoResource {
 
     private final TodoService todoService;
     private final TodoRestMapper todoRestMapper;
@@ -95,11 +95,11 @@ public class TodoResource {
                 .collect(Collectors.toList()));
     }
 
-    @PutMapping("/{todoId}" + BASE_READY)
-    public ResponseEntity<Void> updateIsReady(@PathVariable String blockId, @PathVariable String todoId,
-        @ValidReady @RequestParam String ready) {
+    @PutMapping(value = "/{todoId}" + BASE_READY)
+    public ResponseEntity<TodoResponseDto> updateIsReady(@PathVariable String blockId, @PathVariable String todoId,
+        @RequestParam String ready) {
         boolean isReady = Boolean.parseBoolean(ready);
-        todoService.updateIsReady(blockId, todoId, isReady);
-        return ResponseEntity.ok().build();
+        TodoVO todoVO = todoService.updateIsReady(blockId, todoId, isReady);
+        return ResponseEntity.status(HttpStatus.OK).body(todoRestMapper.toTodoResponseDto(todoVO));
     }
 }

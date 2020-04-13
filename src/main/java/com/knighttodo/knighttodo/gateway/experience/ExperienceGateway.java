@@ -4,5 +4,5 @@ import com.knighttodo.knighttodo.domain.TodoVO;
 
 public interface ExperienceGateway {
 
-    void calculateExperience(TodoVO todoVO);
+    TodoVO calculateExperience(TodoVO todoVO);
 }

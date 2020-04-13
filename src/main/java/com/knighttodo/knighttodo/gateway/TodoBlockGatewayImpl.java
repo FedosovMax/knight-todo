@@ -4,16 +4,14 @@ import com.knighttodo.knighttodo.domain.TodoBlockVO;
 import com.knighttodo.knighttodo.gateway.privatedb.mapper.TodoBlockMapper;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.TodoBlockRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
-@Service
+@Component
 public class TodoBlockGatewayImpl implements TodoBlockGateway {
 
     private final TodoBlockRepository todoBlockRepository;
