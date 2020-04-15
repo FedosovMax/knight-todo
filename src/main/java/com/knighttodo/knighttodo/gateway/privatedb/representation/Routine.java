@@ -1,7 +1,7 @@
 package com.knighttodo.knighttodo.gateway.privatedb.representation;
 
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
-import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scaryness;
+import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scariness;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ public class Routine {
     private String name;
 
     @Enumerated(EnumType.STRING)
-    private Scaryness scaryness;
+    private Scariness scariness;
 
     @Enumerated(EnumType.STRING)
     private Hardness hardness;

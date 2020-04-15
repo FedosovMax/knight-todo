@@ -1,7 +1,7 @@
 package com.knighttodo.knighttodo.rest.dto.routine.request;
 
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
-import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scaryness;
+import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scariness;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -24,7 +24,7 @@ public class UpdateRoutineRequestDto {
     private Hardness hardness;
 
     @NotNull
-    private Scaryness scaryness;
+    private Scariness scariness;
 
     private boolean ready;
 }
