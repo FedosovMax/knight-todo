@@ -1,7 +1,7 @@
 package com.knighttodo.knighttodo.rest.dto.routine.response;
 
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
-import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scaryness;
+import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scariness;
 import com.knighttodo.knighttodo.rest.dto.todo.response.TodoResponseDto;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class RoutineResponseDto {
 
     private Hardness hardness;
 
-    private Scaryness scaryness;
+    private Scariness scariness;
 
     private boolean ready;
 

@@ -42,7 +42,7 @@ public class RoutineServiceImpl implements RoutineService {
         RoutineVO routineVO = findById(routineId);
         routineVO.setName(changedRoutineVO.getName());
         routineVO.setHardness(changedRoutineVO.getHardness());
-        routineVO.setScaryness(changedRoutineVO.getScaryness());
+        routineVO.setScariness(changedRoutineVO.getScariness());
         return routineGateway.save(routineVO);
     }
 

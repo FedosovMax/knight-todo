@@ -1,7 +1,7 @@
 package com.knighttodo.knighttodo.domain;
 
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
-import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scaryness;
+import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scariness;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ public class RoutineVO {
 
     private Hardness hardness;
 
-    private Scaryness scaryness;
+    private Scariness scariness;
 
     private String templateId;
 
