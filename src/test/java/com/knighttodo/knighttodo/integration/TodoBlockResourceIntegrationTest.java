@@ -6,7 +6,9 @@ import static com.knighttodo.knighttodo.TestConstants.buildGetBlockByIdUrl;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToBlockName;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToId;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToLength;
+
 import static org.assertj.core.api.Assertions.assertThat;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -15,23 +17,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.knighttodo.knighttodo.factories.TodoBlockFactory;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.TodoBlockRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
 import com.knighttodo.knighttodo.rest.dto.todoblock.request.CreateTodoBlockRequestDto;
 import com.knighttodo.knighttodo.rest.dto.todoblock.request.UpdateTodoBlockRequestDto;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 public class TodoBlockResourceIntegrationTest {
@@ -45,7 +47,7 @@ public class TodoBlockResourceIntegrationTest {
     @Autowired
     private TodoBlockRepository todoBlockRepository;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         todoBlockRepository.deleteAll();
     }
@@ -141,7 +143,8 @@ public class TodoBlockResourceIntegrationTest {
     @Test
     public void updateTodoBlock_shouldRespondWithBadRequestStatus_whenIdConsistsOfSpaces() throws Exception {
         TodoBlock todoBlock = todoBlockRepository.save(TodoBlockFactory.todoBlockInstance());
-        UpdateTodoBlockRequestDto requestDto = TodoBlockFactory.updateTodoBlockRequestDtoWithIdConsistingOfSpaces(todoBlock);
+        UpdateTodoBlockRequestDto requestDto = TodoBlockFactory
+            .updateTodoBlockRequestDtoWithIdConsistingOfSpaces(todoBlock);
 
         mockMvc.perform(
             put(API_BASE_BLOCKS)
