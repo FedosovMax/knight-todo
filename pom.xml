@@ -20,6 +20,7 @@
         <swagger.springfox.version>2.9.2</swagger.springfox.version>
         <swagger.version>1.5.24</swagger.version>
         <zalando.version>0.25.2</zalando.version>
+        <junit.version>5.6.2</junit.version>
     </properties>
 
     <dependencies>
@@ -58,7 +59,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>RELEASE</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
 
