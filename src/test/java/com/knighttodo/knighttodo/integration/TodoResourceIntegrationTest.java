@@ -17,6 +17,8 @@ import static com.knighttodo.knighttodo.TestConstants.buildUpdateTodoReadyBaseUr
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -31,6 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.knighttodo.knighttodo.exception.UnchangableFieldUpdateException;
 import com.knighttodo.knighttodo.factories.TodoBlockFactory;
 import com.knighttodo.knighttodo.factories.TodoFactory;
 import com.knighttodo.knighttodo.gateway.experience.response.ExperienceResponse;
@@ -239,6 +242,62 @@ public class TodoResourceIntegrationTest {
             .content(objectMapper.writeValueAsString(requestDto))
             .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void updateTodo_shouldUpdateReadyTodoAndReturnIt_whenScarinessAndHardnessAreUnchanged() throws Exception {
+        TodoBlock todoBlock = todoBlockRepository.save(TodoBlockFactory.todoBlockInstance());
+        Todo todo = todoRepository.save(TodoFactory.todoWithBlockIdReadyInstance(todoBlock));
+        UpdateTodoRequestDto requestDto = TodoFactory.updateTodoRequestReadyDto();
+
+        mockMvc.perform(put(API_BASE_BLOCKS + "/" + todoBlock.getId() + API_BASE_TODOS + "/" + todo.getId())
+                            .content(objectMapper.writeValueAsString(requestDto))
+                            .contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath(buildJsonPathToTodoName()).value(requestDto.getTodoName()))
+            .andExpect(jsonPath(buildJsonPathToScariness()).value(requestDto.getScariness().toString()))
+            .andExpect(jsonPath(buildJsonPathToHardness()).value(requestDto.getHardness().toString()));
+
+        assertThat(todoRepository.findById(todo.getId()).get().getScariness()).isEqualTo(requestDto.getScariness());
+        assertThat(todoRepository.findById(todo.getId()).get().getHardness()).isEqualTo(requestDto.getHardness());
+    }
+
+    @Test
+    public void updateTodo_shouldThrowAppropriateException_whenTodoWasReadyAndScarinessWasChanged() {
+        TodoBlock todoBlock = todoBlockRepository.save(TodoBlockFactory.todoBlockInstance());
+        Todo todo = todoRepository.save(TodoFactory.todoWithBlockIdReadyInstance(todoBlock));
+        UpdateTodoRequestDto requestDto = TodoFactory.updateTodoRequestReadyDtoWithChangedScariness();
+
+        try {
+            mockMvc.perform(put(API_BASE_BLOCKS + "/" + todoBlock.getId() + API_BASE_TODOS + "/" + todo.getId())
+                                .content(objectMapper.writeValueAsString(requestDto))
+                                .contentType(MediaType.APPLICATION_JSON_VALUE));
+            fail("Exception was't thrown");
+        } catch (Exception e) {
+            assertEquals(UnchangableFieldUpdateException.class, e.getCause().getClass());
+            assertEquals(String.format("Can not update scariness from %s to %s because todo is ready",
+                                       todo.getScariness(), requestDto.getScariness()), e.getCause().getMessage());
+        }
+        assertThat(todoRepository.findById(todo.getId()).get().getScariness()).isEqualTo(todo.getScariness());
+    }
+
+    @Test
+    public void updateTodo_shouldThrowAppropriateException_whenTodoWasReadyAndHardnessWasChanged() {
+        TodoBlock todoBlock = todoBlockRepository.save(TodoBlockFactory.todoBlockInstance());
+        Todo todo = todoRepository.save(TodoFactory.todoWithBlockIdReadyInstance(todoBlock));
+        UpdateTodoRequestDto requestDto = TodoFactory.updateTodoRequestReadyDtoWithChangedHardness();
+
+        try {
+            mockMvc.perform(put(API_BASE_BLOCKS + "/" + todoBlock.getId() + API_BASE_TODOS + "/" + todo.getId())
+                                .content(objectMapper.writeValueAsString(requestDto))
+                                .contentType(MediaType.APPLICATION_JSON_VALUE));
+            fail("Exception was't thrown");
+        } catch (Exception e) {
+            assertEquals(UnchangableFieldUpdateException.class, e.getCause().getClass());
+            assertEquals(String.format("Can not update hardness from %s to %s because todo is ready",
+                                       todo.getHardness(), requestDto.getHardness()), e.getCause().getMessage());
+        }
+        assertThat(todoRepository.findById(todo.getId()).get().getHardness()).isEqualTo(todo.getHardness());
     }
 
     @Test
