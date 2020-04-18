@@ -50,30 +50,17 @@ public class TodoServiceImpl implements TodoService {
     }
 
     private void checkUpdatePossibility(TodoVO todoVO, TodoVO changedTodoVO) {
-        if (todoVO.isReady()) {
-            throwIfScarinessIsUpdated(todoVO, changedTodoVO);
-            throwIfHardnessIsUpdated(todoVO, changedTodoVO);
+        if (todoVO.isReady() && isScarinessOrHardnessUpdated(todoVO, changedTodoVO)) {
+            throw new UnchangableFieldUpdateException("Can not update todo's field because todo is ready");
         }
     }
 
-    private void throwIfScarinessIsUpdated(TodoVO todoVO, TodoVO changedTodoVO) {
-        if (isScarinessUpdated(todoVO, changedTodoVO)) {
-            throw new UnchangableFieldUpdateException(String.format(
-                "Can not update scariness from %s to %s because todo is ready",
-                todoVO.getScariness(), changedTodoVO.getScariness()));
-        }
+    private boolean isScarinessOrHardnessUpdated(TodoVO todoVO, TodoVO changedTodoVO) {
+        return isScarinessUpdated(todoVO, changedTodoVO) || isHardnessUpdated(todoVO, changedTodoVO);
     }
 
     private boolean isScarinessUpdated(TodoVO todoVO, TodoVO changedTodoVO) {
         return !todoVO.getScariness().equals(changedTodoVO.getScariness());
-    }
-
-    private void throwIfHardnessIsUpdated(TodoVO todoVO, TodoVO changedTodoVO) {
-        if (isHardnessUpdated(todoVO, changedTodoVO)) {
-            throw new UnchangableFieldUpdateException(String.format(
-                "Can not update hardness from %s to %s because todo is ready",
-                todoVO.getHardness(), changedTodoVO.getHardness()));
-        }
     }
 
     private boolean isHardnessUpdated(TodoVO todoVO, TodoVO changedTodoVO) {

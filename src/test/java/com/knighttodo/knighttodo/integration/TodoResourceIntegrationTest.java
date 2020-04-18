@@ -19,6 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -275,8 +276,7 @@ public class TodoResourceIntegrationTest {
             fail("Exception was't thrown");
         } catch (Exception e) {
             assertEquals(UnchangableFieldUpdateException.class, e.getCause().getClass());
-            assertEquals(String.format("Can not update scariness from %s to %s because todo is ready",
-                                       todo.getScariness(), requestDto.getScariness()), e.getCause().getMessage());
+            assertEquals("Can not update todo's field because todo is ready", e.getCause().getMessage());
         }
         assertThat(todoRepository.findById(todo.getId()).get().getScariness()).isEqualTo(todo.getScariness());
     }
@@ -294,8 +294,7 @@ public class TodoResourceIntegrationTest {
             fail("Exception was't thrown");
         } catch (Exception e) {
             assertEquals(UnchangableFieldUpdateException.class, e.getCause().getClass());
-            assertEquals(String.format("Can not update hardness from %s to %s because todo is ready",
-                                       todo.getHardness(), requestDto.getHardness()), e.getCause().getMessage());
+            assertEquals("Can not update todo's field because todo is ready", e.getCause().getMessage());
         }
         assertThat(todoRepository.findById(todo.getId()).get().getHardness()).isEqualTo(todo.getHardness());
     }
