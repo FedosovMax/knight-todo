@@ -2,6 +2,7 @@ package com.knighttodo.knighttodo.service.impl;
 
 import com.knighttodo.knighttodo.domain.TodoVO;
 import com.knighttodo.knighttodo.exception.TodoNotFoundException;
+import com.knighttodo.knighttodo.exception.UnchangableFieldUpdateException;
 import com.knighttodo.knighttodo.gateway.TodoGateway;
 import com.knighttodo.knighttodo.gateway.experience.ExperienceGateway;
 import com.knighttodo.knighttodo.service.TodoBlockService;
@@ -40,10 +41,43 @@ public class TodoServiceImpl implements TodoService {
         TodoVO todoVO = todoGateway.findById(todoId)
             .orElseThrow(() -> new TodoNotFoundException(String.format("Todo with such id:%s can't be found", todoId)));
 
+        checkUpdatePossibility(todoVO, changedTodoVO);
+
         todoVO.setTodoName(changedTodoVO.getTodoName());
         todoVO.setScariness(changedTodoVO.getScariness());
         todoVO.setHardness(changedTodoVO.getHardness());
         return todoGateway.save(todoVO);
+    }
+
+    private void checkUpdatePossibility(TodoVO todoVO, TodoVO changedTodoVO) {
+        if (todoVO.isReady()) {
+            throwIfScarinessIsUpdated(todoVO, changedTodoVO);
+            throwIfHardnessIsUpdated(todoVO, changedTodoVO);
+        }
+    }
+
+    private void throwIfScarinessIsUpdated(TodoVO todoVO, TodoVO changedTodoVO) {
+        if (isScarinessUpdated(todoVO, changedTodoVO)) {
+            throw new UnchangableFieldUpdateException(String.format(
+                "Can not update scariness from %s to %s because todo is ready",
+                todoVO.getScariness(), changedTodoVO.getScariness()));
+        }
+    }
+
+    private boolean isScarinessUpdated(TodoVO todoVO, TodoVO changedTodoVO) {
+        return !todoVO.getScariness().equals(changedTodoVO.getScariness());
+    }
+
+    private void throwIfHardnessIsUpdated(TodoVO todoVO, TodoVO changedTodoVO) {
+        if (isHardnessUpdated(todoVO, changedTodoVO)) {
+            throw new UnchangableFieldUpdateException(String.format(
+                "Can not update hardness from %s to %s because todo is ready",
+                todoVO.getHardness(), changedTodoVO.getHardness()));
+        }
+    }
+
+    private boolean isHardnessUpdated(TodoVO todoVO, TodoVO changedTodoVO) {
+        return !todoVO.getHardness().equals(changedTodoVO.getHardness());
     }
 
     @Override
