@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.knighttodo.knighttodo.exception.UnchangableFieldUpdateException;
+import com.knighttodo.knighttodo.exception.UnchangeableFieldUpdateException;
 import com.knighttodo.knighttodo.factories.TodoBlockFactory;
 import com.knighttodo.knighttodo.factories.TodoFactory;
 import com.knighttodo.knighttodo.gateway.experience.response.ExperienceResponse;
@@ -275,8 +275,8 @@ public class TodoResourceIntegrationTest {
                                 .contentType(MediaType.APPLICATION_JSON_VALUE));
             fail("Exception was't thrown");
         } catch (Exception e) {
-            assertEquals(UnchangableFieldUpdateException.class, e.getCause().getClass());
-            assertEquals("Can not update todo's field because todo is ready", e.getCause().getMessage());
+            assertEquals(UnchangeableFieldUpdateException.class, e.getCause().getClass());
+            assertEquals("Can not update todo's field in ready state", e.getCause().getMessage());
         }
         assertThat(todoRepository.findById(todo.getId()).get().getScariness()).isEqualTo(todo.getScariness());
     }
@@ -293,8 +293,8 @@ public class TodoResourceIntegrationTest {
                                 .contentType(MediaType.APPLICATION_JSON_VALUE));
             fail("Exception was't thrown");
         } catch (Exception e) {
-            assertEquals(UnchangableFieldUpdateException.class, e.getCause().getClass());
-            assertEquals("Can not update todo's field because todo is ready", e.getCause().getMessage());
+            assertEquals(UnchangeableFieldUpdateException.class, e.getCause().getClass());
+            assertEquals("Can not update todo's field in ready state", e.getCause().getMessage());
         }
         assertThat(todoRepository.findById(todo.getId()).get().getHardness()).isEqualTo(todo.getHardness());
     }
