@@ -264,7 +264,7 @@ public class TodoResourceIntegrationTest {
     }
 
     @Test
-    public void updateTodo_shouldThrowAppropriateException_whenTodoWasReadyAndScarinessWasChanged() {
+    public void updateTodo_shouldThrowUnchangeableFieldUpdateException_whenTodoWasReadyAndScarinessWasChanged() {
         TodoBlock todoBlock = todoBlockRepository.save(TodoBlockFactory.todoBlockInstance());
         Todo todo = todoRepository.save(TodoFactory.todoWithBlockIdReadyInstance(todoBlock));
         UpdateTodoRequestDto requestDto = TodoFactory.updateTodoRequestReadyDtoWithChangedScariness();
@@ -282,7 +282,7 @@ public class TodoResourceIntegrationTest {
     }
 
     @Test
-    public void updateTodo_shouldThrowAppropriateException_whenTodoWasReadyAndHardnessWasChanged() {
+    public void updateTodo_shouldThrowUnchangeableFieldUpdateException_whenTodoWasReadyAndHardnessWasChanged() {
         TodoBlock todoBlock = todoBlockRepository.save(TodoBlockFactory.todoBlockInstance());
         Todo todo = todoRepository.save(TodoFactory.todoWithBlockIdReadyInstance(todoBlock));
         UpdateTodoRequestDto requestDto = TodoFactory.updateTodoRequestReadyDtoWithChangedHardness();
