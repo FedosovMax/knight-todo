@@ -2,6 +2,7 @@ package com.knighttodo.knighttodo.service.impl;
 
 import com.knighttodo.knighttodo.domain.TodoVO;
 import com.knighttodo.knighttodo.exception.TodoNotFoundException;
+import com.knighttodo.knighttodo.exception.UnchangeableFieldUpdateException;
 import com.knighttodo.knighttodo.gateway.TodoGateway;
 import com.knighttodo.knighttodo.gateway.experience.ExperienceGateway;
 import com.knighttodo.knighttodo.service.TodoBlockService;
@@ -40,10 +41,23 @@ public class TodoServiceImpl implements TodoService {
         TodoVO todoVO = todoGateway.findById(todoId)
             .orElseThrow(() -> new TodoNotFoundException(String.format("Todo with such id:%s can't be found", todoId)));
 
+        checkUpdatePossibility(todoVO, changedTodoVO);
+
         todoVO.setTodoName(changedTodoVO.getTodoName());
         todoVO.setScariness(changedTodoVO.getScariness());
         todoVO.setHardness(changedTodoVO.getHardness());
         return todoGateway.save(todoVO);
+    }
+
+    private void checkUpdatePossibility(TodoVO todoVO, TodoVO changedTodoVO) {
+        if (todoVO.isReady() && isAtLeastOneUnchangeableFieldUpdated(todoVO, changedTodoVO)) {
+            throw new UnchangeableFieldUpdateException("Can not update todo's field in ready state");
+        }
+    }
+
+    private boolean isAtLeastOneUnchangeableFieldUpdated(TodoVO todoVO, TodoVO changedTodoVO) {
+        return !todoVO.getScariness().equals(changedTodoVO.getScariness())
+            || !todoVO.getHardness().equals(changedTodoVO.getHardness());
     }
 
     @Override
