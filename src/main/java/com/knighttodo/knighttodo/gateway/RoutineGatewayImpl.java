@@ -4,13 +4,10 @@ import com.knighttodo.knighttodo.domain.RoutineVO;
 import com.knighttodo.knighttodo.gateway.privatedb.mapper.RoutineMapper;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.RoutineRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Routine;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
@@ -39,5 +36,11 @@ public class RoutineGatewayImpl implements RoutineGateway {
     @Override
     public void deleteById(String routineId) {
         routineRepository.deleteById(routineId);
+    }
+
+    @Override
+    public List<RoutineVO> findAllTemplates() {
+        return routineRepository.findAllTemplates().stream().map(routineMapper::toRoutineVO)
+            .collect(Collectors.toList());
     }
 }

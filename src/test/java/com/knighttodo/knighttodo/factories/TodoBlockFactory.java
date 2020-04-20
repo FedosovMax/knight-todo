@@ -3,7 +3,6 @@ package com.knighttodo.knighttodo.factories;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
 import com.knighttodo.knighttodo.rest.dto.todoblock.request.CreateTodoBlockRequestDto;
 import com.knighttodo.knighttodo.rest.dto.todoblock.request.UpdateTodoBlockRequestDto;
-
 import java.util.ArrayList;
 
 public class TodoBlockFactory {
@@ -38,34 +37,21 @@ public class TodoBlockFactory {
             .build();
     }
 
-    public static UpdateTodoBlockRequestDto updateTodoBlockRequestDto(TodoBlock todoBlock) {
+    public static UpdateTodoBlockRequestDto updateTodoBlockRequestDto() {
         return UpdateTodoBlockRequestDto
             .builder()
-            .id(todoBlock.getId())
             .blockName(UPDATED_BLOCK_NAME)
             .build();
     }
 
-    public static UpdateTodoBlockRequestDto updateTodoBlockRequestDtoWithoutId(TodoBlock todoBlock) {
-        UpdateTodoBlockRequestDto request = updateTodoBlockRequestDto(todoBlock);
-        request.setId(null);
-        return request;
-    }
-
-    public static UpdateTodoBlockRequestDto updateTodoBlockRequestDtoWithIdConsistingOfSpaces(TodoBlock todoBlock) {
-        UpdateTodoBlockRequestDto request = updateTodoBlockRequestDto(todoBlock);
-        request.setId("    ");
-        return request;
-    }
-
-    public static UpdateTodoBlockRequestDto updateTodoBlockRequestDtoWithoutName(TodoBlock todoBlock) {
-        UpdateTodoBlockRequestDto request = updateTodoBlockRequestDto(todoBlock);
+    public static UpdateTodoBlockRequestDto updateTodoBlockRequestDtoWithoutName() {
+        UpdateTodoBlockRequestDto request = updateTodoBlockRequestDto();
         request.setBlockName(null);
         return request;
     }
 
-    public static UpdateTodoBlockRequestDto updateTodoBlockRequestDtoWithNameConsistingOfSpaces(TodoBlock todoBlock) {
-        UpdateTodoBlockRequestDto request = updateTodoBlockRequestDto(todoBlock);
+    public static UpdateTodoBlockRequestDto updateTodoBlockRequestDtoWithNameConsistingOfSpaces() {
+        UpdateTodoBlockRequestDto request = updateTodoBlockRequestDto();
         request.setBlockName("    ");
         return request;
     }

@@ -8,23 +8,22 @@ import static com.knighttodo.knighttodo.TestConstants.PARAMETER_TRUE;
 import static com.knighttodo.knighttodo.TestConstants.buildDeleteTodoByIdUrl;
 import static com.knighttodo.knighttodo.TestConstants.buildGetTodoByIdUrl;
 import static com.knighttodo.knighttodo.TestConstants.buildGetTodosByBlockIdUrl;
+import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToExperience;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToHardness;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToId;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToLength;
+import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToReadyName;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToScariness;
+import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToTodoBlockId;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToTodoName;
 import static com.knighttodo.knighttodo.TestConstants.buildUpdateTodoReadyBaseUrl;
-
+import static org.aspectj.bridge.MessageUtil.fail;
 import static org.assertj.core.api.Assertions.assertThat;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -33,7 +32,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.knighttodo.knighttodo.exception.UnchangeableFieldUpdateException;
 import com.knighttodo.knighttodo.factories.TodoBlockFactory;
 import com.knighttodo.knighttodo.factories.TodoFactory;
@@ -44,10 +42,8 @@ import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
 import com.knighttodo.knighttodo.rest.dto.todo.request.CreateTodoRequestDto;
 import com.knighttodo.knighttodo.rest.dto.todo.request.UpdateTodoRequestDto;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -97,7 +93,7 @@ public class TodoResourceIntegrationTest {
                 .content(objectMapper.writeValueAsString(requestDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isCreated())
-            .andExpect(jsonPath("todoBlockId").isNotEmpty())
+            .andExpect(jsonPath(buildJsonPathToTodoBlockId()).isNotEmpty())
             .andExpect(jsonPath(buildJsonPathToId()).exists());
 
         assertThat(todoRepository.count()).isEqualTo(1);
@@ -252,8 +248,8 @@ public class TodoResourceIntegrationTest {
         UpdateTodoRequestDto requestDto = TodoFactory.updateTodoRequestReadyDto();
 
         mockMvc.perform(put(API_BASE_BLOCKS + "/" + todoBlock.getId() + API_BASE_TODOS + "/" + todo.getId())
-                            .content(objectMapper.writeValueAsString(requestDto))
-                            .contentType(MediaType.APPLICATION_JSON_VALUE))
+            .content(objectMapper.writeValueAsString(requestDto))
+            .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isOk())
             .andExpect(jsonPath(buildJsonPathToTodoName()).value(requestDto.getTodoName()))
             .andExpect(jsonPath(buildJsonPathToScariness()).value(requestDto.getScariness().toString()))
@@ -271,8 +267,8 @@ public class TodoResourceIntegrationTest {
 
         try {
             mockMvc.perform(put(API_BASE_BLOCKS + "/" + todoBlock.getId() + API_BASE_TODOS + "/" + todo.getId())
-                                .content(objectMapper.writeValueAsString(requestDto))
-                                .contentType(MediaType.APPLICATION_JSON_VALUE));
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE));
             fail("Exception was't thrown");
         } catch (Exception e) {
             assertEquals(UnchangeableFieldUpdateException.class, e.getCause().getClass());
@@ -289,8 +285,8 @@ public class TodoResourceIntegrationTest {
 
         try {
             mockMvc.perform(put(API_BASE_BLOCKS + "/" + todoBlock.getId() + API_BASE_TODOS + "/" + todo.getId())
-                                .content(objectMapper.writeValueAsString(requestDto))
-                                .contentType(MediaType.APPLICATION_JSON_VALUE));
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE));
             fail("Exception was't thrown");
         } catch (Exception e) {
             assertEquals(UnchangeableFieldUpdateException.class, e.getCause().getClass());
@@ -334,9 +330,9 @@ public class TodoResourceIntegrationTest {
         mockMvc.perform(put(buildUpdateTodoReadyBaseUrl(todoBlock, todo))
             .param(PARAM_READY, PARAMETER_TRUE))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("todoBlockId").isNotEmpty())
-            .andExpect(jsonPath("experience").isNotEmpty())
-            .andExpect(jsonPath("ready").value(true));
+            .andExpect(jsonPath(buildJsonPathToTodoBlockId()).isNotEmpty())
+            .andExpect(jsonPath(buildJsonPathToExperience()).isNotEmpty())
+            .andExpect(jsonPath(buildJsonPathToReadyName()).value(true));
 
         assertThat(todoRepository.findById(todo.getId()).get().isReady()).isEqualTo(true);
     }
