@@ -32,16 +32,13 @@ import com.knighttodo.knighttodo.rest.dto.routine.request.UpdateRoutineRequestDt
 import com.knighttodo.knighttodo.rest.dto.routine.response.RoutineResponseDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 public class RoutineResourceIntegrationTest {
@@ -86,7 +83,7 @@ public class RoutineResourceIntegrationTest {
     @Test
     public void createRoutine_shouldRespondWithBadRequestStatus_whenNameIsNull() throws Exception {
         TodoBlock todoBlock = todoBlockRepository.save(TodoBlockFactory.todoBlockInstance());
-        CreateRoutineRequestDto requestDto = RoutineFactory.createRoutineWithNullValueRequestDto();
+        CreateRoutineRequestDto requestDto = RoutineFactory.createRoutineWithNullNameValueRequestDto();
 
         mockMvc.perform(post(API_BASE_BLOCKS + "/" + todoBlock.getId() + API_BASE_ROUTINES)
             .content(objectMapper.writeValueAsString(requestDto))
@@ -145,7 +142,7 @@ public class RoutineResourceIntegrationTest {
     public void updateRoutine_shouldRespondWithBadRequestStatus_whenNameIsNull() throws Exception {
         TodoBlock todoBlock = todoBlockRepository.save(TodoBlockFactory.todoBlockInstance());
         Routine routine = routineRepository.save(RoutineFactory.createRoutineInstance());
-        UpdateRoutineRequestDto requestDto = RoutineFactory.updateRoutineWithNullRequestDto();
+        UpdateRoutineRequestDto requestDto = RoutineFactory.updateRoutineWithNullNaveValueRequestDto();
 
         mockMvc.perform(put(API_BASE_BLOCKS + "/" + todoBlock.getId() + API_BASE_ROUTINES + "/" + routine.getId())
             .content(objectMapper.writeValueAsString(requestDto))

@@ -60,7 +60,7 @@ public class TodoBlockServiceImpl implements TodoBlockService {
     }
 
     private TodoBlockVO fetchRoutines(TodoBlockVO todoBlockVO) {
-        List<RoutineVO> routines = routineService.findAllPatterns()
+        List<RoutineVO> routines = routineService.findAllTemplates()
             .stream().map(this::copyRoutine).collect(Collectors.toList());
         todoBlockVO.setRoutines(routines);
         return todoBlockVO;

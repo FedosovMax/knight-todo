@@ -17,9 +17,9 @@ import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToScariness;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToTodoBlockId;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToTodoName;
 import static com.knighttodo.knighttodo.TestConstants.buildUpdateTodoReadyBaseUrl;
-
+import static org.aspectj.bridge.MessageUtil.fail;
 import static org.assertj.core.api.Assertions.assertThat;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -32,6 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.knighttodo.knighttodo.exception.UnchangeableFieldUpdateException;
 import com.knighttodo.knighttodo.factories.TodoBlockFactory;
 import com.knighttodo.knighttodo.factories.TodoFactory;
 import com.knighttodo.knighttodo.gateway.experience.response.ExperienceResponse;
@@ -43,7 +44,6 @@ import com.knighttodo.knighttodo.rest.dto.todo.request.CreateTodoRequestDto;
 import com.knighttodo.knighttodo.rest.dto.todo.request.UpdateTodoRequestDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -52,12 +52,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 public class TodoResourceIntegrationTest {
@@ -250,8 +248,8 @@ public class TodoResourceIntegrationTest {
         UpdateTodoRequestDto requestDto = TodoFactory.updateTodoRequestReadyDto();
 
         mockMvc.perform(put(API_BASE_BLOCKS + "/" + todoBlock.getId() + API_BASE_TODOS + "/" + todo.getId())
-                            .content(objectMapper.writeValueAsString(requestDto))
-                            .contentType(MediaType.APPLICATION_JSON_VALUE))
+            .content(objectMapper.writeValueAsString(requestDto))
+            .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isOk())
             .andExpect(jsonPath(buildJsonPathToTodoName()).value(requestDto.getTodoName()))
             .andExpect(jsonPath(buildJsonPathToScariness()).value(requestDto.getScariness().toString()))
@@ -269,8 +267,8 @@ public class TodoResourceIntegrationTest {
 
         try {
             mockMvc.perform(put(API_BASE_BLOCKS + "/" + todoBlock.getId() + API_BASE_TODOS + "/" + todo.getId())
-                                .content(objectMapper.writeValueAsString(requestDto))
-                                .contentType(MediaType.APPLICATION_JSON_VALUE));
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE));
             fail("Exception was't thrown");
         } catch (Exception e) {
             assertEquals(UnchangeableFieldUpdateException.class, e.getCause().getClass());
@@ -287,8 +285,8 @@ public class TodoResourceIntegrationTest {
 
         try {
             mockMvc.perform(put(API_BASE_BLOCKS + "/" + todoBlock.getId() + API_BASE_TODOS + "/" + todo.getId())
-                                .content(objectMapper.writeValueAsString(requestDto))
-                                .contentType(MediaType.APPLICATION_JSON_VALUE));
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE));
             fail("Exception was't thrown");
         } catch (Exception e) {
             assertEquals(UnchangeableFieldUpdateException.class, e.getCause().getClass());

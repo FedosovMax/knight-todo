@@ -23,7 +23,7 @@ public class RoutineFactory {
             .build();
     }
 
-    public static CreateRoutineRequestDto createRoutineWithNullValueRequestDto() {
+    public static CreateRoutineRequestDto createRoutineWithNullNameValueRequestDto() {
         return CreateRoutineRequestDto.builder()
             .name(null)
             .hardness(HARDNESS_HARD)
@@ -40,7 +40,7 @@ public class RoutineFactory {
             .build();
     }
 
-    public static UpdateRoutineRequestDto updateRoutineWithNullRequestDto() {
+    public static UpdateRoutineRequestDto updateRoutineWithNullNaveValueRequestDto() {
         return UpdateRoutineRequestDto.builder()
             .name(null)
             .hardness(HARDNESS_HARD)

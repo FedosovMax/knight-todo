@@ -15,5 +15,5 @@ public interface RoutineService {
 
     void deleteById(String routineId);
 
-    List<RoutineVO> findAllPatterns();
+    List<RoutineVO> findAllTemplates();
 }

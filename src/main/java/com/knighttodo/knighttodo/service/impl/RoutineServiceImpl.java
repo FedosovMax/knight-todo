@@ -61,7 +61,7 @@ public class RoutineServiceImpl implements RoutineService {
     }
 
     @Override
-    public List<RoutineVO> findAllPatterns() {
+    public List<RoutineVO> findAllTemplates() {
         return routineGateway.findAllTemplates();
     }
 }
