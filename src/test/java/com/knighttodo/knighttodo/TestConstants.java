@@ -1,10 +1,9 @@
 package com.knighttodo.knighttodo;
 
 import static com.knighttodo.knighttodo.Constants.API_BASE_BLOCKS;
+import static com.knighttodo.knighttodo.Constants.API_BASE_ROUTINES;
 import static com.knighttodo.knighttodo.Constants.API_BASE_TODOS;
-import static com.knighttodo.knighttodo.Constants.API_BASE_URL;
 import static com.knighttodo.knighttodo.Constants.API_GET_TODOS_BY_BLOCK_ID;
-import static com.knighttodo.knighttodo.Constants.BASE_EXPERIENCE_URL;
 import static com.knighttodo.knighttodo.Constants.BASE_READY;
 
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
@@ -26,6 +25,14 @@ public class TestConstants {
 
     public static String buildGetTodoByIdUrl(String blockId, String id) {
         return API_BASE_BLOCKS + "/" + blockId + API_BASE_TODOS + "/" + id;
+    }
+
+    public static String buildGetRoutineByIdUrl(String blockId, String id) {
+        return API_BASE_BLOCKS + "/" + blockId + API_BASE_ROUTINES + "/" + id;
+    }
+
+    public static String buildDeleteRoutineByIdUrl(String blockId, String id) {
+        return API_BASE_BLOCKS + "/" + blockId + API_BASE_ROUTINES + "/" + id;
     }
 
     public static String buildDeleteTodoByIdUrl(String blockId, String id) {
@@ -52,6 +59,10 @@ public class TestConstants {
         return JSON_ROOT + "todoName";
     }
 
+    public static String buildJsonPathToName() {
+        return JSON_ROOT + "name";
+    }
+
     public static String buildJsonPathToScariness() {
         return JSON_ROOT + "scariness";
     }
@@ -64,11 +75,23 @@ public class TestConstants {
         return JSON_ROOT + "todoBlockId";
     }
 
+    public static String buildJsonPathToExperience() {
+        return JSON_ROOT + "experience";
+    }
+
     public static String buildJsonPathToBlockName() {
         return JSON_ROOT + "blockName";
     }
 
-    public static String buildJsonPathToTodosLength() {
-        return JSON_ROOT + "todos.length()";
+    public static String buildJsonPathToTemplateIdName() {
+        return JSON_ROOT + "templateId";
+    }
+
+    public static String buildJsonPathToReadyName() {
+        return JSON_ROOT + "ready";
+    }
+
+    public static String buildJsonPathToRoutinesName() {
+        return JSON_ROOT + "routines";
     }
 }

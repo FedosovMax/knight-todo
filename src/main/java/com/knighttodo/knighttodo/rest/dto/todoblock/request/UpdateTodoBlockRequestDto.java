@@ -13,8 +13,5 @@ import lombok.NoArgsConstructor;
 public class UpdateTodoBlockRequestDto {
 
     @NotBlank
-    private String id;
-
-    @NotBlank
     private String blockName;
 }

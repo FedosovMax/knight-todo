@@ -9,15 +9,11 @@ import com.knighttodo.knighttodo.rest.dto.routine.request.UpdateRoutineRequestDt
 import com.knighttodo.knighttodo.rest.dto.routine.response.RoutineResponseDto;
 import com.knighttodo.knighttodo.rest.mapper.RoutineRestMapper;
 import com.knighttodo.knighttodo.service.RoutineService;
-
 import java.util.List;
 import java.util.stream.Collectors;
-
 import javax.validation.Valid;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -68,12 +64,12 @@ public class RoutineResource {
         return ResponseEntity.status(HttpStatus.FOUND).body(routineRestMapper.toRoutineResponseDto(routineVO));
     }
 
-    @PutMapping("/{routineId")
-    public ResponseEntity<RoutineResponseDto> updateRoutine(@PathVariable String routineId,
-        @Valid @RequestBody UpdateRoutineRequestDto updateRequestDto) {
+    @PutMapping("/{routineId}")
+    public ResponseEntity<RoutineResponseDto> updateRoutine(@PathVariable String blockId,
+        @PathVariable String routineId, @Valid @RequestBody UpdateRoutineRequestDto updateRequestDto) {
         log.info("Rest request to update routine : {}", updateRequestDto);
         RoutineVO routineVO = routineRestMapper.toRoutineVO(updateRequestDto);
-        RoutineVO updatedRoutineVO = routineService.updateRoutine(routineId, routineVO);
+        RoutineVO updatedRoutineVO = routineService.updateRoutine(blockId, routineId, routineVO);
 
         return ResponseEntity.ok().body(routineRestMapper.toRoutineResponseDto(updatedRoutineVO));
     }

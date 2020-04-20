@@ -8,20 +8,20 @@ import static com.knighttodo.knighttodo.TestConstants.PARAMETER_TRUE;
 import static com.knighttodo.knighttodo.TestConstants.buildDeleteTodoByIdUrl;
 import static com.knighttodo.knighttodo.TestConstants.buildGetTodoByIdUrl;
 import static com.knighttodo.knighttodo.TestConstants.buildGetTodosByBlockIdUrl;
+import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToExperience;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToHardness;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToId;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToLength;
+import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToReadyName;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToScariness;
+import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToTodoBlockId;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToTodoName;
 import static com.knighttodo.knighttodo.TestConstants.buildUpdateTodoReadyBaseUrl;
-
 import static org.assertj.core.api.Assertions.assertThat;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -30,7 +30,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.knighttodo.knighttodo.factories.TodoBlockFactory;
 import com.knighttodo.knighttodo.factories.TodoFactory;
 import com.knighttodo.knighttodo.gateway.experience.response.ExperienceResponse;
@@ -40,10 +39,9 @@ import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
 import com.knighttodo.knighttodo.rest.dto.todo.request.CreateTodoRequestDto;
 import com.knighttodo.knighttodo.rest.dto.todo.request.UpdateTodoRequestDto;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -52,10 +50,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 public class TodoResourceIntegrationTest {
@@ -93,7 +93,7 @@ public class TodoResourceIntegrationTest {
                 .content(objectMapper.writeValueAsString(requestDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isCreated())
-            .andExpect(jsonPath("todoBlockId").isNotEmpty())
+            .andExpect(jsonPath(buildJsonPathToTodoBlockId()).isNotEmpty())
             .andExpect(jsonPath(buildJsonPathToId()).exists());
 
         assertThat(todoRepository.count()).isEqualTo(1);
@@ -276,9 +276,9 @@ public class TodoResourceIntegrationTest {
         mockMvc.perform(put(buildUpdateTodoReadyBaseUrl(todoBlock, todo))
             .param(PARAM_READY, PARAMETER_TRUE))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("todoBlockId").isNotEmpty())
-            .andExpect(jsonPath("experience").isNotEmpty())
-            .andExpect(jsonPath("ready").value(true));
+            .andExpect(jsonPath(buildJsonPathToTodoBlockId()).isNotEmpty())
+            .andExpect(jsonPath(buildJsonPathToExperience()).isNotEmpty())
+            .andExpect(jsonPath(buildJsonPathToReadyName()).value(true));
 
         assertThat(todoRepository.findById(todo.getId()).get().isReady()).isEqualTo(true);
     }

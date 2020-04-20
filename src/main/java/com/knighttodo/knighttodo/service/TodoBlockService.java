@@ -11,7 +11,7 @@ public interface TodoBlockService {
 
     TodoBlockVO findById(String blockId);
 
-    TodoBlockVO updateTodoBlock(TodoBlockVO changedTodoBlockVO);
+    TodoBlockVO updateTodoBlock(String blockId, TodoBlockVO changedTodoBlockVO);
 
     void deleteById(String blockId);
 }

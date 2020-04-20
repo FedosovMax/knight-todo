@@ -27,6 +27,8 @@ public class RoutineVO {
 
     private String templateId;
 
+    private boolean ready;
+
     private TodoBlockVO todoBlock;
 
     private List<TodoVO> todos = new ArrayList<>();
