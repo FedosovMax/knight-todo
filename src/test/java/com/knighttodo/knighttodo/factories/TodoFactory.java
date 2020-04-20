@@ -88,6 +88,33 @@ public class TodoFactory {
             .build();
     }
 
+    public static UpdateTodoRequestDto updateTodoRequestReadyDto() {
+        return UpdateTodoRequestDto.builder()
+            .todoName(UPDATED_TODO_NAME)
+            .scariness(SCARINESS_TODO)
+            .hardness(HARDNESS_TODO)
+            .ready(TRUE_TODO_READY)
+            .build();
+    }
+
+    public static UpdateTodoRequestDto updateTodoRequestReadyDtoWithChangedScariness() {
+        return UpdateTodoRequestDto.builder()
+            .todoName(UPDATED_TODO_NAME)
+            .scariness(UPDATED_SCARINESS_TODO)
+            .hardness(HARDNESS_TODO)
+            .ready(TRUE_TODO_READY)
+            .build();
+    }
+
+    public static UpdateTodoRequestDto updateTodoRequestReadyDtoWithChangedHardness() {
+        return UpdateTodoRequestDto.builder()
+            .todoName(UPDATED_TODO_NAME)
+            .scariness(SCARINESS_TODO)
+            .hardness(UPDATED_HARDNESS_TODO)
+            .ready(TRUE_TODO_READY)
+            .build();
+    }
+
     public static UpdateTodoRequestDto updateTodoRequestDtoWithoutName(TodoBlock savedTodoBlock) {
         UpdateTodoRequestDto request = updateTodoRequestDto(savedTodoBlock);
         request.setTodoName(null);
