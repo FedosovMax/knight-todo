@@ -23,7 +23,7 @@ public class TodoVO {
 
     private boolean ready;
 
-    private TodoBlockVO todoBlockVO;
+    private BlockVO blockVO;
 
     private Integer experience;
 }

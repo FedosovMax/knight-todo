@@ -11,8 +11,10 @@ import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToName;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToReadyName;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToScariness;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToTemplateIdName;
-import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToTodoBlockId;
+import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToBlockId;
+
 import static org.assertj.core.api.Assertions.assertThat;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -21,17 +23,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.knighttodo.knighttodo.factories.RoutineFactory;
-import com.knighttodo.knighttodo.factories.TodoBlockFactory;
+import com.knighttodo.knighttodo.factories.BlockFactory;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.RoutineRepository;
-import com.knighttodo.knighttodo.gateway.privatedb.repository.TodoBlockRepository;
+import com.knighttodo.knighttodo.gateway.privatedb.repository.BlockRepository;
+import com.knighttodo.knighttodo.gateway.privatedb.representation.Block;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Routine;
-import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
 import com.knighttodo.knighttodo.rest.dto.routine.request.CreateRoutineRequestDto;
 import com.knighttodo.knighttodo.rest.dto.routine.request.UpdateRoutineRequestDto;
 import com.knighttodo.knighttodo.rest.dto.routine.response.RoutineResponseDto;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -53,7 +58,7 @@ public class RoutineResourceIntegrationTest {
     private RoutineRepository routineRepository;
 
     @Autowired
-    private TodoBlockRepository todoBlockRepository;
+    private BlockRepository blockRepository;
 
     @BeforeEach
     public void setUp() {
@@ -62,10 +67,10 @@ public class RoutineResourceIntegrationTest {
 
     @Test
     public void createRoutine_shouldAddRoutineAndReturnIt_whenRequestIsCorrect() throws Exception {
-        TodoBlock todoBlock = todoBlockRepository.save(TodoBlockFactory.todoBlockInstance());
+        Block block = blockRepository.save(BlockFactory.BlockInstance());
         CreateRoutineRequestDto requestDto = RoutineFactory.createRoutineRequestDto();
 
-        mockMvc.perform(post(API_BASE_BLOCKS + "/" + todoBlock.getId() + API_BASE_ROUTINES)
+        mockMvc.perform(post(API_BASE_BLOCKS + "/" + block.getId() + API_BASE_ROUTINES)
             .content(objectMapper.writeValueAsString(requestDto))
             .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isCreated())
@@ -82,10 +87,10 @@ public class RoutineResourceIntegrationTest {
 
     @Test
     public void createRoutine_shouldRespondWithBadRequestStatus_whenNameIsNull() throws Exception {
-        TodoBlock todoBlock = todoBlockRepository.save(TodoBlockFactory.todoBlockInstance());
+        Block block = blockRepository.save(BlockFactory.BlockInstance());
         CreateRoutineRequestDto requestDto = RoutineFactory.createRoutineWithNullNameValueRequestDto();
 
-        mockMvc.perform(post(API_BASE_BLOCKS + "/" + todoBlock.getId() + API_BASE_ROUTINES)
+        mockMvc.perform(post(API_BASE_BLOCKS + "/" + block.getId() + API_BASE_ROUTINES)
             .content(objectMapper.writeValueAsString(requestDto))
             .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isBadRequest());
@@ -95,34 +100,34 @@ public class RoutineResourceIntegrationTest {
 
     @Test
     public void getAllRoutines_shouldReturnAllTodos() throws Exception {
-        TodoBlock todoBlock = todoBlockRepository.save(TodoBlockFactory.todoBlockInstance());
+        Block block = blockRepository.save(BlockFactory.BlockInstance());
         routineRepository.save(RoutineFactory.createRoutineInstance());
         routineRepository.save(RoutineFactory.createRoutineInstance());
 
-        mockMvc.perform(get(API_BASE_BLOCKS + "/" + todoBlock.getId() + API_BASE_ROUTINES))
+        mockMvc.perform(get(API_BASE_BLOCKS + "/" + block.getId() + API_BASE_ROUTINES))
             .andExpect(status().isFound())
             .andExpect(jsonPath(buildJsonPathToLength()).value(2));
     }
 
     @Test
     public void getRoutineById_shouldReturnExistingRoutine_whenIdIsCorrect() throws Exception {
-        TodoBlock todoBlock = todoBlockRepository.save(TodoBlockFactory.todoBlockInstance());
+        Block block = blockRepository.save(BlockFactory.BlockInstance());
         Routine routine = routineRepository.save(RoutineFactory.createRoutineInstance());
 
-        mockMvc.perform(get(buildGetRoutineByIdUrl(todoBlock.getId(), routine.getId())))
+        mockMvc.perform(get(buildGetRoutineByIdUrl(block.getId(), routine.getId())))
             .andExpect(status().isFound())
             .andExpect(jsonPath(buildJsonPathToId()).value(routine.getId()));
     }
 
     @Test
     public void updateRoutine_shouldUpdateRoutineAndReturnIt_whenRequestIsCorrect() throws Exception {
-        TodoBlock todoBlock = todoBlockRepository.save(TodoBlockFactory.todoBlockInstance());
+        Block block = blockRepository.save(BlockFactory.BlockInstance());
         Routine routine = routineRepository.save(RoutineFactory.createRoutineInstance());
         UpdateRoutineRequestDto requestDto = RoutineFactory.updateRoutineRequestDto();
         RoutineResponseDto responseDto = RoutineFactory.createRoutineResponseDto();
-        responseDto.setTodoBlockId(todoBlock.getId());
+        responseDto.setBlockId(block.getId());
 
-        mockMvc.perform(put(API_BASE_BLOCKS + "/" + todoBlock.getId() + API_BASE_ROUTINES + "/" + routine.getId())
+        mockMvc.perform(put(API_BASE_BLOCKS + "/" + block.getId() + API_BASE_ROUTINES + "/" + routine.getId())
             .content(objectMapper.writeValueAsString(requestDto))
             .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isOk())
@@ -130,7 +135,7 @@ public class RoutineResourceIntegrationTest {
             .andExpect(jsonPath(buildJsonPathToHardness()).value(responseDto.getHardness().toString()))
             .andExpect(jsonPath(buildJsonPathToScariness()).value(responseDto.getScariness().toString()))
             .andExpect(jsonPath(buildJsonPathToTemplateIdName()).isNotEmpty())
-            .andExpect(jsonPath(buildJsonPathToTodoBlockId()).isNotEmpty())
+            .andExpect(jsonPath(buildJsonPathToBlockId()).isNotEmpty())
             .andExpect(jsonPath(buildJsonPathToReadyName()).value(true))
             .andExpect(jsonPath(buildJsonPathToId()).exists());
 
@@ -140,11 +145,11 @@ public class RoutineResourceIntegrationTest {
 
     @Test
     public void updateRoutine_shouldRespondWithBadRequestStatus_whenNameIsNull() throws Exception {
-        TodoBlock todoBlock = todoBlockRepository.save(TodoBlockFactory.todoBlockInstance());
+        Block block = blockRepository.save(BlockFactory.BlockInstance());
         Routine routine = routineRepository.save(RoutineFactory.createRoutineInstance());
         UpdateRoutineRequestDto requestDto = RoutineFactory.updateRoutineWithNullNaveValueRequestDto();
 
-        mockMvc.perform(put(API_BASE_BLOCKS + "/" + todoBlock.getId() + API_BASE_ROUTINES + "/" + routine.getId())
+        mockMvc.perform(put(API_BASE_BLOCKS + "/" + block.getId() + API_BASE_ROUTINES + "/" + routine.getId())
             .content(objectMapper.writeValueAsString(requestDto))
             .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isBadRequest());
@@ -153,10 +158,10 @@ public class RoutineResourceIntegrationTest {
     @Test
     @Transactional
     public void deleteRoutine_shouldDeleteRoutine_whenIdIsCorrect() throws Exception {
-        TodoBlock todoBlock = todoBlockRepository.save(TodoBlockFactory.todoBlockInstance());
+        Block block = blockRepository.save(BlockFactory.BlockInstance());
         Routine routine = routineRepository.save(RoutineFactory.createRoutineInstance());
 
-        mockMvc.perform(delete(buildDeleteRoutineByIdUrl(todoBlock.getId(), routine.getId())))
+        mockMvc.perform(delete(buildDeleteRoutineByIdUrl(block.getId(), routine.getId())))
             .andExpect(status().isOk());
 
         assertThat(routineRepository.findById(routine.getId())).isEmpty();

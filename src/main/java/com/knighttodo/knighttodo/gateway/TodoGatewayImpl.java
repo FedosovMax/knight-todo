@@ -4,10 +4,13 @@ import com.knighttodo.knighttodo.domain.TodoVO;
 import com.knighttodo.knighttodo.gateway.privatedb.mapper.TodoMapper;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.TodoRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -39,8 +42,8 @@ public class TodoGatewayImpl implements TodoGateway {
     }
 
     @Override
-    public List<TodoVO> findByTodoBlockId(String blockId) {
-        return todoRepository.findByTodoBlockId(blockId).stream().map(todoMapper::toTodoVO)
+    public List<TodoVO> findByBlockId(String blockId) {
+        return todoRepository.findByBlockId(blockId).stream().map(todoMapper::toTodoVO)
             .collect(Collectors.toList());
     }
 }

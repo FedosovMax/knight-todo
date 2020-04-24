@@ -12,5 +12,5 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
 
     void deleteById(String todoId);
 
-    List<Todo> findByTodoBlockId(String blockId);
+    List<Todo> findByBlockId(String blockId);
 }

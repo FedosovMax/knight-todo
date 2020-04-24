@@ -29,7 +29,7 @@ public class RoutineVO {
 
     private boolean ready;
 
-    private TodoBlockVO todoBlock;
+    private BlockVO block;
 
     private List<TodoVO> todos = new ArrayList<>();
 }

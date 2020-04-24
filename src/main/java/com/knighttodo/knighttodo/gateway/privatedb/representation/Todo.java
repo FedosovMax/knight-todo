@@ -2,6 +2,7 @@ package com.knighttodo.knighttodo.gateway.privatedb.representation;
 
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scariness;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -53,7 +55,7 @@ public class Todo {
 
     @ManyToOne
     @JoinColumn(name = "block_id")
-    private TodoBlock todoBlock;
+    private Block block;
 
     @ManyToOne
     @JoinColumn(name = "routine_id")

@@ -15,5 +15,5 @@ public interface TodoGateway {
 
     void deleteById(String todoId);
 
-    List<TodoVO> findByTodoBlockId(String blockId);
+    List<TodoVO> findByBlockId(String blockId);
 }

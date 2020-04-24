@@ -13,12 +13,15 @@ import com.knighttodo.knighttodo.rest.dto.todo.response.TodoResponseDto;
 import com.knighttodo.knighttodo.rest.dto.todo.response.UpdateTodoResponseDto;
 import com.knighttodo.knighttodo.rest.mapper.TodoRestMapper;
 import com.knighttodo.knighttodo.service.TodoService;
-import com.knighttodo.knighttodo.validation.annotation.ValidReady;
+
 import java.util.List;
 import java.util.stream.Collectors;
+
 import javax.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -86,7 +89,7 @@ public class  TodoResource {
 
     @GetMapping(API_GET_TODOS_BY_BLOCK_ID)
     public ResponseEntity<List<TodoResponseDto>> getTodosByBlockId(@PathVariable String blockId) {
-        log.info("request for TodoBlock to get all todo by todoBlock id");
+        log.info("request for block to get all todos by block id");
 
         return ResponseEntity.status(HttpStatus.FOUND)
             .body(todoService.findByBlockId(blockId)

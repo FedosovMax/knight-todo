@@ -30,7 +30,7 @@ public class RoutineResponseDto {
 
     private String templateId;
 
-    private String todoBlockId;
+    private String blockId;
 
     private List<TodoResponseDto> todos = new ArrayList<>();
 }

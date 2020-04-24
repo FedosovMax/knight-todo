@@ -6,6 +6,7 @@ import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scarines
 import com.knighttodo.knighttodo.rest.dto.routine.request.CreateRoutineRequestDto;
 import com.knighttodo.knighttodo.rest.dto.routine.request.UpdateRoutineRequestDto;
 import com.knighttodo.knighttodo.rest.dto.routine.response.RoutineResponseDto;
+
 import java.util.ArrayList;
 
 public class RoutineFactory {
