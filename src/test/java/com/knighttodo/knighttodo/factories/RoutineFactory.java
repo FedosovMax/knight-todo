@@ -3,9 +3,8 @@ package com.knighttodo.knighttodo.factories;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Routine;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scariness;
-import com.knighttodo.knighttodo.rest.dto.routine.request.CreateRoutineRequestDto;
-import com.knighttodo.knighttodo.rest.dto.routine.request.UpdateRoutineRequestDto;
-import com.knighttodo.knighttodo.rest.dto.routine.response.RoutineResponseDto;
+import com.knighttodo.knighttodo.rest.request.RoutineRequestDto;
+import com.knighttodo.knighttodo.rest.response.RoutineResponseDto;
 
 import java.util.ArrayList;
 
@@ -16,24 +15,24 @@ public class RoutineFactory {
     public static final Scariness SCARINESS_HARD = Scariness.SCARY;
     public static final String UPDATED_BLOCK_NAME = "Friday Todos";
 
-    public static CreateRoutineRequestDto createRoutineRequestDto() {
-        return CreateRoutineRequestDto.builder()
+    public static RoutineRequestDto createRoutineRequestDto() {
+        return RoutineRequestDto.builder()
             .name(ROUTINE_NAME)
             .hardness(HARDNESS_HARD)
             .scariness(SCARINESS_HARD)
             .build();
     }
 
-    public static CreateRoutineRequestDto createRoutineWithNullNameValueRequestDto() {
-        return CreateRoutineRequestDto.builder()
+    public static RoutineRequestDto createRoutineWithNullNameValueRequestDto() {
+        return RoutineRequestDto.builder()
             .name(null)
             .hardness(HARDNESS_HARD)
             .scariness(SCARINESS_HARD)
             .build();
     }
 
-    public static UpdateRoutineRequestDto updateRoutineRequestDto() {
-        return UpdateRoutineRequestDto.builder()
+    public static RoutineRequestDto updateRoutineRequestDto() {
+        return RoutineRequestDto.builder()
             .name(ROUTINE_NAME)
             .hardness(HARDNESS_HARD)
             .scariness(SCARINESS_HARD)
@@ -41,8 +40,8 @@ public class RoutineFactory {
             .build();
     }
 
-    public static UpdateRoutineRequestDto updateRoutineWithNullNaveValueRequestDto() {
-        return UpdateRoutineRequestDto.builder()
+    public static RoutineRequestDto updateRoutineWithNullNaveValueRequestDto() {
+        return RoutineRequestDto.builder()
             .name(null)
             .hardness(HARDNESS_HARD)
             .scariness(SCARINESS_HARD)

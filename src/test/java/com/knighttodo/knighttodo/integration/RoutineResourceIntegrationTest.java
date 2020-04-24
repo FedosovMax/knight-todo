@@ -30,9 +30,8 @@ import com.knighttodo.knighttodo.gateway.privatedb.repository.RoutineRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.BlockRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Block;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Routine;
-import com.knighttodo.knighttodo.rest.dto.routine.request.CreateRoutineRequestDto;
-import com.knighttodo.knighttodo.rest.dto.routine.request.UpdateRoutineRequestDto;
-import com.knighttodo.knighttodo.rest.dto.routine.response.RoutineResponseDto;
+import com.knighttodo.knighttodo.rest.request.RoutineRequestDto;
+import com.knighttodo.knighttodo.rest.response.RoutineResponseDto;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -68,7 +67,7 @@ public class RoutineResourceIntegrationTest {
     @Test
     public void createRoutine_shouldAddRoutineAndReturnIt_whenRequestIsCorrect() throws Exception {
         Block block = blockRepository.save(BlockFactory.BlockInstance());
-        CreateRoutineRequestDto requestDto = RoutineFactory.createRoutineRequestDto();
+        RoutineRequestDto requestDto = RoutineFactory.createRoutineRequestDto();
 
         mockMvc.perform(post(API_BASE_BLOCKS + "/" + block.getId() + API_BASE_ROUTINES)
             .content(objectMapper.writeValueAsString(requestDto))
@@ -88,7 +87,7 @@ public class RoutineResourceIntegrationTest {
     @Test
     public void createRoutine_shouldRespondWithBadRequestStatus_whenNameIsNull() throws Exception {
         Block block = blockRepository.save(BlockFactory.BlockInstance());
-        CreateRoutineRequestDto requestDto = RoutineFactory.createRoutineWithNullNameValueRequestDto();
+        RoutineRequestDto requestDto = RoutineFactory.createRoutineWithNullNameValueRequestDto();
 
         mockMvc.perform(post(API_BASE_BLOCKS + "/" + block.getId() + API_BASE_ROUTINES)
             .content(objectMapper.writeValueAsString(requestDto))
@@ -123,7 +122,7 @@ public class RoutineResourceIntegrationTest {
     public void updateRoutine_shouldUpdateRoutineAndReturnIt_whenRequestIsCorrect() throws Exception {
         Block block = blockRepository.save(BlockFactory.BlockInstance());
         Routine routine = routineRepository.save(RoutineFactory.createRoutineInstance());
-        UpdateRoutineRequestDto requestDto = RoutineFactory.updateRoutineRequestDto();
+        RoutineRequestDto requestDto = RoutineFactory.updateRoutineRequestDto();
         RoutineResponseDto responseDto = RoutineFactory.createRoutineResponseDto();
         responseDto.setBlockId(block.getId());
 
@@ -147,7 +146,7 @@ public class RoutineResourceIntegrationTest {
     public void updateRoutine_shouldRespondWithBadRequestStatus_whenNameIsNull() throws Exception {
         Block block = blockRepository.save(BlockFactory.BlockInstance());
         Routine routine = routineRepository.save(RoutineFactory.createRoutineInstance());
-        UpdateRoutineRequestDto requestDto = RoutineFactory.updateRoutineWithNullNaveValueRequestDto();
+        RoutineRequestDto requestDto = RoutineFactory.updateRoutineWithNullNaveValueRequestDto();
 
         mockMvc.perform(put(API_BASE_BLOCKS + "/" + block.getId() + API_BASE_ROUTINES + "/" + routine.getId())
             .content(objectMapper.writeValueAsString(requestDto))

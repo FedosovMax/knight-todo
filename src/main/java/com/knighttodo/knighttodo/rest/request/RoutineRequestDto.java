@@ -1,4 +1,4 @@
-package com.knighttodo.knighttodo.rest.dto.routine.request;
+package com.knighttodo.knighttodo.rest.request;
 
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scariness;
@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CreateRoutineRequestDto {
+public class RoutineRequestDto {
 
     @NotBlank
     private String name;
@@ -25,4 +25,6 @@ public class CreateRoutineRequestDto {
 
     @NotNull
     private Scariness scariness;
+
+    private boolean ready;
 }
