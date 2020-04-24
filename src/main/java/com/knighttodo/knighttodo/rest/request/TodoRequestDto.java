@@ -1,4 +1,4 @@
-package com.knighttodo.knighttodo.rest.dto.todo.request;
+package com.knighttodo.knighttodo.rest.request;
 
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scariness;
@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CreateTodoRequestDto {
+public class TodoRequestDto {
 
     @NotBlank
     private String todoName;
@@ -26,5 +26,5 @@ public class CreateTodoRequestDto {
     @NotNull
     private Hardness hardness;
 
-    private Boolean isReady;
+    private boolean ready;
 }

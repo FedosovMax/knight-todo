@@ -6,11 +6,9 @@ import static com.knighttodo.knighttodo.Constants.API_GET_TODOS_BY_BLOCK_ID;
 import static com.knighttodo.knighttodo.Constants.BASE_READY;
 
 import com.knighttodo.knighttodo.domain.TodoVO;
-import com.knighttodo.knighttodo.rest.dto.todo.request.CreateTodoRequestDto;
-import com.knighttodo.knighttodo.rest.dto.todo.request.UpdateTodoRequestDto;
-import com.knighttodo.knighttodo.rest.dto.todo.response.CreateTodoResponseDto;
-import com.knighttodo.knighttodo.rest.dto.todo.response.TodoResponseDto;
-import com.knighttodo.knighttodo.rest.dto.todo.response.UpdateTodoResponseDto;
+import com.knighttodo.knighttodo.rest.request.TodoRequestDto;
+import com.knighttodo.knighttodo.rest.response.TodoResponseDto;
+import com.knighttodo.knighttodo.rest.response.TodoReadyResponseDto;
 import com.knighttodo.knighttodo.rest.mapper.TodoRestMapper;
 import com.knighttodo.knighttodo.service.TodoService;
 
@@ -40,7 +38,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(API_BASE_BLOCKS + "/{blockId}" + API_BASE_TODOS)
 @Slf4j
-public class  TodoResource {
+public class TodoResource {
 
     private final TodoService todoService;
     private final TodoRestMapper todoRestMapper;
@@ -50,34 +48,37 @@ public class  TodoResource {
         log.info("Rest request to get all todo");
 
         return ResponseEntity.status(HttpStatus.FOUND)
-            .body(todoService.findAll().stream().map(todoRestMapper::toTodoResponseDto).collect(Collectors.toList()));
+            .body(todoService.findAll()
+                .stream()
+                .map(todoRestMapper::toTodoResponseDto)
+                .collect(Collectors.toList()));
     }
 
     @PostMapping
-    public ResponseEntity<CreateTodoResponseDto> addTodo(@PathVariable String blockId,
-        @Valid @RequestBody CreateTodoRequestDto createRequestDto) {
-        log.info("Rest request to add todo : {}", createRequestDto);
-        TodoVO todoVO = todoRestMapper.toTodoVO(createRequestDto);
+    public ResponseEntity<TodoResponseDto> addTodo(@PathVariable String blockId,
+        @Valid @RequestBody TodoRequestDto requestDto) {
+        log.info("Rest request to add todo : {}", requestDto);
+        TodoVO todoVO = todoRestMapper.toTodoVO(requestDto);
         TodoVO savedTodoVO = todoService.save(blockId, todoVO);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(todoRestMapper.toCreateTodoResponseDto(savedTodoVO));
+        return ResponseEntity.status(HttpStatus.CREATED).body(todoRestMapper.toTodoResponseDto(savedTodoVO));
     }
 
     @GetMapping("/{todoId}")
-    public ResponseEntity<TodoResponseDto> getTodoById(@PathVariable String todoId) {
+    public ResponseEntity<TodoReadyResponseDto> getTodoById(@PathVariable String todoId) {
         log.info("Rest request to get todo by id : {}", todoId);
         TodoVO todoVO = todoService.findById(todoId);
 
-        return ResponseEntity.status(HttpStatus.FOUND).body(todoRestMapper.toTodoResponseDto(todoVO));
+        return ResponseEntity.status(HttpStatus.FOUND).body(todoRestMapper.toTodoReadyResponseDto(todoVO));
     }
 
     @PutMapping("/{todoId}")
-    public ResponseEntity<UpdateTodoResponseDto> updateTodo(@PathVariable String todoId,
-        @Valid @RequestBody UpdateTodoRequestDto updateRequestDto) {
-        log.info("Rest request to update todo : {}", updateRequestDto);
-        TodoVO todoVO = todoRestMapper.toTodoVO(updateRequestDto);
+    public ResponseEntity<TodoResponseDto> updateTodo(@PathVariable String todoId,
+        @Valid @RequestBody TodoRequestDto requestDto) {
+        log.info("Rest request to update todo : {}", requestDto);
+        TodoVO todoVO = todoRestMapper.toTodoVO(requestDto);
         TodoVO updatedTodoVO = todoService.updateTodo(todoId, todoVO);
-        return ResponseEntity.ok().body(todoRestMapper.toUpdateTodoResponseDto(updatedTodoVO));
+        return ResponseEntity.ok().body(todoRestMapper.toTodoResponseDto(updatedTodoVO));
     }
 
     @DeleteMapping("/{todoId}")
@@ -99,10 +100,10 @@ public class  TodoResource {
     }
 
     @PutMapping(value = "/{todoId}" + BASE_READY)
-    public ResponseEntity<TodoResponseDto> updateIsReady(@PathVariable String blockId, @PathVariable String todoId,
+    public ResponseEntity<TodoReadyResponseDto> updateIsReady(@PathVariable String blockId, @PathVariable String todoId,
         @RequestParam String ready) {
         boolean isReady = Boolean.parseBoolean(ready);
         TodoVO todoVO = todoService.updateIsReady(blockId, todoId, isReady);
-        return ResponseEntity.status(HttpStatus.OK).body(todoRestMapper.toTodoResponseDto(todoVO));
+        return ResponseEntity.status(HttpStatus.OK).body(todoRestMapper.toTodoReadyResponseDto(todoVO));
     }
 }
