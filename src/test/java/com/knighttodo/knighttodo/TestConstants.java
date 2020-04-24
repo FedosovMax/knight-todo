@@ -7,7 +7,7 @@ import static com.knighttodo.knighttodo.Constants.API_GET_TODOS_BY_BLOCK_ID;
 import static com.knighttodo.knighttodo.Constants.BASE_READY;
 
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
-import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
+import com.knighttodo.knighttodo.gateway.privatedb.representation.Block;
 
 public class TestConstants {
 
@@ -43,8 +43,8 @@ public class TestConstants {
         return API_BASE_BLOCKS + "/" + blockId + API_BASE_TODOS + API_GET_TODOS_BY_BLOCK_ID;
     }
 
-    public static String buildUpdateTodoReadyBaseUrl(TodoBlock todoBlock, Todo todo) {
-        return API_BASE_BLOCKS + "/" + todoBlock.getId() + API_BASE_TODOS + "/" + todo.getId() + BASE_READY;
+    public static String buildUpdateTodoReadyBaseUrl(Block block, Todo todo) {
+        return API_BASE_BLOCKS + "/" + block.getId() + API_BASE_TODOS + "/" + todo.getId() + BASE_READY;
     }
 
     public static String buildJsonPathToId() {
@@ -71,8 +71,8 @@ public class TestConstants {
         return JSON_ROOT + "hardness";
     }
 
-    public static String buildJsonPathToTodoBlockId() {
-        return JSON_ROOT + "todoBlockId";
+    public static String buildJsonPathToBlockId() {
+        return JSON_ROOT + "blockId";
     }
 
     public static String buildJsonPathToExperience() {

@@ -15,6 +15,6 @@ public interface RoutineRestMapper {
 
     RoutineVO toRoutineVO(UpdateRoutineRequestDto requestDto);
 
-    @Mapping(source = "todoBlock.id", target = "todoBlockId")
+    @Mapping(source = "block.id", target = "blockId")
     RoutineResponseDto toRoutineResponseDto(RoutineVO routineVO);
 }

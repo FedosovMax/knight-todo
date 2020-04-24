@@ -2,6 +2,7 @@ package com.knighttodo.knighttodo.rest.dto.todo.response;
 
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scariness;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,5 +24,5 @@ public class CreateTodoResponseDto {
 
     private boolean ready;
 
-    private String todoBlockId;
+    private String blockId;
 }

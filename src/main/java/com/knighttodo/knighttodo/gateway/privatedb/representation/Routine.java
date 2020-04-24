@@ -56,7 +56,7 @@ public class Routine {
 
     @ManyToOne
     @JoinColumn(name = "block_id")
-    private TodoBlock todoBlock;
+    private Block block;
 
     @OneToMany(mappedBy = "routine", cascade = CascadeType.ALL)
     private List<Todo> todos = new ArrayList<>();

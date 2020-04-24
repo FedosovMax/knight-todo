@@ -1,6 +1,6 @@
-package com.knighttodo.knighttodo.rest.dto.todoblock.request;
+package com.knighttodo.knighttodo.domain;
 
-import javax.validation.constraints.NotBlank;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,8 +10,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CreateTodoBlockRequestDto {
+public class BlockVO {
 
-    @NotBlank
+    private String id;
+
     private String blockName;
+
+    private List<RoutineVO> routines;
 }

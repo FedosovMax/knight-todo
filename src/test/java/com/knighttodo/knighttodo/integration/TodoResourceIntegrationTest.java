@@ -14,16 +14,20 @@ import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToId;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToLength;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToReadyName;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToScariness;
-import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToTodoBlockId;
+import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToBlockId;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToTodoName;
 import static com.knighttodo.knighttodo.TestConstants.buildUpdateTodoReadyBaseUrl;
+
 import static org.aspectj.bridge.MessageUtil.fail;
 import static org.assertj.core.api.Assertions.assertThat;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -32,18 +36,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.knighttodo.knighttodo.exception.UnchangeableFieldUpdateException;
-import com.knighttodo.knighttodo.factories.TodoBlockFactory;
+import com.knighttodo.knighttodo.factories.BlockFactory;
 import com.knighttodo.knighttodo.factories.TodoFactory;
+
 import com.knighttodo.knighttodo.gateway.experience.response.ExperienceResponse;
-import com.knighttodo.knighttodo.gateway.privatedb.repository.TodoBlockRepository;
+import com.knighttodo.knighttodo.gateway.privatedb.repository.BlockRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.TodoRepository;
+import com.knighttodo.knighttodo.gateway.privatedb.representation.Block;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
-import com.knighttodo.knighttodo.gateway.privatedb.representation.TodoBlock;
 import com.knighttodo.knighttodo.rest.dto.todo.request.CreateTodoRequestDto;
 import com.knighttodo.knighttodo.rest.dto.todo.request.UpdateTodoRequestDto;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -70,7 +78,7 @@ public class TodoResourceIntegrationTest {
     private TodoRepository todoRepository;
 
     @Autowired
-    private TodoBlockRepository todoBlockRepository;
+    private BlockRepository blockRepository;
 
     @MockBean
     private RestTemplate restTemplate;
@@ -85,15 +93,15 @@ public class TodoResourceIntegrationTest {
 
     @Test
     public void addTodo_shouldAddTodoAndReturnIt_whenRequestIsCorrect() throws Exception {
-        TodoBlock todoBlock = todoBlockRepository.save(TodoBlockFactory.todoBlockInstance());
-        CreateTodoRequestDto requestDto = TodoFactory.createTodoRequestDto(todoBlock);
+        Block block = blockRepository.save(BlockFactory.BlockInstance());
+        CreateTodoRequestDto requestDto = TodoFactory.createTodoRequestDto(block);
 
         mockMvc.perform(
-            post(API_BASE_BLOCKS + "/" + todoBlock.getId() + API_BASE_TODOS)
+            post(API_BASE_BLOCKS + "/" + block.getId() + API_BASE_TODOS)
                 .content(objectMapper.writeValueAsString(requestDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isCreated())
-            .andExpect(jsonPath(buildJsonPathToTodoBlockId()).isNotEmpty())
+            .andExpect(jsonPath(buildJsonPathToBlockId()).isNotEmpty())
             .andExpect(jsonPath(buildJsonPathToId()).exists());
 
         assertThat(todoRepository.count()).isEqualTo(1);
@@ -101,11 +109,11 @@ public class TodoResourceIntegrationTest {
 
     @Test
     public void addTodo_shouldRespondWithBadRequestStatus_whenNameIsNull() throws Exception {
-        TodoBlock todoBlock = todoBlockRepository.save(TodoBlockFactory.todoBlockInstance());
-        CreateTodoRequestDto requestDto = TodoFactory.createTodoRequestDtoWithoutName(todoBlock);
+        Block block = blockRepository.save(BlockFactory.BlockInstance());
+        CreateTodoRequestDto requestDto = TodoFactory.createTodoRequestDtoWithoutName(block);
 
         mockMvc.perform(
-            post(API_BASE_BLOCKS + "/" + todoBlock.getId() + API_BASE_TODOS)
+            post(API_BASE_BLOCKS + "/" + block.getId() + API_BASE_TODOS)
                 .content(objectMapper.writeValueAsString(requestDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isBadRequest());
@@ -115,11 +123,11 @@ public class TodoResourceIntegrationTest {
 
     @Test
     public void addTodo_shouldRespondWithBadRequestStatus_whenNameConsistsOfSpaces() throws Exception {
-        TodoBlock todoBlock = todoBlockRepository.save(TodoBlockFactory.todoBlockInstance());
+        Block block = blockRepository.save(BlockFactory.BlockInstance());
         CreateTodoRequestDto requestDto = TodoFactory
-            .createTodoRequestDtoWithNameConsistingOfSpaces(todoBlock);
+            .createTodoRequestDtoWithNameConsistingOfSpaces(block);
 
-        mockMvc.perform(post(API_BASE_BLOCKS + "/" + todoBlock.getId() + API_BASE_TODOS)
+        mockMvc.perform(post(API_BASE_BLOCKS + "/" + block.getId() + API_BASE_TODOS)
             .content(objectMapper.writeValueAsString(requestDto))
             .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isBadRequest());
@@ -129,11 +137,11 @@ public class TodoResourceIntegrationTest {
 
     @Test
     public void addTodo_shouldRespondWithBadRequestStatus_whenScarinessIsNull() throws Exception {
-        TodoBlock todoBlock = todoBlockRepository.save(TodoBlockFactory.todoBlockInstance());
+        Block block = blockRepository.save(BlockFactory.BlockInstance());
         CreateTodoRequestDto requestDto = TodoFactory
-            .createTodoRequestDtoWithoutScariness(todoBlock);
+            .createTodoRequestDtoWithoutScariness(block);
 
-        mockMvc.perform(post(API_BASE_BLOCKS + "/" + todoBlock.getId() + API_BASE_TODOS)
+        mockMvc.perform(post(API_BASE_BLOCKS + "/" + block.getId() + API_BASE_TODOS)
             .content(objectMapper.writeValueAsString(requestDto))
             .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isBadRequest());
@@ -143,10 +151,10 @@ public class TodoResourceIntegrationTest {
 
     @Test
     public void addTodo_shouldRespondWithBadRequestStatus_whenHardnessIsNull() throws Exception {
-        TodoBlock todoBlock = todoBlockRepository.save(TodoBlockFactory.todoBlockInstance());
-        CreateTodoRequestDto requestDto = TodoFactory.createTodoRequestDtoWithoutHardness(todoBlock);
+        Block block = blockRepository.save(BlockFactory.BlockInstance());
+        CreateTodoRequestDto requestDto = TodoFactory.createTodoRequestDtoWithoutHardness(block);
 
-        mockMvc.perform(post(API_BASE_BLOCKS + "/" + todoBlock.getId() + API_BASE_TODOS)
+        mockMvc.perform(post(API_BASE_BLOCKS + "/" + block.getId() + API_BASE_TODOS)
             .content(objectMapper.writeValueAsString(requestDto))
             .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isBadRequest());
@@ -156,32 +164,32 @@ public class TodoResourceIntegrationTest {
 
     @Test
     public void getAllTodos_shouldReturnAllTodos() throws Exception {
-        TodoBlock todoBlock = todoBlockRepository.save(TodoBlockFactory.todoBlockInstance());
-        todoRepository.save(TodoFactory.todoWithBlockIdInstance(todoBlock));
-        todoRepository.save(TodoFactory.todoWithBlockIdInstance(todoBlock));
+        Block block = blockRepository.save(BlockFactory.BlockInstance());
+        todoRepository.save(TodoFactory.todoWithBlockIdInstance(block));
+        todoRepository.save(TodoFactory.todoWithBlockIdInstance(block));
 
-        mockMvc.perform(get(API_BASE_BLOCKS + "/" + todoBlock.getId() + API_BASE_TODOS))
+        mockMvc.perform(get(API_BASE_BLOCKS + "/" + block.getId() + API_BASE_TODOS))
             .andExpect(status().isFound())
             .andExpect(jsonPath(buildJsonPathToLength()).value(2));
     }
 
     @Test
     public void getTodoById_shouldReturnExistingTodo_whenIdIsCorrect() throws Exception {
-        TodoBlock todoBlock = todoBlockRepository.save(TodoBlockFactory.todoBlockInstance());
-        Todo todo = todoRepository.save(TodoFactory.todoWithBlockIdInstance(todoBlock));
+        Block block = blockRepository.save(BlockFactory.BlockInstance());
+        Todo todo = todoRepository.save(TodoFactory.todoWithBlockIdInstance(block));
 
-        mockMvc.perform(get(buildGetTodoByIdUrl(todoBlock.getId(), todo.getId())))
+        mockMvc.perform(get(buildGetTodoByIdUrl(block.getId(), todo.getId())))
             .andExpect(status().isFound())
             .andExpect(jsonPath(buildJsonPathToId()).value(todo.getId()));
     }
 
     @Test
     public void updateTodo_shouldUpdateTodoAndReturnIt_whenRequestIsCorrect() throws Exception {
-        TodoBlock todoBlock = todoBlockRepository.save(TodoBlockFactory.todoBlockInstance());
-        Todo todo = todoRepository.save(TodoFactory.todoWithBlockIdInstance(todoBlock));
-        UpdateTodoRequestDto requestDto = TodoFactory.updateTodoRequestDto(todoBlock);
+        Block block = blockRepository.save(BlockFactory.BlockInstance());
+        Todo todo = todoRepository.save(TodoFactory.todoWithBlockIdInstance(block));
+        UpdateTodoRequestDto requestDto = TodoFactory.updateTodoRequestDto(block);
 
-        mockMvc.perform(put(API_BASE_BLOCKS + "/" + todoBlock.getId() + API_BASE_TODOS + "/" + todo.getId())
+        mockMvc.perform(put(API_BASE_BLOCKS + "/" + block.getId() + API_BASE_TODOS + "/" + todo.getId())
             .content(objectMapper.writeValueAsString(requestDto))
             .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isOk())
@@ -194,11 +202,11 @@ public class TodoResourceIntegrationTest {
 
     @Test
     public void updateTodo_shouldRespondWithBadRequestStatus_whenNameIsNull() throws Exception {
-        TodoBlock todoBlock = todoBlockRepository.save(TodoBlockFactory.todoBlockInstance());
-        Todo todo = todoRepository.save(TodoFactory.todoWithBlockIdInstance(todoBlock));
-        UpdateTodoRequestDto requestDto = TodoFactory.updateTodoRequestDtoWithoutName(todoBlock);
+        Block block = blockRepository.save(BlockFactory.BlockInstance());
+        Todo todo = todoRepository.save(TodoFactory.todoWithBlockIdInstance(block));
+        UpdateTodoRequestDto requestDto = TodoFactory.updateTodoRequestDtoWithoutName(block);
 
-        mockMvc.perform(put(API_BASE_BLOCKS + "/" + todoBlock.getId() + API_BASE_TODOS + "/" + todo.getId())
+        mockMvc.perform(put(API_BASE_BLOCKS + "/" + block.getId() + API_BASE_TODOS + "/" + todo.getId())
             .content(objectMapper.writeValueAsString(requestDto))
             .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isBadRequest());
@@ -206,12 +214,12 @@ public class TodoResourceIntegrationTest {
 
     @Test
     public void updateTodo_shouldRespondWithBadRequestStatus_whenNameConsistsOfSpaces() throws Exception {
-        TodoBlock todoBlock = todoBlockRepository.save(TodoBlockFactory.todoBlockInstance());
-        Todo todo = todoRepository.save(TodoFactory.todoWithBlockIdInstance(todoBlock));
+        Block block = blockRepository.save(BlockFactory.BlockInstance());
+        Todo todo = todoRepository.save(TodoFactory.todoWithBlockIdInstance(block));
         UpdateTodoRequestDto requestDto = TodoFactory
-            .updateTodoRequestDtoWithNameConsistingOfSpaces(todoBlock);
+            .updateTodoRequestDtoWithNameConsistingOfSpaces(block);
 
-        mockMvc.perform(put(API_BASE_BLOCKS + "/" + todoBlock.getId() + API_BASE_TODOS + "/" + todo.getId())
+        mockMvc.perform(put(API_BASE_BLOCKS + "/" + block.getId() + API_BASE_TODOS + "/" + todo.getId())
             .content(objectMapper.writeValueAsString(requestDto))
             .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isBadRequest());
@@ -219,11 +227,11 @@ public class TodoResourceIntegrationTest {
 
     @Test
     public void updateTodo_shouldRespondWithBadRequestStatus_whenScarinessIsNull() throws Exception {
-        TodoBlock todoBlock = todoBlockRepository.save(TodoBlockFactory.todoBlockInstance());
-        Todo todo = todoRepository.save(TodoFactory.todoWithBlockIdInstance(todoBlock));
-        UpdateTodoRequestDto requestDto = TodoFactory.updateTodoRequestDtoWithoutScariness(todoBlock);
+        Block block = blockRepository.save(BlockFactory.BlockInstance());
+        Todo todo = todoRepository.save(TodoFactory.todoWithBlockIdInstance(block));
+        UpdateTodoRequestDto requestDto = TodoFactory.updateTodoRequestDtoWithoutScariness(block);
 
-        mockMvc.perform(put(API_BASE_BLOCKS + "/" + todoBlock.getId() + API_BASE_TODOS + "/" + todo.getId())
+        mockMvc.perform(put(API_BASE_BLOCKS + "/" + block.getId() + API_BASE_TODOS + "/" + todo.getId())
             .content(objectMapper.writeValueAsString(requestDto))
             .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isBadRequest());
@@ -231,11 +239,11 @@ public class TodoResourceIntegrationTest {
 
     @Test
     public void updateTodo_shouldRespondWithBadRequestStatus_whenHardnessIsNull() throws Exception {
-        TodoBlock todoBlock = todoBlockRepository.save(TodoBlockFactory.todoBlockInstance());
-        Todo todo = todoRepository.save(TodoFactory.todoWithBlockIdInstance(todoBlock));
-        UpdateTodoRequestDto requestDto = TodoFactory.updateTodoRequestDtoWithoutHardness(todoBlock);
+        Block block = blockRepository.save(BlockFactory.BlockInstance());
+        Todo todo = todoRepository.save(TodoFactory.todoWithBlockIdInstance(block));
+        UpdateTodoRequestDto requestDto = TodoFactory.updateTodoRequestDtoWithoutHardness(block);
 
-        mockMvc.perform(put(API_BASE_BLOCKS + "/" + todoBlock.getId() + API_BASE_TODOS + "/" + todo.getId())
+        mockMvc.perform(put(API_BASE_BLOCKS + "/" + block.getId() + API_BASE_TODOS + "/" + todo.getId())
             .content(objectMapper.writeValueAsString(requestDto))
             .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isBadRequest());
@@ -243,11 +251,11 @@ public class TodoResourceIntegrationTest {
 
     @Test
     public void updateTodo_shouldUpdateReadyTodoAndReturnIt_whenScarinessAndHardnessAreUnchanged() throws Exception {
-        TodoBlock todoBlock = todoBlockRepository.save(TodoBlockFactory.todoBlockInstance());
-        Todo todo = todoRepository.save(TodoFactory.todoWithBlockIdReadyInstance(todoBlock));
+        Block block = blockRepository.save(BlockFactory.BlockInstance());
+        Todo todo = todoRepository.save(TodoFactory.todoWithBlockIdReadyInstance(block));
         UpdateTodoRequestDto requestDto = TodoFactory.updateTodoRequestReadyDto();
 
-        mockMvc.perform(put(API_BASE_BLOCKS + "/" + todoBlock.getId() + API_BASE_TODOS + "/" + todo.getId())
+        mockMvc.perform(put(API_BASE_BLOCKS + "/" + block.getId() + API_BASE_TODOS + "/" + todo.getId())
             .content(objectMapper.writeValueAsString(requestDto))
             .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isOk())
@@ -261,12 +269,12 @@ public class TodoResourceIntegrationTest {
 
     @Test
     public void updateTodo_shouldThrowUnchangeableFieldUpdateException_whenTodoWasReadyAndScarinessWasChanged() {
-        TodoBlock todoBlock = todoBlockRepository.save(TodoBlockFactory.todoBlockInstance());
-        Todo todo = todoRepository.save(TodoFactory.todoWithBlockIdReadyInstance(todoBlock));
+        Block block = blockRepository.save(BlockFactory.BlockInstance());
+        Todo todo = todoRepository.save(TodoFactory.todoWithBlockIdReadyInstance(block));
         UpdateTodoRequestDto requestDto = TodoFactory.updateTodoRequestReadyDtoWithChangedScariness();
 
         try {
-            mockMvc.perform(put(API_BASE_BLOCKS + "/" + todoBlock.getId() + API_BASE_TODOS + "/" + todo.getId())
+            mockMvc.perform(put(API_BASE_BLOCKS + "/" + block.getId() + API_BASE_TODOS + "/" + todo.getId())
                 .content(objectMapper.writeValueAsString(requestDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE));
             fail("Exception was't thrown");
@@ -279,12 +287,12 @@ public class TodoResourceIntegrationTest {
 
     @Test
     public void updateTodo_shouldThrowUnchangeableFieldUpdateException_whenTodoWasReadyAndHardnessWasChanged() {
-        TodoBlock todoBlock = todoBlockRepository.save(TodoBlockFactory.todoBlockInstance());
-        Todo todo = todoRepository.save(TodoFactory.todoWithBlockIdReadyInstance(todoBlock));
+        Block block = blockRepository.save(BlockFactory.BlockInstance());
+        Todo todo = todoRepository.save(TodoFactory.todoWithBlockIdReadyInstance(block));
         UpdateTodoRequestDto requestDto = TodoFactory.updateTodoRequestReadyDtoWithChangedHardness();
 
         try {
-            mockMvc.perform(put(API_BASE_BLOCKS + "/" + todoBlock.getId() + API_BASE_TODOS + "/" + todo.getId())
+            mockMvc.perform(put(API_BASE_BLOCKS + "/" + block.getId() + API_BASE_TODOS + "/" + todo.getId())
                 .content(objectMapper.writeValueAsString(requestDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE));
             fail("Exception was't thrown");
@@ -298,10 +306,10 @@ public class TodoResourceIntegrationTest {
     @Test
     @Transactional
     public void deleteTodo_shouldDeleteTodo_whenIdIsCorrect() throws Exception {
-        TodoBlock todoBlock = todoBlockRepository.save(TodoBlockFactory.todoBlockInstance());
-        Todo todo = todoRepository.save(TodoFactory.todoWithBlockIdInstance(todoBlock));
+        Block block = blockRepository.save(BlockFactory.BlockInstance());
+        Todo todo = todoRepository.save(TodoFactory.todoWithBlockIdInstance(block));
 
-        mockMvc.perform(delete(buildDeleteTodoByIdUrl(todoBlock.getId(), todo.getId())))
+        mockMvc.perform(delete(buildDeleteTodoByIdUrl(block.getId(), todo.getId())))
             .andExpect(status().isOk());
 
         assertThat(todoRepository.findById(todo.getId())).isEmpty();
@@ -309,28 +317,28 @@ public class TodoResourceIntegrationTest {
 
     @Test
     public void getTodosByBlockId_shouldReturnExistingTodo_whenIdIsCorrect() throws Exception {
-        TodoBlock todoBlock = todoBlockRepository.save(TodoBlockFactory.todoBlockInstance());
-        Todo firstTodo = todoRepository.save(TodoFactory.todoWithBlockIdInstance(todoBlock));
-        todoRepository.save(TodoFactory.todoWithBlockIdInstance(todoBlock));
+        Block block = blockRepository.save(BlockFactory.BlockInstance());
+        Todo firstTodo = todoRepository.save(TodoFactory.todoWithBlockIdInstance(block));
+        todoRepository.save(TodoFactory.todoWithBlockIdInstance(block));
 
-        mockMvc.perform(get(buildGetTodosByBlockIdUrl(todoBlock.getId())))
+        mockMvc.perform(get(buildGetTodosByBlockIdUrl(block.getId())))
             .andExpect(status().isFound())
             .andExpect(jsonPath(buildJsonPathToLength()).value(2));
     }
 
     @Test
     public void updateIsReady_shouldReturnOk_shouldMakeIsReadyTrue_whenTodoIdIsCorrect() throws Exception {
-        TodoBlock todoBlock = todoBlockRepository.save(TodoBlockFactory.todoBlockInstance());
-        Todo todo = todoRepository.save(TodoFactory.todoWithBlockIdInstance(todoBlock));
+        Block block = blockRepository.save(BlockFactory.BlockInstance());
+        Todo todo = todoRepository.save(TodoFactory.todoWithBlockIdInstance(block));
         ExperienceResponse experienceResponse = TodoFactory.experienceResponseInstance(todo.getId());
 
         when(restTemplate.postForEntity(anyString(), any(), eq(ExperienceResponse.class)))
             .thenReturn(new ResponseEntity<>(experienceResponse, HttpStatus.OK));
 
-        mockMvc.perform(put(buildUpdateTodoReadyBaseUrl(todoBlock, todo))
+        mockMvc.perform(put(buildUpdateTodoReadyBaseUrl(block, todo))
             .param(PARAM_READY, PARAMETER_TRUE))
             .andExpect(status().isOk())
-            .andExpect(jsonPath(buildJsonPathToTodoBlockId()).isNotEmpty())
+            .andExpect(jsonPath(buildJsonPathToBlockId()).isNotEmpty())
             .andExpect(jsonPath(buildJsonPathToExperience()).isNotEmpty())
             .andExpect(jsonPath(buildJsonPathToReadyName()).value(true));
 
@@ -339,14 +347,14 @@ public class TodoResourceIntegrationTest {
 
     @Test
     public void updateIsReady_shouldReturnOk_shouldMakeIsReadyFalse_whenTodoIdIsCorrect() throws Exception {
-        TodoBlock todoBlock = todoBlockRepository.save(TodoBlockFactory.todoBlockInstance());
-        Todo todoWithReadyTrue = todoRepository.save(TodoFactory.todoWithBlockIdReadyInstance(todoBlock));
+        Block block = blockRepository.save(BlockFactory.BlockInstance());
+        Todo todoWithReadyTrue = todoRepository.save(TodoFactory.todoWithBlockIdReadyInstance(block));
         ExperienceResponse experienceResponse = TodoFactory.experienceResponseInstance(todoWithReadyTrue.getId());
 
         when(restTemplate.postForEntity(anyString(), any(), eq(ExperienceResponse.class)))
             .thenReturn(new ResponseEntity<>(experienceResponse, HttpStatus.OK));
 
-        mockMvc.perform(put(buildUpdateTodoReadyBaseUrl(todoBlock, todoWithReadyTrue))
+        mockMvc.perform(put(buildUpdateTodoReadyBaseUrl(block, todoWithReadyTrue))
             .param(PARAM_READY, PARAMETER_FALSE))
             .andExpect(status().isOk());
 

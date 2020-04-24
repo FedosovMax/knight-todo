@@ -4,10 +4,12 @@ import com.knighttodo.knighttodo.domain.RoutineVO;
 import com.knighttodo.knighttodo.exception.RoutineNotFoundException;
 import com.knighttodo.knighttodo.gateway.RoutineGateway;
 import com.knighttodo.knighttodo.service.RoutineService;
-import com.knighttodo.knighttodo.service.TodoBlockService;
+import com.knighttodo.knighttodo.service.BlockService;
+
 import java.util.List;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -15,16 +17,11 @@ import org.springframework.stereotype.Service;
 public class RoutineServiceImpl implements RoutineService {
 
     private final RoutineGateway routineGateway;
-    private TodoBlockService todoBlockService;
-
-    @Autowired
-    public void setTodoBlockService(TodoBlockService todoBlockService) {
-        this.todoBlockService = todoBlockService;
-    }
+    private final BlockService blockService;
 
     @Override
     public RoutineVO save(String blockId, RoutineVO routineVO) {
-        routineVO.setTodoBlock(todoBlockService.findById(blockId));
+        routineVO.setBlock(blockService.findById(blockId));
         RoutineVO dbRoutineVO = routineGateway.save(routineVO);
         dbRoutineVO.setTemplateId(dbRoutineVO.getId());
         dbRoutineVO = routineGateway.save(dbRoutineVO);
@@ -46,7 +43,7 @@ public class RoutineServiceImpl implements RoutineService {
     @Override
     public RoutineVO updateRoutine(String blockId, String routineId, RoutineVO changedRoutineVO) {
         RoutineVO routineVO = findById(routineId);
-        routineVO.setTodoBlock(todoBlockService.findById(blockId));
+        routineVO.setBlock(blockService.findById(blockId));
         routineVO.setName(changedRoutineVO.getName());
         routineVO.setTemplateId(routineId);
         routineVO.setHardness(changedRoutineVO.getHardness());

@@ -1,7 +1,9 @@
-package com.knighttodo.knighttodo.rest.dto.todoblock.response;
+package com.knighttodo.knighttodo.rest.dto.block.response;
 
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Routine;
+
 import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UpdateTodoBlockResponseDto {
+public class CreateBlockResponseDto {
 
     private String id;
 
