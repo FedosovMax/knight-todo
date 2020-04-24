@@ -1,24 +1,15 @@
 package com.knighttodo.knighttodo.rest.mapper;
 
 import com.knighttodo.knighttodo.domain.BlockVO;
-import com.knighttodo.knighttodo.rest.dto.block.request.CreateBlockRequestDto;
-import com.knighttodo.knighttodo.rest.dto.block.request.UpdateBlockRequestDto;
-import com.knighttodo.knighttodo.rest.dto.block.response.CreateBlockResponseDto;
-import com.knighttodo.knighttodo.rest.dto.block.response.BlockResponseDto;
-import com.knighttodo.knighttodo.rest.dto.block.response.UpdateBlockResponseDto;
+import com.knighttodo.knighttodo.rest.request.BlockRequestDto;
+import com.knighttodo.knighttodo.rest.response.BlockResponseDto;
 
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = RoutineRestMapper.class)
 public interface BlockRestMapper {
 
-    BlockVO toBlockVO(CreateBlockRequestDto requestDto);
-
-    CreateBlockResponseDto toCreateBlockResponseDto(BlockVO blockVO);
-
-    BlockVO toBlockVO(UpdateBlockRequestDto requestDto);
-
-    UpdateBlockResponseDto toUpdateBlockResponseDto(BlockVO blockVO);
+    BlockVO toBlockVO(BlockRequestDto requestDto);
 
     BlockResponseDto toBlockResponseDto(BlockVO blockVO);
 }

@@ -26,8 +26,7 @@ import com.knighttodo.knighttodo.gateway.privatedb.repository.RoutineRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.BlockRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Block;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Routine;
-import com.knighttodo.knighttodo.rest.dto.block.request.CreateBlockRequestDto;
-import com.knighttodo.knighttodo.rest.dto.block.request.UpdateBlockRequestDto;
+import com.knighttodo.knighttodo.rest.request.BlockRequestDto;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -62,7 +61,7 @@ public class BlockResourceIntegrationTest {
 
     @Test
     public void addBlock_shouldAddBlockAndReturnIt_whenRequestIsCorrect() throws Exception {
-        CreateBlockRequestDto requestDto = BlockFactory.createBlockRequestDto();
+        BlockRequestDto requestDto = BlockFactory.createBlockRequestDto();
 
         mockMvc.perform(
             post(API_BASE_BLOCKS)
@@ -76,7 +75,7 @@ public class BlockResourceIntegrationTest {
 
     @Test
     public void addBlock_shouldRespondWithBadRequestStatus_whenNameIsNull() throws Exception {
-        CreateBlockRequestDto requestDto = BlockFactory.createBlockRequestDtoWithoutName();
+        BlockRequestDto requestDto = BlockFactory.createBlockRequestDtoWithoutName();
 
         mockMvc.perform(
             post(API_BASE_BLOCKS)
@@ -89,7 +88,7 @@ public class BlockResourceIntegrationTest {
 
     @Test
     public void addBlock_shouldRespondWithBadRequestStatus_whenNameConsistsOfSpaces() throws Exception {
-        CreateBlockRequestDto requestDto = BlockFactory.createBlockRequestDtoWithNameConsistingOfSpaces();
+        BlockRequestDto requestDto = BlockFactory.createBlockRequestDtoWithNameConsistingOfSpaces();
 
         mockMvc.perform(
             post(API_BASE_BLOCKS)
@@ -124,7 +123,7 @@ public class BlockResourceIntegrationTest {
     @Test
     public void updateBlock_shouldUpdateBlockAndReturnIt_whenRequestIsCorrect() throws Exception {
         Block block = blockRepository.save(BlockFactory.BlockInstance());
-        UpdateBlockRequestDto requestDto = BlockFactory.updateBlockRequestDto();
+        BlockRequestDto requestDto = BlockFactory.updateBlockRequestDto();
 
         mockMvc.perform(put(API_BASE_BLOCKS + "/" + block.getId())
             .content(objectMapper.writeValueAsString(requestDto))
@@ -136,7 +135,7 @@ public class BlockResourceIntegrationTest {
     @Test
     public void updateBlock_shouldRespondWithBadRequestStatus_whenBlockNameIsNull() throws Exception {
         Block block = blockRepository.save(BlockFactory.BlockInstance());
-        UpdateBlockRequestDto requestDto = BlockFactory.updateBlockRequestDtoWithoutName();
+        BlockRequestDto requestDto = BlockFactory.updateBlockRequestDtoWithoutName();
 
         mockMvc.perform(put(API_BASE_BLOCKS + "/" + block.getId())
             .content(objectMapper.writeValueAsString(requestDto))
@@ -147,7 +146,7 @@ public class BlockResourceIntegrationTest {
     @Test
     public void updateBlock_shouldRespondWithBadRequestStatus_whenBlockNameConsistsOfSpaces() throws Exception {
         Block block = blockRepository.save(BlockFactory.BlockInstance());
-        UpdateBlockRequestDto requestDto = BlockFactory
+        BlockRequestDto requestDto = BlockFactory
             .updateBlockRequestDtoWithNameConsistingOfSpaces();
 
         mockMvc.perform(put(API_BASE_BLOCKS + "/" + block.getId())
@@ -175,7 +174,7 @@ public class BlockResourceIntegrationTest {
         routineFirst = routineRepository.save(routineFirst);
         routineFirst.getTodos().add(TodoFactory.todoWithBlockIdInstance(block));
         routineFirst.getTodos().add(TodoFactory.todoWithBlockIdInstance(block));
-        CreateBlockRequestDto requestDto = BlockFactory.createBlockRequestDto();
+        BlockRequestDto requestDto = BlockFactory.createBlockRequestDto();
 
         mockMvc.perform(post(API_BASE_BLOCKS)
             .content(objectMapper.writeValueAsString(requestDto))
@@ -193,7 +192,7 @@ public class BlockResourceIntegrationTest {
         routineFirst.setTemplateId(routineFirst.getId());
         routineRepository.save(routineFirst);
 
-        UpdateBlockRequestDto requestDto = BlockFactory.updateBlockRequestDto();
+        BlockRequestDto requestDto = BlockFactory.updateBlockRequestDto();
 
         mockMvc.perform(put(API_BASE_BLOCKS + "/" + block.getId())
             .content(objectMapper.writeValueAsString(requestDto))
