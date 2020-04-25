@@ -4,6 +4,7 @@ import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scariness;
 
 import java.util.List;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -29,5 +30,6 @@ public class RoutineRequestDto {
 
     private boolean ready;
 
+    @NotNull
     private List<String> todoIds;
 }

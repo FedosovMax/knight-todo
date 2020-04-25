@@ -7,6 +7,7 @@ import com.knighttodo.knighttodo.rest.request.RoutineRequestDto;
 import com.knighttodo.knighttodo.rest.response.RoutineResponseDto;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RoutineFactory {
 
@@ -43,6 +44,16 @@ public class RoutineFactory {
             .build();
     }
 
+    public static RoutineRequestDto updateRoutineRequestDtoWithTodoIds(List<String> todoIds) {
+        return RoutineRequestDto.builder()
+            .name(ROUTINE_NAME)
+            .hardness(HARDNESS_HARD)
+            .scariness(SCARINESS_HARD)
+            .ready(true)
+            .todoIds(todoIds)
+            .build();
+    }
+
     public static RoutineRequestDto updateRoutineWithNullNaveValueRequestDto() {
         return RoutineRequestDto.builder()
             .name(null)
@@ -64,7 +75,7 @@ public class RoutineFactory {
             .build();
     }
 
-    public static Routine createRoutineInstance() {
+    public static Routine routineInstance() {
         return Routine
             .builder()
             .hardness(Hardness.HARD)

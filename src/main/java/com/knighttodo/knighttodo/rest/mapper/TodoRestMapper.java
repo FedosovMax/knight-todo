@@ -17,7 +17,7 @@ public interface TodoRestMapper {
 
     TodoVO toTodoVO(TodoRequestDto requestDto);
 
-    @Named("fromIdToTodoVO")
+    @Named("fromIdToTodoVOWithId")
     @Mapping(target = "id", source = "todoId")
     TodoVO toTodoVO(String todoId);
 

@@ -94,4 +94,8 @@ public class TestConstants {
     public static String buildJsonPathToRoutinesName() {
         return JSON_ROOT + "routines";
     }
+
+    public static String buildJsonPathToTodoIdInTodosListByIndex(int index) {
+        return JSON_ROOT + "todos.[" + index + "].id";
+    }
 }

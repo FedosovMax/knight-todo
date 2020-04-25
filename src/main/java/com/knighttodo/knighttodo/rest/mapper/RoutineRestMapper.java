@@ -10,7 +10,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", uses = TodoRestMapper.class)
 public interface RoutineRestMapper {
 
-    @Mapping(source = "todoIds", target = "todos", qualifiedByName = "fromIdToTodoVO")
+    @Mapping(source = "todoIds", target = "todos", qualifiedByName = "fromIdToTodoVOWithId")
     RoutineVO toRoutineVO(RoutineRequestDto requestDto);
 
     @Mapping(source = "block.id", target = "blockId")

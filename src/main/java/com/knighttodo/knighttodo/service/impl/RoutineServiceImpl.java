@@ -28,10 +28,10 @@ public class RoutineServiceImpl implements RoutineService {
         routineVO.setBlock(blockService.findById(blockId));
         routineVO.setTodos(fetchTodosByIds(extractTodoIds(routineVO)));
         routineVO.getTodos().forEach((todoVO -> todoVO.setRoutineVO(routineVO)));
+
         RoutineVO dbRoutineVO = routineGateway.save(routineVO);
         dbRoutineVO.setTemplateId(dbRoutineVO.getId());
-        dbRoutineVO = routineGateway.save(dbRoutineVO);
-        return dbRoutineVO;
+        return routineGateway.save(dbRoutineVO);
     }
 
     private List<TodoVO> fetchTodosByIds(List<String> todoIds) {

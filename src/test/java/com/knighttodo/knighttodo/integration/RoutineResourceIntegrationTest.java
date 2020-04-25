@@ -12,6 +12,7 @@ import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToReadyName;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToScariness;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToTemplateIdName;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToBlockId;
+import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToTodoIdInTodosListByIndex;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,12 +27,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.knighttodo.knighttodo.factories.RoutineFactory;
 import com.knighttodo.knighttodo.factories.BlockFactory;
+import com.knighttodo.knighttodo.factories.TodoFactory;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.RoutineRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.BlockRepository;
+import com.knighttodo.knighttodo.gateway.privatedb.repository.TodoRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Block;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Routine;
+import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
 import com.knighttodo.knighttodo.rest.request.RoutineRequestDto;
 import com.knighttodo.knighttodo.rest.response.RoutineResponseDto;
+
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -59,9 +65,14 @@ public class RoutineResourceIntegrationTest {
     @Autowired
     private BlockRepository blockRepository;
 
+    @Autowired
+    private TodoRepository todoRepository;
+
     @BeforeEach
     public void setUp() {
+        todoRepository.deleteAll();
         routineRepository.deleteAll();
+        blockRepository.deleteAll();
     }
 
     @Test
@@ -100,8 +111,8 @@ public class RoutineResourceIntegrationTest {
     @Test
     public void getAllRoutines_shouldReturnAllTodos() throws Exception {
         Block block = blockRepository.save(BlockFactory.BlockInstance());
-        routineRepository.save(RoutineFactory.createRoutineInstance());
-        routineRepository.save(RoutineFactory.createRoutineInstance());
+        routineRepository.save(RoutineFactory.routineInstance());
+        routineRepository.save(RoutineFactory.routineInstance());
 
         mockMvc.perform(get(API_BASE_BLOCKS + "/" + block.getId() + API_BASE_ROUTINES))
             .andExpect(status().isFound())
@@ -111,7 +122,7 @@ public class RoutineResourceIntegrationTest {
     @Test
     public void getRoutineById_shouldReturnExistingRoutine_whenIdIsCorrect() throws Exception {
         Block block = blockRepository.save(BlockFactory.BlockInstance());
-        Routine routine = routineRepository.save(RoutineFactory.createRoutineInstance());
+        Routine routine = routineRepository.save(RoutineFactory.routineInstance());
 
         mockMvc.perform(get(buildGetRoutineByIdUrl(block.getId(), routine.getId())))
             .andExpect(status().isFound())
@@ -121,7 +132,7 @@ public class RoutineResourceIntegrationTest {
     @Test
     public void updateRoutine_shouldUpdateRoutineAndReturnIt_whenRequestIsCorrect() throws Exception {
         Block block = blockRepository.save(BlockFactory.BlockInstance());
-        Routine routine = routineRepository.save(RoutineFactory.createRoutineInstance());
+        Routine routine = routineRepository.save(RoutineFactory.routineInstance());
         RoutineRequestDto requestDto = RoutineFactory.updateRoutineRequestDto();
         RoutineResponseDto responseDto = RoutineFactory.createRoutineResponseDto();
         responseDto.setBlockId(block.getId());
@@ -143,9 +154,41 @@ public class RoutineResourceIntegrationTest {
     }
 
     @Test
+    @Transactional
+    public void updateRoutine_shouldUpdateRoutineTodosAndReturnIt_whenRequestIsCorrect() throws Exception {
+        Block block = blockRepository.save(BlockFactory.BlockInstance());
+        Routine routine = routineRepository.save(RoutineFactory.routineInstance());
+        Todo firstTodo = TodoFactory.todoWithBlockIdInstance(block);
+        Todo secondTodo = TodoFactory.todoWithBlockIdInstance(block);
+        Todo thirdTodo = TodoFactory.todoWithBlockIdInstance(block);
+        Todo fourthTodo = TodoFactory.todoWithBlockIdInstance(block);
+
+        firstTodo.setRoutine(routine);
+        secondTodo.setRoutine(routine);
+        thirdTodo.setRoutine(routine);
+        todoRepository.saveAll(List.of(firstTodo, secondTodo, thirdTodo, fourthTodo));
+
+        List<String> updatedRoutineTodoIds = List.of(firstTodo.getId(), secondTodo.getId(), fourthTodo.getId());
+        RoutineRequestDto requestDto = RoutineFactory.updateRoutineRequestDtoWithTodoIds(updatedRoutineTodoIds);
+
+        mockMvc.perform(put(API_BASE_BLOCKS + "/" + block.getId() + API_BASE_ROUTINES + "/" + routine.getId())
+            .content(objectMapper.writeValueAsString(requestDto))
+            .contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath(buildJsonPathToTodoIdInTodosListByIndex(0)).value(firstTodo.getId()))
+            .andExpect(jsonPath(buildJsonPathToTodoIdInTodosListByIndex(1)).value(secondTodo.getId()))
+            .andExpect(jsonPath(buildJsonPathToTodoIdInTodosListByIndex(2)).value(fourthTodo.getId()));
+
+        Routine updatedRoutine = routineRepository.findById(routine.getId()).get();
+
+        assertThat(updatedRoutine.getTodos()).containsAll(List.of(firstTodo, secondTodo, fourthTodo));
+        assertThat(updatedRoutine.getTodos()).doesNotContain(thirdTodo);
+    }
+
+    @Test
     public void updateRoutine_shouldRespondWithBadRequestStatus_whenNameIsNull() throws Exception {
         Block block = blockRepository.save(BlockFactory.BlockInstance());
-        Routine routine = routineRepository.save(RoutineFactory.createRoutineInstance());
+        Routine routine = routineRepository.save(RoutineFactory.routineInstance());
         RoutineRequestDto requestDto = RoutineFactory.updateRoutineWithNullNaveValueRequestDto();
 
         mockMvc.perform(put(API_BASE_BLOCKS + "/" + block.getId() + API_BASE_ROUTINES + "/" + routine.getId())
@@ -158,7 +201,7 @@ public class RoutineResourceIntegrationTest {
     @Transactional
     public void deleteRoutine_shouldDeleteRoutine_whenIdIsCorrect() throws Exception {
         Block block = blockRepository.save(BlockFactory.BlockInstance());
-        Routine routine = routineRepository.save(RoutineFactory.createRoutineInstance());
+        Routine routine = routineRepository.save(RoutineFactory.routineInstance());
 
         mockMvc.perform(delete(buildDeleteRoutineByIdUrl(block.getId(), routine.getId())))
             .andExpect(status().isOk());

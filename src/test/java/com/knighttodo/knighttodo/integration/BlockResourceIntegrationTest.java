@@ -169,7 +169,7 @@ public class BlockResourceIntegrationTest {
     @Test
     public void addBlock_shouldAddBlockWithRoutinesAndReturnIt_whenRequestIsCorrect() throws Exception {
         Block block = blockRepository.save(BlockFactory.BlockInstance());
-        Routine routineFirst = routineRepository.save(RoutineFactory.createRoutineInstance());
+        Routine routineFirst = routineRepository.save(RoutineFactory.routineInstance());
         routineFirst.setTemplateId(routineFirst.getId());
         routineFirst = routineRepository.save(routineFirst);
         routineFirst.getTodos().add(TodoFactory.todoWithBlockIdInstance(block));
@@ -188,7 +188,7 @@ public class BlockResourceIntegrationTest {
     public void updateBlock_shouldUpdateBlockWithRoutinesAndReturnIt_whenRequestIsCorrect() throws Exception {
         Block block = blockRepository.save(BlockFactory.BlockInstance());
 
-        Routine routineFirst = routineRepository.save(RoutineFactory.createRoutineInstance());
+        Routine routineFirst = routineRepository.save(RoutineFactory.routineInstance());
         routineFirst.setTemplateId(routineFirst.getId());
         routineRepository.save(routineFirst);
 

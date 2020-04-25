@@ -40,7 +40,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.knighttodo.knighttodo.exception.UnchangeableFieldUpdateException;
 import com.knighttodo.knighttodo.factories.BlockFactory;
 import com.knighttodo.knighttodo.factories.TodoFactory;
-
 import com.knighttodo.knighttodo.gateway.experience.response.ExperienceResponse;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.BlockRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.TodoRepository;
