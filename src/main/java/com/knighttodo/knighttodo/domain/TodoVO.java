@@ -25,5 +25,7 @@ public class TodoVO {
 
     private BlockVO blockVO;
 
+    private RoutineVO routineVO;
+
     private Integer experience;
 }

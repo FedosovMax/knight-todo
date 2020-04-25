@@ -20,6 +20,7 @@ public class RoutineFactory {
             .name(ROUTINE_NAME)
             .hardness(HARDNESS_HARD)
             .scariness(SCARINESS_HARD)
+            .todoIds(new ArrayList<>())
             .build();
     }
 
@@ -28,6 +29,7 @@ public class RoutineFactory {
             .name(null)
             .hardness(HARDNESS_HARD)
             .scariness(SCARINESS_HARD)
+            .todoIds(new ArrayList<>())
             .build();
     }
 
@@ -37,6 +39,7 @@ public class RoutineFactory {
             .hardness(HARDNESS_HARD)
             .scariness(SCARINESS_HARD)
             .ready(true)
+            .todoIds(new ArrayList<>())
             .build();
     }
 
@@ -46,6 +49,7 @@ public class RoutineFactory {
             .hardness(HARDNESS_HARD)
             .scariness(SCARINESS_HARD)
             .ready(true)
+            .todoIds(new ArrayList<>())
             .build();
     }
 

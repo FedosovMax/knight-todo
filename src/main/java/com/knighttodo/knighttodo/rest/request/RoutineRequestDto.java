@@ -3,6 +3,7 @@ package com.knighttodo.knighttodo.rest.request;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scariness;
 
+import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -27,4 +28,6 @@ public class RoutineRequestDto {
     private Scariness scariness;
 
     private boolean ready;
+
+    private List<String> todoIds;
 }
