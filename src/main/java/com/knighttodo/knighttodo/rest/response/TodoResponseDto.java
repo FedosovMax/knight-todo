@@ -1,4 +1,4 @@
-package com.knighttodo.knighttodo.rest.dto.todo.response;
+package com.knighttodo.knighttodo.rest.response;
 
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scariness;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CreateTodoResponseDto {
+public class TodoResponseDto {
 
     private String id;
 

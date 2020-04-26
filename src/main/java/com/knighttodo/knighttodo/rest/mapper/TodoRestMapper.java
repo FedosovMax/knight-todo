@@ -1,29 +1,26 @@
 package com.knighttodo.knighttodo.rest.mapper;
 
 import com.knighttodo.knighttodo.domain.TodoVO;
-import com.knighttodo.knighttodo.rest.dto.todo.request.CreateTodoRequestDto;
-import com.knighttodo.knighttodo.rest.dto.todo.request.UpdateTodoRequestDto;
-import com.knighttodo.knighttodo.rest.dto.todo.response.CreateTodoResponseDto;
-import com.knighttodo.knighttodo.rest.dto.todo.response.TodoResponseDto;
-import com.knighttodo.knighttodo.rest.dto.todo.response.UpdateTodoResponseDto;
+import com.knighttodo.knighttodo.rest.request.TodoRequestDto;
+import com.knighttodo.knighttodo.rest.response.TodoResponseDto;
+import com.knighttodo.knighttodo.rest.response.TodoReadyResponseDto;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
 @Mapper(componentModel = "spring")
 public interface TodoRestMapper {
 
-    TodoVO toTodoVO(CreateTodoRequestDto requestDto);
-
-    @Mapping(target = "blockId", source = "blockVO.id")
-    CreateTodoResponseDto toCreateTodoResponseDto(TodoVO todoVO);
-
-    TodoVO toTodoVO(UpdateTodoRequestDto requestDto);
-
-    @Mapping(target = "blockId", source = "blockVO.id")
-    UpdateTodoResponseDto toUpdateTodoResponseDto(TodoVO todoVO);
-
     @Mapping(target = "blockId", source = "blockVO.id")
     TodoResponseDto toTodoResponseDto(TodoVO todoVO);
 
+    TodoVO toTodoVO(TodoRequestDto requestDto);
+
+    @Named("fromIdToTodoVOWithId")
+    @Mapping(target = "id", source = "todoId")
+    TodoVO toTodoVO(String todoId);
+
+    @Mapping(target = "blockId", source = "blockVO.id")
+    TodoReadyResponseDto toTodoReadyResponseDto(TodoVO todoVO);
 }

@@ -1,7 +1,12 @@
-package com.knighttodo.knighttodo.rest.dto.todo.response;
+package com.knighttodo.knighttodo.rest.request;
 
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scariness;
+
+import java.util.List;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,19 +17,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TodoResponseDto {
+public class RoutineRequestDto {
 
-    private String id;
+    @NotBlank
+    private String name;
 
-    private String todoName;
-
-    private Scariness scariness;
-
+    @NotNull
     private Hardness hardness;
+
+    @NotNull
+    private Scariness scariness;
 
     private boolean ready;
 
-    private String blockId;
-
-    private Integer experience;
+    @NotNull
+    private List<String> todoIds;
 }

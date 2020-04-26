@@ -5,8 +5,7 @@ import com.knighttodo.knighttodo.gateway.privatedb.representation.Block;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scariness;
-import com.knighttodo.knighttodo.rest.dto.todo.request.CreateTodoRequestDto;
-import com.knighttodo.knighttodo.rest.dto.todo.request.UpdateTodoRequestDto;
+import com.knighttodo.knighttodo.rest.request.TodoRequestDto;
 
 public class TodoFactory {
 
@@ -23,36 +22,36 @@ public class TodoFactory {
     private TodoFactory() {
     }
 
-    public static CreateTodoRequestDto createTodoRequestDto(Block savedBlock) {
-        return CreateTodoRequestDto
+    public static TodoRequestDto createTodoRequestDto(Block savedBlock) {
+        return TodoRequestDto
             .builder()
             .todoName(TODO_NAME)
             .scariness(SCARINESS_TODO)
             .hardness(HARDNESS_TODO)
-            .isReady(FALSE_TODO_READY)
+            .ready(FALSE_TODO_READY)
             .build();
     }
 
-    public static CreateTodoRequestDto createTodoRequestDtoWithoutName(Block savedBlock) {
-        CreateTodoRequestDto request = createTodoRequestDto(savedBlock);
+    public static TodoRequestDto createTodoRequestDtoWithoutName(Block savedBlock) {
+        TodoRequestDto request = createTodoRequestDto(savedBlock);
         request.setTodoName(null);
         return request;
     }
 
-    public static CreateTodoRequestDto createTodoRequestDtoWithNameConsistingOfSpaces(Block savedBlock) {
-        CreateTodoRequestDto request = createTodoRequestDto(savedBlock);
+    public static TodoRequestDto createTodoRequestDtoWithNameConsistingOfSpaces(Block savedBlock) {
+        TodoRequestDto request = createTodoRequestDto(savedBlock);
         request.setTodoName("    ");
         return request;
     }
 
-    public static CreateTodoRequestDto createTodoRequestDtoWithoutScariness(Block savedBlock) {
-        CreateTodoRequestDto request = createTodoRequestDto(savedBlock);
+    public static TodoRequestDto createTodoRequestDtoWithoutScariness(Block savedBlock) {
+        TodoRequestDto request = createTodoRequestDto(savedBlock);
         request.setScariness(null);
         return request;
     }
 
-    public static CreateTodoRequestDto createTodoRequestDtoWithoutHardness(Block savedBlock) {
-        CreateTodoRequestDto request = createTodoRequestDto(savedBlock);
+    public static TodoRequestDto createTodoRequestDtoWithoutHardness(Block savedBlock) {
+        TodoRequestDto request = createTodoRequestDto(savedBlock);
         request.setHardness(null);
         return request;
     }
@@ -79,8 +78,8 @@ public class TodoFactory {
             .build();
     }
 
-    public static UpdateTodoRequestDto updateTodoRequestDto(Block savedBlock) {
-        return UpdateTodoRequestDto.builder()
+    public static TodoRequestDto updateTodoRequestDto(Block savedBlock) {
+        return TodoRequestDto.builder()
             .todoName(UPDATED_TODO_NAME)
             .scariness(UPDATED_SCARINESS_TODO)
             .hardness(UPDATED_HARDNESS_TODO)
@@ -88,8 +87,8 @@ public class TodoFactory {
             .build();
     }
 
-    public static UpdateTodoRequestDto updateTodoRequestReadyDto() {
-        return UpdateTodoRequestDto.builder()
+    public static TodoRequestDto updateTodoRequestReadyDto() {
+        return TodoRequestDto.builder()
             .todoName(UPDATED_TODO_NAME)
             .scariness(SCARINESS_TODO)
             .hardness(HARDNESS_TODO)
@@ -97,8 +96,8 @@ public class TodoFactory {
             .build();
     }
 
-    public static UpdateTodoRequestDto updateTodoRequestReadyDtoWithChangedScariness() {
-        return UpdateTodoRequestDto.builder()
+    public static TodoRequestDto updateTodoRequestReadyDtoWithChangedScariness() {
+        return TodoRequestDto.builder()
             .todoName(UPDATED_TODO_NAME)
             .scariness(UPDATED_SCARINESS_TODO)
             .hardness(HARDNESS_TODO)
@@ -106,8 +105,8 @@ public class TodoFactory {
             .build();
     }
 
-    public static UpdateTodoRequestDto updateTodoRequestReadyDtoWithChangedHardness() {
-        return UpdateTodoRequestDto.builder()
+    public static TodoRequestDto updateTodoRequestReadyDtoWithChangedHardness() {
+        return TodoRequestDto.builder()
             .todoName(UPDATED_TODO_NAME)
             .scariness(SCARINESS_TODO)
             .hardness(UPDATED_HARDNESS_TODO)
@@ -115,26 +114,26 @@ public class TodoFactory {
             .build();
     }
 
-    public static UpdateTodoRequestDto updateTodoRequestDtoWithoutName(Block savedBlock) {
-        UpdateTodoRequestDto request = updateTodoRequestDto(savedBlock);
+    public static TodoRequestDto updateTodoRequestDtoWithoutName(Block savedBlock) {
+        TodoRequestDto request = updateTodoRequestDto(savedBlock);
         request.setTodoName(null);
         return request;
     }
 
-    public static UpdateTodoRequestDto updateTodoRequestDtoWithNameConsistingOfSpaces(Block savedBlock) {
-        UpdateTodoRequestDto request = updateTodoRequestDto(savedBlock);
+    public static TodoRequestDto updateTodoRequestDtoWithNameConsistingOfSpaces(Block savedBlock) {
+        TodoRequestDto request = updateTodoRequestDto(savedBlock);
         request.setTodoName("    ");
         return request;
     }
 
-    public static UpdateTodoRequestDto updateTodoRequestDtoWithoutScariness(Block savedBlock) {
-        UpdateTodoRequestDto request = updateTodoRequestDto(savedBlock);
+    public static TodoRequestDto updateTodoRequestDtoWithoutScariness(Block savedBlock) {
+        TodoRequestDto request = updateTodoRequestDto(savedBlock);
         request.setScariness(null);
         return request;
     }
 
-    public static UpdateTodoRequestDto updateTodoRequestDtoWithoutHardness(Block savedBlock) {
-        UpdateTodoRequestDto request = updateTodoRequestDto(savedBlock);
+    public static TodoRequestDto updateTodoRequestDtoWithoutHardness(Block savedBlock) {
+        TodoRequestDto request = updateTodoRequestDto(savedBlock);
         request.setHardness(null);
         return request;
     }

@@ -3,11 +3,8 @@ package com.knighttodo.knighttodo.rest;
 import static com.knighttodo.knighttodo.Constants.API_BASE_BLOCKS;
 
 import com.knighttodo.knighttodo.domain.BlockVO;
-import com.knighttodo.knighttodo.rest.dto.block.request.CreateBlockRequestDto;
-import com.knighttodo.knighttodo.rest.dto.block.request.UpdateBlockRequestDto;
-import com.knighttodo.knighttodo.rest.dto.block.response.CreateBlockResponseDto;
-import com.knighttodo.knighttodo.rest.dto.block.response.BlockResponseDto;
-import com.knighttodo.knighttodo.rest.dto.block.response.UpdateBlockResponseDto;
+import com.knighttodo.knighttodo.rest.request.BlockRequestDto;
+import com.knighttodo.knighttodo.rest.response.BlockResponseDto;
 import com.knighttodo.knighttodo.rest.mapper.BlockRestMapper;
 import com.knighttodo.knighttodo.service.BlockService;
 
@@ -40,14 +37,12 @@ public class BlockResource {
     private final BlockRestMapper blockRestMapper;
 
     @PostMapping
-    public ResponseEntity<CreateBlockResponseDto> addBlock(
-        @Valid @RequestBody CreateBlockRequestDto createRequestDto) {
-        log.info("Rest request to add block : {}", createRequestDto);
-        BlockVO blockVO = blockRestMapper.toBlockVO(createRequestDto);
+    public ResponseEntity<BlockResponseDto> addBlock(@Valid @RequestBody BlockRequestDto requestDto) {
+        log.info("Rest request to add block : {}", requestDto);
+        BlockVO blockVO = blockRestMapper.toBlockVO(requestDto);
         BlockVO savedBlockVO = blockService.save(blockVO);
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-            .body(blockRestMapper.toCreateBlockResponseDto(savedBlockVO));
+        return ResponseEntity.status(HttpStatus.CREATED).body(blockRestMapper.toBlockResponseDto(savedBlockVO));
     }
 
     @GetMapping
@@ -70,13 +65,13 @@ public class BlockResource {
     }
 
     @PutMapping("/{blockId}")
-    public ResponseEntity<UpdateBlockResponseDto> updateBlock(@PathVariable String blockId,
-        @Valid @RequestBody UpdateBlockRequestDto updateRequestDto) {
-        log.info("Rest request to update block : {}", updateRequestDto);
-        BlockVO blockVO = blockRestMapper.toBlockVO(updateRequestDto);
+    public ResponseEntity<BlockResponseDto> updateBlock(@PathVariable String blockId,
+        @Valid @RequestBody BlockRequestDto requestDto) {
+        log.info("Rest request to update block : {}", requestDto);
+        BlockVO blockVO = blockRestMapper.toBlockVO(requestDto);
         BlockVO updatedBlockVO = blockService.updateBlock(blockId, blockVO);
 
-        return ResponseEntity.ok().body(blockRestMapper.toUpdateBlockResponseDto(updatedBlockVO));
+        return ResponseEntity.ok().body(blockRestMapper.toBlockResponseDto(updatedBlockVO));
     }
 
     @DeleteMapping("/{blockId}")

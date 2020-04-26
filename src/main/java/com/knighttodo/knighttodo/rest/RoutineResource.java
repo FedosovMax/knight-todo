@@ -4,9 +4,8 @@ import static com.knighttodo.knighttodo.Constants.API_BASE_BLOCKS;
 import static com.knighttodo.knighttodo.Constants.API_BASE_ROUTINES;
 
 import com.knighttodo.knighttodo.domain.RoutineVO;
-import com.knighttodo.knighttodo.rest.dto.routine.request.CreateRoutineRequestDto;
-import com.knighttodo.knighttodo.rest.dto.routine.request.UpdateRoutineRequestDto;
-import com.knighttodo.knighttodo.rest.dto.routine.response.RoutineResponseDto;
+import com.knighttodo.knighttodo.rest.request.RoutineRequestDto;
+import com.knighttodo.knighttodo.rest.response.RoutineResponseDto;
 import com.knighttodo.knighttodo.rest.mapper.RoutineRestMapper;
 import com.knighttodo.knighttodo.service.RoutineService;
 
@@ -50,10 +49,10 @@ public class RoutineResource {
     }
 
     @PostMapping
-    public ResponseEntity<RoutineResponseDto> addRoutine(@Valid @RequestBody CreateRoutineRequestDto createRequestDto,
+    public ResponseEntity<RoutineResponseDto> addRoutine(@Valid @RequestBody RoutineRequestDto requestDto,
         @PathVariable String blockId) {
-        log.info("Rest request to add routine : {}", createRequestDto);
-        RoutineVO routineVO = routineRestMapper.toRoutineVO(createRequestDto);
+        log.info("Rest request to add routine : {}", requestDto);
+        RoutineVO routineVO = routineRestMapper.toRoutineVO(requestDto);
         RoutineVO savedRoutineVO = routineService.save(blockId, routineVO);
 
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -70,9 +69,9 @@ public class RoutineResource {
 
     @PutMapping("/{routineId}")
     public ResponseEntity<RoutineResponseDto> updateRoutine(@PathVariable String blockId,
-        @PathVariable String routineId, @Valid @RequestBody UpdateRoutineRequestDto updateRequestDto) {
-        log.info("Rest request to update routine : {}", updateRequestDto);
-        RoutineVO routineVO = routineRestMapper.toRoutineVO(updateRequestDto);
+        @PathVariable String routineId, @Valid @RequestBody RoutineRequestDto requestDto) {
+        log.info("Rest request to update routine : {}", requestDto);
+        RoutineVO routineVO = routineRestMapper.toRoutineVO(requestDto);
         RoutineVO updatedRoutineVO = routineService.updateRoutine(blockId, routineId, routineVO);
 
         return ResponseEntity.ok().body(routineRestMapper.toRoutineResponseDto(updatedRoutineVO));

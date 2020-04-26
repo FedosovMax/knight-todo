@@ -1,8 +1,7 @@
-package com.knighttodo.knighttodo.rest.dto.routine.response;
+package com.knighttodo.knighttodo.rest.response;
 
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scariness;
-import com.knighttodo.knighttodo.rest.dto.todo.response.TodoResponseDto;
 
 import java.util.ArrayList;
 import java.util.List;

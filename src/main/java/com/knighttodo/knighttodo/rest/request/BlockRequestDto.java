@@ -1,4 +1,4 @@
-package com.knighttodo.knighttodo.rest.dto.block.request;
+package com.knighttodo.knighttodo.rest.request;
 
 import javax.validation.constraints.NotBlank;
 
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CreateBlockRequestDto {
+public class BlockRequestDto {
 
     @NotBlank
     private String blockName;
