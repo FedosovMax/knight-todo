@@ -26,10 +26,10 @@ public class RoutineServiceImpl implements RoutineService {
     @Override
     public RoutineVO save(String blockId, RoutineVO routineVO) {
         routineVO.setBlock(blockService.findById(blockId));
-        routineVO.setTodos(fetchTodosByIds(extractTodoIds(routineVO)));
-        routineVO.getTodos().forEach((todoVO -> todoVO.setRoutineVO(routineVO)));
-
         RoutineVO dbRoutineVO = routineGateway.save(routineVO);
+
+        dbRoutineVO.setTodos(fetchTodosByIds(extractTodoIds(routineVO)));
+        dbRoutineVO.getTodos().forEach((todoVO -> todoVO.setRoutine(dbRoutineVO)));
         dbRoutineVO.setTemplateId(dbRoutineVO.getId());
         return routineGateway.save(dbRoutineVO);
     }
@@ -68,18 +68,18 @@ public class RoutineServiceImpl implements RoutineService {
     }
 
     private void synchronizeTodosInRoutineVO(RoutineVO routineVO, RoutineVO changedRoutineVO) {
-        removeTodosFromRoutineIfNecessary(routineVO, changedRoutineVO);
-        addTodosToRoutineIfNecessary(routineVO, changedRoutineVO);
+        unmapTodosExcludedFromRoutine(routineVO, changedRoutineVO);
+        mapTodosAddedToRoutine(routineVO, changedRoutineVO);
     }
 
-    private void removeTodosFromRoutineIfNecessary(RoutineVO routineVO, RoutineVO changedRoutineVO) {
+    private void unmapTodosExcludedFromRoutine(RoutineVO routineVO, RoutineVO changedRoutineVO) {
         List<String> changedRoutineVOTodoIds = extractTodoIds(changedRoutineVO);
         routineVO.getTodos().stream()
             .filter(todoVO -> !changedRoutineVOTodoIds.contains(todoVO.getId()))
-            .forEach(todoVO -> todoVO.setRoutineVO(null));
+            .forEach(todoVO -> todoVO.setRoutine(null));
     }
 
-    private void addTodosToRoutineIfNecessary(RoutineVO routineVO, RoutineVO changedRoutineVO) {
+    private void mapTodosAddedToRoutine(RoutineVO routineVO, RoutineVO changedRoutineVO) {
         List<String> routineVOTodoIds = extractTodoIds(routineVO);
         List<String> addedTodoIds = extractTodoIds(changedRoutineVO).stream()
             .filter(todoId -> !routineVOTodoIds.contains(todoId))
@@ -89,7 +89,8 @@ public class RoutineServiceImpl implements RoutineService {
 
     @Override
     public void deleteById(String routineId) {
-        routineGateway.deleteById(routineId);
+        RoutineVO routineVO = findById(routineId);
+        routineGateway.delete(routineVO);
     }
 
     @Override
