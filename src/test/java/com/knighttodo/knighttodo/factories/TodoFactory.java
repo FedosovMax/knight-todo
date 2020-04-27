@@ -56,7 +56,7 @@ public class TodoFactory {
         return request;
     }
 
-    public static Todo todoWithBlockIdInstance(Block block) {
+    public static Todo todoWithBlockInstance(Block block) {
         return Todo
             .builder()
             .todoName(TODO_NAME)
@@ -67,7 +67,7 @@ public class TodoFactory {
             .build();
     }
 
-    public static Todo todoWithBlockIdReadyInstance(Block block) {
+    public static Todo todoWithBlockReadyInstance(Block block) {
         return Todo
             .builder()
             .todoName(TODO_NAME)
