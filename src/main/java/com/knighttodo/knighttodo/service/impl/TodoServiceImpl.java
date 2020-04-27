@@ -24,7 +24,7 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public TodoVO save(String blockId, TodoVO todoVO) {
-        todoVO.setBlockVO(blockService.findById(blockId));
+        todoVO.setBlock(blockService.findById(blockId));
         return todoGateway.save(todoVO);
     }
 
@@ -76,7 +76,7 @@ public class TodoServiceImpl implements TodoService {
     @Override
     public TodoVO updateIsReady(String blockId, String todoId, boolean isReady) {
         TodoVO todoVO = findById(todoId);
-        todoVO.setBlockVO(blockService.findById(blockId));
+        todoVO.setBlock(blockService.findById(blockId));
         todoVO.setReady(isReady);
         todoVO = todoGateway.save(todoVO);
         return experienceGateway.calculateExperience(todoVO);

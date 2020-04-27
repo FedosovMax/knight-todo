@@ -7,11 +7,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString(exclude = {"routine", "block"})
 public class TodoVO {
 
     private String id;
@@ -24,9 +26,9 @@ public class TodoVO {
 
     private boolean ready;
 
-    private BlockVO blockVO;
+    private BlockVO block;
 
-    private RoutineVO routineVO;
+    private RoutineVO routine;
 
     private Integer experience;
 }

@@ -12,7 +12,7 @@ import org.mapstruct.Named;
 @Mapper(componentModel = "spring")
 public interface TodoRestMapper {
 
-    @Mapping(target = "blockId", source = "blockVO.id")
+    @Mapping(target = "blockId", source = "block.id")
     TodoResponseDto toTodoResponseDto(TodoVO todoVO);
 
     TodoVO toTodoVO(TodoRequestDto requestDto);
@@ -21,6 +21,6 @@ public interface TodoRestMapper {
     @Mapping(target = "id", source = "todoId")
     TodoVO toTodoVO(String todoId);
 
-    @Mapping(target = "blockId", source = "blockVO.id")
+    @Mapping(target = "blockId", source = "block.id")
     TodoReadyResponseDto toTodoReadyResponseDto(TodoVO todoVO);
 }
