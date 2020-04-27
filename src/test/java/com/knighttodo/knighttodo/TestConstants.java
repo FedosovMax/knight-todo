@@ -98,4 +98,28 @@ public class TestConstants {
     public static String buildJsonPathToTodoIdInTodosListByIndex(int index) {
         return JSON_ROOT + "todos.[" + index + "].id";
     }
+
+    public static String buildJsonPathToRoutineIdInRoutinesListByIndex(int index) {
+        return JSON_ROOT + "routines.[" + index + "].id";
+    }
+
+    public static String buildJsonPathToRoutineNameInRoutinesListByIndex(int index) {
+        return JSON_ROOT + "routines.[" + index + "].name";
+    }
+
+    public static String buildJsonPathToRoutineHardnessInRoutinesListByIndex(int index) {
+        return JSON_ROOT + "routines.[" + index + "].hardness";
+    }
+
+    public static String buildJsonPathToRoutineScarinessInRoutinesListByIndex(int index) {
+        return JSON_ROOT + "routines.[" + index + "].scariness";
+    }
+
+    public static String buildJsonPathToRoutineReadyInRoutinesListByIndex(int index) {
+        return JSON_ROOT + "routines.[" + index + "].ready";
+    }
+
+    public static String buildJsonPathToTodoIdInTodosListInRoutinesListByIndexes(int routineIndex, int todoIndex) {
+        return JSON_ROOT + "routines.[" + routineIndex + "].todos[" + todoIndex + "].id";
+    }
 }

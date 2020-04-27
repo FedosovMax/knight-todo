@@ -167,13 +167,14 @@ public class BlockResourceIntegrationTest {
     }
 
     @Test
+    @Transactional
     public void addBlock_shouldAddBlockWithRoutinesAndReturnIt_whenRequestIsCorrect() throws Exception {
         Block block = blockRepository.save(BlockFactory.BlockInstance());
         Routine routineFirst = routineRepository.save(RoutineFactory.routineInstance());
         routineFirst.setTemplateId(routineFirst.getId());
         routineFirst = routineRepository.save(routineFirst);
-        routineFirst.getTodos().add(TodoFactory.todoWithBlockIdInstance(block));
-        routineFirst.getTodos().add(TodoFactory.todoWithBlockIdInstance(block));
+        routineFirst.getTodos().add(TodoFactory.todoWithBlockInstance(block));
+        routineFirst.getTodos().add(TodoFactory.todoWithBlockInstance(block));
         BlockRequestDto requestDto = BlockFactory.createBlockRequestDto();
 
         mockMvc.perform(post(API_BASE_BLOCKS)
