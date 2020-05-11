@@ -4,15 +4,12 @@ import com.knighttodo.knighttodo.domain.RoutineVO;
 import com.knighttodo.knighttodo.domain.TodoVO;
 import com.knighttodo.knighttodo.exception.RoutineNotFoundException;
 import com.knighttodo.knighttodo.gateway.RoutineGateway;
-import com.knighttodo.knighttodo.service.RoutineService;
 import com.knighttodo.knighttodo.service.BlockService;
+import com.knighttodo.knighttodo.service.RoutineService;
 import com.knighttodo.knighttodo.service.TodoService;
-
 import java.util.List;
 import java.util.stream.Collectors;
-
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -89,8 +86,7 @@ public class RoutineServiceImpl implements RoutineService {
 
     @Override
     public void deleteById(String routineId) {
-        RoutineVO routineVO = findById(routineId);
-        routineGateway.delete(routineVO);
+        routineGateway.deleteById(routineId);
     }
 
     @Override

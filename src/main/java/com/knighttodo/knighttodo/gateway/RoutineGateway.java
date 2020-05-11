@@ -15,7 +15,5 @@ public interface RoutineGateway {
 
     void deleteById(String routineId);
 
-    void delete(RoutineVO routineVO);
-
     List<RoutineVO> findAllTemplates();
 }

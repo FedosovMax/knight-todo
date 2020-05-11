@@ -13,7 +13,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString(exclude = {"routine", "block"})
+@ToString
 public class TodoVO {
 
     private String id;

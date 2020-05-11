@@ -8,26 +8,22 @@ import static com.knighttodo.knighttodo.TestConstants.PARAMETER_TRUE;
 import static com.knighttodo.knighttodo.TestConstants.buildDeleteTodoByIdUrl;
 import static com.knighttodo.knighttodo.TestConstants.buildGetTodoByIdUrl;
 import static com.knighttodo.knighttodo.TestConstants.buildGetTodosByBlockIdUrl;
+import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToBlockId;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToExperience;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToHardness;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToId;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToLength;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToReadyName;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToScariness;
-import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToBlockId;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToTodoName;
 import static com.knighttodo.knighttodo.TestConstants.buildUpdateTodoReadyBaseUrl;
-
 import static org.aspectj.bridge.MessageUtil.fail;
 import static org.assertj.core.api.Assertions.assertThat;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -36,7 +32,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.knighttodo.knighttodo.exception.UnchangeableFieldUpdateException;
 import com.knighttodo.knighttodo.factories.BlockFactory;
 import com.knighttodo.knighttodo.factories.TodoFactory;
@@ -46,10 +41,8 @@ import com.knighttodo.knighttodo.gateway.privatedb.repository.TodoRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Block;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
 import com.knighttodo.knighttodo.rest.request.TodoRequestDto;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -94,6 +87,7 @@ public class TodoResourceIntegrationTest {
     @Transactional
     public void addTodo_shouldAddTodoAndReturnIt_whenRequestIsCorrect() throws Exception {
         Block block = blockRepository.save(BlockFactory.BlockInstance());
+
         TodoRequestDto requestDto = TodoFactory.createTodoRequestDto(block);
 
         mockMvc.perform(
@@ -105,7 +99,6 @@ public class TodoResourceIntegrationTest {
             .andExpect(jsonPath(buildJsonPathToId()).exists());
 
         assertThat(todoRepository.count()).isEqualTo(1);
-        assertEquals(1, blockRepository.findById(block.getId()).get().getTodos().size());
     }
 
     @Test
@@ -306,12 +299,15 @@ public class TodoResourceIntegrationTest {
     @Transactional
     public void deleteTodo_shouldDeleteTodo_whenIdIsCorrect() throws Exception {
         Block block = blockRepository.save(BlockFactory.BlockInstance());
-        Todo todo = todoRepository.save(TodoFactory.todoWithBlockInstance(block));
+        Todo todo = TodoFactory.todoWithBlockInstance(block);
+        todo.setBlock(block);
+        todoRepository.save(todo);
 
         mockMvc.perform(delete(buildDeleteTodoByIdUrl(block.getId(), todo.getId())))
             .andExpect(status().isOk());
 
         assertThat(todoRepository.findById(todo.getId())).isEmpty();
+        assertThat(todoRepository.count()).isEqualTo(0);
     }
 
     @Test

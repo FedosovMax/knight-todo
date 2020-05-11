@@ -78,9 +78,9 @@ public class RoutineResource {
     }
 
     @DeleteMapping("/{routineId}")
-    public ResponseEntity<Void> deleteRoutine(@PathVariable String routineId) {
+    public ResponseEntity<Void> deleteRoutine(@PathVariable String blockId, @PathVariable String routineId) {
         log.info("Rest request to delete routine by id : {}", routineId);
-        routineService.deleteById(routineId);
+        routineService.deleteById(blockId, routineId);
         return ResponseEntity.ok().build();
     }
 }

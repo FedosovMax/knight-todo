@@ -6,6 +6,7 @@ import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scarines
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -31,7 +32,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = {"block"})
+@ToString(exclude = {"block", "todos"})
 public class Routine {
 
     @Id
@@ -59,6 +60,6 @@ public class Routine {
     @JoinColumn(name = "block_id")
     private Block block;
 
-    @OneToMany(mappedBy = "routine")
+    @OneToMany(mappedBy = "routine", cascade = CascadeType.REMOVE)
     private List<Todo> todos = new ArrayList<>();
 }

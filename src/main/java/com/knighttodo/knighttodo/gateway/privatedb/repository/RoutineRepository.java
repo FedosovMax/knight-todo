@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface RoutineRepository extends JpaRepository<Routine, String> {
 
-    @Query("select r from Routine r where r.templateId = r.id")
+    @Query("from Routine r left join fetch r.todos where r.templateId = r.id")
     List<Routine> findAllTemplates();
 }
