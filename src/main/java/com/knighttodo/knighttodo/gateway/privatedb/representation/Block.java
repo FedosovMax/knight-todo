@@ -16,6 +16,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -25,6 +26,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Block {
 
     @Id
@@ -40,7 +42,7 @@ public class Block {
     @Column(name = "block_name")
     private String blockName;
 
-    @OneToMany(mappedBy = "block", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "block", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Routine> routines = new ArrayList<>();
 
     @OneToMany(mappedBy = "block", cascade = CascadeType.ALL)

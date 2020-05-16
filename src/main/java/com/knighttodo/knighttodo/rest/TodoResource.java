@@ -43,6 +43,16 @@ public class TodoResource {
     private final TodoService todoService;
     private final TodoRestMapper todoRestMapper;
 
+    @PostMapping
+    public ResponseEntity<TodoResponseDto> addTodo(@PathVariable String blockId,
+        @Valid @RequestBody TodoRequestDto requestDto) {
+        log.info("Rest request to add todo : {}", requestDto);
+        TodoVO todoVO = todoRestMapper.toTodoVO(requestDto);
+        TodoVO savedTodoVO = todoService.save(blockId, todoVO);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(todoRestMapper.toTodoResponseDto(savedTodoVO));
+    }
+
     @GetMapping
     public ResponseEntity<List<TodoResponseDto>> getAllTodos() {
         log.info("Rest request to get all todo");
@@ -52,16 +62,6 @@ public class TodoResource {
                 .stream()
                 .map(todoRestMapper::toTodoResponseDto)
                 .collect(Collectors.toList()));
-    }
-
-    @PostMapping
-    public ResponseEntity<TodoResponseDto> addTodo(@PathVariable String blockId,
-        @Valid @RequestBody TodoRequestDto requestDto) {
-        log.info("Rest request to add todo : {}", requestDto);
-        TodoVO todoVO = todoRestMapper.toTodoVO(requestDto);
-        TodoVO savedTodoVO = todoService.save(blockId, todoVO);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(todoRestMapper.toTodoResponseDto(savedTodoVO));
     }
 
     @GetMapping("/{todoId}")

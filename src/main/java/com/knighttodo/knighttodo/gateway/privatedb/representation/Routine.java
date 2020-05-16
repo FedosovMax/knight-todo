@@ -22,8 +22,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -32,7 +32,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = {"block", "todos"})
+@ToString
 public class Routine {
 
     @Id

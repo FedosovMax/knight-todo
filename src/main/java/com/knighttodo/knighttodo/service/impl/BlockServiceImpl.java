@@ -39,16 +39,15 @@ public class BlockServiceImpl implements BlockService {
 
     @Override
     public BlockVO save(BlockVO blockVO) {
-        fetchRoutines(blockVO);
-        mapTodosFromRoutinesToBlock(blockVO);
-        return blockGateway.save(blockVO);
+        BlockVO savedBlock = blockGateway.save(blockVO);
+        fetchRoutines(savedBlock);
+        mapTodosFromRoutinesToBlock(savedBlock);
+        return blockGateway.save(savedBlock);
     }
 
     @Override
     public List<BlockVO> findAll() {
-        List<BlockVO> blockVOS = blockGateway.findAll();
-        blockVOS.forEach(this::fetchRoutines);
-        return blockVOS;
+        return blockGateway.findAll();
     }
 
     @Override
@@ -66,7 +65,6 @@ public class BlockServiceImpl implements BlockService {
                 String.format("Block with such id:%s is not found", blockId)));
 
         blockVO.setBlockName(changedBlockVO.getBlockName());
-        fetchRoutines(blockVO);
         return blockGateway.save(blockVO);
     }
 
@@ -76,38 +74,40 @@ public class BlockServiceImpl implements BlockService {
     }
 
     private void fetchRoutines(BlockVO blockVO) {
-        List<RoutineVO> routineVOS = routineService.findAllTemplates();
-        routineVOS.stream().map(this::copyRoutine).collect(Collectors.toList());
-        blockVO.setRoutines(routineVOS);
+        List<RoutineVO> routineTemplates = routineService.findAllTemplates();
+        List<RoutineVO> copiedRoutines = routineTemplates.stream().map(routineTemplate -> copyRoutine(blockVO, routineTemplate))
+            .collect(Collectors.toList());
+        blockVO.setRoutines(copiedRoutines);
     }
 
-    private RoutineVO copyRoutine(RoutineVO routineVO) {
-        RoutineVO updatedRoutineVO = new RoutineVO();
-        updatedRoutineVO.setHardness(routineVO.getHardness());
-        updatedRoutineVO.setScariness(routineVO.getScariness());
-        updatedRoutineVO.setName(routineVO.getName());
-        updatedRoutineVO.setBlock(routineVO.getBlock());
-        copyTodosToRoutine(updatedRoutineVO, routineVO);
+    private RoutineVO copyRoutine(BlockVO blockVO, RoutineVO routineTemplate) {
+        RoutineVO copiedRoutineVO = new RoutineVO();
+        copiedRoutineVO.setHardness(routineTemplate.getHardness());
+        copiedRoutineVO.setScariness(routineTemplate.getScariness());
+        copiedRoutineVO.setName(routineTemplate.getName());
+        copiedRoutineVO.setBlock(blockVO);
+        copyTodosToRoutine(copiedRoutineVO, routineTemplate);
 
-        updatedRoutineVO = routineService.save(routineVO.getBlock().getId(), updatedRoutineVO);
-        return updatedRoutineVO;
+        copiedRoutineVO = routineService.save(blockVO.getId(), copiedRoutineVO);
+        return copiedRoutineVO;
     }
 
-    private void copyTodosToRoutine(RoutineVO updatedRoutineVO, RoutineVO routineVO) {
-        updatedRoutineVO
-            .setTodos(routineVO.getTodos().stream().map(todo -> copyTodo(routineVO.getBlock().getId(), todo))
+    private void copyTodosToRoutine(RoutineVO copiedRoutineVO, RoutineVO routineVO) {
+        copiedRoutineVO
+            .setTodos(routineVO.getTodos().stream().map(todo -> copyTodo(copiedRoutineVO.getBlock(), todo))
                 .collect(Collectors.toList()));
     }
 
-    private TodoVO copyTodo(String blockId, TodoVO todoVO) {
-        TodoVO updatedTodo = new TodoVO();
-        updatedTodo.setTodoName(todoVO.getTodoName());
-        updatedTodo.setScariness(todoVO.getScariness());
-        updatedTodo.setHardness(todoVO.getHardness());
-        updatedTodo.setReady(false);
-        updatedTodo.setRoutine(todoVO.getRoutine());
-        updatedTodo = todoService.save(blockId, updatedTodo);
-        return updatedTodo;
+    private TodoVO copyTodo(BlockVO blockVO, TodoVO todoVO) {
+        TodoVO copiedTodo = new TodoVO();
+        copiedTodo.setTodoName(todoVO.getTodoName());
+        copiedTodo.setScariness(todoVO.getScariness());
+        copiedTodo.setHardness(todoVO.getHardness());
+        copiedTodo.setReady(false);
+        copiedTodo.setRoutine(todoVO.getRoutine());
+        copiedTodo.setBlock(blockVO);
+        copiedTodo = todoService.save(blockVO.getId(), copiedTodo);
+        return copiedTodo;
     }
 
     private void mapTodosFromRoutinesToBlock(BlockVO blockVO) {

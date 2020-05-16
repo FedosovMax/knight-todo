@@ -37,17 +37,6 @@ public class RoutineResource {
     private final RoutineService routineService;
     private final RoutineRestMapper routineRestMapper;
 
-    @GetMapping
-    public ResponseEntity<List<RoutineResponseDto>> getAllRoutines() {
-        log.info("Rest request to get all routines");
-
-        return ResponseEntity.status(HttpStatus.FOUND)
-            .body(routineService.findAll()
-                .stream()
-                .map(routineRestMapper::toRoutineResponseDto)
-                .collect(Collectors.toList()));
-    }
-
     @PostMapping
     public ResponseEntity<RoutineResponseDto> addRoutine(@Valid @RequestBody RoutineRequestDto requestDto,
         @PathVariable String blockId) {
@@ -57,6 +46,17 @@ public class RoutineResource {
 
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(routineRestMapper.toRoutineResponseDto(savedRoutineVO));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<RoutineResponseDto>> getAllRoutines() {
+        log.info("Rest request to get all routines");
+
+        return ResponseEntity.status(HttpStatus.FOUND)
+            .body(routineService.findAll()
+                .stream()
+                .map(routineRestMapper::toRoutineResponseDto)
+                .collect(Collectors.toList()));
     }
 
     @GetMapping("/{routineId}")
@@ -78,9 +78,9 @@ public class RoutineResource {
     }
 
     @DeleteMapping("/{routineId}")
-    public ResponseEntity<Void> deleteRoutine(@PathVariable String blockId, @PathVariable String routineId) {
+    public ResponseEntity<Void> deleteRoutine(@PathVariable String routineId) {
         log.info("Rest request to delete routine by id : {}", routineId);
-        routineService.deleteById(blockId, routineId);
+        routineService.deleteById(routineId);
         return ResponseEntity.ok().build();
     }
 }

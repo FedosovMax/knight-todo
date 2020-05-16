@@ -6,8 +6,8 @@ import static com.knighttodo.knighttodo.Constants.API_BASE_TODOS;
 import static com.knighttodo.knighttodo.Constants.API_GET_TODOS_BY_BLOCK_ID;
 import static com.knighttodo.knighttodo.Constants.BASE_READY;
 
-import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Block;
+import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
 
 public class TestConstants {
 
