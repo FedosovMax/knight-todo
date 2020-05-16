@@ -14,6 +14,7 @@ public class RoutineFactory {
     public static final String ROUTINE_NAME = "First routine";
     public static final Hardness HARDNESS_HARD = Hardness.HARD;
     public static final Scariness SCARINESS_HARD = Scariness.SCARY;
+    public static final String UPDATED_ROUTINE_NAME = "Updated routine name";
     public static final String UPDATED_BLOCK_NAME = "Friday Todos";
 
     public static RoutineRequestDto createRoutineRequestDto() {
@@ -22,6 +23,15 @@ public class RoutineFactory {
             .hardness(HARDNESS_HARD)
             .scariness(SCARINESS_HARD)
             .todoIds(new ArrayList<>())
+            .build();
+    }
+
+    public static RoutineRequestDto createRoutineWithTodoIdsRequestDto(List<String> todoIds) {
+        return RoutineRequestDto.builder()
+            .name(ROUTINE_NAME)
+            .hardness(HARDNESS_HARD)
+            .scariness(SCARINESS_HARD)
+            .todoIds(todoIds)
             .build();
     }
 
@@ -36,7 +46,7 @@ public class RoutineFactory {
 
     public static RoutineRequestDto updateRoutineRequestDto() {
         return RoutineRequestDto.builder()
-            .name(ROUTINE_NAME)
+            .name(UPDATED_ROUTINE_NAME)
             .hardness(HARDNESS_HARD)
             .scariness(SCARINESS_HARD)
             .ready(true)

@@ -40,7 +40,7 @@ public class Block {
     @Column(name = "block_name")
     private String blockName;
 
-    @OneToMany(mappedBy = "block")
+    @OneToMany(mappedBy = "block", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Routine> routines = new ArrayList<>();
 
     @OneToMany(mappedBy = "block", cascade = CascadeType.ALL)

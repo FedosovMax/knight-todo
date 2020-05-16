@@ -1,5 +1,6 @@
 package com.knighttodo.knighttodo.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -17,5 +18,7 @@ public class BlockVO {
 
     private String blockName;
 
-    private List<RoutineVO> routines;
+    private List<RoutineVO> routines = new ArrayList<>();
+
+    private List<TodoVO> todos = new ArrayList<>();
 }

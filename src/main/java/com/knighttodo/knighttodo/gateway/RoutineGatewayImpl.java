@@ -43,7 +43,6 @@ public class RoutineGatewayImpl implements RoutineGateway {
 
     @Override
     public List<RoutineVO> findAllTemplates() {
-        return routineRepository.findAllTemplates().stream().map(routineMapper::toRoutineVO)
-            .collect(Collectors.toList());
+        return routineRepository.findAllTemplates().stream().map(routineMapper::toRoutineVO).collect(Collectors.toList());
     }
 }

@@ -58,6 +58,6 @@ public class Routine {
     @JoinColumn(name = "block_id")
     private Block block;
 
-    @OneToMany(mappedBy = "routine", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "routine", cascade = CascadeType.REMOVE)
     private List<Todo> todos = new ArrayList<>();
 }
