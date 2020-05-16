@@ -8,6 +8,7 @@ import com.knighttodo.knighttodo.rest.response.BlockResponseDto;
 import com.knighttodo.knighttodo.rest.mapper.BlockRestMapper;
 import com.knighttodo.knighttodo.service.BlockService;
 
+import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,6 +38,7 @@ public class BlockResource {
     private final BlockRestMapper blockRestMapper;
 
     @PostMapping
+    @ApiOperation(value = "Add new Block")
     public ResponseEntity<BlockResponseDto> addBlock(@Valid @RequestBody BlockRequestDto requestDto) {
         log.info("Rest request to add block : {}", requestDto);
         BlockVO blockVO = blockRestMapper.toBlockVO(requestDto);
@@ -46,7 +48,8 @@ public class BlockResource {
     }
 
     @GetMapping
-    public ResponseEntity<List<BlockResponseDto>> getAllBlocks() {
+    @ApiOperation(value = "Find all Blocks")
+    public ResponseEntity<List<BlockResponseDto>> findAllBlocks() {
         log.info("Rest request to get all blocks");
 
         return ResponseEntity.status(HttpStatus.FOUND)
@@ -57,7 +60,8 @@ public class BlockResource {
     }
 
     @GetMapping("/{blockId}")
-    public ResponseEntity<BlockResponseDto> getBlockById(@PathVariable String blockId) {
+    @ApiOperation(value = "find Block by id")
+    public ResponseEntity<BlockResponseDto> findBlockById(@PathVariable String blockId) {
         log.info("Rest request to get block by id : {}", blockId);
         BlockVO blockVO = blockService.findById(blockId);
 
@@ -65,6 +69,7 @@ public class BlockResource {
     }
 
     @PutMapping("/{blockId}")
+    @ApiOperation(value = "Update Block by id")
     public ResponseEntity<BlockResponseDto> updateBlock(@PathVariable String blockId,
         @Valid @RequestBody BlockRequestDto requestDto) {
         log.info("Rest request to update block : {}", requestDto);
@@ -75,6 +80,7 @@ public class BlockResource {
     }
 
     @DeleteMapping("/{blockId}")
+    @ApiOperation(value = "Delete Block by id")
     public ResponseEntity<Void> deleteBlock(@PathVariable String blockId) {
         log.info("Rest request to delete block by id : {}", blockId);
         blockService.deleteById(blockId);

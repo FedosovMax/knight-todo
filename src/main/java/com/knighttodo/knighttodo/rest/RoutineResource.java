@@ -9,6 +9,7 @@ import com.knighttodo.knighttodo.rest.response.RoutineResponseDto;
 import com.knighttodo.knighttodo.rest.mapper.RoutineRestMapper;
 import com.knighttodo.knighttodo.service.RoutineService;
 
+import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,6 +39,7 @@ public class RoutineResource {
     private final RoutineRestMapper routineRestMapper;
 
     @PostMapping
+    @ApiOperation(value = "Add new Routine")
     public ResponseEntity<RoutineResponseDto> addRoutine(@Valid @RequestBody RoutineRequestDto requestDto,
         @PathVariable String blockId) {
         log.info("Rest request to add routine : {}", requestDto);
@@ -49,7 +51,8 @@ public class RoutineResource {
     }
 
     @GetMapping
-    public ResponseEntity<List<RoutineResponseDto>> getAllRoutines() {
+    @ApiOperation(value = "Find all Routines")
+    public ResponseEntity<List<RoutineResponseDto>> findAllRoutines() {
         log.info("Rest request to get all routines");
 
         return ResponseEntity.status(HttpStatus.FOUND)
@@ -60,7 +63,8 @@ public class RoutineResource {
     }
 
     @GetMapping("/{routineId}")
-    public ResponseEntity<RoutineResponseDto> getRoutineById(@PathVariable String routineId) {
+    @ApiOperation(value = "Find Routine by id")
+    public ResponseEntity<RoutineResponseDto> findRoutineById(@PathVariable String routineId) {
         log.info("Rest request to get routine by id : {}", routineId);
         RoutineVO routineVO = routineService.findById(routineId);
 
@@ -68,6 +72,7 @@ public class RoutineResource {
     }
 
     @PutMapping("/{routineId}")
+    @ApiOperation(value = "Update Routine by id")
     public ResponseEntity<RoutineResponseDto> updateRoutine(@PathVariable String blockId,
         @PathVariable String routineId, @Valid @RequestBody RoutineRequestDto requestDto) {
         log.info("Rest request to update routine : {}", requestDto);
@@ -78,6 +83,7 @@ public class RoutineResource {
     }
 
     @DeleteMapping("/{routineId}")
+    @ApiOperation(value = "Delete Routine by id")
     public ResponseEntity<Void> deleteRoutine(@PathVariable String routineId) {
         log.info("Rest request to delete routine by id : {}", routineId);
         routineService.deleteById(routineId);

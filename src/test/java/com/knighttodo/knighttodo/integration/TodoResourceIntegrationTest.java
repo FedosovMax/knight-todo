@@ -155,7 +155,7 @@ public class TodoResourceIntegrationTest {
     }
 
     @Test
-    public void getAllTodos_shouldReturnAllTodos() throws Exception {
+    public void findAllTodos_shouldReturnAllTodos() throws Exception {
         Block block = blockRepository.save(BlockFactory.BlockInstance());
         todoRepository.save(TodoFactory.todoWithBlockInstance(block));
         todoRepository.save(TodoFactory.todoWithBlockInstance(block));
@@ -166,7 +166,7 @@ public class TodoResourceIntegrationTest {
     }
 
     @Test
-    public void getTodoById_shouldReturnExistingTodo_whenIdIsCorrect() throws Exception {
+    public void findTodoById_shouldReturnExistingTodo_whenIdIsCorrect() throws Exception {
         Block block = blockRepository.save(BlockFactory.BlockInstance());
         Todo todo = todoRepository.save(TodoFactory.todoWithBlockInstance(block));
 
@@ -311,7 +311,7 @@ public class TodoResourceIntegrationTest {
     }
 
     @Test
-    public void getTodosByBlockId_shouldReturnExistingTodo_whenIdIsCorrect() throws Exception {
+    public void findTodosByBlockId_shouldReturnExistingTodo_whenIdIsCorrect() throws Exception {
         Block block = blockRepository.save(BlockFactory.BlockInstance());
         Todo firstTodo = todoRepository.save(TodoFactory.todoWithBlockInstance(block));
         todoRepository.save(TodoFactory.todoWithBlockInstance(block));

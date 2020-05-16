@@ -146,7 +146,7 @@ public class BlockResourceIntegrationTest {
     }
 
     @Test
-    public void getAllBlocks_shouldReturnAllBlocks() throws Exception {
+    public void findAllBlocks_shouldReturnAllBlocks() throws Exception {
         blockRepository.save(BlockFactory.BlockInstance());
         blockRepository.save(BlockFactory.BlockInstance());
 
@@ -157,7 +157,7 @@ public class BlockResourceIntegrationTest {
     }
 
     @Test
-    public void getBlockById_shouldReturnExistingBlock_whenIdIsCorrect() throws Exception {
+    public void findBlockById_shouldReturnExistingBlock_whenIdIsCorrect() throws Exception {
         Block block = blockRepository.save(BlockFactory.BlockInstance());
 
         mockMvc.perform(

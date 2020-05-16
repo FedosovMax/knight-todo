@@ -129,7 +129,7 @@ public class RoutineResourceIntegrationTest {
     }
 
     @Test
-    public void getAllRoutines_shouldReturnAllTodos() throws Exception {
+    public void findAllRoutines_shouldReturnAllTodos() throws Exception {
         Block block = blockRepository.save(BlockFactory.BlockInstance());
         routineRepository.save(RoutineFactory.routineInstance());
         routineRepository.save(RoutineFactory.routineInstance());
@@ -140,7 +140,7 @@ public class RoutineResourceIntegrationTest {
     }
 
     @Test
-    public void getRoutineById_shouldReturnExistingRoutine_whenIdIsCorrect() throws Exception {
+    public void findRoutineById_shouldReturnExistingRoutine_whenIdIsCorrect() throws Exception {
         Block block = blockRepository.save(BlockFactory.BlockInstance());
         Routine routine = routineRepository.save(RoutineFactory.routineInstance());
 
