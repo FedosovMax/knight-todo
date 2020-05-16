@@ -32,7 +32,6 @@ import com.knighttodo.knighttodo.gateway.privatedb.repository.TodoRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Block;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Routine;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
-import com.knighttodo.knighttodo.rest.request.BlockRequestDto;
 import com.knighttodo.knighttodo.rest.request.RoutineRequestDto;
 
 import java.util.List;
@@ -44,7 +43,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -92,7 +90,6 @@ public class RoutineResourceIntegrationTest {
     }
 
     @Test
-    @Transactional
     public void createRoutine_shouldSaveRoutineAsTemplateWithTwoTodos_whenNewRoutineWithTwoNewTodosSaved()
         throws Exception {
         Block block = blockRepository.save(BlockFactory.BlockInstance());
@@ -100,14 +97,8 @@ public class RoutineResourceIntegrationTest {
         Todo secondTodo = TodoFactory.todoWithBlockInstance(block);
         todoRepository.saveAll(List.of(firstTodo, secondTodo));
 
-        Routine routine = new Routine();
-        routine.setBlock(block);
-        routine.setTodos(List.of(firstTodo, secondTodo));
-        routineRepository.save(routine);
-
         List<String> todoIds = List.of(firstTodo.getId(), secondTodo.getId());
         RoutineRequestDto routineRequestDto = RoutineFactory.createRoutineWithTodoIdsRequestDto(todoIds);
-        BlockRequestDto blockRequestDto = BlockFactory.createBlockRequestDto();
 
         mockMvc.perform(post(API_BASE_BLOCKS + "/" + block.getId() + API_BASE_ROUTINES)
             .content(objectMapper.writeValueAsString(routineRequestDto))

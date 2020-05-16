@@ -42,7 +42,7 @@ public class BlockServiceImpl implements BlockService {
         BlockVO savedBlock = blockGateway.save(blockVO);
         fetchRoutines(savedBlock);
         mapTodosFromRoutinesToBlock(savedBlock);
-        return blockGateway.save(savedBlock);
+        return savedBlock;
     }
 
     @Override
@@ -84,29 +84,30 @@ public class BlockServiceImpl implements BlockService {
         RoutineVO copiedRoutineVO = new RoutineVO();
         copiedRoutineVO.setHardness(routineTemplate.getHardness());
         copiedRoutineVO.setScariness(routineTemplate.getScariness());
+        copiedRoutineVO.setTemplateId(routineTemplate.getTemplateId());
         copiedRoutineVO.setName(routineTemplate.getName());
         copiedRoutineVO.setBlock(blockVO);
-        copyTodosToRoutine(copiedRoutineVO, routineTemplate);
 
         copiedRoutineVO = routineService.save(blockVO.getId(), copiedRoutineVO);
+        return copyTodosToRoutine(copiedRoutineVO, routineTemplate);
+    }
+
+    private RoutineVO copyTodosToRoutine(RoutineVO copiedRoutineVO, RoutineVO routineVO) {
+        copiedRoutineVO
+            .setTodos(routineVO.getTodos().stream().map(todo -> copyTodo(copiedRoutineVO, todo))
+                .collect(Collectors.toList()));
         return copiedRoutineVO;
     }
 
-    private void copyTodosToRoutine(RoutineVO copiedRoutineVO, RoutineVO routineVO) {
-        copiedRoutineVO
-            .setTodos(routineVO.getTodos().stream().map(todo -> copyTodo(copiedRoutineVO.getBlock(), todo))
-                .collect(Collectors.toList()));
-    }
-
-    private TodoVO copyTodo(BlockVO blockVO, TodoVO todoVO) {
+    private TodoVO copyTodo(RoutineVO copiedRoutineVO, TodoVO todoVO) {
         TodoVO copiedTodo = new TodoVO();
         copiedTodo.setTodoName(todoVO.getTodoName());
         copiedTodo.setScariness(todoVO.getScariness());
         copiedTodo.setHardness(todoVO.getHardness());
         copiedTodo.setReady(false);
-        copiedTodo.setRoutine(todoVO.getRoutine());
-        copiedTodo.setBlock(blockVO);
-        copiedTodo = todoService.save(blockVO.getId(), copiedTodo);
+        copiedTodo.setRoutine(copiedRoutineVO);
+        copiedTodo.setBlock(copiedRoutineVO.getBlock());
+        copiedTodo = todoService.save(copiedRoutineVO.getBlock().getId(), copiedTodo);
         return copiedTodo;
     }
 
