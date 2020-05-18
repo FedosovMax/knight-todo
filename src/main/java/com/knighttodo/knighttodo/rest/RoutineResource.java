@@ -39,7 +39,7 @@ public class RoutineResource {
     private final RoutineRestMapper routineRestMapper;
 
     @PostMapping
-    @ApiOperation(value = "Add new Routine")
+    @ApiOperation(value = "Add the new Routine")
     public ResponseEntity<RoutineResponseDto> addRoutine(@Valid @RequestBody RoutineRequestDto requestDto,
         @PathVariable String blockId) {
         log.info("Rest request to add routine : {}", requestDto);
@@ -63,7 +63,7 @@ public class RoutineResource {
     }
 
     @GetMapping("/{routineId}")
-    @ApiOperation(value = "Find Routine by id")
+    @ApiOperation(value = "Find the Routine by id")
     public ResponseEntity<RoutineResponseDto> findRoutineById(@PathVariable String routineId) {
         log.info("Rest request to get routine by id : {}", routineId);
         RoutineVO routineVO = routineService.findById(routineId);
@@ -72,7 +72,7 @@ public class RoutineResource {
     }
 
     @PutMapping("/{routineId}")
-    @ApiOperation(value = "Update Routine by id")
+    @ApiOperation(value = "Update the Routine by id")
     public ResponseEntity<RoutineResponseDto> updateRoutine(@PathVariable String blockId,
         @PathVariable String routineId, @Valid @RequestBody RoutineRequestDto requestDto) {
         log.info("Rest request to update routine : {}", requestDto);
@@ -83,7 +83,7 @@ public class RoutineResource {
     }
 
     @DeleteMapping("/{routineId}")
-    @ApiOperation(value = "Delete Routine by id")
+    @ApiOperation(value = "Delete the Routine by id")
     public ResponseEntity<Void> deleteRoutine(@PathVariable String routineId) {
         log.info("Rest request to delete routine by id : {}", routineId);
         routineService.deleteById(routineId);

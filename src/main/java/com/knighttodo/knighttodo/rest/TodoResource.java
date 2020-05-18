@@ -2,7 +2,6 @@ package com.knighttodo.knighttodo.rest;
 
 import static com.knighttodo.knighttodo.Constants.API_BASE_BLOCKS;
 import static com.knighttodo.knighttodo.Constants.API_BASE_TODOS;
-import static com.knighttodo.knighttodo.Constants.API_GET_TODOS_BY_BLOCK_ID;
 import static com.knighttodo.knighttodo.Constants.BASE_READY;
 
 import com.knighttodo.knighttodo.domain.TodoVO;
@@ -56,46 +55,7 @@ public class TodoResource {
     }
 
     @GetMapping
-    @ApiOperation(value = "Find all Todos")
-    public ResponseEntity<List<TodoResponseDto>> findAllTodos() {
-        log.info("Rest request to get all todo");
-
-        return ResponseEntity.status(HttpStatus.FOUND)
-            .body(todoService.findAll()
-                .stream()
-                .map(todoRestMapper::toTodoResponseDto)
-                .collect(Collectors.toList()));
-    }
-
-    @GetMapping("/{todoId}")
-    @ApiOperation(value = "Find Todo by id")
-    public ResponseEntity<TodoReadyResponseDto> findTodoById(@PathVariable String todoId) {
-        log.info("Rest request to get todo by id : {}", todoId);
-        TodoVO todoVO = todoService.findById(todoId);
-
-        return ResponseEntity.status(HttpStatus.FOUND).body(todoRestMapper.toTodoReadyResponseDto(todoVO));
-    }
-
-    @PutMapping("/{todoId}")
-    @ApiOperation(value = "Update Todo by id")
-    public ResponseEntity<TodoResponseDto> updateTodo(@PathVariable String todoId,
-        @Valid @RequestBody TodoRequestDto requestDto) {
-        log.info("Rest request to update todo : {}", requestDto);
-        TodoVO todoVO = todoRestMapper.toTodoVO(requestDto);
-        TodoVO updatedTodoVO = todoService.updateTodo(todoId, todoVO);
-        return ResponseEntity.ok().body(todoRestMapper.toTodoResponseDto(updatedTodoVO));
-    }
-
-    @DeleteMapping("/{todoId}")
-    @ApiOperation(value = "Delete Todo by id")
-    public ResponseEntity<Void> deleteTodo(@PathVariable String todoId) {
-        log.info("Rest request to delete todo by id : {}", todoId);
-        todoService.deleteById(todoId);
-        return ResponseEntity.ok().build();
-    }
-
-    @GetMapping(API_GET_TODOS_BY_BLOCK_ID)
-    @ApiOperation(value = "Find all Todos by block id")
+    @ApiOperation(value = "Find all Todos by the block id")
     public ResponseEntity<List<TodoResponseDto>> findTodosByBlockId(@PathVariable String blockId) {
         log.info("request for block to get all todos by block id");
 
@@ -106,8 +66,35 @@ public class TodoResource {
                 .collect(Collectors.toList()));
     }
 
+    @GetMapping("/{todoId}")
+    @ApiOperation(value = "Find the Todo by id")
+    public ResponseEntity<TodoReadyResponseDto> findTodoById(@PathVariable String todoId) {
+        log.info("Rest request to get todo by id : {}", todoId);
+        TodoVO todoVO = todoService.findById(todoId);
+
+        return ResponseEntity.status(HttpStatus.FOUND).body(todoRestMapper.toTodoReadyResponseDto(todoVO));
+    }
+
+    @PutMapping("/{todoId}")
+    @ApiOperation(value = "Update the Todo by id")
+    public ResponseEntity<TodoResponseDto> updateTodo(@PathVariable String todoId,
+        @Valid @RequestBody TodoRequestDto requestDto) {
+        log.info("Rest request to update todo : {}", requestDto);
+        TodoVO todoVO = todoRestMapper.toTodoVO(requestDto);
+        TodoVO updatedTodoVO = todoService.updateTodo(todoId, todoVO);
+        return ResponseEntity.ok().body(todoRestMapper.toTodoResponseDto(updatedTodoVO));
+    }
+
+    @DeleteMapping("/{todoId}")
+    @ApiOperation(value = "Delete the Todo by id")
+    public ResponseEntity<Void> deleteTodo(@PathVariable String todoId) {
+        log.info("Rest request to delete todo by id : {}", todoId);
+        todoService.deleteById(todoId);
+        return ResponseEntity.ok().build();
+    }
+
     @PutMapping(value = "/{todoId}" + BASE_READY)
-    @ApiOperation(value = "Update isReady field")
+    @ApiOperation(value = "Update an isReady field")
     public ResponseEntity<TodoReadyResponseDto> updateIsReady(@PathVariable String blockId, @PathVariable String todoId,
         @RequestParam String ready) {
         log.info("request to update isReady field of todo with id : {}, to value : {}", todoId, ready);

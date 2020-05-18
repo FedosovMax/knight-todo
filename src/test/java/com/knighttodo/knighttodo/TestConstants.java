@@ -3,7 +3,6 @@ package com.knighttodo.knighttodo;
 import static com.knighttodo.knighttodo.Constants.API_BASE_BLOCKS;
 import static com.knighttodo.knighttodo.Constants.API_BASE_ROUTINES;
 import static com.knighttodo.knighttodo.Constants.API_BASE_TODOS;
-import static com.knighttodo.knighttodo.Constants.API_GET_TODOS_BY_BLOCK_ID;
 import static com.knighttodo.knighttodo.Constants.BASE_READY;
 
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Block;
@@ -40,7 +39,7 @@ public class TestConstants {
     }
 
     public static String buildGetTodosByBlockIdUrl(String blockId) {
-        return API_BASE_BLOCKS + "/" + blockId + API_BASE_TODOS + API_GET_TODOS_BY_BLOCK_ID;
+        return API_BASE_BLOCKS + "/" + blockId + API_BASE_TODOS;
     }
 
     public static String buildUpdateTodoReadyBaseUrl(Block block, Todo todo) {

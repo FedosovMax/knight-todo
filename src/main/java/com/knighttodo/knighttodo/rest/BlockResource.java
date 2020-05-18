@@ -38,7 +38,7 @@ public class BlockResource {
     private final BlockRestMapper blockRestMapper;
 
     @PostMapping
-    @ApiOperation(value = "Add new Block")
+    @ApiOperation(value = "Add the new Block")
     public ResponseEntity<BlockResponseDto> addBlock(@Valid @RequestBody BlockRequestDto requestDto) {
         log.info("Rest request to add block : {}", requestDto);
         BlockVO blockVO = blockRestMapper.toBlockVO(requestDto);
@@ -60,7 +60,7 @@ public class BlockResource {
     }
 
     @GetMapping("/{blockId}")
-    @ApiOperation(value = "find Block by id")
+    @ApiOperation(value = "find the Block by id")
     public ResponseEntity<BlockResponseDto> findBlockById(@PathVariable String blockId) {
         log.info("Rest request to get block by id : {}", blockId);
         BlockVO blockVO = blockService.findById(blockId);
@@ -69,7 +69,7 @@ public class BlockResource {
     }
 
     @PutMapping("/{blockId}")
-    @ApiOperation(value = "Update Block by id")
+    @ApiOperation(value = "Update the Block by id")
     public ResponseEntity<BlockResponseDto> updateBlock(@PathVariable String blockId,
         @Valid @RequestBody BlockRequestDto requestDto) {
         log.info("Rest request to update block : {}", requestDto);
@@ -80,7 +80,7 @@ public class BlockResource {
     }
 
     @DeleteMapping("/{blockId}")
-    @ApiOperation(value = "Delete Block by id")
+    @ApiOperation(value = "Delete the Block by id")
     public ResponseEntity<Void> deleteBlock(@PathVariable String blockId) {
         log.info("Rest request to delete block by id : {}", blockId);
         blockService.deleteById(blockId);
