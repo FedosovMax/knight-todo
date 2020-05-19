@@ -14,10 +14,10 @@ import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
-@EnableSwagger2WebMvc
+@EnableSwagger2
 public class RestConfig {
 
     @Bean
@@ -41,7 +41,7 @@ public class RestConfig {
         return new ApiInfo(
             "Todo Knight App",
             "This is an api for CRUD operations of knight todo application",
-            "0.1",
+            "1.0",
             null,
             null,
             null,
