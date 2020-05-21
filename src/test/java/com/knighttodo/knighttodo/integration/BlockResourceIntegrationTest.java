@@ -37,7 +37,7 @@ import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
 import com.knighttodo.knighttodo.rest.request.BlockRequestDto;
 
 import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,8 +66,8 @@ public class BlockResourceIntegrationTest {
     @Autowired
     private TodoRepository todoRepository;
 
-    @BeforeEach
-    public void setUp() {
+    @AfterEach
+    public void tearDown() {
         blockRepository.deleteAll();
     }
 

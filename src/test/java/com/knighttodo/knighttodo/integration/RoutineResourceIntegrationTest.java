@@ -35,7 +35,7 @@ import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
 import com.knighttodo.knighttodo.rest.request.RoutineRequestDto;
 
 import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,8 +63,8 @@ public class RoutineResourceIntegrationTest {
     @Autowired
     private TodoRepository todoRepository;
 
-    @BeforeEach
-    public void setUp() {
+    @AfterEach
+    public void tearDown() {
         todoRepository.deleteAll();
         routineRepository.deleteAll();
         blockRepository.deleteAll();
