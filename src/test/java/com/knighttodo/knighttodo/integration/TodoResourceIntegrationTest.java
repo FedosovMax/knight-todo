@@ -17,13 +17,18 @@ import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToReadyName;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToScariness;
 import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToTodoName;
 import static com.knighttodo.knighttodo.TestConstants.buildUpdateTodoReadyBaseUrl;
+
 import static org.aspectj.bridge.MessageUtil.fail;
+
 import static org.assertj.core.api.Assertions.assertThat;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -32,6 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.knighttodo.knighttodo.exception.UnchangeableFieldUpdateException;
 import com.knighttodo.knighttodo.factories.BlockFactory;
 import com.knighttodo.knighttodo.factories.TodoFactory;
@@ -41,8 +47,10 @@ import com.knighttodo.knighttodo.gateway.privatedb.repository.TodoRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Block;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Todo;
 import com.knighttodo.knighttodo.rest.request.TodoRequestDto;
-import org.junit.jupiter.api.BeforeEach;
+
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -77,8 +85,8 @@ public class TodoResourceIntegrationTest {
     @Value("${baseUrl.experience}")
     private String experienceUrl;
 
-    @BeforeEach
-    public void setUp() {
+    @AfterEach
+    public void tearDown() {
         todoRepository.deleteAll();
         blockRepository.deleteAll();
     }
