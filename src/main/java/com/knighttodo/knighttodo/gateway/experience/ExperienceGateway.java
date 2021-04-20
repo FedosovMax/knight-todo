@@ -1,8 +1,10 @@
 package com.knighttodo.knighttodo.gateway.experience;
 
-import com.knighttodo.knighttodo.domain.TodoVO;
+import com.knighttodo.knighttodo.domain.DayTodoVO;
+import com.knighttodo.knighttodo.domain.RoutineTodoVO;
 
 public interface ExperienceGateway {
 
-    TodoVO calculateExperience(TodoVO todoVO);
+    DayTodoVO calculateExperience(DayTodoVO dayTodoVO);
+    RoutineTodoVO calculateExperience(RoutineTodoVO routineTodoVO);
 }

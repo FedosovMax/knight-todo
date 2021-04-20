@@ -1,42 +1,28 @@
 package com.knighttodo.knighttodo.service.impl;
 
+import com.knighttodo.knighttodo.domain.RoutineTodoVO;
 import com.knighttodo.knighttodo.domain.RoutineVO;
-import com.knighttodo.knighttodo.domain.TodoVO;
 import com.knighttodo.knighttodo.exception.RoutineNotFoundException;
 import com.knighttodo.knighttodo.gateway.RoutineGateway;
-import com.knighttodo.knighttodo.service.BlockService;
+import com.knighttodo.knighttodo.gateway.RoutineTodoGateway;
 import com.knighttodo.knighttodo.service.RoutineService;
-import com.knighttodo.knighttodo.service.TodoService;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class RoutineServiceImpl implements RoutineService {
 
     private final RoutineGateway routineGateway;
-    private final BlockService blockService;
-    private final TodoService todoService;
+    private final RoutineTodoGateway routineTodoGateway;
 
     @Override
-    public RoutineVO save(String blockId, RoutineVO routineVO) {
-        routineVO.setBlock(blockService.findById(blockId));
-        RoutineVO dbRoutineVO = routineGateway.save(routineVO);
-
-        dbRoutineVO.setTodos(fetchTodosByIds(extractTodoIds(routineVO)));
-        dbRoutineVO.getTodos().forEach((todoVO -> todoVO.setRoutine(dbRoutineVO)));
-        dbRoutineVO.setTemplateId(dbRoutineVO.getId());
-        return routineGateway.save(dbRoutineVO);
-    }
-
-    private List<TodoVO> fetchTodosByIds(List<String> todoIds) {
-        return todoIds.stream().map(todoService::findById).collect(Collectors.toList());
-    }
-
-    private List<String> extractTodoIds(RoutineVO routineVO) {
-        return routineVO.getTodos().stream().map(TodoVO::getId).collect(Collectors.toList());
+    public RoutineVO save(RoutineVO routineVO) {
+        return routineGateway.save(routineVO);
     }
 
     @Override
@@ -52,10 +38,9 @@ public class RoutineServiceImpl implements RoutineService {
     }
 
     @Override
-    public RoutineVO updateRoutine(String blockId, String routineId, RoutineVO changedRoutineVO) {
+    public RoutineVO updateRoutine(String routineId, RoutineVO changedRoutineVO) {
         RoutineVO routineVO = findById(routineId);
         synchronizeTodosInRoutineVO(routineVO, changedRoutineVO);
-        routineVO.setBlock(blockService.findById(blockId));
         routineVO.setName(changedRoutineVO.getName());
         routineVO.setTemplateId(routineId);
         routineVO.setHardness(changedRoutineVO.getHardness());
@@ -71,17 +56,28 @@ public class RoutineServiceImpl implements RoutineService {
 
     private void unmapTodosExcludedFromRoutine(RoutineVO routineVO, RoutineVO changedRoutineVO) {
         List<String> changedRoutineVOTodoIds = extractTodoIds(changedRoutineVO);
-        routineVO.getTodos().stream()
-            .filter(todoVO -> !changedRoutineVOTodoIds.contains(todoVO.getId()))
-            .forEach(todoVO -> todoVO.setRoutine(null));
+        routineVO.getRoutineTodos().stream()
+            .filter(routineTodoVO -> !changedRoutineVOTodoIds.contains(routineTodoVO.getId()))
+            .forEach(routineTodoVO -> routineTodoVO.setRoutine(null));
+    }
+
+    private List<String> extractTodoIds(RoutineVO routineVO) {
+        return routineVO.getRoutineTodos().stream().map(RoutineTodoVO::getId).collect(Collectors.toList());
     }
 
     private void mapTodosAddedToRoutine(RoutineVO routineVO, RoutineVO changedRoutineVO) {
         List<String> routineVOTodoIds = extractTodoIds(routineVO);
-        List<String> addedTodoIds = extractTodoIds(changedRoutineVO).stream()
-            .filter(todoId -> !routineVOTodoIds.contains(todoId))
+        List<String> addedRoutineTodoIds = extractTodoIds(changedRoutineVO).stream()
+            .filter(routineTodoId -> !routineVOTodoIds.contains(routineTodoId))
             .collect(Collectors.toList());
-        routineVO.getTodos().addAll(fetchTodosByIds(addedTodoIds));
+        routineVO.getRoutineTodos().addAll(fetchRoutineTodosByIds(addedRoutineTodoIds));
+    }
+
+    private List<RoutineTodoVO> fetchRoutineTodosByIds(List<String> routineTodoIds) {
+        return routineTodoIds.stream()
+                .map(routineTodoGateway::findById)
+                .map(Optional::orElseThrow)
+                .collect(Collectors.toList());
     }
 
     @Override

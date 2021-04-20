@@ -1,10 +1,13 @@
 package com.knighttodo.knighttodo.gateway.experience;
 
-import com.knighttodo.knighttodo.domain.TodoVO;
+import com.knighttodo.knighttodo.domain.DayTodoVO;
+import com.knighttodo.knighttodo.domain.RoutineTodoVO;
 import com.knighttodo.knighttodo.gateway.experience.client.ExperienceClient;
-import com.knighttodo.knighttodo.gateway.experience.mapper.TodoVOMapper;
+import com.knighttodo.knighttodo.gateway.experience.mapper.DayTodoVOMapper;
+import com.knighttodo.knighttodo.gateway.experience.mapper.RoutineTodoVOMapper;
 import com.knighttodo.knighttodo.gateway.experience.request.ExperienceRequest;
 import com.knighttodo.knighttodo.gateway.experience.response.ExperienceResponse;
+import com.knighttodo.knighttodo.gateway.privatedb.mapper.RoutineTodoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,14 +16,24 @@ import org.springframework.stereotype.Component;
 public class ExperienceGatewayImpl implements ExperienceGateway {
 
     private final ExperienceClient experienceClient;
-    private final TodoVOMapper todoVOMapper;
+    private final DayTodoVOMapper dayTodoVOMapper;
+    private final RoutineTodoVOMapper routineTodoVOMapper;
 
     @Override
-    public TodoVO calculateExperience(TodoVO todoVO) {
-        ExperienceRequest experienceRequest = todoVOMapper.toExperienceRequest(todoVO);
+    public DayTodoVO calculateExperience(DayTodoVO dayTodoVO) {
+        ExperienceRequest experienceRequest = dayTodoVOMapper.DayTodoToExperienceRequest(dayTodoVO);
         experienceRequest.setUserId("fakeUserId");
         ExperienceResponse experienceResponse = experienceClient.calculateExperience(experienceRequest);
-        todoVO.setExperience(experienceResponse.getExperience());
-        return todoVO;
+        dayTodoVO.setExperience(experienceResponse.getExperience());
+        return dayTodoVO;
+    }
+
+    @Override
+    public RoutineTodoVO calculateExperience(RoutineTodoVO routineTodoVO) {
+        ExperienceRequest experienceRequest = routineTodoVOMapper.routineTodoToExperienceRequest(routineTodoVO);
+        experienceRequest.setUserId("fakeUserId");
+        ExperienceResponse experienceResponse = experienceClient.calculateExperience(experienceRequest);
+        routineTodoVO.setExperience(experienceResponse.getExperience());
+        return routineTodoVO;
     }
 }

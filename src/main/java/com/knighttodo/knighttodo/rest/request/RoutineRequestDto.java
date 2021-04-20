@@ -2,16 +2,14 @@ package com.knighttodo.knighttodo.rest.request;
 
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scariness;
-
-import java.util.List;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -31,5 +29,5 @@ public class RoutineRequestDto {
     private boolean ready;
 
     @NotNull
-    private List<String> todoIds;
+    private List<String> routineTodoIds;
 }
