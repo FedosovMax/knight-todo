@@ -40,7 +40,7 @@ public class RoutineServiceImpl implements RoutineService {
     @Override
     public RoutineVO updateRoutine(String routineId, RoutineVO changedRoutineVO) {
         RoutineVO routineVO = findById(routineId);
-        synchronizeTodosInRoutineVO(routineVO, changedRoutineVO);
+        synchronizeRoutineTodosInRoutineVO(routineVO, changedRoutineVO);
         routineVO.setName(changedRoutineVO.getName());
         routineVO.setTemplateId(routineId);
         routineVO.setHardness(changedRoutineVO.getHardness());
@@ -49,12 +49,12 @@ public class RoutineServiceImpl implements RoutineService {
         return routineGateway.save(routineVO);
     }
 
-    private void synchronizeTodosInRoutineVO(RoutineVO routineVO, RoutineVO changedRoutineVO) {
-        unmapTodosExcludedFromRoutine(routineVO, changedRoutineVO);
-        mapTodosAddedToRoutine(routineVO, changedRoutineVO);
+    private void synchronizeRoutineTodosInRoutineVO(RoutineVO routineVO, RoutineVO changedRoutineVO) {
+        unmapRoutineTodosExcludedFromRoutine(routineVO, changedRoutineVO);
+        mapRoutineTodosAddedToRoutine(routineVO, changedRoutineVO);
     }
 
-    private void unmapTodosExcludedFromRoutine(RoutineVO routineVO, RoutineVO changedRoutineVO) {
+    private void unmapRoutineTodosExcludedFromRoutine(RoutineVO routineVO, RoutineVO changedRoutineVO) {
         List<String> changedRoutineVOTodoIds = extractTodoIds(changedRoutineVO);
         routineVO.getRoutineTodos().stream()
             .filter(routineTodoVO -> !changedRoutineVOTodoIds.contains(routineTodoVO.getId()))
@@ -65,7 +65,7 @@ public class RoutineServiceImpl implements RoutineService {
         return routineVO.getRoutineTodos().stream().map(RoutineTodoVO::getId).collect(Collectors.toList());
     }
 
-    private void mapTodosAddedToRoutine(RoutineVO routineVO, RoutineVO changedRoutineVO) {
+    private void mapRoutineTodosAddedToRoutine(RoutineVO routineVO, RoutineVO changedRoutineVO) {
         List<String> routineVOTodoIds = extractTodoIds(routineVO);
         List<String> addedRoutineTodoIds = extractTodoIds(changedRoutineVO).stream()
             .filter(routineTodoId -> !routineVOTodoIds.contains(routineTodoId))
