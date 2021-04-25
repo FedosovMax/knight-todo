@@ -37,7 +37,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(API_BASE_DAYS + "/{dayId}" + API_BASE_TODOS)
-@Slf4j
 public class DayTodoResource {
 
     private final DayTodoService dayTodoService;
@@ -47,18 +46,14 @@ public class DayTodoResource {
     @ApiOperation(value = "Add new Day Todo")
     public ResponseEntity<DayTodoResponseDto> addDayTodo(@PathVariable String dayId,
                                                          @Valid @RequestBody DayTodoRequestDto requestDto) {
-        log.debug("Rest request to add dayTodo : {}", requestDto);
         DayTodoVO dayTodoVO = dayTodoRestMapper.toDayTodoVO(requestDto);
         DayTodoVO savedDayTodoVO = dayTodoService.save(dayId, dayTodoVO);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(dayTodoRestMapper.toDayTodoResponseDto(savedDayTodoVO));
     }
 
     @GetMapping
     @ApiOperation(value = "Find all Day Todos by the day id")
     public ResponseEntity<List<DayTodoResponseDto>> findDayTodosByDayId(@PathVariable String dayId) {
-        log.debug("request for day to get all todos by day id");
-
         return ResponseEntity.status(HttpStatus.FOUND)
             .body(dayTodoService.findByDayId(dayId)
                 .stream()
@@ -69,9 +64,7 @@ public class DayTodoResource {
     @GetMapping("/{dayTodoId}")
     @ApiOperation(value = "Find the Day Todo by id")
     public ResponseEntity<DayTodoReadyResponseDto> findDayTodoById(@PathVariable String dayTodoId) {
-        log.debug("Rest request to get day todo by id : {}", dayTodoId);
         DayTodoVO dayTodoVO = dayTodoService.findById(dayTodoId);
-
         return ResponseEntity.status(HttpStatus.FOUND).body(dayTodoRestMapper.toDayTodoReadyResponseDto(dayTodoVO));
     }
 
@@ -79,7 +72,6 @@ public class DayTodoResource {
     @ApiOperation(value = "Update the Day Todo by id")
     public ResponseEntity<DayTodoResponseDto> updateDayTodo(@PathVariable String dayTodoId,
                                                          @Valid @RequestBody DayTodoRequestDto requestDto) {
-        log.debug("Rest request to update day todo : {}", requestDto);
         DayTodoVO dayTodoVO = dayTodoRestMapper.toDayTodoVO(requestDto);
         DayTodoVO updatedDayTodoVO = dayTodoService.updateDayTodo(dayTodoId, dayTodoVO);
         return ResponseEntity.ok().body(dayTodoRestMapper.toDayTodoResponseDto(updatedDayTodoVO));
@@ -88,7 +80,6 @@ public class DayTodoResource {
     @DeleteMapping("/{dayTodoId}")
     @ApiOperation(value = "Delete the Todo by id")
     public ResponseEntity<Void> deleteTodo(@PathVariable String dayTodoId) {
-        log.debug("Rest request to delete day todo by id : {}", dayTodoId);
         dayTodoService.deleteById(dayTodoId);
         return ResponseEntity.ok().build();
     }
@@ -97,7 +88,6 @@ public class DayTodoResource {
     @ApiOperation(value = "Update an isReady field")
     public ResponseEntity<DayTodoReadyResponseDto> updateIsReady(@PathVariable String dayId, @PathVariable String dayTodoId,
                                                                  @RequestParam String ready) {
-        log.debug("request to update isReady field of day todo with id : {}, to value : {}", dayTodoId, ready);
         boolean isReady = Boolean.parseBoolean(ready);
         DayTodoVO dayTodoVO = dayTodoService.updateIsReady(dayId, dayTodoId, isReady);
         return ResponseEntity.status(HttpStatus.OK).body(dayTodoRestMapper.toDayTodoReadyResponseDto(dayTodoVO));

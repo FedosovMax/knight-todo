@@ -24,7 +24,6 @@ import static com.knighttodo.knighttodo.Constants.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(API_BASE_ROUTINES + "/{routineId}" + API_BASE_TODOS)
-@Slf4j
 public class RoutineTodoResource {
 
     private final RoutineTodoService routineTodoService;
@@ -34,18 +33,14 @@ public class RoutineTodoResource {
     @ApiOperation(value = "Add new Routine Todo")
     public ResponseEntity<RoutineTodoResponseDto> addRoutineTodo(@PathVariable String routineId,
                                                                  @Valid @RequestBody RoutineTodoRequestDto requestDto) {
-        log.debug("Rest request to add routineTodo : {}", requestDto);
         RoutineTodoVO routineTodoVO = routineTodoRestMapper.toRoutineTodoVO(requestDto);
         RoutineTodoVO savedRoutineTodoVO = routineTodoService.save(routineId, routineTodoVO);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(routineTodoRestMapper.toRoutineTodoResponseDto(savedRoutineTodoVO));
     }
 
     @GetMapping
     @ApiOperation(value = "Find all Routine Todos by the routine id")
     public ResponseEntity<List<RoutineTodoResponseDto>> findRoutineTodosByRoutineId(@PathVariable String routineId) {
-        log.debug("request for routine to get all todos by routine id");
-
         return ResponseEntity.status(HttpStatus.FOUND)
                 .body(routineTodoService.findByRoutineId(routineId)
                         .stream()
@@ -56,9 +51,7 @@ public class RoutineTodoResource {
     @GetMapping("/{routineTodoId}")
     @ApiOperation(value = "Find the Routine Todo by id")
     public ResponseEntity<RoutineTodoReadyResponseDto> findRoutineTodoById(@PathVariable String routineTodoId) {
-        log.debug("Rest request to get routine todo by id : {}", routineTodoId);
         RoutineTodoVO routineTodoVO = routineTodoService.findById(routineTodoId);
-
         return ResponseEntity.status(HttpStatus.FOUND).body(routineTodoRestMapper.toRoutineTodoReadyResponseDto(routineTodoVO));
     }
 
@@ -66,7 +59,6 @@ public class RoutineTodoResource {
     @ApiOperation(value = "Update the Routine Todo by id")
     public ResponseEntity<RoutineTodoResponseDto> updateRoutineTodo(@PathVariable String routineTodoId,
                                                              @Valid @RequestBody RoutineTodoRequestDto requestDto) {
-        log.info("Rest request to update routine todo : {}", requestDto);
         RoutineTodoVO routineTodoVO = routineTodoRestMapper.toRoutineTodoVO(requestDto);
         RoutineTodoVO updatedRoutineTodoVO = routineTodoService.updateRoutineTodo(routineTodoId, routineTodoVO);
         return ResponseEntity.ok().body(routineTodoRestMapper.toRoutineTodoResponseDto(updatedRoutineTodoVO));
@@ -75,7 +67,6 @@ public class RoutineTodoResource {
     @DeleteMapping("/{routineTodoId}")
     @ApiOperation(value = "Delete the Routine Todo by id")
     public ResponseEntity<Void> deleteTodo(@PathVariable String routineTodoId) {
-        log.info("Rest request to delete routine todo by id : {}", routineTodoId);
         routineTodoService.deleteById(routineTodoId);
         return ResponseEntity.ok().build();
     }
@@ -84,7 +75,6 @@ public class RoutineTodoResource {
     @ApiOperation(value = "Update an isReady field")
     public ResponseEntity<RoutineTodoReadyResponseDto> updateIsReady(@PathVariable String routineId, @PathVariable String routineTodoId,
                                                                      @RequestParam String ready) {
-        log.info("request to update isReady field of routine todo with id : {}, to value : {}", routineId, ready);
         boolean isReady = Boolean.parseBoolean(ready);
         RoutineTodoVO routineTodoVO = routineTodoService.updateIsReady(routineId, routineTodoId, isReady);
         return ResponseEntity.status(HttpStatus.OK).body(routineTodoRestMapper.toRoutineTodoReadyResponseDto(routineTodoVO));

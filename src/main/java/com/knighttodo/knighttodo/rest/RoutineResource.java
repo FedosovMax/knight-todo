@@ -21,7 +21,6 @@ import static com.knighttodo.knighttodo.Constants.API_BASE_ROUTINES;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(API_BASE_ROUTINES)
-@Slf4j
 public class RoutineResource {
 
     private final RoutineService routineService;
@@ -30,7 +29,6 @@ public class RoutineResource {
     @PostMapping
     @ApiOperation(value = "Add the new Routine")
     public ResponseEntity<RoutineResponseDto> addRoutine(@Valid @RequestBody RoutineRequestDto requestDto) {
-        log.debug("Rest request to add routine : {}", requestDto);
         RoutineVO routineVO = routineRestMapper.toRoutineVO(requestDto);
         RoutineVO savedRoutineVO = routineService.save(routineVO);
 
@@ -41,8 +39,6 @@ public class RoutineResource {
     @GetMapping
     @ApiOperation(value = "Find all Routines")
     public ResponseEntity<List<RoutineResponseDto>> findAllRoutines() {
-        log.debug("Rest request to get all routines");
-
         return ResponseEntity.status(HttpStatus.FOUND)
             .body(routineService.findAll()
                 .stream()
@@ -53,9 +49,7 @@ public class RoutineResource {
     @GetMapping("/{routineId}")
     @ApiOperation(value = "Find the Routine by id")
     public ResponseEntity<RoutineResponseDto> findRoutineById(@PathVariable String routineId) {
-        log.debug("Rest request to get routine by id : {}", routineId);
         RoutineVO routineVO = routineService.findById(routineId);
-
         return ResponseEntity.status(HttpStatus.FOUND).body(routineRestMapper.toRoutineResponseDto(routineVO));
     }
 
@@ -63,17 +57,14 @@ public class RoutineResource {
     @ApiOperation(value = "Update the Routine by id")
     public ResponseEntity<RoutineResponseDto> updateRoutine(@PathVariable String routineId,
                                                             @Valid @RequestBody RoutineRequestDto requestDto) {
-        log.debug("Rest request to update routine : {}", requestDto);
         RoutineVO routineVO = routineRestMapper.toRoutineVO(requestDto);
         RoutineVO updatedRoutineVO = routineService.updateRoutine(routineId, routineVO);
-
         return ResponseEntity.ok().body(routineRestMapper.toRoutineResponseDto(updatedRoutineVO));
     }
 
     @DeleteMapping("/{routineId}")
     @ApiOperation(value = "Delete the Routine by id")
     public ResponseEntity<Void> deleteRoutine(@PathVariable String routineId) {
-        log.debug("Rest request to delete routine by id : {}", routineId);
         routineService.deleteById(routineId);
         return ResponseEntity.ok().build();
     }
