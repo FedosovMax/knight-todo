@@ -2,14 +2,13 @@ package com.knighttodo.knighttodo.rest.response;
 
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scariness;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -29,7 +28,5 @@ public class RoutineResponseDto {
 
     private String templateId;
 
-    private String blockId;
-
-    private List<TodoResponseDto> todos = new ArrayList<>();
+    private List<RoutineTodoResponseDto> routineTodos = new ArrayList<>();
 }

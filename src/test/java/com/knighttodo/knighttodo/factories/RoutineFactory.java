@@ -15,14 +15,13 @@ public class RoutineFactory {
     public static final Hardness HARDNESS_HARD = Hardness.HARD;
     public static final Scariness SCARINESS_HARD = Scariness.SCARY;
     public static final String UPDATED_ROUTINE_NAME = "Updated routine name";
-    public static final String UPDATED_BLOCK_NAME = "Friday Todos";
 
     public static RoutineRequestDto createRoutineRequestDto() {
         return RoutineRequestDto.builder()
             .name(ROUTINE_NAME)
             .hardness(HARDNESS_HARD)
             .scariness(SCARINESS_HARD)
-            .todoIds(new ArrayList<>())
+            .routineTodoIds(new ArrayList<>())
             .build();
     }
 
@@ -31,7 +30,7 @@ public class RoutineFactory {
             .name(ROUTINE_NAME)
             .hardness(HARDNESS_HARD)
             .scariness(SCARINESS_HARD)
-            .todoIds(todoIds)
+            .routineTodoIds(todoIds)
             .build();
     }
 
@@ -40,7 +39,7 @@ public class RoutineFactory {
             .name(null)
             .hardness(HARDNESS_HARD)
             .scariness(SCARINESS_HARD)
-            .todoIds(new ArrayList<>())
+            .routineTodoIds(new ArrayList<>())
             .build();
     }
 
@@ -50,7 +49,7 @@ public class RoutineFactory {
             .hardness(HARDNESS_HARD)
             .scariness(SCARINESS_HARD)
             .ready(true)
-            .todoIds(new ArrayList<>())
+            .routineTodoIds(new ArrayList<>())
             .build();
     }
 
@@ -60,7 +59,7 @@ public class RoutineFactory {
             .hardness(HARDNESS_HARD)
             .scariness(SCARINESS_HARD)
             .ready(true)
-            .todoIds(todoIds)
+            .routineTodoIds(todoIds)
             .build();
     }
 
@@ -70,7 +69,7 @@ public class RoutineFactory {
             .hardness(HARDNESS_HARD)
             .scariness(SCARINESS_HARD)
             .ready(true)
-            .todoIds(new ArrayList<>())
+            .routineTodoIds(new ArrayList<>())
             .build();
     }
 
@@ -81,7 +80,7 @@ public class RoutineFactory {
             .scariness(Scariness.SCARY)
             .name(ROUTINE_NAME)
             .ready(false)
-            .todos(new ArrayList<>())
+            .routineTodos(new ArrayList<>())
             .build();
     }
 
@@ -91,7 +90,7 @@ public class RoutineFactory {
             .hardness(Hardness.HARD)
             .name(ROUTINE_NAME)
             .scariness(Scariness.SCARY)
-            .todos(new ArrayList<>())
+            .routineTodos(new ArrayList<>())
             .build();
     }
 }

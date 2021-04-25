@@ -9,7 +9,7 @@ public class Constants {
     public static final String API_BASE_URL = "/api";
     public static final String API_BASE_TODOS = "/todos";
 
-    public static final String API_BASE_BLOCKS = "/blocks";
+    public static final String API_BASE_DAYS = "/days";
 
     public static final String API_BASE_ROUTINES = "/routines";
 

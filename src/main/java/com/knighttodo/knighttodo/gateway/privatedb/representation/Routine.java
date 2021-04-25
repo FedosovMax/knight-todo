@@ -54,10 +54,6 @@ public class Routine {
     @Column(name = "template_id")
     private String templateId;
 
-    @ManyToOne
-    @JoinColumn(name = "block_id")
-    private Block block;
-
     @OneToMany(mappedBy = "routine", cascade = CascadeType.REMOVE)
-    private List<Todo> todos = new ArrayList<>();
+    private List<RoutineTodo> routineTodos = new ArrayList<>();
 }

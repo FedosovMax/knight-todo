@@ -1,3 +1,3 @@
-insert into block (block_name) values ('firstBlock');
+insert into day (day_name) values ('firstDay');
 
-insert into block (block_name) values ('secondBlock');
+insert into day (day_name) values ('secondDay');
