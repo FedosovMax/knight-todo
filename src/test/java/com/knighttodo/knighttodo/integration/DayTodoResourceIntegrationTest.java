@@ -307,7 +307,7 @@ public class DayTodoResourceIntegrationTest {
             mockMvc.perform(put(API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS + "/" + dayTodo.getId())
                 .content(objectMapper.writeValueAsString(requestDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE));
-            fail("Exception was't thrown");
+            fail("Exception wasn't thrown");
         } catch (Exception e) {
             assertEquals(UnchangeableFieldUpdateException.class, e.getCause().getClass());
             assertEquals("Can not update day todo's field in ready state", e.getCause().getMessage());
@@ -325,7 +325,7 @@ public class DayTodoResourceIntegrationTest {
             mockMvc.perform(put(API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS + "/" + dayTodo.getId())
                 .content(objectMapper.writeValueAsString(requestDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE));
-            fail("Exception was't thrown");
+            fail("Exception wasn't thrown");
         } catch (Exception e) {
             assertEquals(UnchangeableFieldUpdateException.class, e.getCause().getClass());
             assertEquals("Can not update day todo's field in ready state", e.getCause().getMessage());

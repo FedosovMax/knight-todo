@@ -23,5 +23,5 @@ public class DayTodoVO implements TodoVO {
 
     private DayVO day;
 
-    private Integer experience;
+    private int experience;
 }

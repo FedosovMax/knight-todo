@@ -25,5 +25,5 @@ public class DayTodoReadyResponseDto {
 
     private String dayId;
 
-    private Integer experience;
+    private int experience;
 }

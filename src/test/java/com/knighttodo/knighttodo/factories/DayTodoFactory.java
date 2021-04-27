@@ -15,7 +15,7 @@ public class DayTodoFactory {
     public static final boolean FALSE_TODO_READY = false;
     public static final boolean TRUE_TODO_READY = true;
     public static final String UPDATED_TODO_NAME = "Write more integration tests";
-    public static final Integer HARD_SCARY_EXPERIENCE = 37;
+    public static final int HARD_SCARY_EXPERIENCE = 37;
     public static final Scariness UPDATED_SCARINESS_TODO = Scariness.SCARY;
     public static final Hardness UPDATED_HARDNESS_TODO = Hardness.HARD;
 
