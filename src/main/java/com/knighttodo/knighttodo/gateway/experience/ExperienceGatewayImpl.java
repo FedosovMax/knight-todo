@@ -7,7 +7,6 @@ import com.knighttodo.knighttodo.gateway.experience.mapper.DayTodoVOMapper;
 import com.knighttodo.knighttodo.gateway.experience.mapper.RoutineTodoVOMapper;
 import com.knighttodo.knighttodo.gateway.experience.request.ExperienceRequest;
 import com.knighttodo.knighttodo.gateway.experience.response.ExperienceResponse;
-import com.knighttodo.knighttodo.gateway.privatedb.mapper.RoutineTodoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
