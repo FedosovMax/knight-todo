@@ -9,7 +9,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,53 +27,51 @@ public class RoutineResource {
     private final RoutineRestMapper routineRestMapper;
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "Add the new Routine")
-    public ResponseEntity<RoutineResponseDto> addRoutine(@Valid @RequestBody RoutineRequestDto requestDto) {
+    public RoutineResponseDto addRoutine(@Valid @RequestBody RoutineRequestDto requestDto) {
         log.debug("Rest request to add routine : {}", requestDto);
         RoutineVO routineVO = routineRestMapper.toRoutineVO(requestDto);
         RoutineVO savedRoutineVO = routineService.save(routineVO);
-
-        return ResponseEntity.status(HttpStatus.CREATED)
-            .body(routineRestMapper.toRoutineResponseDto(savedRoutineVO));
+        return routineRestMapper.toRoutineResponseDto(savedRoutineVO);
     }
 
     @GetMapping
+    @ResponseStatus(HttpStatus.FOUND)
     @ApiOperation(value = "Find all Routines")
-    public ResponseEntity<List<RoutineResponseDto>> findAllRoutines() {
+    public List<RoutineResponseDto> findAllRoutines() {
         log.debug("Rest request to get all routines");
-
-        return ResponseEntity.status(HttpStatus.FOUND)
-            .body(routineService.findAll()
+        return routineService.findAll()
                 .stream()
                 .map(routineRestMapper::toRoutineResponseDto)
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{routineId}")
+    @ResponseStatus(HttpStatus.FOUND)
     @ApiOperation(value = "Find the Routine by id")
-    public ResponseEntity<RoutineResponseDto> findRoutineById(@PathVariable String routineId) {
+    public RoutineResponseDto findRoutineById(@PathVariable String routineId) {
         log.debug("Rest request to get routine by id : {}", routineId);
         RoutineVO routineVO = routineService.findById(routineId);
-
-        return ResponseEntity.status(HttpStatus.FOUND).body(routineRestMapper.toRoutineResponseDto(routineVO));
+        return routineRestMapper.toRoutineResponseDto(routineVO);
     }
 
     @PutMapping("/{routineId}")
+    @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Update the Routine by id")
-    public ResponseEntity<RoutineResponseDto> updateRoutine(@PathVariable String routineId,
+    public RoutineResponseDto updateRoutine(@PathVariable String routineId,
                                                             @Valid @RequestBody RoutineRequestDto requestDto) {
         log.debug("Rest request to update routine : {}", requestDto);
         RoutineVO routineVO = routineRestMapper.toRoutineVO(requestDto);
         RoutineVO updatedRoutineVO = routineService.updateRoutine(routineId, routineVO);
-
-        return ResponseEntity.ok().body(routineRestMapper.toRoutineResponseDto(updatedRoutineVO));
+        return routineRestMapper.toRoutineResponseDto(updatedRoutineVO);
     }
 
     @DeleteMapping("/{routineId}")
+    @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Delete the Routine by id")
-    public ResponseEntity<Void> deleteRoutine(@PathVariable String routineId) {
+    public void deleteRoutine(@PathVariable String routineId) {
         log.debug("Rest request to delete routine by id : {}", routineId);
         routineService.deleteById(routineId);
-        return ResponseEntity.ok().build();
     }
 }
