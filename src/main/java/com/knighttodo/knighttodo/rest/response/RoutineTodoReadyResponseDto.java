@@ -25,5 +25,5 @@ public class RoutineTodoReadyResponseDto {
 
     private String routineId;
 
-    private Integer experience;
+    private int experience;
 }

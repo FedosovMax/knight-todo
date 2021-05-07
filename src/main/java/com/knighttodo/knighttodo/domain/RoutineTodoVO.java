@@ -23,5 +23,5 @@ public class RoutineTodoVO implements TodoVO {
 
     private RoutineVO routine;
 
-    private Integer experience;
+    private int experience;
 }

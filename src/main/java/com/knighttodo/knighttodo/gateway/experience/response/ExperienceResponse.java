@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 public class ExperienceResponse {
 
     private String todoId;
-    private Integer experience;
+    private int experience;
 }
