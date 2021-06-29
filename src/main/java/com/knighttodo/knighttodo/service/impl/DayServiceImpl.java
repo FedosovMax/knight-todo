@@ -6,11 +6,13 @@ import com.knighttodo.knighttodo.gateway.DayGateway;
 import com.knighttodo.knighttodo.gateway.privatedb.mapper.DayMapper;
 import com.knighttodo.knighttodo.service.DayService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @RequiredArgsConstructor
+@Slf4j
 @Service
 public class DayServiceImpl implements DayService {
 
@@ -29,18 +31,16 @@ public class DayServiceImpl implements DayService {
 
     @Override
     public DayVO findById(String dayId) {
-        return dayGateway.findById(dayId)
-            .orElseThrow(() -> new DayNotFoundException(
-                String.format("Day with such id:%s can't be " + "found", dayId)));
+        return dayGateway.findById(dayId).orElseThrow(() -> {
+            log.error(String.format("Day with such id:%s can't be " + "found", dayId));
+            return new DayNotFoundException(String.format("Day with such id:%s can't be " + "found", dayId));
+        });
     }
 
     @Override
     public DayVO updateDay(String dayId, DayVO changedDayVO) {
         changedDayVO.setId(dayId);
-        DayVO dayVO = dayGateway.findById(dayMapper.toDay(changedDayVO).getId())
-            .orElseThrow(() -> new DayNotFoundException(
-                String.format("Day with such id:%s is not found", dayId)));
-
+        DayVO dayVO = findById(dayMapper.toDay(changedDayVO).getId());
         dayVO.setDayName(changedDayVO.getDayName());
         return dayGateway.save(dayVO);
     }

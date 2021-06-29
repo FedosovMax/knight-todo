@@ -7,6 +7,7 @@ import com.knighttodo.knighttodo.gateway.RoutineGateway;
 import com.knighttodo.knighttodo.gateway.RoutineTodoGateway;
 import com.knighttodo.knighttodo.service.RoutineService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
+@Slf4j
 @Service
 public class RoutineServiceImpl implements RoutineService {
 
@@ -33,8 +35,11 @@ public class RoutineServiceImpl implements RoutineService {
     @Override
     public RoutineVO findById(String routineId) {
         return routineGateway.findById(routineId)
-            .orElseThrow(() -> new RoutineNotFoundException(
-                String.format("Routine with such id:%s can't be " + "found", routineId)));
+                .orElseThrow(() -> {
+                    log.error(String.format("Routine with such id:%s can't be " + "found", routineId));
+                    return new RoutineNotFoundException(
+                            String.format("Routine with such id:%s can't be " + "found", routineId));
+                });
     }
 
     @Override
@@ -57,8 +62,8 @@ public class RoutineServiceImpl implements RoutineService {
     private void unmapRoutineTodosExcludedFromRoutine(RoutineVO routineVO, RoutineVO changedRoutineVO) {
         List<String> changedRoutineVOTodoIds = extractTodoIds(changedRoutineVO);
         routineVO.getRoutineTodos().stream()
-            .filter(routineTodoVO -> !changedRoutineVOTodoIds.contains(routineTodoVO.getId()))
-            .forEach(routineTodoVO -> routineTodoVO.setRoutine(null));
+                .filter(routineTodoVO -> !changedRoutineVOTodoIds.contains(routineTodoVO.getId()))
+                .forEach(routineTodoVO -> routineTodoVO.setRoutine(null));
     }
 
     private List<String> extractTodoIds(RoutineVO routineVO) {
@@ -68,8 +73,8 @@ public class RoutineServiceImpl implements RoutineService {
     private void mapRoutineTodosAddedToRoutine(RoutineVO routineVO, RoutineVO changedRoutineVO) {
         List<String> routineVOTodoIds = extractTodoIds(routineVO);
         List<String> addedRoutineTodoIds = extractTodoIds(changedRoutineVO).stream()
-            .filter(routineTodoId -> !routineVOTodoIds.contains(routineTodoId))
-            .collect(Collectors.toList());
+                .filter(routineTodoId -> !routineVOTodoIds.contains(routineTodoId))
+                .collect(Collectors.toList());
         routineVO.getRoutineTodos().addAll(fetchRoutineTodosByIds(addedRoutineTodoIds));
     }
 
