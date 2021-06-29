@@ -8,11 +8,13 @@ import com.knighttodo.knighttodo.gateway.experience.ExperienceGateway;
 import com.knighttodo.knighttodo.service.RoutineService;
 import com.knighttodo.knighttodo.service.RoutineTodoService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class RoutineTodoServiceImpl implements RoutineTodoService {
 
@@ -34,8 +36,11 @@ public class RoutineTodoServiceImpl implements RoutineTodoService {
     @Override
     public RoutineTodoVO findById(String routineTodoId) {
         return routineTodoGateway.findById(routineTodoId)
-                .orElseThrow(() -> new RoutineTodoNotFoundException(String
-                        .format("Routine Todo with such id:%s can't be found", routineTodoId)));
+                .orElseThrow(() -> {
+                    log.error(String.format("Routine Todo with such id:%s can't be found", routineTodoId));
+                    return new RoutineTodoNotFoundException(String
+                            .format("Routine Todo with such id:%s can't be found", routineTodoId));
+                });
     }
 
     @Override
@@ -52,6 +57,7 @@ public class RoutineTodoServiceImpl implements RoutineTodoService {
 
     private void checkUpdatePossibility(RoutineTodoVO routineTodoVO, RoutineTodoVO changedRoutineTodoVO) {
         if (routineTodoVO.isReady() && isAtLeastOneUnchangeableFieldUpdated(routineTodoVO, changedRoutineTodoVO)) {
+            log.error("Can not update routine Todo's field in ready state");
             throw new UnchangeableFieldUpdateException("Can not update routine todo's field in ready state");
         }
     }

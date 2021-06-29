@@ -8,11 +8,13 @@ import com.knighttodo.knighttodo.gateway.experience.ExperienceGateway;
 import com.knighttodo.knighttodo.service.DayService;
 import com.knighttodo.knighttodo.service.DayTodoService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class DayTodoServiceImpl implements DayTodoService {
 
@@ -34,14 +36,15 @@ public class DayTodoServiceImpl implements DayTodoService {
     @Override
     public DayTodoVO findById(String dayTodoId) {
         return dayTodoGateway.findById(dayTodoId)
-            .orElseThrow(() -> new DayTodoNotFoundException(String.format("Day Todo with such id:%s can't be found", dayTodoId)));
+                .orElseThrow(() -> {
+                    log.error(String.format("Day Todo with such id:%s can't be found", dayTodoId));
+                    return new DayTodoNotFoundException(String.format("Day Todo with such id:%s can't be found", dayTodoId));
+                });
     }
 
     @Override
     public DayTodoVO updateDayTodo(String dayTodoId, DayTodoVO changedDayTodoVO) {
-        DayTodoVO dayTodoVO = dayTodoGateway.findById(dayTodoId)
-            .orElseThrow(() -> new DayTodoNotFoundException(String.format("Day Todo with such id:%s can't be found", dayTodoId)));
-
+        DayTodoVO dayTodoVO = findById(dayTodoId);
         checkUpdatePossibility(dayTodoVO, changedDayTodoVO);
 
         dayTodoVO.setDayTodoName(changedDayTodoVO.getDayTodoName());
@@ -52,13 +55,14 @@ public class DayTodoServiceImpl implements DayTodoService {
 
     private void checkUpdatePossibility(DayTodoVO dayTodoVO, DayTodoVO changedDayTodoVO) {
         if (dayTodoVO.isReady() && isAtLeastOneUnchangeableFieldUpdated(dayTodoVO, changedDayTodoVO)) {
-            throw new UnchangeableFieldUpdateException("Can not update day todo's field in ready state");
+            log.error("Can not update day Todo's field in ready state");
+            throw new UnchangeableFieldUpdateException("Can not update day Todo's field in ready state");
         }
     }
 
     private boolean isAtLeastOneUnchangeableFieldUpdated(DayTodoVO dayTodoVO, DayTodoVO changedDayTodoVO) {
         return !dayTodoVO.getScariness().equals(changedDayTodoVO.getScariness())
-            || !dayTodoVO.getHardness().equals(changedDayTodoVO.getHardness());
+                || !dayTodoVO.getHardness().equals(changedDayTodoVO.getHardness());
     }
 
     @Override
