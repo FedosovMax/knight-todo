@@ -7,6 +7,7 @@ import com.knighttodo.knighttodo.rest.response.RoutineResponseDto;
 import com.knighttodo.knighttodo.rest.response.RoutineTodoReadyResponseDto;
 import com.knighttodo.knighttodo.rest.response.RoutineTodoResponseDto;
 import com.knighttodo.knighttodo.service.RoutineTodoService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 
 import static com.knighttodo.knighttodo.Constants.*;
 
+@Api(value = "RoutineTodoResource controller")
 @Validated
 @RequiredArgsConstructor
 @RestController

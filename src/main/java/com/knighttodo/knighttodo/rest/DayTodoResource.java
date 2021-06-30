@@ -6,6 +6,7 @@ import com.knighttodo.knighttodo.rest.request.DayTodoRequestDto;
 import com.knighttodo.knighttodo.rest.response.DayTodoReadyResponseDto;
 import com.knighttodo.knighttodo.rest.response.DayTodoResponseDto;
 import com.knighttodo.knighttodo.service.DayTodoService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 
 import static com.knighttodo.knighttodo.Constants.*;
 
+@Api(value = "DayTodoResource controller")
 @Validated
 @RequiredArgsConstructor
 @RestController

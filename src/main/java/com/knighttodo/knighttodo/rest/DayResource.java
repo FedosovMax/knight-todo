@@ -5,6 +5,7 @@ import com.knighttodo.knighttodo.rest.mapper.DayRestMapper;
 import com.knighttodo.knighttodo.rest.request.DayRequestDto;
 import com.knighttodo.knighttodo.rest.response.DayResponseDto;
 import com.knighttodo.knighttodo.service.DayService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 
 import static com.knighttodo.knighttodo.Constants.API_BASE_DAYS;
 
+@Api(value = "DayResource controller")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(API_BASE_DAYS)
