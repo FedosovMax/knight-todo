@@ -47,7 +47,7 @@ public class RoutineResource {
             return routineRestMapper.toRoutineResponseDto(savedRoutineVO);
         } catch (RuntimeException ex) {
             log.error("Routine hasn't been created.", ex);
-            throw new CreateRoutineException("Routine hasn't been created.");
+            throw new CreateRoutineException("Routine hasn't been created.", ex);
         }
     }
 
@@ -68,7 +68,7 @@ public class RoutineResource {
                     .collect(Collectors.toList());
         } catch (RuntimeException ex) {
             log.error("Routines can't be found.", ex);
-            throw new FindAllRoutinesException("Routines can't be found.");
+            throw new FindAllRoutinesException("Routines can't be found.", ex);
         }
     }
 
@@ -87,7 +87,7 @@ public class RoutineResource {
             return routineRestMapper.toRoutineResponseDto(routineVO);
         } catch (RuntimeException ex) {
             log.error("Routine can't be found.", ex);
-            throw new FindRoutineByIdException("Routine can't be found.");
+            throw new FindRoutineByIdException("Routine can't be found.", ex);
         }
     }
 
@@ -112,7 +112,7 @@ public class RoutineResource {
             throw new RoutineNotFoundException(e.getMessage());
         } catch (RuntimeException ex) {
             log.error("Routine can't be updated.", ex);
-            throw new UpdateRoutineException("Routine can't be updated.");
+            throw new UpdateRoutineException("Routine can't be updated.", ex);
         }
     }
 
@@ -129,9 +129,9 @@ public class RoutineResource {
     public void deleteRoutine(@PathVariable String routineId) {
         try {
             routineService.deleteById(routineId);
-        } catch (RoutineNotFoundException e) {
-            log.error("Routine can't be deleted.", e);
-            throw new RoutineCanNotBeDeletedException(e.getMessage());
+        } catch (RuntimeException ex) {
+            log.error("Routine can't be deleted.", ex);
+            throw new RoutineCanNotBeDeletedException("Routine can't be deleted.", ex);
         }
     }
 }
