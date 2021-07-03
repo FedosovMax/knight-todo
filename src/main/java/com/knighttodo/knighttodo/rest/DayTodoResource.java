@@ -1,6 +1,7 @@
 package com.knighttodo.knighttodo.rest;
 
 import com.knighttodo.knighttodo.domain.DayTodoVO;
+import com.knighttodo.knighttodo.exception.*;
 import com.knighttodo.knighttodo.rest.mapper.DayTodoRestMapper;
 import com.knighttodo.knighttodo.rest.request.DayTodoRequestDto;
 import com.knighttodo.knighttodo.rest.response.DayTodoReadyResponseDto;
@@ -11,6 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +24,7 @@ import java.util.stream.Collectors;
 import static com.knighttodo.knighttodo.Constants.*;
 
 @Api(value = "DayTodoResource controller")
+@Slf4j
 @Validated
 @RequiredArgsConstructor
 @RestController
@@ -41,9 +44,14 @@ public class DayTodoResource {
             @ApiResponse(code = 500, message = "Unexpected error")
     })
     public DayTodoResponseDto addDayTodo(@PathVariable String dayId, @Valid @RequestBody DayTodoRequestDto requestDto) {
-        DayTodoVO dayTodoVO = dayTodoRestMapper.toDayTodoVO(requestDto);
-        DayTodoVO savedDayTodoVO = dayTodoService.save(dayId, dayTodoVO);
-        return dayTodoRestMapper.toDayTodoResponseDto(savedDayTodoVO);
+        try {
+            DayTodoVO dayTodoVO = dayTodoRestMapper.toDayTodoVO(requestDto);
+            DayTodoVO savedDayTodoVO = dayTodoService.save(dayId, dayTodoVO);
+            return dayTodoRestMapper.toDayTodoResponseDto(savedDayTodoVO);
+        } catch (RuntimeException ex) {
+            log.error("Day todo hasn't been created.", ex);
+            throw new CreateDayTodoException("Day todo hasn't been created.", ex);
+        }
     }
 
     @GetMapping
@@ -56,10 +64,15 @@ public class DayTodoResource {
             @ApiResponse(code = 500, message = "Unexpected error")
     })
     public List<DayTodoResponseDto> findDayTodosByDayId(@PathVariable String dayId) {
-        return dayTodoService.findByDayId(dayId)
-                .stream()
-                .map(dayTodoRestMapper::toDayTodoResponseDto)
-                .collect(Collectors.toList());
+        try {
+            return dayTodoService.findByDayId(dayId)
+                    .stream()
+                    .map(dayTodoRestMapper::toDayTodoResponseDto)
+                    .collect(Collectors.toList());
+        } catch (RuntimeException ex) {
+            log.error("Day todos can't be found.", ex);
+            throw new FindAllDayTodosException("Day todos can't be found.", ex);
+        }
     }
 
     @GetMapping("/{dayTodoId}")
@@ -72,8 +85,13 @@ public class DayTodoResource {
             @ApiResponse(code = 500, message = "Unexpected error")
     })
     public DayTodoReadyResponseDto findDayTodoById(@PathVariable String dayTodoId) {
-        DayTodoVO dayTodoVO = dayTodoService.findById(dayTodoId);
-        return dayTodoRestMapper.toDayTodoReadyResponseDto(dayTodoVO);
+        try {
+            DayTodoVO dayTodoVO = dayTodoService.findById(dayTodoId);
+            return dayTodoRestMapper.toDayTodoReadyResponseDto(dayTodoVO);
+        } catch (RuntimeException ex) {
+            log.error("Day todo can't be found.", ex);
+            throw new FindDayTodoByIdException("Day todo can't be found.", ex);
+        }
     }
 
     @PutMapping("/{dayTodoId}")
@@ -88,9 +106,17 @@ public class DayTodoResource {
     })
     public DayTodoResponseDto updateDayTodo(@PathVariable String dayTodoId,
                                             @Valid @RequestBody DayTodoRequestDto requestDto) {
-        DayTodoVO dayTodoVO = dayTodoRestMapper.toDayTodoVO(requestDto);
-        DayTodoVO updatedDayTodoVO = dayTodoService.updateDayTodo(dayTodoId, dayTodoVO);
-        return dayTodoRestMapper.toDayTodoResponseDto(updatedDayTodoVO);
+        try {
+            DayTodoVO dayTodoVO = dayTodoRestMapper.toDayTodoVO(requestDto);
+            DayTodoVO updatedDayTodoVO = dayTodoService.updateDayTodo(dayTodoId, dayTodoVO);
+            return dayTodoRestMapper.toDayTodoResponseDto(updatedDayTodoVO);
+        } catch (DayTodoNotFoundException e) {
+            log.error("Day todo can't be found.", e);
+            throw new DayTodoNotFoundException(e.getMessage());
+        } catch (RuntimeException ex) {
+            log.error("Day todo can't be updated.", ex);
+            throw new UpdateDayTodoException("Day todo can't be updated.", ex);
+        }
     }
 
     @DeleteMapping("/{dayTodoId}")
@@ -104,7 +130,12 @@ public class DayTodoResource {
             @ApiResponse(code = 500, message = "Unexpected error")
     })
     public void deleteTodo(@PathVariable String dayTodoId) {
-        dayTodoService.deleteById(dayTodoId);
+        try {
+            dayTodoService.deleteById(dayTodoId);
+        } catch (RuntimeException ex) {
+            log.error("Day todo can't be deleted.", ex);
+            throw new DayTodoCanNotBeDeletedException("Day todo can't be deleted.", ex);
+        }
     }
 
     @PutMapping(value = "/{dayTodoId}" + BASE_READY)
@@ -119,8 +150,13 @@ public class DayTodoResource {
     })
     public DayTodoReadyResponseDto updateIsReady(@PathVariable String dayId, @PathVariable String dayTodoId,
                                                  @RequestParam String ready) {
+        try {
         boolean isReady = Boolean.parseBoolean(ready);
         DayTodoVO dayTodoVO = dayTodoService.updateIsReady(dayId, dayTodoId, isReady);
         return dayTodoRestMapper.toDayTodoReadyResponseDto(dayTodoVO);
+        } catch (RuntimeException ex) {
+            log.error("Day todo ready can't be updated.", ex);
+            throw new DayTodoReadyCanNotBeUpdatedException("Day todo ready can't be updated.", ex);
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.knighttodo.knighttodo.rest;
 
 import com.knighttodo.knighttodo.domain.DayVO;
+import com.knighttodo.knighttodo.exception.*;
 import com.knighttodo.knighttodo.rest.mapper.DayRestMapper;
 import com.knighttodo.knighttodo.rest.request.DayRequestDto;
 import com.knighttodo.knighttodo.rest.response.DayResponseDto;
@@ -10,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 import static com.knighttodo.knighttodo.Constants.API_BASE_DAYS;
 
 @Api(value = "DayResource controller")
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(API_BASE_DAYS)
@@ -38,9 +41,14 @@ public class DayResource {
             @ApiResponse(code = 500, message = "Unexpected error")
     })
     public DayResponseDto addDay(@Valid @RequestBody DayRequestDto requestDto) {
-        DayVO dayVO = dayRestMapper.toDayVO(requestDto);
-        DayVO savedDayVO = dayService.save(dayVO);
-        return dayRestMapper.toDayResponseDto(savedDayVO);
+        try {
+            DayVO dayVO = dayRestMapper.toDayVO(requestDto);
+            DayVO savedDayVO = dayService.save(dayVO);
+            return dayRestMapper.toDayResponseDto(savedDayVO);
+        } catch (RuntimeException ex) {
+            log.error("Day hasn't been created.", ex);
+            throw new CreateDayException("Day hasn't been created.", ex);
+        }
     }
 
     @GetMapping
@@ -53,10 +61,15 @@ public class DayResource {
             @ApiResponse(code = 500, message = "Unexpected error")
     })
     public List<DayResponseDto> findAllDays() {
-        return dayService.findAll()
-                .stream()
-                .map(dayRestMapper::toDayResponseDto)
-                .collect(Collectors.toList());
+        try {
+            return dayService.findAll()
+                    .stream()
+                    .map(dayRestMapper::toDayResponseDto)
+                    .collect(Collectors.toList());
+        } catch (RuntimeException ex) {
+            log.error("Days can't be found.", ex);
+            throw new FindAllDaysException("Days can't be found.", ex);
+        }
     }
 
     @GetMapping("/{dayId}")
@@ -69,8 +82,13 @@ public class DayResource {
             @ApiResponse(code = 500, message = "Unexpected error")
     })
     public DayResponseDto findDayById(@PathVariable String dayId) {
-        DayVO dayVO = dayService.findById(dayId);
-        return dayRestMapper.toDayResponseDto(dayVO);
+        try {
+            DayVO dayVO = dayService.findById(dayId);
+            return dayRestMapper.toDayResponseDto(dayVO);
+        } catch (RuntimeException ex) {
+            log.error("Day can't be found.", ex);
+            throw new FindDayByIdException("Day can't be found.", ex);
+        }
     }
 
     @PutMapping("/{dayId}")
@@ -84,9 +102,17 @@ public class DayResource {
             @ApiResponse(code = 500, message = "Unexpected error")
     })
     public DayResponseDto updateDay(@PathVariable String dayId, @Valid @RequestBody DayRequestDto requestDto) {
-        DayVO dayVO = dayRestMapper.toDayVO(requestDto);
-        DayVO updatedDayVO = dayService.updateDay(dayId, dayVO);
-        return dayRestMapper.toDayResponseDto(updatedDayVO);
+        try {
+            DayVO dayVO = dayRestMapper.toDayVO(requestDto);
+            DayVO updatedDayVO = dayService.updateDay(dayId, dayVO);
+            return dayRestMapper.toDayResponseDto(updatedDayVO);
+        } catch (DayNotFoundException e) {
+            log.error("Day can't be found.", e);
+            throw new DayNotFoundException(e.getMessage());
+        } catch (RuntimeException ex) {
+            log.error("Day can't be updated.", ex);
+            throw new UpdateDayException("Day can't be updated.", ex);
+        }
     }
 
     @DeleteMapping("/{dayId}")
@@ -100,6 +126,11 @@ public class DayResource {
             @ApiResponse(code = 500, message = "Unexpected error")
     })
     public void deleteDay(@PathVariable String dayId) {
-        dayService.deleteById(dayId);
+        try {
+            dayService.deleteById(dayId);
+        } catch (RuntimeException ex) {
+            log.error("Day can't be deleted.", ex);
+            throw new DayCanNotBeDeletedException("Day can't be deleted.", ex);
+        }
     }
 }

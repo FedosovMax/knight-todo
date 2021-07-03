@@ -1,6 +1,7 @@
 package com.knighttodo.knighttodo.rest;
 
 import com.knighttodo.knighttodo.domain.RoutineVO;
+import com.knighttodo.knighttodo.exception.*;
 import com.knighttodo.knighttodo.rest.mapper.RoutineRestMapper;
 import com.knighttodo.knighttodo.rest.request.RoutineRequestDto;
 import com.knighttodo.knighttodo.rest.response.RoutineResponseDto;
@@ -10,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 import static com.knighttodo.knighttodo.Constants.API_BASE_ROUTINES;
 
 @Api(value = "RoutineResource controller")
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(API_BASE_ROUTINES)
@@ -38,9 +41,14 @@ public class RoutineResource {
             @ApiResponse(code = 500, message = "Unexpected error")
     })
     public RoutineResponseDto addRoutine(@Valid @RequestBody RoutineRequestDto requestDto) {
-        RoutineVO routineVO = routineRestMapper.toRoutineVO(requestDto);
-        RoutineVO savedRoutineVO = routineService.save(routineVO);
-        return routineRestMapper.toRoutineResponseDto(savedRoutineVO);
+        try {
+            RoutineVO routineVO = routineRestMapper.toRoutineVO(requestDto);
+            RoutineVO savedRoutineVO = routineService.save(routineVO);
+            return routineRestMapper.toRoutineResponseDto(savedRoutineVO);
+        } catch (RuntimeException ex) {
+            log.error("Routine hasn't been created.", ex);
+            throw new CreateRoutineException("Routine hasn't been created.", ex);
+        }
     }
 
     @GetMapping
@@ -53,10 +61,15 @@ public class RoutineResource {
             @ApiResponse(code = 500, message = "Unexpected error")
     })
     public List<RoutineResponseDto> findAllRoutines() {
-        return routineService.findAll()
-                .stream()
-                .map(routineRestMapper::toRoutineResponseDto)
-                .collect(Collectors.toList());
+        try {
+            return routineService.findAll()
+                    .stream()
+                    .map(routineRestMapper::toRoutineResponseDto)
+                    .collect(Collectors.toList());
+        } catch (RuntimeException ex) {
+            log.error("Routines can't be found.", ex);
+            throw new FindAllRoutinesException("Routines can't be found.", ex);
+        }
     }
 
     @GetMapping("/{routineId}")
@@ -69,8 +82,13 @@ public class RoutineResource {
             @ApiResponse(code = 500, message = "Unexpected error")
     })
     public RoutineResponseDto findRoutineById(@PathVariable String routineId) {
-        RoutineVO routineVO = routineService.findById(routineId);
-        return routineRestMapper.toRoutineResponseDto(routineVO);
+        try {
+            RoutineVO routineVO = routineService.findById(routineId);
+            return routineRestMapper.toRoutineResponseDto(routineVO);
+        } catch (RuntimeException ex) {
+            log.error("Routine can't be found.", ex);
+            throw new FindRoutineByIdException("Routine can't be found.", ex);
+        }
     }
 
     @PutMapping("/{routineId}")
@@ -85,9 +103,17 @@ public class RoutineResource {
     })
     public RoutineResponseDto updateRoutine(@PathVariable String routineId,
                                             @Valid @RequestBody RoutineRequestDto requestDto) {
-        RoutineVO routineVO = routineRestMapper.toRoutineVO(requestDto);
-        RoutineVO updatedRoutineVO = routineService.updateRoutine(routineId, routineVO);
-        return routineRestMapper.toRoutineResponseDto(updatedRoutineVO);
+        try {
+            RoutineVO routineVO = routineRestMapper.toRoutineVO(requestDto);
+            RoutineVO updatedRoutineVO = routineService.updateRoutine(routineId, routineVO);
+            return routineRestMapper.toRoutineResponseDto(updatedRoutineVO);
+        } catch (RoutineNotFoundException e) {
+            log.error("Routine can't be found.", e);
+            throw new RoutineNotFoundException(e.getMessage());
+        } catch (RuntimeException ex) {
+            log.error("Routine can't be updated.", ex);
+            throw new UpdateRoutineException("Routine can't be updated.", ex);
+        }
     }
 
     @DeleteMapping("/{routineId}")
@@ -101,6 +127,11 @@ public class RoutineResource {
             @ApiResponse(code = 500, message = "Unexpected error")
     })
     public void deleteRoutine(@PathVariable String routineId) {
-        routineService.deleteById(routineId);
+        try {
+            routineService.deleteById(routineId);
+        } catch (RuntimeException ex) {
+            log.error("Routine can't be deleted.", ex);
+            throw new RoutineCanNotBeDeletedException("Routine can't be deleted.", ex);
+        }
     }
 }
