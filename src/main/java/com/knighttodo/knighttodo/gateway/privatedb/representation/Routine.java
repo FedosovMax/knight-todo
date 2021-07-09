@@ -5,6 +5,7 @@ import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scarines
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -23,12 +24,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "routine")
 @Data
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Routine {
@@ -39,7 +41,7 @@ public class Routine {
         name = "uuid",
         strategy = "org.hibernate.id.UUIDGenerator"
     )
-    private String id;
+    private UUID id;
 
     private String name;
 
@@ -49,11 +51,6 @@ public class Routine {
     @Enumerated(EnumType.STRING)
     private Hardness hardness;
 
-    private boolean ready;
-
-    @Column(name = "template_id")
-    private String templateId;
-
     @OneToMany(mappedBy = "routine", cascade = CascadeType.REMOVE)
-    private List<RoutineTodo> routineTodos = new ArrayList<>();
+    private List<RoutineInstance> routineInstances = new ArrayList<>();
 }

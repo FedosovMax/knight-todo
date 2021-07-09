@@ -10,6 +10,8 @@ import com.knighttodo.knighttodo.gateway.privatedb.representation.DayTodo;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Routine;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.RoutineTodo;
 
+import java.util.UUID;
+
 public class TestConstants {
 
     public static final String JSON_ROOT = "$.";
@@ -32,11 +34,11 @@ public class TestConstants {
         return API_BASE_ROUTINES + "/" + routineId + API_BASE_TODOS + "/" + id;
     }
 
-    public static String buildGetRoutineByIdUrl(String id) {
+    public static String buildGetRoutineByIdUrl(UUID id) {
         return API_BASE_ROUTINES + "/" + id;
     }
 
-    public static String buildDeleteRoutineByIdUrl(String routineId) {
+    public static String buildDeleteRoutineByIdUrl(UUID routineId) {
         return API_BASE_ROUTINES + "/" + routineId;
     }
 
@@ -108,10 +110,6 @@ public class TestConstants {
         return JSON_ROOT + "dayName";
     }
 
-    public static String buildJsonPathToTemplateIdName() {
-        return JSON_ROOT + "templateId";
-    }
-
     public static String buildJsonPathToReadyName() {
         return JSON_ROOT + "ready";
     }
@@ -122,6 +120,10 @@ public class TestConstants {
 
     public static String buildJsonPathToRoutineTodoIdInTodosListByIndex(int index) {
         return JSON_ROOT + "routineTodos.[" + index + "].id";
+    }
+
+    public static String buildJsonPathToRoutineInstanceIdInInstancesListByIndex(int index) {
+        return JSON_ROOT + "routineInstances.[" + index + "].id";
     }
 
     public static String buildJsonPathToRoutineIdInRoutinesListByIndex(int index) {

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.knighttodo.knighttodo.Constants.*;
@@ -48,7 +49,7 @@ public class RoutineTodoResource {
                                                  @Valid @RequestBody RoutineTodoRequestDto requestDto) {
         try {
             RoutineTodoVO routineTodoVO = routineTodoRestMapper.toRoutineTodoVO(requestDto);
-            RoutineTodoVO savedRoutineTodoVO = routineTodoService.save(routineId, routineTodoVO);
+            RoutineTodoVO savedRoutineTodoVO = routineTodoService.save(UUID.fromString(routineId), routineTodoVO);
             return routineTodoRestMapper.toRoutineTodoResponseDto(savedRoutineTodoVO);
         } catch (RuntimeException ex) {
             log.error("Routine todo hasn't been created.", ex);
@@ -67,7 +68,7 @@ public class RoutineTodoResource {
     })
     public List<RoutineTodoResponseDto> findRoutineTodosByRoutineId(@PathVariable String routineId) {
         try {
-            return routineTodoService.findByRoutineId(routineId)
+            return routineTodoService.findByRoutineId(UUID.fromString(routineId))
                     .stream()
                     .map(routineTodoRestMapper::toRoutineTodoResponseDto)
                     .collect(Collectors.toList());
@@ -88,7 +89,7 @@ public class RoutineTodoResource {
     })
     public RoutineTodoReadyResponseDto findRoutineTodoById(@PathVariable String routineTodoId) {
         try {
-            RoutineTodoVO routineTodoVO = routineTodoService.findById(routineTodoId);
+            RoutineTodoVO routineTodoVO = routineTodoService.findById(UUID.fromString(routineTodoId));
             return routineTodoRestMapper.toRoutineTodoReadyResponseDto(routineTodoVO);
         } catch (RuntimeException ex) {
             log.error("Routine todo can't be found.", ex);
@@ -110,7 +111,7 @@ public class RoutineTodoResource {
                                                     @Valid @RequestBody RoutineTodoRequestDto requestDto) {
         try {
             RoutineTodoVO routineTodoVO = routineTodoRestMapper.toRoutineTodoVO(requestDto);
-            RoutineTodoVO updatedRoutineTodoVO = routineTodoService.updateRoutineTodo(routineTodoId, routineTodoVO);
+            RoutineTodoVO updatedRoutineTodoVO = routineTodoService.updateRoutineTodo(UUID.fromString(routineTodoId), routineTodoVO);
             return routineTodoRestMapper.toRoutineTodoResponseDto(updatedRoutineTodoVO);
         } catch (RoutineNotFoundException e) {
             log.error("Routine todo can't be found.", e);
@@ -133,7 +134,7 @@ public class RoutineTodoResource {
     })
     public void deleteRoutineTodo(@PathVariable String routineTodoId) {
         try {
-            routineTodoService.deleteById(routineTodoId);
+            routineTodoService.deleteById(UUID.fromString(routineTodoId));
         } catch (RuntimeException ex) {
             log.error("Routine todo can't be deleted.", ex);
             throw new RoutineTodoCanNotBeDeletedException("Routine todo can't be deleted.", ex);
@@ -154,7 +155,8 @@ public class RoutineTodoResource {
                                                      @RequestParam String ready) {
         try {
             boolean isReady = Boolean.parseBoolean(ready);
-            RoutineTodoVO routineTodoVO = routineTodoService.updateIsReady(routineId, routineTodoId, isReady);
+            RoutineTodoVO routineTodoVO = routineTodoService
+                    .updateIsReady(UUID.fromString(routineId), UUID.fromString(routineTodoId), isReady);
             return routineTodoRestMapper.toRoutineTodoReadyResponseDto(routineTodoVO);
         } catch (RuntimeException ex) {
             log.error("Routine todo ready can't be updated.", ex);

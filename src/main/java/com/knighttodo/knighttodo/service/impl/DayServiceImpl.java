@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -30,7 +31,7 @@ public class DayServiceImpl implements DayService {
     }
 
     @Override
-    public DayVO findById(String dayId) {
+    public DayVO findById(UUID dayId) {
         return dayGateway.findById(dayId).orElseThrow(() -> {
             log.error(String.format("Day with such id:%s can't be " + "found", dayId));
             return new DayNotFoundException(String.format("Day with such id:%s can't be " + "found", dayId));
@@ -38,7 +39,7 @@ public class DayServiceImpl implements DayService {
     }
 
     @Override
-    public DayVO updateDay(String dayId, DayVO changedDayVO) {
+    public DayVO updateDay(UUID dayId, DayVO changedDayVO) {
         changedDayVO.setId(dayId);
         DayVO dayVO = findById(dayMapper.toDay(changedDayVO).getId());
         dayVO.setDayName(changedDayVO.getDayName());
@@ -46,7 +47,7 @@ public class DayServiceImpl implements DayService {
     }
 
     @Override
-    public void deleteById(String dayId) {
+    public void deleteById(UUID dayId) {
         dayGateway.deleteById(dayId);
     }
 }

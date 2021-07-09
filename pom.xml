@@ -14,7 +14,7 @@
     <description>knight-todo-app</description>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>16</java.version>
         <mapstruct.version>1.3.1.Final</mapstruct.version>
         <swagger2.version>2.9.2</swagger2.version>
         <zalando.version>0.25.2</zalando.version>

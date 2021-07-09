@@ -4,6 +4,8 @@ import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scariness;
 import lombok.*;
 
+import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -11,7 +13,7 @@ import lombok.*;
 @ToString
 public class DayTodoVO implements TodoVO {
 
-    private String id;
+    private UUID id;
 
     private String dayTodoName;
 

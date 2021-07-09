@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.knighttodo.knighttodo.Constants.API_BASE_DAYS;
@@ -83,7 +84,7 @@ public class DayResource {
     })
     public DayResponseDto findDayById(@PathVariable String dayId) {
         try {
-            DayVO dayVO = dayService.findById(dayId);
+            DayVO dayVO = dayService.findById(UUID.fromString(dayId));
             return dayRestMapper.toDayResponseDto(dayVO);
         } catch (RuntimeException ex) {
             log.error("Day can't be found.", ex);
@@ -104,7 +105,7 @@ public class DayResource {
     public DayResponseDto updateDay(@PathVariable String dayId, @Valid @RequestBody DayRequestDto requestDto) {
         try {
             DayVO dayVO = dayRestMapper.toDayVO(requestDto);
-            DayVO updatedDayVO = dayService.updateDay(dayId, dayVO);
+            DayVO updatedDayVO = dayService.updateDay(UUID.fromString(dayId), dayVO);
             return dayRestMapper.toDayResponseDto(updatedDayVO);
         } catch (DayNotFoundException e) {
             log.error("Day can't be found.", e);
@@ -127,7 +128,7 @@ public class DayResource {
     })
     public void deleteDay(@PathVariable String dayId) {
         try {
-            dayService.deleteById(dayId);
+            dayService.deleteById(UUID.fromString(dayId));
         } catch (RuntimeException ex) {
             log.error("Day can't be deleted.", ex);
             throw new DayCanNotBeDeletedException("Day can't be deleted.", ex);

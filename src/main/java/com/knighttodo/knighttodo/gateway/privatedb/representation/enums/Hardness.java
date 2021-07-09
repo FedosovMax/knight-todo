@@ -5,5 +5,5 @@ public enum Hardness {
     HARD,
     VERY_HARD,
     EXTRAORDINARY,
-    IMPOSSIBLE;
+    IMPOSSIBLE
 }

@@ -7,11 +7,11 @@ import com.knighttodo.knighttodo.rest.response.RoutineResponseDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", uses = RoutineTodoRestMapper.class)
+@Mapper(componentModel = "spring", uses = RoutineInstanceRestMapper.class)
 public interface RoutineRestMapper {
 
-    @Mapping(source = "routineTodoIds", target = "routineTodos",
-            qualifiedByName = {"RoutineTodoRestMapper", "fromIdToRoutineTodoVOWithId"})
+    @Mapping(source = "routineInstanceIds", target = "routineInstanceVOs",
+            qualifiedByName = {"RoutineInstanceRestMapper", "fromIdToRoutineInstanceVOWithId"})
     RoutineVO toRoutineVO(RoutineRequestDto requestDto);
 
     RoutineResponseDto toRoutineResponseDto(RoutineVO routineVO);

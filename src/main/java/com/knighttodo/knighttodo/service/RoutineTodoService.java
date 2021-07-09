@@ -3,20 +3,21 @@ package com.knighttodo.knighttodo.service;
 import com.knighttodo.knighttodo.domain.RoutineTodoVO;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface RoutineTodoService {
 
-    RoutineTodoVO save(String routineId, RoutineTodoVO routineTodoVO);
+    RoutineTodoVO save(UUID routineId, RoutineTodoVO routineTodoVO);
 
     List<RoutineTodoVO> findAll();
 
-    RoutineTodoVO findById(String routineTodoId);
+    RoutineTodoVO findById(UUID routineTodoId);
 
-    RoutineTodoVO updateRoutineTodo(String routineTodoId, RoutineTodoVO changedRoutineTodoVO);
+    RoutineTodoVO updateRoutineTodo(UUID routineTodoId, RoutineTodoVO changedRoutineTodoVO);
 
-    void deleteById(String routineTodoId);
+    void deleteById(UUID routineTodoId);
 
-    List<RoutineTodoVO> findByRoutineId(String routineId);
+    List<RoutineTodoVO> findByRoutineId(UUID routineId);
 
-    RoutineTodoVO updateIsReady(String routineId, String routineTodoId, boolean isReady);
+    RoutineTodoVO updateIsReady(UUID routineId, UUID routineTodoId, boolean isReady);
 }

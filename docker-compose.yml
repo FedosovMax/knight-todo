@@ -3,6 +3,7 @@ version: '3'
 services:
   knight-todo:
     restart: always
+    build: .
     image: maksymfedosov/knight:latest
     ports:
       - "6080:6080"

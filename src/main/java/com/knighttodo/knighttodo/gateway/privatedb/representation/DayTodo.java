@@ -21,6 +21,8 @@ import lombok.ToString;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "day_todo")
 @Data
@@ -37,7 +39,7 @@ public class DayTodo {
         strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(name = "id")
-    private String id;
+    private UUID id;
 
     @Column(name = "day_todo_name")
     private String dayTodoName;

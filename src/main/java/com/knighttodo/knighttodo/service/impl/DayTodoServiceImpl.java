@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -23,7 +24,7 @@ public class DayTodoServiceImpl implements DayTodoService {
     private final ExperienceGateway experienceGateway;
 
     @Override
-    public DayTodoVO save(String dayId, DayTodoVO dayTodoVO) {
+    public DayTodoVO save(UUID dayId, DayTodoVO dayTodoVO) {
         dayTodoVO.setDay(dayService.findById(dayId));
         return dayTodoGateway.save(dayTodoVO);
     }
@@ -34,7 +35,7 @@ public class DayTodoServiceImpl implements DayTodoService {
     }
 
     @Override
-    public DayTodoVO findById(String dayTodoId) {
+    public DayTodoVO findById(UUID dayTodoId) {
         return dayTodoGateway.findById(dayTodoId)
                 .orElseThrow(() -> {
                     log.error(String.format("Day Todo with such id:%s can't be found", dayTodoId));
@@ -43,7 +44,7 @@ public class DayTodoServiceImpl implements DayTodoService {
     }
 
     @Override
-    public DayTodoVO updateDayTodo(String dayTodoId, DayTodoVO changedDayTodoVO) {
+    public DayTodoVO updateDayTodo(UUID dayTodoId, DayTodoVO changedDayTodoVO) {
         DayTodoVO dayTodoVO = findById(dayTodoId);
         checkUpdatePossibility(dayTodoVO, changedDayTodoVO);
 
@@ -66,17 +67,17 @@ public class DayTodoServiceImpl implements DayTodoService {
     }
 
     @Override
-    public void deleteById(String dayTodoId) {
+    public void deleteById(UUID dayTodoId) {
         dayTodoGateway.deleteById(dayTodoId);
     }
 
     @Override
-    public List<DayTodoVO> findByDayId(String dayId) {
+    public List<DayTodoVO> findByDayId(UUID dayId) {
         return dayTodoGateway.findByDayId(dayId);
     }
 
     @Override
-    public DayTodoVO updateIsReady(String dayId, String dayTodoId, boolean isReady) {
+    public DayTodoVO updateIsReady(UUID dayId, UUID dayTodoId, boolean isReady) {
         DayTodoVO dayTodoVO = findById(dayTodoId);
         dayTodoVO.setDay(dayService.findById(dayId));
         dayTodoVO.setReady(isReady);

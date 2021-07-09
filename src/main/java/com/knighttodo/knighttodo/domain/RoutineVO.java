@@ -5,6 +5,7 @@ import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scarines
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class RoutineVO {
 
-    private String id;
+    private UUID id;
 
     private String name;
 
@@ -25,9 +26,7 @@ public class RoutineVO {
 
     private Scariness scariness;
 
-    private String templateId;
-
     private boolean ready;
 
-    private List<RoutineTodoVO> routineTodos = new ArrayList<>();
+    private List<RoutineInstanceVO> routineInstanceVOs = new ArrayList<>();
 }

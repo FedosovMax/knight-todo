@@ -4,6 +4,7 @@ import com.knighttodo.knighttodo.domain.RoutineTodoVO;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface RoutineTodoGateway {
 
@@ -11,9 +12,9 @@ public interface RoutineTodoGateway {
 
     List<RoutineTodoVO> findAll();
 
-    Optional<RoutineTodoVO> findById(String routineTodoId);
+    Optional<RoutineTodoVO> findById(UUID routineTodoId);
 
-    void deleteById(String routineTodoId);
+    void deleteById(UUID routineTodoId);
 
-    List<RoutineTodoVO> findByRoutineId(String routineId);
+    List<RoutineTodoVO> findByRoutineId(UUID routineId);
 }

@@ -10,9 +10,9 @@ import org.mapstruct.Named;
 @Mapper(componentModel = "spring", uses = {RoutineTodoMapper.class})
 public interface RoutineMapper {
 
-    @Mapping(target = "routineTodos", qualifiedByName = {"RoutineTodoMapper", "toRoutineTodos"})
+//    @Mapping(target = "routineTodos", qualifiedByName = {"RoutineTodoMapper", "toRoutineTodos"})
     Routine toRoutine(RoutineVO routineVO);
 
-    @Mapping(target = "routineTodos", qualifiedByName = {"RoutineTodoMapper", "toRoutineTodoVOs"})
+//    @Mapping(target = "routineTodos", qualifiedByName = {"RoutineTodoMapper", "toRoutineTodoVOs"})
     RoutineVO toRoutineVO(Routine routine);
 }

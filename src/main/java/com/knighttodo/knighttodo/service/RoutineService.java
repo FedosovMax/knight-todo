@@ -3,6 +3,7 @@ package com.knighttodo.knighttodo.service;
 import com.knighttodo.knighttodo.domain.RoutineVO;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface RoutineService {
 
@@ -10,11 +11,9 @@ public interface RoutineService {
 
     List<RoutineVO> findAll();
 
-    RoutineVO findById(String routineId);
+    RoutineVO findById(UUID routineId);
 
-    RoutineVO updateRoutine(String routineId, RoutineVO changedRoutineVO);
+    RoutineVO updateRoutine(UUID routineId, RoutineVO changedRoutineVO);
 
-    void deleteById(String routineId);
-
-    List<RoutineVO> findAllTemplates();
+    void deleteById(UUID routineId);
 }

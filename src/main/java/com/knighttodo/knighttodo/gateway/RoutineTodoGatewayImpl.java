@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -30,17 +31,17 @@ public class RoutineTodoGatewayImpl implements RoutineTodoGateway {
     }
 
     @Override
-    public Optional<RoutineTodoVO> findById(String routineTodoId) {
+    public Optional<RoutineTodoVO> findById(UUID routineTodoId) {
         return routineTodoRepository.findById(routineTodoId).map(routineTodoMapper::toRoutineTodoVO);
     }
 
     @Override
-    public void deleteById(String routineTodoId) {
+    public void deleteById(UUID routineTodoId) {
         routineTodoRepository.deleteById(routineTodoId);
     }
 
     @Override
-    public List<RoutineTodoVO> findByRoutineId(String routineId) {
+    public List<RoutineTodoVO> findByRoutineId(UUID routineId) {
         return routineTodoRepository.findByRoutineId(routineId).stream().map(routineTodoMapper::toRoutineTodoVO)
                 .collect(Collectors.toList());
     }

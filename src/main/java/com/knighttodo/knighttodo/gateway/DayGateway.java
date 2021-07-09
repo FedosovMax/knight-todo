@@ -4,6 +4,7 @@ import com.knighttodo.knighttodo.domain.DayVO;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface DayGateway {
 
@@ -11,7 +12,7 @@ public interface DayGateway {
 
     List<DayVO> findAll();
 
-    Optional<DayVO> findById(String dayId);
+    Optional<DayVO> findById(UUID dayId);
 
-    void deleteById(String dayId);
+    void deleteById(UUID dayId);
 }

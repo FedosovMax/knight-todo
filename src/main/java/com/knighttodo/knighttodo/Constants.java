@@ -12,6 +12,7 @@ public class Constants {
     public static final String API_BASE_DAYS = "/days";
 
     public static final String API_BASE_ROUTINES = "/routines";
+    public static final String API_BASE_ROUTINES_INSTANCES = "/routineInstances";
 
     public static final String BASE_EXPERIENCE_URL = "/experience";
     public static final String BASE_READY = "/ready";

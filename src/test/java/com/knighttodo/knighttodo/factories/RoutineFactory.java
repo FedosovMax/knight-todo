@@ -8,6 +8,7 @@ import com.knighttodo.knighttodo.rest.response.RoutineResponseDto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class RoutineFactory {
 
@@ -18,79 +19,79 @@ public class RoutineFactory {
 
     public static RoutineRequestDto createRoutineRequestDto() {
         return RoutineRequestDto.builder()
-            .name(ROUTINE_NAME)
-            .hardness(HARDNESS_HARD)
-            .scariness(SCARINESS_HARD)
-            .routineTodoIds(new ArrayList<>())
-            .build();
+                .name(ROUTINE_NAME)
+                .hardness(HARDNESS_HARD)
+                .scariness(SCARINESS_HARD)
+                .routineInstanceIds(new ArrayList<>())
+                .build();
     }
 
-    public static RoutineRequestDto createRoutineWithTodoIdsRequestDto(List<String> todoIds) {
+    public static RoutineRequestDto createRoutineWithInstanceIdsRequestDto(List<UUID> routineInstanceIds) {
         return RoutineRequestDto.builder()
-            .name(ROUTINE_NAME)
-            .hardness(HARDNESS_HARD)
-            .scariness(SCARINESS_HARD)
-            .routineTodoIds(todoIds)
-            .build();
+                .name(ROUTINE_NAME)
+                .hardness(HARDNESS_HARD)
+                .scariness(SCARINESS_HARD)
+                .routineInstanceIds(routineInstanceIds)
+                .build();
     }
 
     public static RoutineRequestDto createRoutineWithNullNameValueRequestDto() {
         return RoutineRequestDto.builder()
-            .name(null)
-            .hardness(HARDNESS_HARD)
-            .scariness(SCARINESS_HARD)
-            .routineTodoIds(new ArrayList<>())
-            .build();
+                .name(null)
+                .hardness(HARDNESS_HARD)
+                .scariness(SCARINESS_HARD)
+                .routineInstanceIds(new ArrayList<>())
+                .build();
     }
 
     public static RoutineRequestDto updateRoutineRequestDto() {
         return RoutineRequestDto.builder()
-            .name(UPDATED_ROUTINE_NAME)
-            .hardness(HARDNESS_HARD)
-            .scariness(SCARINESS_HARD)
-            .ready(true)
-            .routineTodoIds(new ArrayList<>())
-            .build();
+                .name(UPDATED_ROUTINE_NAME)
+                .hardness(HARDNESS_HARD)
+                .scariness(SCARINESS_HARD)
+                .ready(true)
+                .routineInstanceIds(new ArrayList<>())
+                .build();
     }
 
-    public static RoutineRequestDto updateRoutineRequestDtoWithTodoIds(List<String> todoIds) {
+    public static RoutineRequestDto updateRoutineRequestDtoWithInstanceIds(List<UUID> todoIds) {
         return RoutineRequestDto.builder()
-            .name(ROUTINE_NAME)
-            .hardness(HARDNESS_HARD)
-            .scariness(SCARINESS_HARD)
-            .ready(true)
-            .routineTodoIds(todoIds)
-            .build();
+                .name(ROUTINE_NAME)
+                .hardness(HARDNESS_HARD)
+                .scariness(SCARINESS_HARD)
+                .ready(true)
+                .routineInstanceIds(todoIds)
+                .build();
     }
 
     public static RoutineRequestDto updateRoutineWithNullNaveValueRequestDto() {
         return RoutineRequestDto.builder()
-            .name(null)
-            .hardness(HARDNESS_HARD)
-            .scariness(SCARINESS_HARD)
-            .ready(true)
-            .routineTodoIds(new ArrayList<>())
-            .build();
+                .name(null)
+                .hardness(HARDNESS_HARD)
+                .scariness(SCARINESS_HARD)
+                .ready(true)
+                .routineInstanceIds(new ArrayList<>())
+                .build();
     }
 
     public static RoutineResponseDto createRoutineResponseDto() {
         return RoutineResponseDto
-            .builder()
-            .hardness(Hardness.HARD)
-            .scariness(Scariness.SCARY)
-            .name(ROUTINE_NAME)
-            .ready(false)
-            .routineTodos(new ArrayList<>())
-            .build();
+                .builder()
+                .hardness(Hardness.HARD)
+                .scariness(Scariness.SCARY)
+                .name(ROUTINE_NAME)
+                .ready(false)
+                .routineInstances(new ArrayList<>())
+                .build();
     }
 
     public static Routine routineInstance() {
         return Routine
-            .builder()
-            .hardness(Hardness.HARD)
-            .name(ROUTINE_NAME)
-            .scariness(Scariness.SCARY)
-            .routineTodos(new ArrayList<>())
-            .build();
+                .builder()
+                .hardness(Hardness.HARD)
+                .name(ROUTINE_NAME)
+                .scariness(Scariness.SCARY)
+                .routineInstances(new ArrayList<>())
+                .build();
     }
 }

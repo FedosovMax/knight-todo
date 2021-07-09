@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.knighttodo.knighttodo.Constants.API_BASE_ROUTINES;
@@ -81,7 +82,7 @@ public class RoutineResource {
             @ApiResponse(code = 404, message = "Resource not found"),
             @ApiResponse(code = 500, message = "Unexpected error")
     })
-    public RoutineResponseDto findRoutineById(@PathVariable String routineId) {
+    public RoutineResponseDto findRoutineById(@PathVariable UUID routineId) {
         try {
             RoutineVO routineVO = routineService.findById(routineId);
             return routineRestMapper.toRoutineResponseDto(routineVO);
@@ -101,7 +102,7 @@ public class RoutineResource {
             @ApiResponse(code = 404, message = "Resource not found"),
             @ApiResponse(code = 500, message = "Unexpected error")
     })
-    public RoutineResponseDto updateRoutine(@PathVariable String routineId,
+    public RoutineResponseDto updateRoutine(@PathVariable UUID routineId,
                                             @Valid @RequestBody RoutineRequestDto requestDto) {
         try {
             RoutineVO routineVO = routineRestMapper.toRoutineVO(requestDto);
@@ -126,7 +127,7 @@ public class RoutineResource {
             @ApiResponse(code = 404, message = "Resource not found"),
             @ApiResponse(code = 500, message = "Unexpected error")
     })
-    public void deleteRoutine(@PathVariable String routineId) {
+    public void deleteRoutine(@PathVariable UUID routineId) {
         try {
             routineService.deleteById(routineId);
         } catch (RuntimeException ex) {

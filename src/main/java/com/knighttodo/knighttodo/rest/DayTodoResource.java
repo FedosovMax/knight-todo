@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.knighttodo.knighttodo.Constants.*;
@@ -46,7 +47,7 @@ public class DayTodoResource {
     public DayTodoResponseDto addDayTodo(@PathVariable String dayId, @Valid @RequestBody DayTodoRequestDto requestDto) {
         try {
             DayTodoVO dayTodoVO = dayTodoRestMapper.toDayTodoVO(requestDto);
-            DayTodoVO savedDayTodoVO = dayTodoService.save(dayId, dayTodoVO);
+            DayTodoVO savedDayTodoVO = dayTodoService.save(UUID.fromString(dayId), dayTodoVO);
             return dayTodoRestMapper.toDayTodoResponseDto(savedDayTodoVO);
         } catch (RuntimeException ex) {
             log.error("Day todo hasn't been created.", ex);
@@ -65,7 +66,7 @@ public class DayTodoResource {
     })
     public List<DayTodoResponseDto> findDayTodosByDayId(@PathVariable String dayId) {
         try {
-            return dayTodoService.findByDayId(dayId)
+            return dayTodoService.findByDayId(UUID.fromString(dayId))
                     .stream()
                     .map(dayTodoRestMapper::toDayTodoResponseDto)
                     .collect(Collectors.toList());
@@ -86,7 +87,7 @@ public class DayTodoResource {
     })
     public DayTodoReadyResponseDto findDayTodoById(@PathVariable String dayTodoId) {
         try {
-            DayTodoVO dayTodoVO = dayTodoService.findById(dayTodoId);
+            DayTodoVO dayTodoVO = dayTodoService.findById(UUID.fromString(dayTodoId));
             return dayTodoRestMapper.toDayTodoReadyResponseDto(dayTodoVO);
         } catch (RuntimeException ex) {
             log.error("Day todo can't be found.", ex);
@@ -108,7 +109,7 @@ public class DayTodoResource {
                                             @Valid @RequestBody DayTodoRequestDto requestDto) {
         try {
             DayTodoVO dayTodoVO = dayTodoRestMapper.toDayTodoVO(requestDto);
-            DayTodoVO updatedDayTodoVO = dayTodoService.updateDayTodo(dayTodoId, dayTodoVO);
+            DayTodoVO updatedDayTodoVO = dayTodoService.updateDayTodo(UUID.fromString(dayTodoId), dayTodoVO);
             return dayTodoRestMapper.toDayTodoResponseDto(updatedDayTodoVO);
         } catch (DayTodoNotFoundException e) {
             log.error("Day todo can't be found.", e);
@@ -131,7 +132,7 @@ public class DayTodoResource {
     })
     public void deleteTodo(@PathVariable String dayTodoId) {
         try {
-            dayTodoService.deleteById(dayTodoId);
+            dayTodoService.deleteById(UUID.fromString(dayTodoId));
         } catch (RuntimeException ex) {
             log.error("Day todo can't be deleted.", ex);
             throw new DayTodoCanNotBeDeletedException("Day todo can't be deleted.", ex);
@@ -151,9 +152,9 @@ public class DayTodoResource {
     public DayTodoReadyResponseDto updateIsReady(@PathVariable String dayId, @PathVariable String dayTodoId,
                                                  @RequestParam String ready) {
         try {
-        boolean isReady = Boolean.parseBoolean(ready);
-        DayTodoVO dayTodoVO = dayTodoService.updateIsReady(dayId, dayTodoId, isReady);
-        return dayTodoRestMapper.toDayTodoReadyResponseDto(dayTodoVO);
+            boolean isReady = Boolean.parseBoolean(ready);
+            DayTodoVO dayTodoVO = dayTodoService.updateIsReady(UUID.fromString(dayId), UUID.fromString(dayTodoId), isReady);
+            return dayTodoRestMapper.toDayTodoReadyResponseDto(dayTodoVO);
         } catch (RuntimeException ex) {
             log.error("Day todo ready can't be updated.", ex);
             throw new DayTodoReadyCanNotBeUpdatedException("Day todo ready can't be updated.", ex);

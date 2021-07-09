@@ -7,6 +7,7 @@ import com.knighttodo.knighttodo.gateway.privatedb.representation.Day;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
@@ -32,12 +33,12 @@ public class DayGatewayImpl implements DayGateway {
     }
 
     @Override
-    public Optional<DayVO> findById(String dayId) {
+    public Optional<DayVO> findById(UUID dayId) {
         return dayRepository.findById(dayId).map(dayMapper::toDayVO);
     }
 
     @Override
-    public void deleteById(String dayId) {
+    public void deleteById(UUID dayId) {
         dayRepository.deleteById(dayId);
     }
 }

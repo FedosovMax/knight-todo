@@ -2,6 +2,7 @@ package com.knighttodo.knighttodo.gateway.privatedb.representation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -33,7 +34,7 @@ public class Day {
         strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(name = "id")
-    private String id;
+    private UUID id;
 
     @Column(name = "day_name")
     private String dayName;

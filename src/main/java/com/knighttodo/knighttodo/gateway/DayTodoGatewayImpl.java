@@ -4,14 +4,13 @@ import com.knighttodo.knighttodo.domain.DayTodoVO;
 import com.knighttodo.knighttodo.gateway.privatedb.mapper.DayTodoMapper;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.DayTodoRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.DayTodo;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
-
-import lombok.RequiredArgsConstructor;
-
-import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
@@ -32,18 +31,18 @@ public class DayTodoGatewayImpl implements DayTodoGateway {
     }
 
     @Override
-    public Optional<DayTodoVO> findById(String todoId) {
+    public Optional<DayTodoVO> findById(UUID todoId) {
         return dayTodoRepository.findById(todoId).map(dayTodoMapper::toTodoVO);
     }
 
     @Override
-    public void deleteById(String todoId) {
+    public void deleteById(UUID todoId) {
         dayTodoRepository.deleteById(todoId);
     }
 
     @Override
-    public List<DayTodoVO> findByDayId(String dayId) {
+    public List<DayTodoVO> findByDayId(UUID dayId) {
         return dayTodoRepository.findByDayId(dayId).stream().map(dayTodoMapper::toTodoVO)
-            .collect(Collectors.toList());
+                .collect(Collectors.toList());
     }
 }

@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RoutineResponseDto {
+public class RoutineInstanceResponseDto {
 
     private String id;
 
@@ -26,4 +26,5 @@ public class RoutineResponseDto {
 
     private boolean ready;
 
-    private List<RoutineInstanceResponseDto> routineInstances = new ArrayList<>();}
+    private List<RoutineTodoResponseDto> routineTodos = new ArrayList<>();
+}

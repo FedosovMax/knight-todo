@@ -7,23 +7,23 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RoutineResponseDto {
+public class RoutineInstanceReadyResponseDto {
 
     private String id;
 
-    private String name;
-
-    private Hardness hardness;
+    private String routineTodoName;
 
     private Scariness scariness;
 
+    private Hardness hardness;
+
     private boolean ready;
 
-    private List<RoutineInstanceResponseDto> routineInstances = new ArrayList<>();}
+    private String routineId;
+
+    private int experience;
+}

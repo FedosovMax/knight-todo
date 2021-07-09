@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -23,7 +24,7 @@ public class RoutineTodoServiceImpl implements RoutineTodoService {
     private final ExperienceGateway experienceGateway;
 
     @Override
-    public RoutineTodoVO save(String routineId, RoutineTodoVO routineTodoVO) {
+    public RoutineTodoVO save(UUID routineId, RoutineTodoVO routineTodoVO) {
         routineTodoVO.setRoutine(routineService.findById(routineId));
         return routineTodoGateway.save(routineTodoVO);
     }
@@ -34,7 +35,7 @@ public class RoutineTodoServiceImpl implements RoutineTodoService {
     }
 
     @Override
-    public RoutineTodoVO findById(String routineTodoId) {
+    public RoutineTodoVO findById(UUID routineTodoId) {
         return routineTodoGateway.findById(routineTodoId)
                 .orElseThrow(() -> {
                     log.error(String.format("Routine Todo with such id:%s can't be found", routineTodoId));
@@ -44,7 +45,7 @@ public class RoutineTodoServiceImpl implements RoutineTodoService {
     }
 
     @Override
-    public RoutineTodoVO updateRoutineTodo(String routineTodoId, RoutineTodoVO changedRoutineTodoVO) {
+    public RoutineTodoVO updateRoutineTodo(UUID routineTodoId, RoutineTodoVO changedRoutineTodoVO) {
         RoutineTodoVO routineTodoVO = findById(routineTodoId);
 
         checkUpdatePossibility(routineTodoVO, changedRoutineTodoVO);
@@ -68,17 +69,17 @@ public class RoutineTodoServiceImpl implements RoutineTodoService {
     }
 
     @Override
-    public void deleteById(String routineTodoId) {
+    public void deleteById(UUID routineTodoId) {
         routineTodoGateway.deleteById(routineTodoId);
     }
 
     @Override
-    public List<RoutineTodoVO> findByRoutineId(String routineId) {
+    public List<RoutineTodoVO> findByRoutineId(UUID routineId) {
         return routineTodoGateway.findByRoutineId(routineId);
     }
 
     @Override
-    public RoutineTodoVO updateIsReady(String routineId, String routineTodoId, boolean isReady) {
+    public RoutineTodoVO updateIsReady(UUID routineId, UUID routineTodoId, boolean isReady) {
         RoutineTodoVO routineTodoVO = findById(routineTodoId);
         routineTodoVO.setRoutine(routineService.findById(routineId));
         routineTodoVO.setReady(isReady);
