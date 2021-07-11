@@ -10,6 +10,8 @@ import com.knighttodo.knighttodo.gateway.experience.response.ExperienceResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 @RequiredArgsConstructor
 public class ExperienceGatewayImpl implements ExperienceGateway {
@@ -21,7 +23,7 @@ public class ExperienceGatewayImpl implements ExperienceGateway {
     @Override
     public DayTodoVO calculateExperience(DayTodoVO dayTodoVO) {
         ExperienceRequest experienceRequest = dayTodoVOMapper.DayTodoToExperienceRequest(dayTodoVO);
-        experienceRequest.setUserId("fakeUserId");
+        experienceRequest.setUserId(UUID.randomUUID());
         ExperienceResponse experienceResponse = experienceClient.calculateExperience(experienceRequest);
         dayTodoVO.setExperience(experienceResponse.getExperience());
         return dayTodoVO;
@@ -30,7 +32,7 @@ public class ExperienceGatewayImpl implements ExperienceGateway {
     @Override
     public RoutineTodoVO calculateExperience(RoutineTodoVO routineTodoVO) {
         ExperienceRequest experienceRequest = routineTodoVOMapper.routineTodoToExperienceRequest(routineTodoVO);
-        experienceRequest.setUserId("fakeUserId");
+        experienceRequest.setUserId(UUID.randomUUID());
         ExperienceResponse experienceResponse = experienceClient.calculateExperience(experienceRequest);
         routineTodoVO.setExperience(experienceResponse.getExperience());
         return routineTodoVO;

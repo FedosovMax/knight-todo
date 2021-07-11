@@ -27,7 +27,7 @@ public class RoutineInstanceFactory {
                 .build();
     }
 
-    public static RoutineInstanceRequestDto createRoutineInstanceWithTodoIdsRequestDto(List<String> todoIds) {
+    public static RoutineInstanceRequestDto createRoutineInstanceWithTodoIdsRequestDto(List<UUID> todoIds) {
         return RoutineInstanceRequestDto.builder()
                 .name(ROUTINE_NAME)
                 .hardness(HARDNESS_HARD)
@@ -55,7 +55,7 @@ public class RoutineInstanceFactory {
                 .build();
     }
 
-    public static RoutineInstanceRequestDto updateRoutineInstanceRequestDtoWithTodoIds(List<String> todoIds) {
+    public static RoutineInstanceRequestDto updateRoutineInstanceRequestDtoWithTodoIds(List<UUID> todoIds) {
         return RoutineInstanceRequestDto.builder()
                 .name(ROUTINE_NAME)
                 .hardness(HARDNESS_HARD)
@@ -92,7 +92,7 @@ public class RoutineInstanceFactory {
                 .hardness(Hardness.HARD)
                 .name(ROUTINE_NAME)
                 .scariness(Scariness.SCARY)
-                .routineTodos(new ArrayList<>())
+                .routineInstanceTodos(new ArrayList<>())
                 .build();
     }
 
@@ -104,7 +104,7 @@ public class RoutineInstanceFactory {
                 .name(ROUTINE_NAME)
                 .scariness(Scariness.SCARY)
                 .routine(routine)
-                .routineTodos(new ArrayList<>())
+                .routineInstanceTodos(new ArrayList<>())
                 .build();
     }
 }

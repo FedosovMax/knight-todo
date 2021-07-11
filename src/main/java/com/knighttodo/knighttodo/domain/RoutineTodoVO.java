@@ -23,7 +23,7 @@ public class RoutineTodoVO implements TodoVO {
 
     private boolean ready;
 
-    private RoutineVO routine;
+    private RoutineInstanceVO routineInstanceVO;
 
     private int experience;
 }

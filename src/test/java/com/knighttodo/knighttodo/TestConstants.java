@@ -1,16 +1,8 @@
 package com.knighttodo.knighttodo;
 
-import static com.knighttodo.knighttodo.Constants.API_BASE_DAYS;
-import static com.knighttodo.knighttodo.Constants.API_BASE_ROUTINES;
-import static com.knighttodo.knighttodo.Constants.API_BASE_TODOS;
-import static com.knighttodo.knighttodo.Constants.BASE_READY;
-
-import com.knighttodo.knighttodo.gateway.privatedb.representation.Day;
-import com.knighttodo.knighttodo.gateway.privatedb.representation.DayTodo;
-import com.knighttodo.knighttodo.gateway.privatedb.representation.Routine;
-import com.knighttodo.knighttodo.gateway.privatedb.representation.RoutineTodo;
-
 import java.util.UUID;
+
+import static com.knighttodo.knighttodo.Constants.*;
 
 public class TestConstants {
 
@@ -18,19 +10,19 @@ public class TestConstants {
     public static final String PARAMETER_FALSE = "false";
     public static final String PARAMETER_TRUE = "true";
 
-    public static String buildGetDayByIdUrl(String id) {
+    public static String buildGetDayByIdUrl(UUID id) {
         return API_BASE_DAYS + "/" + id;
     }
 
-    public static String buildDeleteDayByIdUrl(String id) {
+    public static String buildDeleteDayByIdUrl(UUID id) {
         return API_BASE_DAYS + "/" + id;
     }
 
-    public static String buildGetDayTodoByIdUrl(String dayId, String id) {
+    public static String buildGetDayTodoByIdUrl(UUID dayId, UUID id) {
         return API_BASE_DAYS + "/" + dayId + API_BASE_TODOS + "/" + id;
     }
 
-    public static String buildGetRoutineTodoByIdUrl(String routineId, String id) {
+    public static String buildGetRoutineTodoByIdUrl(UUID routineId, UUID id) {
         return API_BASE_ROUTINES + "/" + routineId + API_BASE_TODOS + "/" + id;
     }
 
@@ -42,27 +34,27 @@ public class TestConstants {
         return API_BASE_ROUTINES + "/" + routineId;
     }
 
-    public static String buildDeleteTodoByIdUrl(String dayId, String id) {
+    public static String buildDeleteTodoByIdUrl(UUID dayId, UUID id) {
         return API_BASE_DAYS + "/" + dayId + API_BASE_TODOS + "/" + id;
     }
 
-    public static String buildDeleteRoutineTodoByIdUrl(String routineId, String id) {
+    public static String buildDeleteRoutineTodoByIdUrl(UUID routineId, UUID id) {
         return API_BASE_ROUTINES + "/" + routineId + API_BASE_TODOS + "/" + id;
     }
 
-    public static String buildGetTodosByDayIdUrl(String dayId) {
+    public static String buildGetTodosByDayIdUrl(UUID dayId) {
         return API_BASE_DAYS + "/" + dayId + API_BASE_TODOS;
     }
 
-    public static String buildGetRoutineTodosByDayIdUrl(String routineId) {
+    public static String buildGetRoutineTodosByDayIdUrl(UUID routineId) {
         return API_BASE_ROUTINES + "/" + routineId + API_BASE_TODOS;
     }
 
-    public static String buildUpdateTodoReadyBaseUrl(String dayId, String dayTodoId) {
+    public static String buildUpdateTodoReadyBaseUrl(UUID dayId, UUID dayTodoId) {
         return API_BASE_DAYS + "/" + dayId + API_BASE_TODOS + "/" + dayTodoId + BASE_READY;
     }
 
-    public static String buildUpdateRoutineTodoReadyBaseUrl(String routineId, String routineTodoId) {
+    public static String buildUpdateRoutineTodoReadyBaseUrl(UUID routineId, UUID routineTodoId) {
         return API_BASE_ROUTINES + "/" + routineId + API_BASE_TODOS + "/" + routineTodoId + BASE_READY;
     }
 

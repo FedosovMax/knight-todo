@@ -2,11 +2,14 @@ package com.knighttodo.knighttodo.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.knighttodo.knighttodo.factories.RoutineFactory;
+import com.knighttodo.knighttodo.factories.RoutineInstanceFactory;
 import com.knighttodo.knighttodo.factories.RoutineTodoFactory;
-import com.knighttodo.knighttodo.gateway.privatedb.repository.RoutineRepository;
+import com.knighttodo.knighttodo.gateway.privatedb.repository.RoutineInstanceRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.RoutineTodoRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Routine;
+import com.knighttodo.knighttodo.gateway.privatedb.representation.RoutineInstance;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.RoutineTodo;
+import com.knighttodo.knighttodo.rest.request.RoutineInstanceRequestDto;
 import com.knighttodo.knighttodo.rest.request.RoutineRequestDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -46,7 +49,7 @@ public class RoutineInstanceResourceIntegrationTest {
     private ObjectMapper objectMapper;
 
     @Autowired
-    private RoutineRepository routineRepository;
+    private RoutineInstanceRepository routineInstanceRepository;
 
     @Autowired
     private RoutineTodoRepository routineTodoRepository;
@@ -54,7 +57,7 @@ public class RoutineInstanceResourceIntegrationTest {
     @AfterEach
     public void tearDown() {
         routineTodoRepository.deleteAll();
-        routineRepository.deleteAll();
+        routineInstanceRepository.deleteAll();
     }
 
     @Container
@@ -80,7 +83,7 @@ public class RoutineInstanceResourceIntegrationTest {
 
     @Test
     public void createRoutine_shouldAddRoutineAndReturnIt_whenRequestIsCorrect() throws Exception {
-        RoutineRequestDto requestDto = RoutineFactory.createRoutineRequestDto();
+        RoutineInstanceRequestDto requestDto = RoutineInstanceFactory.createRoutineInstanceRequestDto();
 
         mockMvc.perform(post(API_BASE_ROUTINES)
                 .content(objectMapper.writeValueAsString(requestDto))
@@ -92,16 +95,16 @@ public class RoutineInstanceResourceIntegrationTest {
                 .andExpect(jsonPath(buildJsonPathToReadyName()).value(false))
                 .andExpect(jsonPath(buildJsonPathToId()).exists());
 
-        assertThat(routineRepository.count()).isEqualTo(1);
+        assertThat(routineInstanceRepository.count()).isEqualTo(1);
     }
 
     @Test
-    public void createRoutine_shouldSaveRoutineAsTemplateWithTwoTodos_whenNewRoutineWithTwoNewTodosSaved()
+    public void createRoutineInstance_shouldSaveRoutineAsTemplateWithTwoTodos_whenNewRoutineWithTwoNewTodosSaved()
             throws Exception {
-        Routine routine = RoutineFactory.routineInstance();
-        routineRepository.save(routine);
-        RoutineTodo firstRoutineTodo = RoutineTodoFactory.routineTodoWithRoutineInstance(routine);
-        RoutineTodo secondRoutineTodo = RoutineTodoFactory.routineTodoWithRoutineInstance(routine);
+        RoutineInstance routineInstance = RoutineInstanceFactory.routineInstance();
+        routineInstanceRepository.save(routineInstance);
+        RoutineTodo firstRoutineTodo = RoutineTodoFactory.routineTodoWithRoutineInstance(routineInstance);
+        RoutineTodo secondRoutineTodo = RoutineTodoFactory.routineTodoWithRoutineInstance(routineInstance);
         routineTodoRepository.saveAll(List.of(firstRoutineTodo, secondRoutineTodo));
 
         List<UUID> todoIds = List.of(firstRoutineTodo.getId(), secondRoutineTodo.getId());
@@ -122,20 +125,22 @@ public class RoutineInstanceResourceIntegrationTest {
 
     @Test
     public void createRoutine_shouldRespondWithBadRequestStatus_whenNameIsNull() throws Exception {
-        RoutineRequestDto requestDto = RoutineFactory.createRoutineWithNullNameValueRequestDto();
+        RoutineInstanceRequestDto requestDto = RoutineInstanceFactory.createRoutineInstanceRequestDto();
 
         mockMvc.perform(post(API_BASE_ROUTINES)
                 .content(objectMapper.writeValueAsString(requestDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isBadRequest());
 
-        assertThat(routineRepository.count()).isEqualTo(0);
+        assertThat(routineInstanceRepository.count()).isEqualTo(0);
     }
 
     @Test
     public void findAllRoutines_shouldReturnAllTodos() throws Exception {
-        routineRepository.save(RoutineFactory.routineInstance());
-        routineRepository.save(RoutineFactory.routineInstance());
+        routineInstanceRepository.save(RoutineInstanceFactory.routineInstance());
+        ;
+        routineInstanceRepository.save(RoutineInstanceFactory.routineInstance());
+        ;
 
         mockMvc.perform(get(API_BASE_ROUTINES))
                 .andExpect(status().isFound())
@@ -144,19 +149,19 @@ public class RoutineInstanceResourceIntegrationTest {
 
     @Test
     public void findRoutineById_shouldReturnExistingRoutine_whenIdIsCorrect() throws Exception {
-        Routine routine = routineRepository.save(RoutineFactory.routineInstance());
+        RoutineInstance routineInstance = routineInstanceRepository.save(RoutineInstanceFactory.routineInstance());
 
-        mockMvc.perform(get(buildGetRoutineByIdUrl(routine.getId())))
+        mockMvc.perform(get(buildGetRoutineByIdUrl(routineInstance.getId())))
                 .andExpect(status().isFound())
-                .andExpect(jsonPath(buildJsonPathToId()).value(routine.getId()));
+                .andExpect(jsonPath(buildJsonPathToId()).value(routineInstance.getId()));
     }
 
     @Test
     public void updateRoutine_shouldUpdateRoutineAndReturnIt_whenRequestIsCorrect() throws Exception {
-        Routine routine = routineRepository.save(RoutineFactory.routineInstance());
+        RoutineInstance routineInstance = routineInstanceRepository.save(RoutineInstanceFactory.routineInstance());
         RoutineRequestDto requestDto = RoutineFactory.updateRoutineRequestDto();
 
-        mockMvc.perform(put(API_BASE_ROUTINES + "/" + routine.getId())
+        mockMvc.perform(put(API_BASE_ROUTINES + "/" + routineInstance.getId())
                 .content(objectMapper.writeValueAsString(requestDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
@@ -166,24 +171,24 @@ public class RoutineInstanceResourceIntegrationTest {
                 .andExpect(jsonPath(buildJsonPathToReadyName()).value(true))
                 .andExpect(jsonPath(buildJsonPathToId()).exists());
 
-        assertThat(routineRepository.count()).isEqualTo(1);
-        assertThat(routineRepository.findById(routine.getId()).get().getName()).isEqualTo(requestDto.getName());
+        assertThat(routineInstanceRepository.count()).isEqualTo(1);
+        assertThat(routineInstanceRepository.findById(routineInstance.getId()).get().getName()).isEqualTo(requestDto.getName());
     }
 
     @Test
     public void updateRoutine_shouldUpdateRoutineTodosAndReturnIt_whenRequestIsCorrect() throws Exception {
-        Routine routine = routineRepository.save(RoutineFactory.routineInstance());
-        RoutineTodo firstRoutineTodo = RoutineTodoFactory.routineTodoWithRoutineInstance(routine);
-        RoutineTodo secondRoutineTodo = RoutineTodoFactory.routineTodoWithRoutineInstance(routine);
-        RoutineTodo thirdRoutineTodo = RoutineTodoFactory.routineTodoWithRoutineInstance(routine);
-        RoutineTodo fourthRoutineTodo = RoutineTodoFactory.routineTodoWithRoutineInstance(routine);
+        RoutineInstance routineInstance = routineInstanceRepository.save(RoutineInstanceFactory.routineInstance());
+        RoutineTodo firstRoutineTodo = RoutineTodoFactory.routineTodoWithRoutineInstance(routineInstance);
+        RoutineTodo secondRoutineTodo = RoutineTodoFactory.routineTodoWithRoutineInstance(routineInstance);
+        RoutineTodo thirdRoutineTodo = RoutineTodoFactory.routineTodoWithRoutineInstance(routineInstance);
+        RoutineTodo fourthRoutineTodo = RoutineTodoFactory.routineTodoWithRoutineInstance(routineInstance);
 
         routineTodoRepository.saveAll(List.of(firstRoutineTodo, secondRoutineTodo, thirdRoutineTodo, fourthRoutineTodo));
 
         List<UUID> updatedRoutineTodoIds = List.of(firstRoutineTodo.getId(), secondRoutineTodo.getId(), thirdRoutineTodo.getId());
         RoutineRequestDto requestDto = RoutineFactory.updateRoutineRequestDtoWithInstanceIds(updatedRoutineTodoIds);
 
-        mockMvc.perform(put(API_BASE_ROUTINES + "/" + routine.getId())
+        mockMvc.perform(put(API_BASE_ROUTINES + "/" + routineInstance.getId())
                 .content(objectMapper.writeValueAsString(requestDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
@@ -191,16 +196,16 @@ public class RoutineInstanceResourceIntegrationTest {
                 .andExpect(jsonPath(buildJsonPathToRoutineTodoIdInTodosListByIndex(1)).value(secondRoutineTodo.getId()))
                 .andExpect(jsonPath(buildJsonPathToRoutineTodoIdInTodosListByIndex(2)).value(thirdRoutineTodo.getId()));
 
-        assertThat(routineRepository.count()).isEqualTo(1);
+        assertThat(routineInstanceRepository.count()).isEqualTo(1);
         assertThat(routineTodoRepository.count()).isEqualTo(4);
     }
 
     @Test
     public void updateRoutine_shouldRespondWithBadRequestStatus_whenNameIsNull() throws Exception {
-        Routine routine = routineRepository.save(RoutineFactory.routineInstance());
+        RoutineInstance routineInstance = routineInstanceRepository.save(RoutineInstanceFactory.routineInstance());
         RoutineRequestDto requestDto = RoutineFactory.updateRoutineWithNullNaveValueRequestDto();
 
-        mockMvc.perform(put(API_BASE_ROUTINES + "/" + routine.getId())
+        mockMvc.perform(put(API_BASE_ROUTINES + "/" + routineInstance.getId())
                 .content(objectMapper.writeValueAsString(requestDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isBadRequest());
@@ -208,16 +213,16 @@ public class RoutineInstanceResourceIntegrationTest {
 
     @Test
     public void deleteRoutine_shouldDeleteRoutine_whenIdIsCorrect() throws Exception {
-        Routine routine = RoutineFactory.routineInstance();
-        Routine savedRoutine = routineRepository.save(routine);
+        RoutineInstance routineInstance = routineInstanceRepository.save(RoutineInstanceFactory.routineInstance());
+        Routine savedRoutine = routineInstanceRepository.save(routineInstance);
 
-        RoutineTodo routineTodo = RoutineTodoFactory.routineTodoWithRoutineInstance(routine);
+        RoutineTodo routineTodo = RoutineTodoFactory.routineTodoWithRoutineInstance(routineInstance);
         routineTodoRepository.save(routineTodo);
 
-        mockMvc.perform(delete(buildDeleteRoutineByIdUrl(routine.getId())))
+        mockMvc.perform(delete(buildDeleteRoutineByIdUrl(routineInstance.getId())))
                 .andExpect(status().isOk());
 
-        assertThat(routineRepository.findById(routine.getId())).isEmpty();
-        assertThat(routineRepository.count()).isEqualTo(0);
+        assertThat(routineInstanceRepository.findById(routineInstance.getId())).isEmpty();
+        assertThat(routineInstanceRepository.count()).isEqualTo(0);
     }
 }

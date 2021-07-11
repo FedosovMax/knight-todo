@@ -14,7 +14,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = {"routine"})
+@ToString(exclude = {"routineInstance"})
 public class RoutineTodo {
 
     @Id
@@ -41,6 +41,6 @@ public class RoutineTodo {
     private boolean ready = false;
 
     @ManyToOne
-    @JoinColumn(name = "routine_id")
-    private Routine routine;
+    @JoinColumn(name = "routine_instance_id")
+    private RoutineInstance routineInstance;
 }

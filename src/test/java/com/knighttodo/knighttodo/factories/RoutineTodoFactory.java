@@ -2,10 +2,13 @@ package com.knighttodo.knighttodo.factories;
 
 import com.knighttodo.knighttodo.gateway.experience.response.ExperienceResponse;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Routine;
+import com.knighttodo.knighttodo.gateway.privatedb.representation.RoutineInstance;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.RoutineTodo;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scariness;
 import com.knighttodo.knighttodo.rest.request.RoutineTodoRequestDto;
+
+import java.util.UUID;
 
 public class RoutineTodoFactory {
 
@@ -56,24 +59,24 @@ public class RoutineTodoFactory {
         return request;
     }
 
-    public static RoutineTodo routineTodoWithRoutineInstance(Routine routine) {
+    public static RoutineTodo routineTodoWithRoutineInstance(RoutineInstance routineInstance) {
         return RoutineTodo
             .builder()
             .routineTodoName(ROUTINE_TODO_NAME)
             .scariness(SCARINESS_TODO)
             .hardness(HARDNESS_TODO)
-            .routine(routine)
+            .routineInstance(routineInstance)
             .ready(FALSE_TODO_READY)
             .build();
     }
 
-    public static RoutineTodo routineTodoWithRoutineReadyInstance(Routine routine) {
+    public static RoutineTodo routineTodoWithRoutineReadyInstance(RoutineInstance routineInstance) {
         return RoutineTodo
             .builder()
             .routineTodoName(ROUTINE_TODO_NAME)
             .scariness(SCARINESS_TODO)
             .hardness(HARDNESS_TODO)
-            .routine(routine)
+            .routineInstance(routineInstance)
             .ready(TRUE_TODO_READY)
             .build();
     }
@@ -138,7 +141,7 @@ public class RoutineTodoFactory {
         return request;
     }
 
-    public static ExperienceResponse experienceResponseInstance(String todoId) {
+    public static ExperienceResponse experienceResponseInstance(UUID todoId) {
         return ExperienceResponse.builder().todoId(todoId).experience(HARD_SCARY_EXPERIENCE).build();
     }
 }

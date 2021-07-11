@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -29,5 +30,5 @@ public class RoutineInstanceRequestDto {
     private boolean ready;
 
     @NotNull
-    private List<String> routineTodoIds;
+    private List<UUID> routineTodoIds;
 }

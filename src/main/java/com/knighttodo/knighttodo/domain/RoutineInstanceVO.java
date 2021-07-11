@@ -8,7 +8,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,5 +29,5 @@ public class RoutineInstanceVO {
 
     private Routine routine;
 
-    private List<RoutineTodoVO> routineTodos = new ArrayList<>();
+    private List<RoutineTodoVO> routineInstanceTodos;
 }

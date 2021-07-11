@@ -28,5 +28,5 @@ public class RoutineVO {
 
     private boolean ready;
 
-    private List<RoutineInstanceVO> routineInstanceVOs = new ArrayList<>();
+    private List<RoutineInstanceVO> routineInstanceVOs;
 }

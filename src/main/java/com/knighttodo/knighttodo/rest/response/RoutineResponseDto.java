@@ -7,8 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -16,7 +16,7 @@ import java.util.List;
 @Builder
 public class RoutineResponseDto {
 
-    private String id;
+    private UUID id;
 
     private String name;
 
@@ -26,4 +26,5 @@ public class RoutineResponseDto {
 
     private boolean ready;
 
-    private List<RoutineInstanceResponseDto> routineInstances = new ArrayList<>();}
+    private List<RoutineInstanceResponseDto> routineInstances;
+}

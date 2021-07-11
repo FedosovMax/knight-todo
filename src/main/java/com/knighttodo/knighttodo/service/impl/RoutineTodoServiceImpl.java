@@ -5,7 +5,7 @@ import com.knighttodo.knighttodo.exception.RoutineTodoNotFoundException;
 import com.knighttodo.knighttodo.exception.UnchangeableFieldUpdateException;
 import com.knighttodo.knighttodo.gateway.RoutineTodoGateway;
 import com.knighttodo.knighttodo.gateway.experience.ExperienceGateway;
-import com.knighttodo.knighttodo.service.RoutineService;
+import com.knighttodo.knighttodo.service.RoutineInstanceService;
 import com.knighttodo.knighttodo.service.RoutineTodoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,12 +20,12 @@ import java.util.UUID;
 public class RoutineTodoServiceImpl implements RoutineTodoService {
 
     private final RoutineTodoGateway routineTodoGateway;
-    private final RoutineService routineService;
+    private final RoutineInstanceService routineInstanceService;
     private final ExperienceGateway experienceGateway;
 
     @Override
     public RoutineTodoVO save(UUID routineId, RoutineTodoVO routineTodoVO) {
-        routineTodoVO.setRoutine(routineService.findById(routineId));
+        routineTodoVO.setRoutineInstanceVO(routineInstanceService.findById(routineId));
         return routineTodoGateway.save(routineTodoVO);
     }
 
@@ -81,7 +81,7 @@ public class RoutineTodoServiceImpl implements RoutineTodoService {
     @Override
     public RoutineTodoVO updateIsReady(UUID routineId, UUID routineTodoId, boolean isReady) {
         RoutineTodoVO routineTodoVO = findById(routineTodoId);
-        routineTodoVO.setRoutine(routineService.findById(routineId));
+        routineTodoVO.setRoutineInstanceVO(routineInstanceService.findById(routineId));
         routineTodoVO.setReady(isReady);
         routineTodoVO = routineTodoGateway.save(routineTodoVO);
         return experienceGateway.calculateExperience(routineTodoVO);

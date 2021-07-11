@@ -13,25 +13,25 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {RoutineMapper.class, DayMapper.class})
 public interface RoutineTodoMapper {
 
-    @Mapping(target = "routine", qualifiedByName = {"toRoutineTodoWithoutRoutine"})
+    @Mapping(target = "routineInstance", qualifiedByName = {"toRoutineTodoWithoutRoutineInstance"})
     RoutineTodo toRoutineTodo(RoutineTodoVO routineTodoVO);
 
-    @Mapping(target = "routine", qualifiedByName = {"toRoutineTodoVOWithoutRoutine"})
+    @Mapping(target = "routineInstanceVO", qualifiedByName = {"toRoutineTodoVOWithoutRoutineInstance"})
     RoutineTodoVO toRoutineTodoVO(RoutineTodo routineTodo);
 
     @Named("toRoutineTodos")
-    @IterableMapping(qualifiedByName = "toRoutineTodoWithoutRoutine")
+    @IterableMapping(qualifiedByName = "toRoutineTodoWithoutRoutineInstance")
     List<RoutineTodo> toRoutineTodos(List<RoutineTodoVO> routineTodoVOS);
 
     @Named("toRoutineTodoVOs")
-    @IterableMapping(qualifiedByName = "toRoutineTodoVOWithoutRoutine")
+    @IterableMapping(qualifiedByName = "toRoutineTodoVOWithoutRoutineInstance")
     List<RoutineTodoVO> toRoutineTodoVOs(List<RoutineTodo> routineTodos);
 
-    @Named("toRoutineTodoWithoutRoutine")
-    @Mapping(target = "routine", ignore = true)
+    @Named("toRoutineTodoWithoutRoutineInstance")
+    @Mapping(target = "routineInstance", ignore = true)
     RoutineTodo toRoutineTodoWithoutRoutine(RoutineTodoVO routineTodoVO);
 
-    @Named("toRoutineTodoVOWithoutRoutine")
-    @Mapping(target = "routine", ignore = true)
+    @Named("toRoutineTodoVOWithoutRoutineInstance")
+    @Mapping(target = "routineInstanceVO", ignore = true)
     RoutineTodoVO toRoutineTodoVOWithoutRoutine(RoutineTodo routineTodo);
 }

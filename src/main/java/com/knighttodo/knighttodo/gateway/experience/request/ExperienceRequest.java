@@ -5,15 +5,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class ExperienceRequest {
 
-    private String todoId;
+    private UUID todoId;
 
-    private String userId;
+    private UUID userId;
 
     private String scariness;
 

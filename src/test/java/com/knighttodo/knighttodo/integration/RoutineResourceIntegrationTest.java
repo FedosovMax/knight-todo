@@ -3,12 +3,10 @@ package com.knighttodo.knighttodo.integration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.knighttodo.knighttodo.factories.RoutineFactory;
 import com.knighttodo.knighttodo.factories.RoutineInstanceFactory;
-import com.knighttodo.knighttodo.factories.RoutineTodoFactory;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.RoutineInstanceRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.RoutineRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Routine;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.RoutineInstance;
-import com.knighttodo.knighttodo.gateway.privatedb.representation.RoutineTodo;
 import com.knighttodo.knighttodo.rest.request.RoutineRequestDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -98,33 +96,6 @@ public class RoutineResourceIntegrationTest {
     }
 
     @Test
-    public void createRoutine_shouldSaveRoutineAsTemplateWithTwoTodos_whenNewRoutineWithTwoNewTodosSaved()
-            throws Exception {
-        Routine routine = RoutineFactory.routineInstance();
-        routineRepository.save(routine);
-        RoutineInstance firstRoutineInstance = RoutineInstanceFactory.routineInstanceWithRoutine(routine);
-        RoutineInstance secondRoutineInstance = RoutineInstanceFactory.routineInstanceWithRoutine(routine);
-        routine.getRoutineInstances().add(firstRoutineInstance);
-        routine.getRoutineInstances().add(secondRoutineInstance);
-        routineInstanceRepository.saveAll(List.of(firstRoutineInstance, secondRoutineInstance));
-
-        List<UUID> instanceIds = List.of(firstRoutineInstance.getId(), secondRoutineInstance.getId());
-        RoutineRequestDto routineRequestDto = RoutineFactory.createRoutineWithInstanceIdsRequestDto(instanceIds);
-
-        mockMvc.perform(post(API_BASE_ROUTINES)
-                .content(objectMapper.writeValueAsString(routineRequestDto))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath(buildJsonPathToName()).value(routineRequestDto.getName()))
-                .andExpect(jsonPath(buildJsonPathToHardness()).value(routineRequestDto.getHardness().toString()))
-                .andExpect(jsonPath(buildJsonPathToScariness()).value(routineRequestDto.getScariness().toString()))
-                .andExpect(jsonPath(buildJsonPathToReadyName()).value(false))
-                .andExpect(jsonPath(buildJsonPathToRoutineInstanceIdInInstancesListByIndex(0)).value(firstRoutineInstance.getId()))
-                .andExpect(jsonPath(buildJsonPathToRoutineInstanceIdInInstancesListByIndex(1)).value(secondRoutineInstance.getId()))
-                .andExpect(jsonPath(buildJsonPathToId()).exists());
-    }
-
-    @Test
     public void createRoutine_shouldRespondWithBadRequestStatus_whenNameIsNull() throws Exception {
         RoutineRequestDto requestDto = RoutineFactory.createRoutineWithNullNameValueRequestDto();
 
@@ -175,7 +146,7 @@ public class RoutineResourceIntegrationTest {
     }
 
     @Test
-    public void updateRoutine_shouldUpdateRoutineTodosAndReturnIt_whenRequestIsCorrect() throws Exception {
+    public void updateRoutine_shouldUpdateRoutineInstancesAndReturnUpdatedRoutine_whenRequestIsCorrect() throws Exception {
         Routine routine = routineRepository.save(RoutineFactory.routineInstance());
         RoutineInstance firstRoutineInstance = RoutineInstanceFactory.routineInstanceWithRoutine(routine);
         RoutineInstance secondRoutineInstance = RoutineInstanceFactory.routineInstanceWithRoutine(routine);

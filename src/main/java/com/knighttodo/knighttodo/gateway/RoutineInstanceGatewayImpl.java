@@ -1,12 +1,8 @@
 package com.knighttodo.knighttodo.gateway;
 
 import com.knighttodo.knighttodo.domain.RoutineInstanceVO;
-import com.knighttodo.knighttodo.domain.RoutineVO;
 import com.knighttodo.knighttodo.gateway.privatedb.mapper.RoutineInstanceMapper;
-import com.knighttodo.knighttodo.gateway.privatedb.mapper.RoutineMapper;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.RoutineInstanceRepository;
-import com.knighttodo.knighttodo.gateway.privatedb.repository.RoutineRepository;
-import com.knighttodo.knighttodo.gateway.privatedb.representation.Routine;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.RoutineInstance;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
