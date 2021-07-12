@@ -89,7 +89,6 @@ public class RoutineResourceIntegrationTest {
                 .andExpect(jsonPath(buildJsonPathToName()).isNotEmpty())
                 .andExpect(jsonPath(buildJsonPathToHardness()).isNotEmpty())
                 .andExpect(jsonPath(buildJsonPathToScariness()).isNotEmpty())
-                .andExpect(jsonPath(buildJsonPathToReadyName()).value(false))
                 .andExpect(jsonPath(buildJsonPathToId()).exists());
 
         assertThat(routineRepository.count()).isEqualTo(1);
@@ -138,36 +137,10 @@ public class RoutineResourceIntegrationTest {
                 .andExpect(jsonPath(buildJsonPathToName()).value(requestDto.getName()))
                 .andExpect(jsonPath(buildJsonPathToHardness()).value(requestDto.getHardness().toString()))
                 .andExpect(jsonPath(buildJsonPathToScariness()).value(requestDto.getScariness().toString()))
-                .andExpect(jsonPath(buildJsonPathToReadyName()).value(true))
                 .andExpect(jsonPath(buildJsonPathToId()).exists());
 
         assertThat(routineRepository.count()).isEqualTo(1);
         assertThat(routineRepository.findById(routine.getId()).get().getName()).isEqualTo(requestDto.getName());
-    }
-
-    @Test
-    public void updateRoutine_shouldUpdateRoutineInstancesAndReturnUpdatedRoutine_whenRequestIsCorrect() throws Exception {
-        Routine routine = routineRepository.save(RoutineFactory.routineInstance());
-        RoutineInstance firstRoutineInstance = RoutineInstanceFactory.routineInstanceWithRoutine(routine);
-        RoutineInstance secondRoutineInstance = RoutineInstanceFactory.routineInstanceWithRoutine(routine);
-        RoutineInstance thirdRoutineInstance = RoutineInstanceFactory.routineInstanceWithRoutine(routine);
-        RoutineInstance fourthRoutineInstance = RoutineInstanceFactory.routineInstanceWithRoutine(routine);
-
-        routineInstanceRepository.saveAll(List.of(firstRoutineInstance, secondRoutineInstance, thirdRoutineInstance, fourthRoutineInstance));
-
-        List<UUID> updatedRoutineTodoIds = List.of(firstRoutineInstance.getId(), secondRoutineInstance.getId(), thirdRoutineInstance.getId());
-        RoutineRequestDto requestDto = RoutineFactory.updateRoutineRequestDtoWithInstanceIds(updatedRoutineTodoIds);
-
-        mockMvc.perform(put(API_BASE_ROUTINES + "/" + routine.getId())
-                .content(objectMapper.writeValueAsString(requestDto))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath(buildJsonPathToRoutineInstanceIdInInstancesListByIndex(0)).value(firstRoutineInstance.getId()))
-                .andExpect(jsonPath(buildJsonPathToRoutineInstanceIdInInstancesListByIndex(1)).value(secondRoutineInstance.getId()))
-                .andExpect(jsonPath(buildJsonPathToRoutineInstanceIdInInstancesListByIndex(2)).value(thirdRoutineInstance.getId()));
-
-        assertThat(routineRepository.count()).isEqualTo(1);
-        assertThat(routineInstanceRepository.count()).isEqualTo(4);
     }
 
     @Test

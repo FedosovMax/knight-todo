@@ -26,7 +26,5 @@ public class RoutineVO {
 
     private Scariness scariness;
 
-    private boolean ready;
-
     private List<RoutineInstanceVO> routineInstanceVOs;
 }

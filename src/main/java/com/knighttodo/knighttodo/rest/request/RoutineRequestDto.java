@@ -27,8 +27,6 @@ public class RoutineRequestDto {
     @NotNull
     private Scariness scariness;
 
-    private boolean ready;
-
     @NotNull
     private List<UUID> routineInstanceIds;
 }

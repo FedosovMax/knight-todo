@@ -48,9 +48,6 @@ public class RoutineServiceImpl implements RoutineService {
         routineVO.setName(changedRoutineVO.getName());
         routineVO.setHardness(changedRoutineVO.getHardness());
         routineVO.setScariness(changedRoutineVO.getScariness());
-        List<RoutineInstanceVO> routineVOs = changedRoutineVO.getRoutineInstanceVOs()
-                .stream().map(a -> routineInstanceService.findById(a.getId())).collect(Collectors.toList());
-        routineVO.setRoutineInstanceVOs(routineVOs);
         return routineGateway.save(routineVO);
     }
 
