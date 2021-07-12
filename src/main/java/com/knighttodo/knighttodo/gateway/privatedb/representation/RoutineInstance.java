@@ -32,6 +32,6 @@ public class RoutineInstance extends Routine {
     @ManyToOne(cascade = CascadeType.ALL)
     private Routine routine;
 
-    @OneToMany(mappedBy = "routineInstance", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "routineInstance", cascade = CascadeType.ALL)
     private List<RoutineTodo> routineInstanceTodos;
 }

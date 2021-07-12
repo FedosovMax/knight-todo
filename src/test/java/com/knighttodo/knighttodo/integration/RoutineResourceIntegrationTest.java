@@ -122,7 +122,7 @@ public class RoutineResourceIntegrationTest {
 
         mockMvc.perform(get(buildGetRoutineByIdUrl(routine.getId())))
                 .andExpect(status().isFound())
-                .andExpect(jsonPath(buildJsonPathToId()).value(routine.getId()));
+                .andExpect(jsonPath(buildJsonPathToId()).value(routine.getId().toString()));
     }
 
     @Test

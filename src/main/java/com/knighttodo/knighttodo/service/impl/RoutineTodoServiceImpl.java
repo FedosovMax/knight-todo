@@ -83,7 +83,7 @@ public class RoutineTodoServiceImpl implements RoutineTodoService {
         RoutineTodoVO routineTodoVO = findById(routineTodoId);
         routineTodoVO.setRoutineInstanceVO(routineInstanceService.findById(routineId));
         routineTodoVO.setReady(isReady);
-        routineTodoVO = routineTodoGateway.save(routineTodoVO);
+        routineTodoGateway.save(routineTodoVO);
         return experienceGateway.calculateExperience(routineTodoVO);
     }
 }

@@ -183,7 +183,7 @@ public class RoutineTodoResourceIntegrationTest {
 
         mockMvc.perform(get(buildGetRoutineTodoByIdUrl(routineInstance.getId(), savedRoutineTodo.getId())))
                 .andExpect(status().isFound())
-                .andExpect(jsonPath(buildJsonPathToId()).value(routineTodo.getId()));
+                .andExpect(jsonPath(buildJsonPathToId()).value(routineTodo.getId().toString()));
     }
 
     @Test

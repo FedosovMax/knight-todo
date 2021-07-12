@@ -94,6 +94,10 @@ public class TestConstants {
         return JSON_ROOT + "routineId";
     }
 
+    public static String buildJsonPathToRoutineInstanceId() {
+        return JSON_ROOT + "routineInstance";
+    }
+
     public static String buildJsonPathToExperience() {
         return JSON_ROOT + "experience";
     }
