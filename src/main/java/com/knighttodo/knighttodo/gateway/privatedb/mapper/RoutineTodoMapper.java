@@ -10,7 +10,7 @@ import org.mapstruct.Named;
 import java.util.List;
 
 @Named("RoutineTodoMapper")
-@Mapper(componentModel = "spring", uses = {RoutineMapper.class, DayMapper.class})
+@Mapper(componentModel = "spring", uses = {RoutineInstanceMapper.class})
 public interface RoutineTodoMapper {
 
     @Mapping(target = "routineInstance", qualifiedByName = {"toRoutineTodoWithoutRoutineInstance"})

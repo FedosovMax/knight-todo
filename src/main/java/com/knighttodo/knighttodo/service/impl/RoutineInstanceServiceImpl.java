@@ -61,13 +61,13 @@ public class RoutineInstanceServiceImpl implements RoutineInstanceService {
 
     private void unmapRoutineTodosExcludedFromRoutine(RoutineInstanceVO routineInstanceVO, RoutineInstanceVO changedRoutineInstanceVO) {
         List<UUID> changedRoutineVOTodoIds = extractTodoIds(changedRoutineInstanceVO);
-        routineInstanceVO.getRoutineInstanceTodos().stream()
+        routineInstanceVO.getRoutineTodos().stream()
                 .filter(routineTodoVO -> !changedRoutineVOTodoIds.contains(routineTodoVO.getId()))
                 .forEach(routineTodoVO -> routineTodoVO.setRoutineInstanceVO(null));
     }
 
     private List<UUID> extractTodoIds(RoutineInstanceVO routineInstanceVO) {
-        return routineInstanceVO.getRoutineInstanceTodos().stream().map(RoutineTodoVO::getId).collect(Collectors.toList());
+        return routineInstanceVO.getRoutineTodos().stream().map(RoutineTodoVO::getId).collect(Collectors.toList());
     }
 
     private void mapRoutineTodosAddedToRoutine(RoutineInstanceVO routineInstanceVO, RoutineInstanceVO changedRoutineInstanceVO) {
@@ -75,7 +75,7 @@ public class RoutineInstanceServiceImpl implements RoutineInstanceService {
         List<UUID> addedRoutineTodoIds = extractTodoIds(changedRoutineInstanceVO).stream()
                 .filter(routineTodoId -> !routineVOTodoIds.contains(routineTodoId))
                 .collect(Collectors.toList());
-        routineInstanceVO.getRoutineInstanceTodos().addAll(fetchRoutineTodosByIds(addedRoutineTodoIds));
+        routineInstanceVO.getRoutineTodos().addAll(fetchRoutineTodosByIds(addedRoutineTodoIds));
     }
 
     private List<RoutineTodoVO> fetchRoutineTodosByIds(List<UUID> routineTodoIds) {

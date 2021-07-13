@@ -33,5 +33,5 @@ public class RoutineInstance extends Routine {
     private Routine routine;
 
     @OneToMany(mappedBy = "routineInstance", cascade = CascadeType.ALL)
-    private List<RoutineTodo> routineInstanceTodos;
+    private List<RoutineTodo> routineTodos;
 }

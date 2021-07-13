@@ -13,7 +13,7 @@ import java.util.UUID;
 @Mapper(componentModel = "spring", uses = RoutineTodoRestMapper.class)
 public interface RoutineInstanceRestMapper {
 
-    @Mapping(source = "routineTodoIds", target = "routineInstanceTodos",
+    @Mapping(source = "routineTodoIds", target = "routineTodos",
             qualifiedByName = {"RoutineTodoRestMapper", "fromIdToRoutineTodoVOWithId"})
     RoutineInstanceVO toRoutineInstanceVO(RoutineInstanceRequestDto requestDto);
 

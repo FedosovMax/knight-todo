@@ -29,5 +29,5 @@ public class RoutineInstanceVO {
 
     private Routine routine;
 
-    private List<RoutineTodoVO> routineInstanceTodos;
+    private List<RoutineTodoVO> routineTodos;
 }

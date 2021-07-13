@@ -26,7 +26,9 @@ public class RoutineTodoServiceImpl implements RoutineTodoService {
     @Override
     public RoutineTodoVO save(UUID routineId, RoutineTodoVO routineTodoVO) {
         routineTodoVO.setRoutineInstanceVO(routineInstanceService.findById(routineId));
-        return routineTodoGateway.save(routineTodoVO);
+        RoutineTodoVO savedRoutineTodo = routineTodoGateway.save(routineTodoVO);
+        savedRoutineTodo.setRoutineInstanceVO(routineTodoVO.getRoutineInstanceVO());
+        return savedRoutineTodo;
     }
 
     @Override

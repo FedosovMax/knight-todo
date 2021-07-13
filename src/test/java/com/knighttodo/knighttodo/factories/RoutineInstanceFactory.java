@@ -92,7 +92,7 @@ public class RoutineInstanceFactory {
                 .hardness(Hardness.HARD)
                 .name(ROUTINE_NAME)
                 .scariness(Scariness.SCARY)
-                .routineInstanceTodos(new ArrayList<>())
+                .routineTodos(new ArrayList<>())
                 .build();
     }
 
@@ -104,7 +104,7 @@ public class RoutineInstanceFactory {
                 .name(ROUTINE_NAME)
                 .scariness(Scariness.SCARY)
                 .routine(routine)
-                .routineInstanceTodos(new ArrayList<>())
+                .routineTodos(new ArrayList<>())
                 .build();
     }
 }
