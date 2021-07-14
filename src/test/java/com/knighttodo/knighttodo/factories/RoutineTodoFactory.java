@@ -81,7 +81,7 @@ public class RoutineTodoFactory {
             .build();
     }
 
-    public static RoutineTodoRequestDto updateRoutineTodoRequestDto(Routine savedRoutine) {
+    public static RoutineTodoRequestDto updateRoutineTodoRequestDto() {
         return RoutineTodoRequestDto.builder()
             .routineTodoName(UPDATED_ROUTINE_TODO_NAME)
             .scariness(UPDATED_SCARINESS_TODO)
@@ -117,26 +117,26 @@ public class RoutineTodoFactory {
             .build();
     }
 
-    public static RoutineTodoRequestDto updateRoutineTodoRequestDtoWithoutName(Routine savedRoutine) {
-        RoutineTodoRequestDto request = updateRoutineTodoRequestDto(savedRoutine);
+    public static RoutineTodoRequestDto updateRoutineTodoRequestDtoWithoutName() {
+        RoutineTodoRequestDto request = updateRoutineTodoRequestDto();
         request.setRoutineTodoName(null);
         return request;
     }
 
-    public static RoutineTodoRequestDto updateRoutineTodoRequestDtoWithNameConsistingOfSpaces(Routine savedRoutine) {
-        RoutineTodoRequestDto request = updateRoutineTodoRequestDto(savedRoutine);
+    public static RoutineTodoRequestDto updateRoutineTodoRequestDtoWithNameConsistingOfSpaces() {
+        RoutineTodoRequestDto request = updateRoutineTodoRequestDto();
         request.setRoutineTodoName("    ");
         return request;
     }
 
-    public static RoutineTodoRequestDto updateRoutineTodoRequestDtoWithoutScariness(Routine savedRoutine) {
-        RoutineTodoRequestDto request = updateRoutineTodoRequestDto(savedRoutine);
+    public static RoutineTodoRequestDto updateRoutineTodoRequestDtoWithoutScariness() {
+        RoutineTodoRequestDto request = updateRoutineTodoRequestDto();
         request.setScariness(null);
         return request;
     }
 
-    public static RoutineTodoRequestDto updateRoutineTodoRequestDtoWithoutHardness(Routine savedRoutine) {
-        RoutineTodoRequestDto request = updateRoutineTodoRequestDto(savedRoutine);
+    public static RoutineTodoRequestDto updateRoutineTodoRequestDtoWithoutHardness() {
+        RoutineTodoRequestDto request = updateRoutineTodoRequestDto();
         request.setHardness(null);
         return request;
     }

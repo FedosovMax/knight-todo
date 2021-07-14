@@ -2,10 +2,7 @@ package com.knighttodo.knighttodo.gateway.privatedb.representation;
 
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scariness;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -17,7 +14,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "routine")
 @Data
-@SuperBuilder
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
@@ -41,4 +38,7 @@ public class Routine {
 
     @OneToMany(mappedBy = "routine", cascade = CascadeType.ALL)
     private List<RoutineInstance> routineInstances = new ArrayList<>();
+
+    @OneToMany(mappedBy = "routineInstance", cascade = CascadeType.ALL)
+    private List<RoutineTodo> routineTodos;
 }

@@ -21,12 +21,13 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.knighttodo.knighttodo.Constants.API_BASE_ROUTINES;
+import static com.knighttodo.knighttodo.Constants.API_BASE_URL_V1;
 
 @Api(value = "RoutineResource controller")
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(API_BASE_ROUTINES)
+@RequestMapping(API_BASE_URL_V1 + API_BASE_ROUTINES)
 public class RoutineResource {
 
     private final RoutineService routineService;

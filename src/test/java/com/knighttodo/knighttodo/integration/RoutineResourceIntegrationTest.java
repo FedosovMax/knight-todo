@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.knighttodo.knighttodo.Constants.API_BASE_ROUTINES;
+import static com.knighttodo.knighttodo.Constants.API_BASE_URL_V1;
 import static com.knighttodo.knighttodo.TestConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -82,7 +83,7 @@ public class RoutineResourceIntegrationTest {
     public void createRoutine_shouldAddRoutineAndReturnIt_whenRequestIsCorrect() throws Exception {
         RoutineRequestDto requestDto = RoutineFactory.createRoutineRequestDto();
 
-        mockMvc.perform(post(API_BASE_ROUTINES)
+        mockMvc.perform(post(API_BASE_URL_V1 + API_BASE_ROUTINES)
                 .content(objectMapper.writeValueAsString(requestDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isCreated())
@@ -98,7 +99,7 @@ public class RoutineResourceIntegrationTest {
     public void createRoutine_shouldRespondWithBadRequestStatus_whenNameIsNull() throws Exception {
         RoutineRequestDto requestDto = RoutineFactory.createRoutineWithNullNameValueRequestDto();
 
-        mockMvc.perform(post(API_BASE_ROUTINES)
+        mockMvc.perform(post(API_BASE_URL_V1 + API_BASE_ROUTINES)
                 .content(objectMapper.writeValueAsString(requestDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isBadRequest());
@@ -111,7 +112,7 @@ public class RoutineResourceIntegrationTest {
         routineRepository.save(RoutineFactory.routineInstance());
         routineRepository.save(RoutineFactory.routineInstance());
 
-        mockMvc.perform(get(API_BASE_ROUTINES))
+        mockMvc.perform(get(API_BASE_URL_V1 + API_BASE_ROUTINES))
                 .andExpect(status().isFound())
                 .andExpect(jsonPath(buildJsonPathToLength()).value(2));
     }
@@ -130,7 +131,7 @@ public class RoutineResourceIntegrationTest {
         Routine routine = routineRepository.save(RoutineFactory.routineInstance());
         RoutineRequestDto requestDto = RoutineFactory.updateRoutineRequestDto();
 
-        mockMvc.perform(put(API_BASE_ROUTINES + "/" + routine.getId())
+        mockMvc.perform(put(API_BASE_URL_V1 + API_BASE_ROUTINES + "/" + routine.getId())
                 .content(objectMapper.writeValueAsString(requestDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
@@ -148,7 +149,7 @@ public class RoutineResourceIntegrationTest {
         Routine routine = routineRepository.save(RoutineFactory.routineInstance());
         RoutineRequestDto requestDto = RoutineFactory.updateRoutineWithNullNaveValueRequestDto();
 
-        mockMvc.perform(put(API_BASE_ROUTINES + "/" + routine.getId())
+        mockMvc.perform(put(API_BASE_URL_V1 + API_BASE_ROUTINES + "/" + routine.getId())
                 .content(objectMapper.writeValueAsString(requestDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isBadRequest());

@@ -20,13 +20,13 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static com.knighttodo.knighttodo.Constants.API_BASE_ROUTINES_INSTANCES;
+import static com.knighttodo.knighttodo.Constants.*;
 
 @Api(value = "RoutineInstanceResource controller")
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(API_BASE_ROUTINES_INSTANCES)
+@RequestMapping(API_BASE_URL_V1 + API_BASE_ROUTINES + "/{routineId}" + API_BASE_ROUTINES_INSTANCES)
 public class RoutineInstanceResource {
 
     private final RoutineInstanceService routineInstanceService;
@@ -41,10 +41,11 @@ public class RoutineInstanceResource {
             @ApiResponse(code = 403, message = "Operation forbidden"),
             @ApiResponse(code = 500, message = "Unexpected error")
     })
-    public RoutineInstanceResponseDto addRoutineInstance(@Valid @RequestBody RoutineInstanceRequestDto requestDto) {
+    public RoutineInstanceResponseDto addRoutineInstance(@PathVariable UUID routineId,
+                                                         @Valid @RequestBody RoutineInstanceRequestDto requestDto) {
         try {
             RoutineInstanceVO routineInstanceVO = routineInstanceRestMapper.toRoutineInstanceVO(requestDto);
-            RoutineInstanceVO savedRoutineVO = routineInstanceService.save(routineInstanceVO);
+            RoutineInstanceVO savedRoutineVO = routineInstanceService.save(routineInstanceVO, routineId);
             return routineInstanceRestMapper.toRoutineInstanceResponseDto(savedRoutineVO);
         } catch (RuntimeException ex) {
             log.error("Routine instance hasn't been created.", ex);
@@ -82,9 +83,9 @@ public class RoutineInstanceResource {
             @ApiResponse(code = 404, message = "Resource not found"),
             @ApiResponse(code = 500, message = "Unexpected error")
     })
-    public RoutineInstanceResponseDto findRoutineInstanceById(@PathVariable String routineInstanceId) {
+    public RoutineInstanceResponseDto findRoutineInstanceById(@PathVariable UUID routineInstanceId) {
         try {
-            RoutineInstanceVO routineInstanceVO = routineInstanceService.findById(UUID.fromString(routineInstanceId));
+            RoutineInstanceVO routineInstanceVO = routineInstanceService.findById(routineInstanceId);
             return routineInstanceRestMapper.toRoutineInstanceResponseDto(routineInstanceVO);
         } catch (RuntimeException ex) {
             log.error("Routine Instance can't be found.", ex);

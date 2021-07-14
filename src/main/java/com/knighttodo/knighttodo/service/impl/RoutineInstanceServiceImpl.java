@@ -2,10 +2,12 @@ package com.knighttodo.knighttodo.service.impl;
 
 import com.knighttodo.knighttodo.domain.RoutineInstanceVO;
 import com.knighttodo.knighttodo.domain.RoutineTodoVO;
+import com.knighttodo.knighttodo.domain.RoutineVO;
 import com.knighttodo.knighttodo.exception.RoutineInstanceNotFoundException;
 import com.knighttodo.knighttodo.gateway.RoutineInstanceGateway;
 import com.knighttodo.knighttodo.gateway.RoutineTodoGateway;
 import com.knighttodo.knighttodo.service.RoutineInstanceService;
+import com.knighttodo.knighttodo.service.RoutineService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,9 +24,12 @@ public class RoutineInstanceServiceImpl implements RoutineInstanceService {
 
     private final RoutineInstanceGateway routineInstanceGateway;
     private final RoutineTodoGateway routineTodoGateway;
+    private final RoutineService routineService;
 
     @Override
-    public RoutineInstanceVO save(RoutineInstanceVO routineInstanceVO) {
+    public RoutineInstanceVO save(RoutineInstanceVO routineInstanceVO, UUID routineId) {
+        RoutineVO foundRoutine = routineService.findById(routineId);
+        routineInstanceVO.setRoutine(foundRoutine);
         return routineInstanceGateway.save(routineInstanceVO);
     }
 

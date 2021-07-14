@@ -11,51 +11,59 @@ public class TestConstants {
     public static final String PARAMETER_TRUE = "true";
 
     public static String buildGetDayByIdUrl(UUID id) {
-        return API_BASE_DAYS + "/" + id;
+        return API_BASE_URL_V1 + API_BASE_DAYS + "/" + id;
     }
 
     public static String buildDeleteDayByIdUrl(UUID id) {
-        return API_BASE_DAYS + "/" + id;
+        return API_BASE_URL_V1 + API_BASE_DAYS + "/" + id;
     }
 
     public static String buildGetDayTodoByIdUrl(UUID dayId, UUID id) {
-        return API_BASE_DAYS + "/" + dayId + API_BASE_TODOS + "/" + id;
+        return API_BASE_URL_V1 + API_BASE_DAYS + "/" + dayId + API_BASE_TODOS + "/" + id;
     }
 
     public static String buildGetRoutineTodoByIdUrl(UUID routineId, UUID id) {
-        return API_BASE_ROUTINES + "/" + routineId + API_BASE_TODOS + "/" + id;
+        return API_BASE_URL_V1 + API_BASE_ROUTINES + "/" + routineId + API_BASE_TODOS + "/" + id;
     }
 
     public static String buildGetRoutineByIdUrl(UUID id) {
-        return API_BASE_ROUTINES + "/" + id;
+        return API_BASE_URL_V1 + API_BASE_ROUTINES + "/" + id;
+    }
+
+    public static String buildGetRoutineInstanceByIdUrl(UUID routineId, UUID id) {
+        return API_BASE_URL_V1 + API_BASE_ROUTINES + "/" + routineId + API_BASE_ROUTINES_INSTANCES + "/" + id;
     }
 
     public static String buildDeleteRoutineByIdUrl(UUID routineId) {
-        return API_BASE_ROUTINES + "/" + routineId;
+        return API_BASE_URL_V1 + API_BASE_ROUTINES + "/" + routineId;
+    }
+
+    public static String buildDeleteRoutineInstanceByIdUrl(UUID routineId, UUID routineInstanceId) {
+        return API_BASE_URL_V1 + API_BASE_ROUTINES + "/" + routineId + API_BASE_ROUTINES_INSTANCES + "/" + routineInstanceId;
     }
 
     public static String buildDeleteTodoByIdUrl(UUID dayId, UUID id) {
-        return API_BASE_DAYS + "/" + dayId + API_BASE_TODOS + "/" + id;
+        return API_BASE_URL_V1 + API_BASE_DAYS + "/" + dayId + API_BASE_TODOS + "/" + id;
     }
 
     public static String buildDeleteRoutineTodoByIdUrl(UUID routineId, UUID id) {
-        return API_BASE_ROUTINES + "/" + routineId + API_BASE_TODOS + "/" + id;
+        return API_BASE_URL_V1 + API_BASE_ROUTINES + "/" + routineId + API_BASE_TODOS + "/" + id;
     }
 
     public static String buildGetTodosByDayIdUrl(UUID dayId) {
-        return API_BASE_DAYS + "/" + dayId + API_BASE_TODOS;
+        return API_BASE_URL_V1 + API_BASE_DAYS + "/" + dayId + API_BASE_TODOS;
     }
 
     public static String buildGetRoutineTodosByDayIdUrl(UUID routineId) {
-        return API_BASE_ROUTINES + "/" + routineId + API_BASE_TODOS;
+        return API_BASE_URL_V1 + API_BASE_ROUTINES + "/" + routineId + API_BASE_TODOS;
     }
 
     public static String buildUpdateTodoReadyBaseUrl(UUID dayId, UUID dayTodoId) {
-        return API_BASE_DAYS + "/" + dayId + API_BASE_TODOS + "/" + dayTodoId + BASE_READY;
+        return API_BASE_URL_V1 + API_BASE_DAYS + "/" + dayId + API_BASE_TODOS + "/" + dayTodoId + BASE_READY;
     }
 
     public static String buildUpdateRoutineTodoReadyBaseUrl(UUID routineId, UUID routineTodoId) {
-        return API_BASE_ROUTINES + "/" + routineId + API_BASE_TODOS + "/" + routineTodoId + BASE_READY;
+        return API_BASE_URL_V1 + API_BASE_ROUTINES + "/" + routineId + API_BASE_TODOS + "/" + routineTodoId + BASE_READY;
     }
 
     public static String buildJsonPathToId() {

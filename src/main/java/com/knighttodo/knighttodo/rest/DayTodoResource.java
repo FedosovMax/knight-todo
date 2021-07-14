@@ -29,7 +29,7 @@ import static com.knighttodo.knighttodo.Constants.*;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(API_BASE_DAYS + "/{dayId}" + API_BASE_TODOS)
+@RequestMapping(API_BASE_URL_V1 + API_BASE_DAYS + "/{dayId}" + API_BASE_TODOS)
 public class DayTodoResource {
 
     private final DayTodoService dayTodoService;

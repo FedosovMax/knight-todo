@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface RoutineInstanceService {
 
-    RoutineInstanceVO save(RoutineInstanceVO routineInstanceVO);
+    RoutineInstanceVO save(RoutineInstanceVO routineInstanceVO, UUID routineId);
 
     List<RoutineInstanceVO> findAll();
 

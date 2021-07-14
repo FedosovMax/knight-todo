@@ -21,12 +21,13 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.knighttodo.knighttodo.Constants.API_BASE_DAYS;
+import static com.knighttodo.knighttodo.Constants.API_BASE_URL_V1;
 
 @Api(value = "DayResource controller")
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(API_BASE_DAYS)
+@RequestMapping(API_BASE_URL_V1 + API_BASE_DAYS)
 public class DayResource {
 
     private final DayService dayService;

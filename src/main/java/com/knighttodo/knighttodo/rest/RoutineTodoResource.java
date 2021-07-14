@@ -30,7 +30,7 @@ import static com.knighttodo.knighttodo.Constants.*;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(API_BASE_ROUTINES + "/{routineId}" + API_BASE_TODOS)
+@RequestMapping(API_BASE_URL_V1 + API_BASE_ROUTINES + "/{routineId}" + API_BASE_TODOS)
 public class RoutineTodoResource {
 
     private final RoutineTodoService routineTodoService;

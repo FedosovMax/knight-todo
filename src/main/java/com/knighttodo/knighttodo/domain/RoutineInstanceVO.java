@@ -27,7 +27,7 @@ public class RoutineInstanceVO {
 
     private boolean ready;
 
-    private Routine routine;
+    private RoutineVO routine;
 
     private List<RoutineTodoVO> routineTodos;
 }
