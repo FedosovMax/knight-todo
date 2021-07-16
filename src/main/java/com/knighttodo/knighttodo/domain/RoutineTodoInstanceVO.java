@@ -4,7 +4,6 @@ import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scariness;
 import lombok.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -12,7 +11,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @ToString
-public class RoutineTodoVO implements TodoVO {
+public class RoutineTodoInstanceVO implements TodoVO {
 
     private UUID id;
 
@@ -28,5 +27,5 @@ public class RoutineTodoVO implements TodoVO {
 
     private int experience;
 
-    private List<RoutineTodoInstanceVO> routineInstanceTodos;
+    private RoutineTodoVO routineTodoVO;
 }

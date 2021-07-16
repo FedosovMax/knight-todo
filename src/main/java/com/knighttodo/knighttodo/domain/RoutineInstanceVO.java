@@ -1,6 +1,5 @@
 package com.knighttodo.knighttodo.domain;
 
-import com.knighttodo.knighttodo.gateway.privatedb.representation.Routine;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scariness;
 import lombok.AllArgsConstructor;
@@ -29,5 +28,5 @@ public class RoutineInstanceVO {
 
     private RoutineVO routine;
 
-    private List<RoutineTodoVO> routineTodos;
+    private List<RoutineTodoInstanceVO> routineTodoInstances;
 }

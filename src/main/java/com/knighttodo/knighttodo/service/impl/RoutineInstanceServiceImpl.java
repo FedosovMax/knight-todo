@@ -1,6 +1,7 @@
 package com.knighttodo.knighttodo.service.impl;
 
 import com.knighttodo.knighttodo.domain.RoutineInstanceVO;
+import com.knighttodo.knighttodo.domain.RoutineTodoInstanceVO;
 import com.knighttodo.knighttodo.domain.RoutineTodoVO;
 import com.knighttodo.knighttodo.domain.RoutineVO;
 import com.knighttodo.knighttodo.exception.RoutineInstanceNotFoundException;
@@ -8,6 +9,7 @@ import com.knighttodo.knighttodo.gateway.RoutineInstanceGateway;
 import com.knighttodo.knighttodo.gateway.RoutineTodoGateway;
 import com.knighttodo.knighttodo.service.RoutineInstanceService;
 import com.knighttodo.knighttodo.service.RoutineService;
+import com.knighttodo.knighttodo.service.RoutineTodoInstanceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,7 +25,7 @@ import java.util.stream.Collectors;
 public class RoutineInstanceServiceImpl implements RoutineInstanceService {
 
     private final RoutineInstanceGateway routineInstanceGateway;
-    private final RoutineTodoGateway routineTodoGateway;
+    private final RoutineTodoInstanceService routineTodoInstanceService;
     private final RoutineService routineService;
 
     @Override
@@ -66,13 +68,13 @@ public class RoutineInstanceServiceImpl implements RoutineInstanceService {
 
     private void unmapRoutineTodosExcludedFromRoutine(RoutineInstanceVO routineInstanceVO, RoutineInstanceVO changedRoutineInstanceVO) {
         List<UUID> changedRoutineVOTodoIds = extractTodoIds(changedRoutineInstanceVO);
-        routineInstanceVO.getRoutineTodos().stream()
+        routineInstanceVO.getRoutineTodoInstances().stream()
                 .filter(routineTodoVO -> !changedRoutineVOTodoIds.contains(routineTodoVO.getId()))
                 .forEach(routineTodoVO -> routineTodoVO.setRoutineInstanceVO(null));
     }
 
     private List<UUID> extractTodoIds(RoutineInstanceVO routineInstanceVO) {
-        return routineInstanceVO.getRoutineTodos().stream().map(RoutineTodoVO::getId).collect(Collectors.toList());
+        return routineInstanceVO.getRoutineTodoInstances().stream().map(RoutineTodoInstanceVO::getId).collect(Collectors.toList());
     }
 
     private void mapRoutineTodosAddedToRoutine(RoutineInstanceVO routineInstanceVO, RoutineInstanceVO changedRoutineInstanceVO) {
@@ -80,13 +82,12 @@ public class RoutineInstanceServiceImpl implements RoutineInstanceService {
         List<UUID> addedRoutineTodoIds = extractTodoIds(changedRoutineInstanceVO).stream()
                 .filter(routineTodoId -> !routineVOTodoIds.contains(routineTodoId))
                 .collect(Collectors.toList());
-        routineInstanceVO.getRoutineTodos().addAll(fetchRoutineTodosByIds(addedRoutineTodoIds));
+        routineInstanceVO.getRoutineTodoInstances().addAll(fetchRoutineTodosByIds(addedRoutineTodoIds));
     }
 
-    private List<RoutineTodoVO> fetchRoutineTodosByIds(List<UUID> routineTodoIds) {
+    private List<RoutineTodoInstanceVO> fetchRoutineTodosByIds(List<UUID> routineTodoIds) {
         return routineTodoIds.stream()
-                .map(routineTodoGateway::findById)
-                .map(Optional::orElseThrow)
+                .map(routineTodoInstanceService::findById)
                 .collect(Collectors.toList());
     }
 
