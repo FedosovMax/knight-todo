@@ -107,11 +107,11 @@ public class RoutineTodoResource {
             @ApiResponse(code = 404, message = "Resource not found"),
             @ApiResponse(code = 500, message = "Unexpected error")
     })
-    public RoutineTodoResponseDto updateRoutineTodo(@PathVariable String routineTodoId,
+    public RoutineTodoResponseDto updateRoutineTodo(@PathVariable UUID routineTodoId,
                                                     @Valid @RequestBody RoutineTodoRequestDto requestDto) {
         try {
             RoutineTodoVO routineTodoVO = routineTodoRestMapper.toRoutineTodoVO(requestDto);
-            RoutineTodoVO updatedRoutineTodoVO = routineTodoService.updateRoutineTodo(UUID.fromString(routineTodoId), routineTodoVO);
+            RoutineTodoVO updatedRoutineTodoVO = routineTodoService.updateRoutineTodo(routineTodoId, routineTodoVO);
             return routineTodoRestMapper.toRoutineTodoResponseDto(updatedRoutineTodoVO);
         } catch (RoutineNotFoundException e) {
             log.error("Routine todo can't be found.", e);
@@ -132,35 +132,12 @@ public class RoutineTodoResource {
             @ApiResponse(code = 404, message = "Resource not found"),
             @ApiResponse(code = 500, message = "Unexpected error")
     })
-    public void deleteRoutineTodo(@PathVariable String routineTodoId) {
+    public void deleteRoutineTodo(@PathVariable UUID routineTodoId) {
         try {
-            routineTodoService.deleteById(UUID.fromString(routineTodoId));
+            routineTodoService.deleteById(routineTodoId);
         } catch (RuntimeException ex) {
             log.error("Routine todo can't be deleted.", ex);
             throw new RoutineTodoCanNotBeDeletedException("Routine todo can't be deleted.", ex);
-        }
-    }
-
-    @PutMapping(value = "/{routineTodoId}" + BASE_READY)
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "Update an isReady field", response = RoutineTodoResponseDto.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Routine Todo isReady updated"),
-            @ApiResponse(code = 400, message = "Invalid operation"),
-            @ApiResponse(code = 403, message = "Operation forbidden"),
-            @ApiResponse(code = 404, message = "Resource not found"),
-            @ApiResponse(code = 500, message = "Unexpected error")
-    })
-    public RoutineTodoReadyResponseDto updateIsReady(@PathVariable String routineId, @PathVariable String routineTodoId,
-                                                     @RequestParam String ready) {
-        try {
-            boolean isReady = Boolean.parseBoolean(ready);
-            RoutineTodoVO routineTodoVO = routineTodoService
-                    .updateIsReady(UUID.fromString(routineId), UUID.fromString(routineTodoId), isReady);
-            return routineTodoRestMapper.toRoutineTodoReadyResponseDto(routineTodoVO);
-        } catch (RuntimeException ex) {
-            log.error("Routine todo ready can't be updated.", ex);
-            throw new RoutineTodoReadyCanNotBeUpdatedException("Routine todo ready can't be updated.", ex);
         }
     }
 }

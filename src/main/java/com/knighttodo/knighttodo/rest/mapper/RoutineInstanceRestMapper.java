@@ -10,11 +10,11 @@ import org.mapstruct.Named;
 
 import java.util.UUID;
 
-@Mapper(componentModel = "spring", uses = RoutineTodoRestMapper.class)
+@Mapper(componentModel = "spring", uses = RoutineTodoInstanceRestMapper.class)
 public interface RoutineInstanceRestMapper {
 
-    @Mapping(source = "routineTodoIds", target = "routineTodos",
-            qualifiedByName = {"RoutineTodoRestMapper", "fromIdToRoutineTodoVOWithId"})
+    @Mapping(target = "routineTodoInstances", source = "routineTodoInstancesIds",
+            qualifiedByName = {"RoutineTodoInstanceRestMapper", "fromIdToRoutineTodoInstanceVOWithId"})
     RoutineInstanceVO toRoutineInstanceVO(RoutineInstanceRequestDto requestDto);
 
     RoutineInstanceResponseDto toRoutineInstanceResponseDto(RoutineInstanceVO routineVO);

@@ -42,7 +42,7 @@ public class RoutineTodoGatewayImpl implements RoutineTodoGateway {
 
     @Override
     public List<RoutineTodoVO> findByRoutineId(UUID routineId) {
-        return routineTodoRepository.findByRoutineInstanceId(routineId).stream().map(routineTodoMapper::toRoutineTodoVO)
+        return routineTodoRepository.findByRoutineId(routineId).stream().map(routineTodoMapper::toRoutineTodoVO)
                 .collect(Collectors.toList());
     }
 }

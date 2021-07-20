@@ -1,9 +1,9 @@
 package com.knighttodo.knighttodo.gateway;
 
-import com.knighttodo.knighttodo.domain.RoutineTodoVO;
-import com.knighttodo.knighttodo.gateway.privatedb.mapper.RoutineTodoMapper;
-import com.knighttodo.knighttodo.gateway.privatedb.repository.RoutineTodoRepository;
-import com.knighttodo.knighttodo.gateway.privatedb.representation.RoutineTodo;
+import com.knighttodo.knighttodo.domain.RoutineTodoInstanceVO;
+import com.knighttodo.knighttodo.gateway.privatedb.mapper.RoutineTodoInstanceMapper;
+import com.knighttodo.knighttodo.gateway.privatedb.repository.RoutineTodoInstanceRepository;
+import com.knighttodo.knighttodo.gateway.privatedb.representation.RoutineTodoInstance;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,33 +16,36 @@ import java.util.stream.Collectors;
 @Service
 public class RoutineTodoInstanceGatewayImpl implements RoutineTodoInstanceGateway {
 
-    private final RoutineTodoRepository routineTodoRepository;
-    private final RoutineTodoMapper routineTodoMapper;
+    private final RoutineTodoInstanceRepository routineTodoInstanceRepository;
+    private final RoutineTodoInstanceMapper routineTodoInstanceMapper;
 
     @Override
-    public RoutineTodoVO save(RoutineTodoVO routineTodoVO) {
-        RoutineTodo savedRoutineTodo = routineTodoRepository.save(routineTodoMapper.toRoutineTodo(routineTodoVO));
-        return routineTodoMapper.toRoutineTodoVO(savedRoutineTodo);
+    public RoutineTodoInstanceVO save(RoutineTodoInstanceVO routineTodoInstanceVO) {
+        RoutineTodoInstance savedRoutineTodoInstance = routineTodoInstanceRepository
+                .save(routineTodoInstanceMapper.toRoutineTodoInstance(routineTodoInstanceVO));
+        return routineTodoInstanceMapper.toRoutineTodoInstanceVO(savedRoutineTodoInstance);
     }
 
     @Override
-    public List<RoutineTodoVO> findAll() {
-        return routineTodoRepository.findAll().stream().map(routineTodoMapper::toRoutineTodoVO).collect(Collectors.toList());
+    public List<RoutineTodoInstanceVO> findAll() {
+        return routineTodoInstanceRepository.findAll().stream()
+                .map(routineTodoInstanceMapper::toRoutineTodoInstanceVO).collect(Collectors.toList());
     }
 
     @Override
-    public Optional<RoutineTodoVO> findById(UUID routineTodoId) {
-        return routineTodoRepository.findById(routineTodoId).map(routineTodoMapper::toRoutineTodoVO);
+    public Optional<RoutineTodoInstanceVO> findById(UUID routineTodoInstanceId) {
+        return routineTodoInstanceRepository.findById(routineTodoInstanceId).map(routineTodoInstanceMapper::toRoutineTodoInstanceVO);
     }
 
     @Override
     public void deleteById(UUID routineTodoId) {
-        routineTodoRepository.deleteById(routineTodoId);
+        routineTodoInstanceRepository.deleteById(routineTodoId);
     }
 
     @Override
-    public List<RoutineTodoVO> findByRoutineId(UUID routineId) {
-        return routineTodoRepository.findByRoutineInstanceId(routineId).stream().map(routineTodoMapper::toRoutineTodoVO)
+    public List<RoutineTodoInstanceVO> findByRoutineId(UUID routineInstanceId) {
+        return routineTodoInstanceRepository.findByRoutineInstanceId(routineInstanceId).stream()
+                .map(routineTodoInstanceMapper::toRoutineTodoInstanceVO)
                 .collect(Collectors.toList());
     }
 }

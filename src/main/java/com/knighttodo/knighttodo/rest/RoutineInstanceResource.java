@@ -1,7 +1,9 @@
 package com.knighttodo.knighttodo.rest;
 
 import com.knighttodo.knighttodo.domain.RoutineInstanceVO;
-import com.knighttodo.knighttodo.exception.*;
+import com.knighttodo.knighttodo.exception.CreateRoutineInstanceException;
+import com.knighttodo.knighttodo.exception.FindAllRoutineInstancesException;
+import com.knighttodo.knighttodo.exception.FindRoutineInstanceByIdException;
 import com.knighttodo.knighttodo.rest.mapper.RoutineInstanceRestMapper;
 import com.knighttodo.knighttodo.rest.request.RoutineInstanceRequestDto;
 import com.knighttodo.knighttodo.rest.response.RoutineInstanceResponseDto;
@@ -90,50 +92,6 @@ public class RoutineInstanceResource {
         } catch (RuntimeException ex) {
             log.error("Routine Instance can't be found.", ex);
             throw new FindRoutineInstanceByIdException("Routine Instance can't be found.", ex);
-        }
-    }
-
-    @PutMapping("/{routineInstanceId}")
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "Update the Routine Instance by id", response = RoutineInstanceResponseDto.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Routine updated"),
-            @ApiResponse(code = 400, message = "Invalid operation"),
-            @ApiResponse(code = 403, message = "Operation forbidden"),
-            @ApiResponse(code = 404, message = "Resource not found"),
-            @ApiResponse(code = 500, message = "Unexpected error")
-    })
-    public RoutineInstanceResponseDto updateRoutineInstance(@PathVariable String routineInstanceId,
-                                                            @Valid @RequestBody RoutineInstanceRequestDto requestDto) {
-        try {
-            RoutineInstanceVO routineVO = routineInstanceRestMapper.toRoutineInstanceVO(requestDto);
-            RoutineInstanceVO updatedRoutineVO = routineInstanceService.update(UUID.fromString(routineInstanceId), routineVO);
-            return routineInstanceRestMapper.toRoutineInstanceResponseDto(updatedRoutineVO);
-        } catch (RoutineInstanceNotFoundException e) {
-            log.error("Routine Instance can't be found.", e);
-            throw new RoutineNotFoundException(e.getMessage());
-        } catch (RuntimeException ex) {
-            log.error("Routine Instance can't be updated.", ex);
-            throw new UpdateRoutineInstanceException("Routine Instance can't be updated.", ex);
-        }
-    }
-
-    @DeleteMapping("/{routineInstanceId}")
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "Delete the Routine by id")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Routine removed"),
-            @ApiResponse(code = 400, message = "Invalid operation"),
-            @ApiResponse(code = 403, message = "Operation forbidden"),
-            @ApiResponse(code = 404, message = "Resource not found"),
-            @ApiResponse(code = 500, message = "Unexpected error")
-    })
-    public void deleteRoutineInstance(@PathVariable String routineInstanceId) {
-        try {
-            routineInstanceService.deleteById(UUID.fromString(routineInstanceId));
-        } catch (RuntimeException ex) {
-            log.error("Routine Instance can't be deleted.", ex);
-            throw new RoutineInstanceCanNotBeDeletedException("Routine Instance can't be deleted.", ex);
         }
     }
 }

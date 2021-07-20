@@ -4,8 +4,7 @@ import com.knighttodo.knighttodo.domain.RoutineTodoVO;
 import com.knighttodo.knighttodo.exception.RoutineTodoNotFoundException;
 import com.knighttodo.knighttodo.exception.UnchangeableFieldUpdateException;
 import com.knighttodo.knighttodo.gateway.RoutineTodoGateway;
-import com.knighttodo.knighttodo.gateway.experience.ExperienceGateway;
-import com.knighttodo.knighttodo.service.RoutineInstanceService;
+import com.knighttodo.knighttodo.service.RoutineService;
 import com.knighttodo.knighttodo.service.RoutineTodoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,14 +19,13 @@ import java.util.UUID;
 public class RoutineTodoServiceImpl implements RoutineTodoService {
 
     private final RoutineTodoGateway routineTodoGateway;
-    private final RoutineInstanceService routineInstanceService;
-    private final ExperienceGateway experienceGateway;
+    private final RoutineService routineService;
 
     @Override
     public RoutineTodoVO save(UUID routineId, RoutineTodoVO routineTodoVO) {
-        routineTodoVO.setRoutineInstanceVO(routineInstanceService.findById(routineId));
+        routineTodoVO.setRoutineVO(routineService.findById(routineId));
         RoutineTodoVO savedRoutineTodo = routineTodoGateway.save(routineTodoVO);
-        savedRoutineTodo.setRoutineInstanceVO(routineTodoVO.getRoutineInstanceVO());
+        savedRoutineTodo.setRoutineVO(routineTodoVO.getRoutineVO());
         return savedRoutineTodo;
     }
 
@@ -78,14 +76,5 @@ public class RoutineTodoServiceImpl implements RoutineTodoService {
     @Override
     public List<RoutineTodoVO> findByRoutineId(UUID routineId) {
         return routineTodoGateway.findByRoutineId(routineId);
-    }
-
-    @Override
-    public RoutineTodoVO updateIsReady(UUID routineId, UUID routineTodoId, boolean isReady) {
-        RoutineTodoVO routineTodoVO = findById(routineTodoId);
-        routineTodoVO.setRoutineInstanceVO(routineInstanceService.findById(routineId));
-        routineTodoVO.setReady(isReady);
-        routineTodoGateway.save(routineTodoVO);
-        return experienceGateway.calculateExperience(routineTodoVO);
     }
 }

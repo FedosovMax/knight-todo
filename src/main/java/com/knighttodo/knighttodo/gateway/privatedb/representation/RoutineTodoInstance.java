@@ -43,8 +43,4 @@ public class RoutineTodoInstance {
     @ManyToOne
     @JoinColumn(name = "routine_instance_id")
     private RoutineInstance routineInstance;
-
-    @ManyToOne
-    @JoinColumn(name = "routine_todo_id")
-    private RoutineTodo routineTodo;
 }

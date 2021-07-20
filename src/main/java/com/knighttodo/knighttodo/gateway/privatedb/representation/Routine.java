@@ -3,7 +3,6 @@ package com.knighttodo.knighttodo.gateway.privatedb.representation;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scariness;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -23,8 +22,8 @@ public class Routine {
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(
-        name = "uuid",
-        strategy = "org.hibernate.id.UUIDGenerator"
+            name = "uuid",
+            strategy = "org.hibernate.id.UUIDGenerator"
     )
     private UUID id;
 
@@ -39,6 +38,6 @@ public class Routine {
     @OneToMany(mappedBy = "routine", cascade = CascadeType.ALL)
     private List<RoutineInstance> routineInstances = new ArrayList<>();
 
-    @OneToMany(mappedBy = "routineInstance", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "routine", cascade = CascadeType.ALL)
     private List<RoutineTodo> routineTodos;
 }

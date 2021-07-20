@@ -6,7 +6,6 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -15,14 +14,14 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = {"routineInstance"})
+@ToString(exclude = {"routine"})
 public class RoutineTodo {
 
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(
-        name = "uuid",
-        strategy = "org.hibernate.id.UUIDGenerator"
+            name = "uuid",
+            strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(name = "id")
     private UUID id;
@@ -42,9 +41,6 @@ public class RoutineTodo {
     private boolean ready = false;
 
     @ManyToOne
-    @JoinColumn(name = "routine_instance_id")
-    private RoutineInstance routineInstance;
-
-    @OneToMany(mappedBy = "routineTodo", cascade = CascadeType.ALL)
-    private List<RoutineTodoInstance> routineTodoInstances;
+    @JoinColumn(name = "routine_id")
+    private Routine routine;
 }

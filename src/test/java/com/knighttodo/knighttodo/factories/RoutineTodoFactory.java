@@ -2,7 +2,6 @@ package com.knighttodo.knighttodo.factories;
 
 import com.knighttodo.knighttodo.gateway.experience.response.ExperienceResponse;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Routine;
-import com.knighttodo.knighttodo.gateway.privatedb.representation.RoutineInstance;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.RoutineTodo;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scariness;
@@ -27,12 +26,12 @@ public class RoutineTodoFactory {
 
     public static RoutineTodoRequestDto createRoutineTodoRequestDto() {
         return RoutineTodoRequestDto
-            .builder()
-            .routineTodoName(ROUTINE_TODO_NAME)
-            .scariness(SCARINESS_TODO)
-            .hardness(HARDNESS_TODO)
-            .ready(FALSE_TODO_READY)
-            .build();
+                .builder()
+                .routineTodoName(ROUTINE_TODO_NAME)
+                .scariness(SCARINESS_TODO)
+                .hardness(HARDNESS_TODO)
+                .ready(FALSE_TODO_READY)
+                .build();
     }
 
     public static RoutineTodoRequestDto createRoutineTodoRequestDtoWithoutName() {
@@ -59,62 +58,62 @@ public class RoutineTodoFactory {
         return request;
     }
 
-    public static RoutineTodo routineTodoWithRoutineInstance(RoutineInstance routineInstance) {
+    public static RoutineTodo routineTodoWithRoutine(Routine routine) {
         return RoutineTodo
-            .builder()
-            .routineTodoName(ROUTINE_TODO_NAME)
-            .scariness(SCARINESS_TODO)
-            .hardness(HARDNESS_TODO)
-            .routineInstance(routineInstance)
-            .ready(FALSE_TODO_READY)
-            .build();
+                .builder()
+                .routineTodoName(ROUTINE_TODO_NAME)
+                .scariness(SCARINESS_TODO)
+                .hardness(HARDNESS_TODO)
+                .routine(routine)
+                .ready(FALSE_TODO_READY)
+                .build();
     }
 
-    public static RoutineTodo routineTodoWithRoutineReadyInstance(RoutineInstance routineInstance) {
+    public static RoutineTodo routineTodoWithRoutineReadyInstance(Routine routine) {
         return RoutineTodo
-            .builder()
-            .routineTodoName(ROUTINE_TODO_NAME)
-            .scariness(SCARINESS_TODO)
-            .hardness(HARDNESS_TODO)
-            .routineInstance(routineInstance)
-            .ready(TRUE_TODO_READY)
-            .build();
+                .builder()
+                .routineTodoName(ROUTINE_TODO_NAME)
+                .scariness(SCARINESS_TODO)
+                .hardness(HARDNESS_TODO)
+                .routine(routine)
+                .ready(TRUE_TODO_READY)
+                .build();
     }
 
     public static RoutineTodoRequestDto updateRoutineTodoRequestDto() {
         return RoutineTodoRequestDto.builder()
-            .routineTodoName(UPDATED_ROUTINE_TODO_NAME)
-            .scariness(UPDATED_SCARINESS_TODO)
-            .hardness(UPDATED_HARDNESS_TODO)
-            .ready(FALSE_TODO_READY)
-            .build();
+                .routineTodoName(UPDATED_ROUTINE_TODO_NAME)
+                .scariness(UPDATED_SCARINESS_TODO)
+                .hardness(UPDATED_HARDNESS_TODO)
+                .ready(FALSE_TODO_READY)
+                .build();
     }
 
     public static RoutineTodoRequestDto updateRoutineTodoRequestReadyDto() {
         return RoutineTodoRequestDto.builder()
-            .routineTodoName(UPDATED_ROUTINE_TODO_NAME)
-            .scariness(SCARINESS_TODO)
-            .hardness(HARDNESS_TODO)
-            .ready(TRUE_TODO_READY)
-            .build();
+                .routineTodoName(UPDATED_ROUTINE_TODO_NAME)
+                .scariness(SCARINESS_TODO)
+                .hardness(HARDNESS_TODO)
+                .ready(TRUE_TODO_READY)
+                .build();
     }
 
     public static RoutineTodoRequestDto updateRoutineTodoRequestReadyDtoWithChangedScariness() {
         return RoutineTodoRequestDto.builder()
-            .routineTodoName(UPDATED_ROUTINE_TODO_NAME)
-            .scariness(UPDATED_SCARINESS_TODO)
-            .hardness(HARDNESS_TODO)
-            .ready(TRUE_TODO_READY)
-            .build();
+                .routineTodoName(UPDATED_ROUTINE_TODO_NAME)
+                .scariness(UPDATED_SCARINESS_TODO)
+                .hardness(HARDNESS_TODO)
+                .ready(TRUE_TODO_READY)
+                .build();
     }
 
     public static RoutineTodoRequestDto updateRoutineTodoRequestReadyDtoWithChangedHardness() {
         return RoutineTodoRequestDto.builder()
-            .routineTodoName(UPDATED_ROUTINE_TODO_NAME)
-            .scariness(SCARINESS_TODO)
-            .hardness(UPDATED_HARDNESS_TODO)
-            .ready(TRUE_TODO_READY)
-            .build();
+                .routineTodoName(UPDATED_ROUTINE_TODO_NAME)
+                .scariness(SCARINESS_TODO)
+                .hardness(UPDATED_HARDNESS_TODO)
+                .ready(TRUE_TODO_READY)
+                .build();
     }
 
     public static RoutineTodoRequestDto updateRoutineTodoRequestDtoWithoutName() {

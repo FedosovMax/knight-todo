@@ -23,7 +23,6 @@ public class RoutineInstanceFactory {
                 .name(ROUTINE_NAME)
                 .hardness(HARDNESS_HARD)
                 .scariness(SCARINESS_HARD)
-                .routineTodoIds(new ArrayList<>())
                 .build();
     }
 
@@ -32,7 +31,7 @@ public class RoutineInstanceFactory {
                 .name(ROUTINE_NAME)
                 .hardness(HARDNESS_HARD)
                 .scariness(SCARINESS_HARD)
-                .routineTodoIds(todoIds)
+                .routineTodoInstancesIds(todoIds)
                 .build();
     }
 
@@ -41,7 +40,7 @@ public class RoutineInstanceFactory {
                 .name(null)
                 .hardness(HARDNESS_HARD)
                 .scariness(SCARINESS_HARD)
-                .routineTodoIds(new ArrayList<>())
+                .routineTodoInstancesIds(new ArrayList<>())
                 .build();
     }
 
@@ -51,7 +50,7 @@ public class RoutineInstanceFactory {
                 .hardness(HARDNESS_HARD)
                 .scariness(SCARINESS_HARD)
                 .ready(true)
-                .routineTodoIds(new ArrayList<>())
+                .routineTodoInstancesIds(new ArrayList<>())
                 .build();
     }
 
@@ -61,7 +60,7 @@ public class RoutineInstanceFactory {
                 .hardness(HARDNESS_HARD)
                 .scariness(SCARINESS_HARD)
                 .ready(true)
-                .routineTodoIds(todoIds)
+                .routineTodoInstancesIds(todoIds)
                 .build();
     }
 
@@ -71,7 +70,7 @@ public class RoutineInstanceFactory {
                 .hardness(HARDNESS_HARD)
                 .scariness(SCARINESS_HARD)
                 .ready(true)
-                .routineTodoIds(new ArrayList<>())
+                .routineTodoInstancesIds(new ArrayList<>())
                 .build();
     }
 
@@ -92,7 +91,7 @@ public class RoutineInstanceFactory {
                 .hardness(Hardness.HARD)
                 .name(ROUTINE_NAME)
                 .scariness(Scariness.SCARY)
-                .routineTodos(new ArrayList<>())
+                .routineTodoInstances(new ArrayList<>())
                 .build();
     }
 
@@ -104,7 +103,7 @@ public class RoutineInstanceFactory {
                 .name(ROUTINE_NAME)
                 .scariness(Scariness.SCARY)
                 .routine(routine)
-                .routineTodos(new ArrayList<>())
+                .routineTodoInstances(new ArrayList<>())
                 .build();
     }
 }

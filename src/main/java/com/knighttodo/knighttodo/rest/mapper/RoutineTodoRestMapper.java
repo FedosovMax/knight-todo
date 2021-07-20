@@ -14,7 +14,7 @@ import java.util.UUID;
 @Mapper(componentModel = "spring")
 public interface RoutineTodoRestMapper {
 
-    @Mapping(target = "routineId", source = "routineInstanceVO.id")
+    @Mapping(target = "routineId", source = "routineVO.id")
     RoutineTodoResponseDto toRoutineTodoResponseDto(RoutineTodoVO dayTodoVO);
 
     RoutineTodoVO toRoutineTodoVO(RoutineTodoRequestDto requestDto);
@@ -23,6 +23,6 @@ public interface RoutineTodoRestMapper {
     @Mapping(target = "id", source = "routineTodoId")
     RoutineTodoVO toRoutineTodoVOFromRoutineId(UUID routineTodoId);
 
-    @Mapping(target = "routineId", source = "routineInstanceVO.id")
+    @Mapping(target = "routineId", source = "routineVO.id")
     RoutineTodoReadyResponseDto toRoutineTodoReadyResponseDto(RoutineTodoVO routineTodoVO);
 }

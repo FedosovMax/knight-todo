@@ -1,23 +1,17 @@
 package com.knighttodo.knighttodo.service.impl;
 
 import com.knighttodo.knighttodo.domain.RoutineInstanceVO;
-import com.knighttodo.knighttodo.domain.RoutineTodoInstanceVO;
-import com.knighttodo.knighttodo.domain.RoutineTodoVO;
 import com.knighttodo.knighttodo.domain.RoutineVO;
 import com.knighttodo.knighttodo.exception.RoutineInstanceNotFoundException;
 import com.knighttodo.knighttodo.gateway.RoutineInstanceGateway;
-import com.knighttodo.knighttodo.gateway.RoutineTodoGateway;
 import com.knighttodo.knighttodo.service.RoutineInstanceService;
 import com.knighttodo.knighttodo.service.RoutineService;
-import com.knighttodo.knighttodo.service.RoutineTodoInstanceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -25,7 +19,6 @@ import java.util.stream.Collectors;
 public class RoutineInstanceServiceImpl implements RoutineInstanceService {
 
     private final RoutineInstanceGateway routineInstanceGateway;
-    private final RoutineTodoInstanceService routineTodoInstanceService;
     private final RoutineService routineService;
 
     @Override
@@ -53,42 +46,11 @@ public class RoutineInstanceServiceImpl implements RoutineInstanceService {
     @Override
     public RoutineInstanceVO update(UUID routineInstanceId, RoutineInstanceVO changedRoutineInstanceVO) {
         RoutineInstanceVO routineInstanceVO = findById(routineInstanceId);
-        synchronizeRoutineTodosInRoutineVO(routineInstanceVO, changedRoutineInstanceVO);
         routineInstanceVO.setName(changedRoutineInstanceVO.getName());
         routineInstanceVO.setHardness(changedRoutineInstanceVO.getHardness());
         routineInstanceVO.setScariness(changedRoutineInstanceVO.getScariness());
         routineInstanceVO.setReady(changedRoutineInstanceVO.isReady());
         return routineInstanceGateway.save(routineInstanceVO);
-    }
-
-    private void synchronizeRoutineTodosInRoutineVO(RoutineInstanceVO routineInstanceVO, RoutineInstanceVO changedRoutineInstanceVO) {
-        unmapRoutineTodosExcludedFromRoutine(routineInstanceVO, changedRoutineInstanceVO);
-        mapRoutineTodosAddedToRoutine(routineInstanceVO, changedRoutineInstanceVO);
-    }
-
-    private void unmapRoutineTodosExcludedFromRoutine(RoutineInstanceVO routineInstanceVO, RoutineInstanceVO changedRoutineInstanceVO) {
-        List<UUID> changedRoutineVOTodoIds = extractTodoIds(changedRoutineInstanceVO);
-        routineInstanceVO.getRoutineTodoInstances().stream()
-                .filter(routineTodoVO -> !changedRoutineVOTodoIds.contains(routineTodoVO.getId()))
-                .forEach(routineTodoVO -> routineTodoVO.setRoutineInstanceVO(null));
-    }
-
-    private List<UUID> extractTodoIds(RoutineInstanceVO routineInstanceVO) {
-        return routineInstanceVO.getRoutineTodoInstances().stream().map(RoutineTodoInstanceVO::getId).collect(Collectors.toList());
-    }
-
-    private void mapRoutineTodosAddedToRoutine(RoutineInstanceVO routineInstanceVO, RoutineInstanceVO changedRoutineInstanceVO) {
-        List<UUID> routineVOTodoIds = extractTodoIds(routineInstanceVO);
-        List<UUID> addedRoutineTodoIds = extractTodoIds(changedRoutineInstanceVO).stream()
-                .filter(routineTodoId -> !routineVOTodoIds.contains(routineTodoId))
-                .collect(Collectors.toList());
-        routineInstanceVO.getRoutineTodoInstances().addAll(fetchRoutineTodosByIds(addedRoutineTodoIds));
-    }
-
-    private List<RoutineTodoInstanceVO> fetchRoutineTodosByIds(List<UUID> routineTodoIds) {
-        return routineTodoIds.stream()
-                .map(routineTodoInstanceService::findById)
-                .collect(Collectors.toList());
     }
 
     @Override

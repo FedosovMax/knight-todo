@@ -18,6 +18,4 @@ public interface RoutineTodoService {
     void deleteById(UUID routineTodoId);
 
     List<RoutineTodoVO> findByRoutineId(UUID routineId);
-
-    RoutineTodoVO updateIsReady(UUID routineId, UUID routineTodoId, boolean isReady);
 }

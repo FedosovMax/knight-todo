@@ -1,4 +1,4 @@
-package com.knighttodo.knighttodo.rest.request;
+package com.knighttodo.knighttodo.rest.response;
 
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scariness;
@@ -7,27 +7,25 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import java.util.List;
 import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RoutineInstanceRequestDto {
+public class RoutineTodoInstanceReadyResponseDto {
 
-    @NotBlank
-    private String name;
+    private UUID id;
 
-    @NotNull
-    private Hardness hardness;
+    private String routineTodoName;
 
-    @NotNull
     private Scariness scariness;
+
+    private Hardness hardness;
 
     private boolean ready;
 
-    private List<UUID> routineTodoInstancesIds;
+    private UUID routineId;
+
+    private int experience;
 }

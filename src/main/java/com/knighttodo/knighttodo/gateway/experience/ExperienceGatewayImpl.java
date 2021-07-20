@@ -1,9 +1,11 @@
 package com.knighttodo.knighttodo.gateway.experience;
 
 import com.knighttodo.knighttodo.domain.DayTodoVO;
+import com.knighttodo.knighttodo.domain.RoutineTodoInstanceVO;
 import com.knighttodo.knighttodo.domain.RoutineTodoVO;
 import com.knighttodo.knighttodo.gateway.experience.client.ExperienceClient;
 import com.knighttodo.knighttodo.gateway.experience.mapper.DayTodoVOMapper;
+import com.knighttodo.knighttodo.gateway.experience.mapper.RoutineTodoInstanceVOMapper;
 import com.knighttodo.knighttodo.gateway.experience.mapper.RoutineTodoVOMapper;
 import com.knighttodo.knighttodo.gateway.experience.request.ExperienceRequest;
 import com.knighttodo.knighttodo.gateway.experience.response.ExperienceResponse;
@@ -18,7 +20,7 @@ public class ExperienceGatewayImpl implements ExperienceGateway {
 
     private final ExperienceClient experienceClient;
     private final DayTodoVOMapper dayTodoVOMapper;
-    private final RoutineTodoVOMapper routineTodoVOMapper;
+    private final RoutineTodoInstanceVOMapper routineTodoInstanceVOMapper;
 
     @Override
     public DayTodoVO calculateExperience(DayTodoVO dayTodoVO) {
@@ -30,11 +32,11 @@ public class ExperienceGatewayImpl implements ExperienceGateway {
     }
 
     @Override
-    public RoutineTodoVO calculateExperience(RoutineTodoVO routineTodoVO) {
-        ExperienceRequest experienceRequest = routineTodoVOMapper.routineTodoToExperienceRequest(routineTodoVO);
+    public RoutineTodoInstanceVO calculateExperience(RoutineTodoInstanceVO routineTodoInstanceVO) {
+        ExperienceRequest experienceRequest = routineTodoInstanceVOMapper.routineTodoInstanceToExperienceRequest(routineTodoInstanceVO);
         experienceRequest.setUserId(UUID.randomUUID());
         ExperienceResponse experienceResponse = experienceClient.calculateExperience(experienceRequest);
-        routineTodoVO.setExperience(experienceResponse.getExperience());
-        return routineTodoVO;
+        routineTodoInstanceVO.setExperience(experienceResponse.getExperience());
+        return routineTodoInstanceVO;
     }
 }

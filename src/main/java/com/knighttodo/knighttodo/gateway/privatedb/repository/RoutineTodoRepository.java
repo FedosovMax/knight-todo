@@ -8,5 +8,5 @@ import java.util.UUID;
 
 public interface RoutineTodoRepository extends JpaRepository<RoutineTodo, UUID> {
 
-    List<RoutineTodo> findByRoutineInstanceId(UUID id);
+    List<RoutineTodo> findByRoutineId(UUID id);
 }
