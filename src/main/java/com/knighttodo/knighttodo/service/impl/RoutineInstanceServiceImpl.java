@@ -1,6 +1,7 @@
 package com.knighttodo.knighttodo.service.impl;
 
 import com.knighttodo.knighttodo.domain.RoutineInstanceVO;
+import com.knighttodo.knighttodo.domain.RoutineTodoInstanceVO;
 import com.knighttodo.knighttodo.domain.RoutineVO;
 import com.knighttodo.knighttodo.exception.RoutineInstanceNotFoundException;
 import com.knighttodo.knighttodo.gateway.RoutineInstanceGateway;
@@ -35,12 +36,15 @@ public class RoutineInstanceServiceImpl implements RoutineInstanceService {
 
     @Override
     public RoutineInstanceVO findById(UUID routineInstanceId) {
-        return routineInstanceGateway.findById(routineInstanceId)
+        RoutineInstanceVO routineInstanceVO = routineInstanceGateway.findById(routineInstanceId)
                 .orElseThrow(() -> {
                     log.error(String.format("Routine Instance with such id:%s can't be " + "found", routineInstanceId));
                     return new RoutineInstanceNotFoundException(
                             String.format("Routine Instance with such id:%s can't be " + "found", routineInstanceId));
                 });
+        List<RoutineTodoInstanceVO> routineTodoInstances = routineInstanceVO.getRoutineTodoInstances();
+        routineService.updateRoutineTodoInstances(routineInstanceVO.getRoutine().getId(), routineTodoInstances);
+        return routineInstanceVO;
     }
 
     @Override

@@ -39,9 +39,4 @@ public class RoutineGatewayImpl implements RoutineGateway {
     public void deleteById(UUID routineId) {
         routineRepository.deleteById(routineId);
     }
-
-//    @Override
-//    public List<RoutineVO> findAllTemplates() {
-//        return routineRepository.findAllTemplates().stream().map(routineMapper::toRoutineVO).collect(Collectors.toList());
-//    }
 }

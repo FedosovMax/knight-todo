@@ -1,5 +1,6 @@
 package com.knighttodo.knighttodo.gateway.privatedb.representation;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scariness;
 import lombok.*;

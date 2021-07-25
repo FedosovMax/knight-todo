@@ -1,5 +1,6 @@
 package com.knighttodo.knighttodo.service;
 
+import com.knighttodo.knighttodo.domain.RoutineTodoInstanceVO;
 import com.knighttodo.knighttodo.domain.RoutineVO;
 
 import java.util.List;
@@ -16,4 +17,6 @@ public interface RoutineService {
     RoutineVO updateRoutine(UUID routineId, RoutineVO changedRoutineVO);
 
     void deleteById(UUID routineId);
+
+    List<RoutineTodoInstanceVO> updateRoutineTodoInstances(UUID routineId, List<RoutineTodoInstanceVO> routineTodoInstanceVOs);
 }

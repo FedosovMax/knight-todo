@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -43,4 +44,7 @@ public class RoutineTodo {
     @ManyToOne
     @JoinColumn(name = "routine_id")
     private Routine routine;
+
+    @OneToMany(mappedBy = "routineTodo", cascade = CascadeType.ALL)
+    private List<RoutineTodoInstance> routineTodoInstances;
 }

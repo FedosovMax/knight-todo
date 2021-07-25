@@ -23,9 +23,6 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.util.List;
-import java.util.UUID;
-
 import static com.knighttodo.knighttodo.Constants.API_BASE_ROUTINES;
 import static com.knighttodo.knighttodo.Constants.API_BASE_URL_V1;
 import static com.knighttodo.knighttodo.TestConstants.*;

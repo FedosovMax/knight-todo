@@ -125,7 +125,7 @@ public class RoutineInstanceResourceIntegrationTest {
     @Test
     public void findRoutineInstanceById_shouldReturnExistingRoutineInstance_whenIdIsCorrect() throws Exception {
         Routine routine = routineRepository.save(RoutineFactory.routineInstance());
-        RoutineInstance routineInstance = routineInstanceRepository.save(RoutineInstanceFactory.routineInstance());
+        RoutineInstance routineInstance = routineInstanceRepository.save(RoutineInstanceFactory.routineInstanceWithRoutine(routine));
 
         mockMvc.perform(get(buildGetRoutineInstanceByIdUrl(routine.getId(), routineInstance.getId())))
                 .andExpect(status().isFound())

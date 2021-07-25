@@ -7,6 +7,4 @@ import java.util.UUID;
 
 public interface RoutineInstanceRepository extends JpaRepository<RoutineInstance, UUID> {
 
-//    @Query("from Routine r where r.templateId = r.id")
-//    List<Routine> findAllTemplates();
 }

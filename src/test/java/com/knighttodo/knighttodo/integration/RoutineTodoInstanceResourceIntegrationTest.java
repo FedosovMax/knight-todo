@@ -1,10 +1,13 @@
 package com.knighttodo.knighttodo.integration;
 
+import com.knighttodo.knighttodo.factories.RoutineFactory;
 import com.knighttodo.knighttodo.factories.RoutineInstanceFactory;
 import com.knighttodo.knighttodo.factories.RoutineTodoInstanceFactory;
 import com.knighttodo.knighttodo.gateway.experience.response.ExperienceResponse;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.RoutineInstanceRepository;
+import com.knighttodo.knighttodo.gateway.privatedb.repository.RoutineRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.RoutineTodoInstanceRepository;
+import com.knighttodo.knighttodo.gateway.privatedb.representation.Routine;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.RoutineInstance;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.RoutineTodoInstance;
 import org.junit.jupiter.api.AfterEach;
@@ -44,12 +47,14 @@ public class RoutineTodoInstanceResourceIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
-
     @Autowired
     private RoutineTodoInstanceRepository routineTodoInstanceRepository;
 
     @Autowired
     private RoutineInstanceRepository routineInstanceRepository;
+
+    @Autowired
+    private RoutineRepository routineRepository;
 
     @MockBean
     private RestTemplate restTemplate;
@@ -118,7 +123,8 @@ public class RoutineTodoInstanceResourceIntegrationTest {
 
     @Test
     public void updateIsReady_shouldReturnOk_shouldMakeIsReadyTrue_whenRoutineTodoInstanceIdIsCorrect() throws Exception {
-        RoutineInstance routineInstance = routineInstanceRepository.save(RoutineInstanceFactory.routineInstance());
+        Routine routine = routineRepository.save(RoutineFactory.routineInstance());
+        RoutineInstance routineInstance = routineInstanceRepository.save(RoutineInstanceFactory.routineInstanceWithRoutine(routine));
         RoutineTodoInstance savedRoutineTodoInstance = routineTodoInstanceRepository.save(RoutineTodoInstanceFactory.
                 routineTodoInstanceWithRoutineInstance(routineInstance));
         ExperienceResponse experienceResponse = RoutineTodoInstanceFactory.experienceResponseInstance(savedRoutineTodoInstance.getId());
@@ -139,7 +145,8 @@ public class RoutineTodoInstanceResourceIntegrationTest {
 
     @Test
     public void updateIsReady_shouldReturnOk_shouldMakeIsReadyFalse_whenRoutineTodoIdIsCorrect() throws Exception {
-        RoutineInstance routineInstance = routineInstanceRepository.save(RoutineInstanceFactory.routineInstance());
+        Routine routine = routineRepository.save(RoutineFactory.routineInstance());
+        RoutineInstance routineInstance = routineInstanceRepository.save(RoutineInstanceFactory.routineInstanceWithRoutine(routine));
         RoutineTodoInstance savedRoutineTodoInstanceReadyTrue = routineTodoInstanceRepository.save(RoutineTodoInstanceFactory.
                 routineTodoInstanceWithRoutineReadyInstance(routineInstance));
         ExperienceResponse experienceResponse = RoutineTodoInstanceFactory.experienceResponseInstance(savedRoutineTodoInstanceReadyTrue.getId());

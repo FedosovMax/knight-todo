@@ -13,6 +13,6 @@ public interface RoutineMapper {
     @Mapping(target = "routineInstances", source = "routineInstanceVOs")
     Routine toRoutine(RoutineVO routineVO);
 
-    @Mapping(target = "routineInstanceVOs", source = "routineInstances")
+    @Mapping(target = "routineInstanceVOs", ignore = true)
     RoutineVO toRoutineVO(Routine routine);
 }
