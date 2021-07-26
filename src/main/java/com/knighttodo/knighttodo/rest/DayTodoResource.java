@@ -105,11 +105,11 @@ public class DayTodoResource {
             @ApiResponse(code = 404, message = "Resource not found"),
             @ApiResponse(code = 500, message = "Unexpected error")
     })
-    public DayTodoResponseDto updateDayTodo(@PathVariable String dayTodoId,
+    public DayTodoResponseDto updateDayTodo(@PathVariable UUID dayTodoId,
                                             @Valid @RequestBody DayTodoRequestDto requestDto) {
         try {
             DayTodoVO dayTodoVO = dayTodoRestMapper.toDayTodoVO(requestDto);
-            DayTodoVO updatedDayTodoVO = dayTodoService.updateDayTodo(UUID.fromString(dayTodoId), dayTodoVO);
+            DayTodoVO updatedDayTodoVO = dayTodoService.updateDayTodo(dayTodoId, dayTodoVO);
             return dayTodoRestMapper.toDayTodoResponseDto(updatedDayTodoVO);
         } catch (DayTodoNotFoundException e) {
             log.error("Day todo can't be found.", e);
@@ -149,11 +149,11 @@ public class DayTodoResource {
             @ApiResponse(code = 404, message = "Resource not found"),
             @ApiResponse(code = 500, message = "Unexpected error")
     })
-    public DayTodoReadyResponseDto updateIsReady(@PathVariable String dayId, @PathVariable String dayTodoId,
+    public DayTodoReadyResponseDto updateIsReady(@PathVariable UUID dayId, @PathVariable UUID dayTodoId,
                                                  @RequestParam String ready) {
         try {
             boolean isReady = Boolean.parseBoolean(ready);
-            DayTodoVO dayTodoVO = dayTodoService.updateIsReady(UUID.fromString(dayId), UUID.fromString(dayTodoId), isReady);
+            DayTodoVO dayTodoVO = dayTodoService.updateIsReady(dayId, dayTodoId, isReady);
             return dayTodoRestMapper.toDayTodoReadyResponseDto(dayTodoVO);
         } catch (RuntimeException ex) {
             log.error("Day todo ready can't be updated.", ex);
