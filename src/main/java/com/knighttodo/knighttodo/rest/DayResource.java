@@ -83,9 +83,9 @@ public class DayResource {
             @ApiResponse(code = 404, message = "Resource not found"),
             @ApiResponse(code = 500, message = "Unexpected error")
     })
-    public DayResponseDto findDayById(@PathVariable String dayId) {
+    public DayResponseDto findDayById(@PathVariable UUID dayId) {
         try {
-            DayVO dayVO = dayService.findById(UUID.fromString(dayId));
+            DayVO dayVO = dayService.findById(dayId);
             return dayRestMapper.toDayResponseDto(dayVO);
         } catch (RuntimeException ex) {
             log.error("Day can't be found.", ex);
@@ -103,10 +103,10 @@ public class DayResource {
             @ApiResponse(code = 404, message = "Resource not found"),
             @ApiResponse(code = 500, message = "Unexpected error")
     })
-    public DayResponseDto updateDay(@PathVariable String dayId, @Valid @RequestBody DayRequestDto requestDto) {
+    public DayResponseDto updateDay(@PathVariable UUID dayId, @Valid @RequestBody DayRequestDto requestDto) {
         try {
             DayVO dayVO = dayRestMapper.toDayVO(requestDto);
-            DayVO updatedDayVO = dayService.updateDay(UUID.fromString(dayId), dayVO);
+            DayVO updatedDayVO = dayService.updateDay(dayId, dayVO);
             return dayRestMapper.toDayResponseDto(updatedDayVO);
         } catch (DayNotFoundException e) {
             log.error("Day can't be found.", e);
@@ -127,9 +127,9 @@ public class DayResource {
             @ApiResponse(code = 404, message = "Resource not found"),
             @ApiResponse(code = 500, message = "Unexpected error")
     })
-    public void deleteDay(@PathVariable String dayId) {
+    public void deleteDay(@PathVariable UUID dayId) {
         try {
-            dayService.deleteById(UUID.fromString(dayId));
+            dayService.deleteById(dayId);
         } catch (RuntimeException ex) {
             log.error("Day can't be deleted.", ex);
             throw new DayCanNotBeDeletedException("Day can't be deleted.", ex);

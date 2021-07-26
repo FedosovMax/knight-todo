@@ -3,7 +3,6 @@ package com.knighttodo.knighttodo.gateway.privatedb.representation;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scariness;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.List;
@@ -20,12 +19,8 @@ import java.util.UUID;
 public class RoutineInstance {
 
     @Id
-    @GeneratedValue(generator = "uuid")
+    @GeneratedValue
     @Column(name = "id")
-    @GenericGenerator(
-            name = "uuid",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
     private UUID id;
 
     private String name;

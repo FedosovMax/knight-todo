@@ -44,10 +44,10 @@ public class DayTodoResource {
             @ApiResponse(code = 403, message = "Operation forbidden"),
             @ApiResponse(code = 500, message = "Unexpected error")
     })
-    public DayTodoResponseDto addDayTodo(@PathVariable String dayId, @Valid @RequestBody DayTodoRequestDto requestDto) {
+    public DayTodoResponseDto addDayTodo(@PathVariable UUID dayId, @Valid @RequestBody DayTodoRequestDto requestDto) {
         try {
             DayTodoVO dayTodoVO = dayTodoRestMapper.toDayTodoVO(requestDto);
-            DayTodoVO savedDayTodoVO = dayTodoService.save(UUID.fromString(dayId), dayTodoVO);
+            DayTodoVO savedDayTodoVO = dayTodoService.save(dayId, dayTodoVO);
             return dayTodoRestMapper.toDayTodoResponseDto(savedDayTodoVO);
         } catch (RuntimeException ex) {
             log.error("Day todo hasn't been created.", ex);
@@ -64,9 +64,9 @@ public class DayTodoResource {
             @ApiResponse(code = 403, message = "Operation forbidden"),
             @ApiResponse(code = 500, message = "Unexpected error")
     })
-    public List<DayTodoResponseDto> findDayTodosByDayId(@PathVariable String dayId) {
+    public List<DayTodoResponseDto> findDayTodosByDayId(@PathVariable UUID dayId) {
         try {
-            return dayTodoService.findByDayId(UUID.fromString(dayId))
+            return dayTodoService.findByDayId(dayId)
                     .stream()
                     .map(dayTodoRestMapper::toDayTodoResponseDto)
                     .collect(Collectors.toList());
@@ -85,9 +85,9 @@ public class DayTodoResource {
             @ApiResponse(code = 404, message = "Resource not found"),
             @ApiResponse(code = 500, message = "Unexpected error")
     })
-    public DayTodoReadyResponseDto findDayTodoById(@PathVariable String dayTodoId) {
+    public DayTodoReadyResponseDto findDayTodoById(@PathVariable UUID dayTodoId) {
         try {
-            DayTodoVO dayTodoVO = dayTodoService.findById(UUID.fromString(dayTodoId));
+            DayTodoVO dayTodoVO = dayTodoService.findById(dayTodoId);
             return dayTodoRestMapper.toDayTodoReadyResponseDto(dayTodoVO);
         } catch (RuntimeException ex) {
             log.error("Day todo can't be found.", ex);
