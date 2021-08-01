@@ -40,6 +40,6 @@ public class RoutineTodo {
     @JoinColumn(name = "routine_id")
     private Routine routine;
 
-    @OneToMany(mappedBy = "routineTodo", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "routineTodo")
     private List<RoutineTodoInstance> routineTodoInstances;
 }

@@ -10,6 +10,7 @@ import com.knighttodo.knighttodo.service.RoutineService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -35,6 +36,7 @@ public class RoutineInstanceServiceImpl implements RoutineInstanceService {
     }
 
     @Override
+    @Transactional
     public RoutineInstanceVO findById(UUID routineInstanceId) {
         RoutineInstanceVO routineInstanceVO = routineInstanceGateway.findById(routineInstanceId)
                 .orElseThrow(() -> {
@@ -58,7 +60,9 @@ public class RoutineInstanceServiceImpl implements RoutineInstanceService {
     }
 
     @Override
-    public void deleteById(UUID routineId) {
-        routineInstanceGateway.deleteById(routineId);
+    @Transactional
+    public void deleteById(UUID routineInstanceId) {
+        routineInstanceGateway.deleteAllRoutineTodoInstancesByRoutineInstanceId(routineInstanceId);
+        routineInstanceGateway.deleteById(routineInstanceId);
     }
 }

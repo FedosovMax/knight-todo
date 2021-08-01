@@ -3,8 +3,10 @@ package com.knighttodo.knighttodo.integration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.knighttodo.knighttodo.factories.RoutineFactory;
 import com.knighttodo.knighttodo.factories.RoutineInstanceFactory;
+import com.knighttodo.knighttodo.factories.RoutineTodoFactory;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.RoutineInstanceRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.RoutineRepository;
+import com.knighttodo.knighttodo.gateway.privatedb.repository.RoutineTodoRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Routine;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.RoutineInstance;
 import com.knighttodo.knighttodo.rest.request.RoutineRequestDto;
@@ -48,6 +50,9 @@ public class RoutineResourceIntegrationTest {
 
     @Autowired
     private RoutineInstanceRepository routineInstanceRepository;
+
+    @Autowired
+    private RoutineTodoRepository routineTodoRepository;
 
     @AfterEach
     public void tearDown() {
@@ -126,6 +131,7 @@ public class RoutineResourceIntegrationTest {
     @Test
     public void updateRoutine_shouldUpdateRoutineAndReturnIt_whenRequestIsCorrect() throws Exception {
         Routine routine = routineRepository.save(RoutineFactory.routineInstance());
+        routineInstanceRepository.save(RoutineInstanceFactory.routineInstanceWithRoutine(routine));
         RoutineRequestDto requestDto = RoutineFactory.updateRoutineRequestDto();
 
         mockMvc.perform(put(API_BASE_URL_V1 + API_BASE_ROUTINES + "/" + routine.getId())
@@ -165,5 +171,21 @@ public class RoutineResourceIntegrationTest {
 
         assertThat(routineRepository.findById(routine.getId())).isEmpty();
         assertThat(routineRepository.count()).isEqualTo(0);
+    }
+
+    @Test
+    public void deleteRoutine_shouldDeleteChildrenRoutineTodosAndRoutineInstances_whenDataIsCorrect() throws Exception {
+        Routine routine = routineRepository.save(RoutineFactory.routineInstance());
+
+        routineInstanceRepository.save(RoutineInstanceFactory.routineInstanceWithRoutine(routine));
+        routineTodoRepository.save(RoutineTodoFactory.routineTodoWithRoutine(routine));
+
+        mockMvc.perform(delete(buildDeleteRoutineByIdUrl(routine.getId())))
+                .andExpect(status().isOk());
+
+        assertThat(routineRepository.findById(routine.getId())).isEmpty();
+        assertThat(routineRepository.count()).isEqualTo(0);
+        assertThat(routineTodoRepository.count()).isEqualTo(0);
+        assertThat(routineInstanceRepository.count()).isEqualTo(0);
     }
 }

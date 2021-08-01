@@ -1,18 +1,42 @@
 package com.knighttodo.knighttodo.gateway;
 
 import com.knighttodo.knighttodo.domain.RoutineInstanceVO;
+import com.knighttodo.knighttodo.gateway.privatedb.mapper.RoutineInstanceMapper;
+import com.knighttodo.knighttodo.gateway.privatedb.repository.RoutineInstanceRepository;
+import com.knighttodo.knighttodo.gateway.privatedb.representation.RoutineInstance;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
-public interface RoutineInstanceGateway {
+@RequiredArgsConstructor
+@Component
+public class RoutineInstanceGateway {
 
-    RoutineInstanceVO save(RoutineInstanceVO routineInstanceVO);
+    private final RoutineInstanceRepository routineInstanceRepository;
+    private final RoutineInstanceMapper routineInstanceMapper;
 
-    List<RoutineInstanceVO> findAll();
+    public RoutineInstanceVO save(RoutineInstanceVO routineInstanceVO) {
+        RoutineInstance savedRoutineInstance = routineInstanceRepository.save(routineInstanceMapper.toRoutineInstance(routineInstanceVO));
+        return routineInstanceMapper.toRoutineInstanceVO(savedRoutineInstance);
+    }
 
-    Optional<RoutineInstanceVO> findById(UUID routineInstanceId);
+    public List<RoutineInstanceVO> findAll() {
+        return routineInstanceRepository.findAll().stream().map(routineInstanceMapper::toRoutineInstanceVO).collect(Collectors.toList());
+    }
 
-    void deleteById(UUID routineId);
+    public Optional<RoutineInstanceVO> findById(UUID routineId) {
+        return routineInstanceRepository.findById(routineId).map(routineInstanceMapper::toRoutineInstanceVO);
+    }
+
+    public void deleteById(UUID routineId) {
+        routineInstanceRepository.deleteById(routineId);
+    }
+
+    public void deleteAllRoutineTodoInstancesByRoutineInstanceId(UUID routineInstanceId) {
+        routineInstanceRepository.deleteAllRoutineTodoInstancesByRoutineInstanceId(routineInstanceId);
+    }
 }

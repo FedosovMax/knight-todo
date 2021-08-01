@@ -32,6 +32,18 @@ public class RoutineTodoInstanceFactory {
                 .build();
     }
 
+    public static RoutineTodoInstance routineTodoInstanceWithRoutineAndRoutineTodoInstance(RoutineInstance routineInstance, RoutineTodo routineTodo) {
+        return RoutineTodoInstance
+                .builder()
+                .routineTodoName(ROUTINE_TODO_INSTANCE_NAME)
+                .scariness(SCARINESS_TODO)
+                .hardness(HARDNESS_TODO)
+                .routineInstance(routineInstance)
+                .routineTodo(routineTodo)
+                .ready(FALSE_TODO_READY)
+                .build();
+    }
+
     public static RoutineTodoInstance routineTodoInstanceWithRoutineReadyInstance(RoutineInstance routineInstance) {
         return RoutineTodoInstance
                 .builder()

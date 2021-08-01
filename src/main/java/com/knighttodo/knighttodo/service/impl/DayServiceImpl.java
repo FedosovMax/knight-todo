@@ -8,6 +8,7 @@ import com.knighttodo.knighttodo.service.DayService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -39,15 +40,17 @@ public class DayServiceImpl implements DayService {
     }
 
     @Override
+    @Transactional
     public DayVO updateDay(UUID dayId, DayVO changedDayVO) {
-        changedDayVO.setId(dayId);
-        DayVO dayVO = findById(dayMapper.toDay(changedDayVO).getId());
+        DayVO dayVO = findById(dayId);
         dayVO.setDayName(changedDayVO.getDayName());
         return dayGateway.save(dayVO);
     }
 
     @Override
+    @Transactional
     public void deleteById(UUID dayId) {
+        dayGateway.deleteAllDayTodos(dayId);
         dayGateway.deleteById(dayId);
     }
 }

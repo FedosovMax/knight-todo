@@ -36,6 +36,6 @@ public class RoutineInstance {
     @ManyToOne
     private Routine routine;
 
-    @OneToMany(mappedBy = "routineInstance", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "routineInstance", cascade = CascadeType.MERGE)
     private List<RoutineTodoInstance> routineTodoInstances;
 }

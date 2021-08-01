@@ -1,20 +1,47 @@
 package com.knighttodo.knighttodo.gateway;
 
 import com.knighttodo.knighttodo.domain.RoutineTodoVO;
+import com.knighttodo.knighttodo.gateway.privatedb.mapper.RoutineTodoMapper;
+import com.knighttodo.knighttodo.gateway.privatedb.repository.RoutineTodoRepository;
+import com.knighttodo.knighttodo.gateway.privatedb.representation.RoutineTodo;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
-public interface RoutineTodoGateway {
+@RequiredArgsConstructor
+@Service
+public class RoutineTodoGateway {
 
-    RoutineTodoVO save(RoutineTodoVO routineTodoVO);
+    private final RoutineTodoRepository routineTodoRepository;
+    private final RoutineTodoMapper routineTodoMapper;
 
-    List<RoutineTodoVO> findAll();
+    public RoutineTodoVO save(RoutineTodoVO routineTodoVO) {
+        RoutineTodo savedRoutineTodo = routineTodoRepository.save(routineTodoMapper.toRoutineTodo(routineTodoVO));
+        return routineTodoMapper.toRoutineTodoVO(savedRoutineTodo);
+    }
 
-    Optional<RoutineTodoVO> findById(UUID routineTodoId);
+    public List<RoutineTodoVO> findAll() {
+        return routineTodoRepository.findAll().stream().map(routineTodoMapper::toRoutineTodoVO).collect(Collectors.toList());
+    }
 
-    void deleteById(UUID routineTodoId);
+    public Optional<RoutineTodoVO> findById(UUID routineTodoId) {
+        return routineTodoRepository.findById(routineTodoId).map(routineTodoMapper::toRoutineTodoVO);
+    }
 
-    List<RoutineTodoVO> findByRoutineId(UUID routineId);
+    public void deleteById(UUID routineTodoId) {
+        routineTodoRepository.deleteById(routineTodoId);
+    }
+
+    public List<RoutineTodoVO> findByRoutineId(UUID routineId) {
+        return routineTodoRepository.findByRoutineId(routineId).stream().map(routineTodoMapper::toRoutineTodoVO)
+                .collect(Collectors.toList());
+    }
+
+    public void deleteAllRoutineTodoInstancesByRoutineTodoId(UUID routineTodoId) {
+        routineTodoRepository.deleteAllRoutineTodoInstancesByRoutineTodoId(routineTodoId);
+    }
 }

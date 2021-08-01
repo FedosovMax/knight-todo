@@ -28,6 +28,7 @@ import static com.knighttodo.knighttodo.Constants.API_BASE_DAYS;
 import static com.knighttodo.knighttodo.Constants.API_BASE_URL_V1;
 import static com.knighttodo.knighttodo.TestConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -181,13 +182,8 @@ public class DayResourceIntegrationTest {
     @Test
     public void updateDay_shouldUpdateDayNameAndCheckReturnFields_whenResponseIsCorrect() throws Exception {
         Day day = dayRepository.save(DayFactory.dayInstance());
-
-        DayTodo firstDayTodo = DayTodoFactory.dayTodoWithDayInstance(day);
-        firstDayTodo.setDay(day);
-        dayTodoRepository.save(firstDayTodo);
-        DayTodo secondDayTodo = DayTodoFactory.dayTodoWithDayInstance(day);
-        secondDayTodo.setDay(day);
-        dayTodoRepository.save(secondDayTodo);
+        dayTodoRepository.save(DayTodoFactory.dayTodoWithDayInstance(day));
+        dayTodoRepository.save(DayTodoFactory.dayTodoWithDayInstance(day));
 
         DayRequestDto dayRequestDto = DayFactory.createDayRequestDto();
 
@@ -211,5 +207,19 @@ public class DayResourceIntegrationTest {
                 .andExpect(status().isOk());
 
         assertThat(dayRepository.findById(day.getId())).isEmpty();
+    }
+
+    @Test
+    @Transactional
+    public void deleteDay_shouldDeleteDayWithAllDayTodos_whenIdIsCorrect() throws Exception {
+        Day day = dayRepository.save(DayFactory.dayInstance());
+        dayTodoRepository.save(DayTodoFactory.dayTodoWithDayInstance(day));
+        dayTodoRepository.save(DayTodoFactory.dayTodoWithDayInstance(day));
+
+        mockMvc.perform(delete(buildDeleteDayByIdUrl(day.getId())))
+                .andExpect(status().isOk());
+
+        assertThat(dayRepository.findById(day.getId())).isEmpty();
+        assertThat(dayTodoRepository.findAll().isEmpty());
     }
 }

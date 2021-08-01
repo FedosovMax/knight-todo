@@ -3,10 +3,15 @@ package com.knighttodo.knighttodo.integration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.knighttodo.knighttodo.exception.UnchangeableFieldUpdateException;
 import com.knighttodo.knighttodo.factories.RoutineFactory;
+import com.knighttodo.knighttodo.factories.RoutineInstanceFactory;
 import com.knighttodo.knighttodo.factories.RoutineTodoFactory;
+import com.knighttodo.knighttodo.factories.RoutineTodoInstanceFactory;
+import com.knighttodo.knighttodo.gateway.privatedb.repository.RoutineInstanceRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.RoutineRepository;
+import com.knighttodo.knighttodo.gateway.privatedb.repository.RoutineTodoInstanceRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.RoutineTodoRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Routine;
+import com.knighttodo.knighttodo.gateway.privatedb.representation.RoutineInstance;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.RoutineTodo;
 import com.knighttodo.knighttodo.rest.request.RoutineTodoRequestDto;
 import org.junit.jupiter.api.AfterEach;
@@ -50,6 +55,12 @@ public class RoutineTodoResourceIntegrationTest {
 
     @Autowired
     private RoutineTodoRepository routineTodoRepository;
+
+    @Autowired
+    private RoutineInstanceRepository routineInstanceRepository;
+
+    @Autowired
+    private RoutineTodoInstanceRepository routineTodoInstanceRepository;
 
     @Autowired
     private RoutineRepository routineRepository;
@@ -305,7 +316,6 @@ public class RoutineTodoResourceIntegrationTest {
     }
 
     @Test
-    @Transactional
     public void deleteRoutineTodo_shouldDeleteRoutineTodo_whenIdIsCorrect() throws Exception {
         Routine routine = routineRepository.save(RoutineFactory.routineInstance());
         RoutineTodo routineTodo = routineTodoRepository.save(RoutineTodoFactory.routineTodoWithRoutine(routine));
@@ -317,6 +327,23 @@ public class RoutineTodoResourceIntegrationTest {
         assertThat(routineTodoRepository.findById(routineTodo.getId())).isEmpty();
         assertThat(routineTodoRepository.count()).isEqualTo(0);
     }
+
+    @Test
+    public void deleteRoutineTodo_shouldDeleteRoutineTodoInstances_whenIdIsCorrect() throws Exception {
+        Routine routine = routineRepository.save(RoutineFactory.routineInstance());
+        RoutineTodo routineTodo = routineTodoRepository.save(RoutineTodoFactory.routineTodoWithRoutine(routine));
+        RoutineInstance routineInstance = routineInstanceRepository.save(RoutineInstanceFactory.routineInstanceWithRoutine(routine));
+        routineTodoInstanceRepository.save(RoutineTodoInstanceFactory
+                .routineTodoInstanceWithRoutineAndRoutineTodoInstance(routineInstance, routineTodo));
+
+        mockMvc.perform(delete(buildDeleteRoutineTodoByIdUrl(routine.getId(), routineTodo.getId())))
+                .andExpect(status().isOk());
+
+        assertThat(routineTodoRepository.findById(routineTodo.getId())).isEmpty();
+        assertThat(routineTodoRepository.count()).isEqualTo(0);
+        assertThat(routineTodoInstanceRepository.count()).isEqualTo(0);
+    }
+
 
     @Test
     public void findRoutineTodosByRoutineId_shouldReturnExistingRoutineTodo_whenIdIsCorrect() throws Exception {

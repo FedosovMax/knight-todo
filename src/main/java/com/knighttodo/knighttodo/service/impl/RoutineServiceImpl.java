@@ -51,7 +51,10 @@ public class RoutineServiceImpl implements RoutineService {
     }
 
     @Override
+    @Transactional
     public void deleteById(UUID routineId) {
+        routineGateway.deleteAllRoutineInstancesByRoutineId(routineId);
+        routineGateway.deleteAllRoutineTodosByRoutineId(routineId);
         routineGateway.deleteById(routineId);
     }
 

@@ -51,8 +51,8 @@ public class RoutineTodoInstanceServiceImpl implements RoutineTodoInstanceServic
     }
 
     @Override
-    public void deleteById(UUID routineTodoId) {
-        routineTodoInstanceGateway.deleteById(routineTodoId);
+    public void deleteById(UUID routineTodoInstanceId) {
+        routineTodoInstanceGateway.deleteById(routineTodoInstanceId);
     }
 
     @Override

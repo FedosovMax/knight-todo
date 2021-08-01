@@ -5,6 +5,7 @@ import com.knighttodo.knighttodo.factories.RoutineFactory;
 import com.knighttodo.knighttodo.factories.RoutineInstanceFactory;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.RoutineInstanceRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.RoutineRepository;
+import com.knighttodo.knighttodo.gateway.privatedb.repository.RoutineTodoInstanceRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.RoutineTodoRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Routine;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.RoutineInstance;

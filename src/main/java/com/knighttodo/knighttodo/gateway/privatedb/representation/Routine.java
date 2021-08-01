@@ -30,9 +30,9 @@ public class Routine {
     @Enumerated(EnumType.STRING)
     private Hardness hardness;
 
-    @OneToMany(mappedBy = "routine", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "routine", cascade =  CascadeType.MERGE, orphanRemoval = true)
     private List<RoutineInstance> routineInstances = new ArrayList<>();
 
-    @OneToMany(mappedBy = "routine", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "routine")
     private List<RoutineTodo> routineTodos;
 }

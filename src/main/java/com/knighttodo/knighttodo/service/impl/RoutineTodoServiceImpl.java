@@ -9,6 +9,7 @@ import com.knighttodo.knighttodo.service.RoutineTodoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -69,7 +70,9 @@ public class RoutineTodoServiceImpl implements RoutineTodoService {
     }
 
     @Override
+    @Transactional
     public void deleteById(UUID routineTodoId) {
+        routineTodoGateway.deleteAllRoutineTodoInstancesByRoutineTodoId(routineTodoId);
         routineTodoGateway.deleteById(routineTodoId);
     }
 
