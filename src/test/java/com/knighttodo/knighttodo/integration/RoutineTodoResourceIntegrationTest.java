@@ -65,11 +65,9 @@ public class RoutineTodoResourceIntegrationTest {
     @Autowired
     private RoutineRepository routineRepository;
 
-    @MockBean
-    private RestTemplate restTemplate;
-
     @AfterEach
     public void tearDown() {
+        routineInstanceRepository.deleteAll();
         routineTodoRepository.deleteAll();
         routineRepository.deleteAll();
     }
