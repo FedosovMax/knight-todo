@@ -11,6 +11,16 @@ spring:
   output:
     ansi:
       enabled: NEVER
+  #Datasource
+  datasource:
+    url: jdbc:postgresql://localhost:5432/knight?currentSchema=knight_todo
+    username: postgre
+    password: postgre
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
 
 baseUrl:
   experience: "http://localhost:6070"
