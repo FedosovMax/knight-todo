@@ -21,6 +21,12 @@ spring:
     hibernate:
       ddl-auto: create
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          #          issuer-uri: http://localhost:8080/auth/realms/development
+          jwk-set-uri: http://localhost:8080/auth/realms/development/protocol/openid-connect/certs
 
 baseUrl:
   experience: "http://localhost:6070"

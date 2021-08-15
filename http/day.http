@@ -12,6 +12,7 @@ Content-Type: application/json
 
 ### get all days
 GET {{host}}/days
+Authorization: {{token}}
 
 ### get day by id
 GET {{host}}/days/{{dayId}}
