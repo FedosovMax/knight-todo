@@ -52,6 +52,12 @@
             <version>${testcontainers.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
 
         <dependency>
             <groupId>org.mapstruct</groupId>
@@ -74,12 +80,7 @@
             <artifactId>problem-spring-web</artifactId>
             <version>${zalando.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>${testcontainers.version}</version>
-            <scope>test</scope>
-        </dependency>
+
 
     </dependencies>
 
