@@ -57,6 +57,7 @@ public class RoutineResourceIntegrationTest {
     @AfterEach
     public void tearDown() {
         routineInstanceRepository.deleteAll();
+        routineTodoRepository.deleteAll();
         routineRepository.deleteAll();
     }
 
