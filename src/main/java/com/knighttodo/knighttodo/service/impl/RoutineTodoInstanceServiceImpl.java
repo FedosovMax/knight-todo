@@ -1,6 +1,7 @@
 package com.knighttodo.knighttodo.service.impl;
 
 import com.knighttodo.knighttodo.domain.RoutineTodoInstanceVO;
+import com.knighttodo.knighttodo.domain.RoutineTodoVO;
 import com.knighttodo.knighttodo.exception.RoutineTodoNotFoundException;
 import com.knighttodo.knighttodo.gateway.RoutineTodoInstanceGateway;
 import com.knighttodo.knighttodo.gateway.experience.ExperienceGateway;
@@ -37,12 +38,22 @@ public class RoutineTodoInstanceServiceImpl implements RoutineTodoInstanceServic
 
     @Override
     public RoutineTodoInstanceVO findById(UUID routineTodoInstanceId) {
-        return routineTodoInstanceGateway.findById(routineTodoInstanceId)
+        RoutineTodoInstanceVO routineTodoInstanceVO = routineTodoInstanceGateway.findById(routineTodoInstanceId)
                 .orElseThrow(() -> {
                     log.error(String.format("Routine Todo Instance with such id:%s can't be found", routineTodoInstanceId));
                     return new RoutineTodoNotFoundException(String
                             .format("Routine Todo Instance with such id:%s can't be found", routineTodoInstanceId));
                 });
+        return synchronizeWithRoutineTodoAndReturn(routineTodoInstanceVO);
+    }
+
+    private RoutineTodoInstanceVO synchronizeWithRoutineTodoAndReturn(RoutineTodoInstanceVO routineTodoInstanceVO) {
+        RoutineTodoVO routineTodoVO = routineTodoInstanceVO.getRoutineTodoVO();
+        routineTodoInstanceVO.setRoutineTodoName(routineTodoVO.getRoutineTodoName());
+        routineTodoInstanceVO.setHardness(routineTodoVO.getHardness());
+        routineTodoInstanceVO.setScariness(routineTodoVO.getScariness());
+        routineTodoInstanceGateway.save(routineTodoInstanceVO);
+        return routineTodoInstanceVO;
     }
 
     @Override

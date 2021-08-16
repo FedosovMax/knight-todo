@@ -70,6 +70,7 @@ public class RoutineTodoResourceIntegrationTest {
 
     @AfterEach
     public void tearDown() {
+        routineInstanceRepository.deleteAll();
         routineTodoRepository.deleteAll();
         routineRepository.deleteAll();
     }
@@ -96,7 +97,6 @@ public class RoutineTodoResourceIntegrationTest {
     }
 
     @Test
-    @Transactional
     public void addRoutineTodo_shouldAddTodoAndReturnIt_whenRequestIsCorrect() throws Exception {
         Routine routine = routineRepository.save(RoutineFactory.routineInstance());
         RoutineTodoRequestDto requestDto = RoutineTodoFactory.createRoutineTodoRequestDto();

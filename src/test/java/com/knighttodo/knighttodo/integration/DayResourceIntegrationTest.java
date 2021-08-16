@@ -6,7 +6,6 @@ import com.knighttodo.knighttodo.factories.DayTodoFactory;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.DayRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.DayTodoRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Day;
-import com.knighttodo.knighttodo.gateway.privatedb.representation.DayTodo;
 import com.knighttodo.knighttodo.rest.request.DayRequestDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -26,11 +25,17 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static com.knighttodo.knighttodo.Constants.API_BASE_DAYS;
 import static com.knighttodo.knighttodo.Constants.API_BASE_URL_V1;
-import static com.knighttodo.knighttodo.TestConstants.*;
+import static com.knighttodo.knighttodo.TestConstants.buildDeleteDayByIdUrl;
+import static com.knighttodo.knighttodo.TestConstants.buildGetDayByIdUrl;
+import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToDayName;
+import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToId;
+import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToLength;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

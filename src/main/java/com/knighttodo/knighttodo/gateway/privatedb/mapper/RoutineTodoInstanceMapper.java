@@ -16,9 +16,11 @@ import java.util.List;
 public interface RoutineTodoInstanceMapper {
 
     @Mapping(target = "routineInstance", qualifiedByName = {"toRoutineTodoInstanceWithoutRoutineInstance"})
+    @Mapping(target = "routineTodo", source = "routineTodoVO")
     RoutineTodoInstance toRoutineTodoInstance(RoutineTodoInstanceVO routineTodoInstanceVO);
 
     @Mapping(target = "routineInstanceVO", qualifiedByName = {"toRoutineTodoVOWithoutRoutineInstance"})
+    @Mapping(target = "routineTodoVO", source = "routineTodo")
     RoutineTodoInstanceVO toRoutineTodoInstanceVO(RoutineTodoInstance routineTodoInstance);
 
     @Named("toRoutineTodos")

@@ -27,5 +27,7 @@ public class RoutineTodoInstanceVO implements TodoVO {
 
     private RoutineTodoVO routineTodo;
 
+    private RoutineTodoVO routineTodoVO;
+
     private int experience;
 }

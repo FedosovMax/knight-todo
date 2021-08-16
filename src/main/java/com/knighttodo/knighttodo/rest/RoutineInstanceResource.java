@@ -64,7 +64,7 @@ public class RoutineInstanceResource {
             @ApiResponse(code = 403, message = "Operation forbidden"),
             @ApiResponse(code = 500, message = "Unexpected error")
     })
-    public List<RoutineInstanceResponseDto> findAllRoutines() {
+    public List<RoutineInstanceResponseDto> findAllRoutineInstances() {
         try {
             return routineInstanceService.findAll()
                     .stream()
