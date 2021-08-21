@@ -23,6 +23,7 @@ public class RoutineTodoServiceImpl implements RoutineTodoService {
     private final RoutineService routineService;
 
     @Override
+    @Transactional
     public RoutineTodoVO save(UUID routineId, RoutineTodoVO routineTodoVO) {
         routineTodoVO.setRoutineVO(routineService.findById(routineId));
         RoutineTodoVO savedRoutineTodo = routineTodoGateway.save(routineTodoVO);
@@ -46,6 +47,7 @@ public class RoutineTodoServiceImpl implements RoutineTodoService {
     }
 
     @Override
+    @Transactional
     public RoutineTodoVO updateRoutineTodo(UUID routineTodoId, RoutineTodoVO changedRoutineTodoVO) {
         RoutineTodoVO routineTodoVO = findById(routineTodoId);
 

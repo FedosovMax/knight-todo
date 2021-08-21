@@ -10,6 +10,7 @@ import com.knighttodo.knighttodo.service.DayTodoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,6 +25,7 @@ public class DayTodoServiceImpl implements DayTodoService {
     private final ExperienceGateway experienceGateway;
 
     @Override
+    @Transactional
     public DayTodoVO save(UUID dayId, DayTodoVO dayTodoVO) {
         dayTodoVO.setDay(dayService.findById(dayId));
         return dayTodoGateway.save(dayTodoVO);
@@ -44,6 +46,7 @@ public class DayTodoServiceImpl implements DayTodoService {
     }
 
     @Override
+    @Transactional
     public DayTodoVO updateDayTodo(UUID dayTodoId, DayTodoVO changedDayTodoVO) {
         DayTodoVO dayTodoVO = findById(dayTodoId);
         checkUpdatePossibility(dayTodoVO, changedDayTodoVO);
@@ -67,6 +70,7 @@ public class DayTodoServiceImpl implements DayTodoService {
     }
 
     @Override
+    @Transactional
     public void deleteById(UUID dayTodoId) {
         dayTodoGateway.deleteById(dayTodoId);
     }
@@ -77,6 +81,7 @@ public class DayTodoServiceImpl implements DayTodoService {
     }
 
     @Override
+    @Transactional
     public DayTodoVO updateIsReady(UUID dayId, UUID dayTodoId, boolean isReady) {
         DayTodoVO dayTodoVO = findById(dayTodoId);
         dayTodoVO.setDay(dayService.findById(dayId));

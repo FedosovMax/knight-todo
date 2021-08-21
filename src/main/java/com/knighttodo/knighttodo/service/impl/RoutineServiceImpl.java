@@ -22,6 +22,7 @@ public class RoutineServiceImpl implements RoutineService {
     private final RoutineGateway routineGateway;
 
     @Override
+    @Transactional
     public RoutineVO save(RoutineVO routineVO) {
         return routineGateway.save(routineVO);
     }
@@ -42,6 +43,7 @@ public class RoutineServiceImpl implements RoutineService {
     }
 
     @Override
+    @Transactional
     public RoutineVO updateRoutine(UUID routineId, RoutineVO changedRoutineVO) {
         RoutineVO routineVO = findById(routineId);
         routineVO.setName(changedRoutineVO.getName());

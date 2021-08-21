@@ -24,6 +24,7 @@ public class RoutineInstanceServiceImpl implements RoutineInstanceService {
     private final RoutineService routineService;
 
     @Override
+    @Transactional
     public RoutineInstanceVO save(RoutineInstanceVO routineInstanceVO, UUID routineId) {
         RoutineVO foundRoutine = routineService.findById(routineId);
         routineInstanceVO.setRoutine(foundRoutine);
@@ -50,6 +51,7 @@ public class RoutineInstanceServiceImpl implements RoutineInstanceService {
     }
 
     @Override
+    @Transactional
     public RoutineInstanceVO update(UUID routineInstanceId, RoutineInstanceVO changedRoutineInstanceVO) {
         RoutineInstanceVO routineInstanceVO = findById(routineInstanceId);
         routineInstanceVO.setName(changedRoutineInstanceVO.getName());

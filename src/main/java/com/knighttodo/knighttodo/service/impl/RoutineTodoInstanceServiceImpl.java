@@ -10,6 +10,7 @@ import com.knighttodo.knighttodo.service.RoutineTodoInstanceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,6 +25,7 @@ public class RoutineTodoInstanceServiceImpl implements RoutineTodoInstanceServic
     private final ExperienceGateway experienceGateway;
 
     @Override
+    @Transactional
     public RoutineTodoInstanceVO save(UUID routineInstanceId, RoutineTodoInstanceVO routineTodoInstanceVO) {
         routineTodoInstanceVO.setRoutineInstanceVO(routineInstanceService.findById(routineInstanceId));
         RoutineTodoInstanceVO savedRoutineTodoInstance = routineTodoInstanceGateway.save(routineTodoInstanceVO);
@@ -37,6 +39,7 @@ public class RoutineTodoInstanceServiceImpl implements RoutineTodoInstanceServic
     }
 
     @Override
+    @Transactional
     public RoutineTodoInstanceVO findById(UUID routineTodoInstanceId) {
         RoutineTodoInstanceVO routineTodoInstanceVO = routineTodoInstanceGateway.findById(routineTodoInstanceId)
                 .orElseThrow(() -> {
@@ -62,11 +65,13 @@ public class RoutineTodoInstanceServiceImpl implements RoutineTodoInstanceServic
     }
 
     @Override
+    @Transactional
     public void deleteById(UUID routineTodoInstanceId) {
         routineTodoInstanceGateway.deleteById(routineTodoInstanceId);
     }
 
     @Override
+    @Transactional
     public RoutineTodoInstanceVO updateIsReady(UUID routineId, UUID routineTodoId, boolean isReady) {
         RoutineTodoInstanceVO routineTodoInstanceVO = findById(routineTodoId);
         routineTodoInstanceVO.setRoutineInstanceVO(routineInstanceService.findById(routineId));

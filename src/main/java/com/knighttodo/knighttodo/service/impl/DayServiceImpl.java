@@ -19,9 +19,9 @@ import java.util.UUID;
 public class DayServiceImpl implements DayService {
 
     private final DayGateway dayGateway;
-    private final DayMapper dayMapper;
 
     @Override
+    @Transactional
     public DayVO save(DayVO dayVO) {
         return dayGateway.save(dayVO);
     }
