@@ -8,18 +8,21 @@ import com.knighttodo.knighttodo.service.DayService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Slf4j
 @Service
+@Transactional(readOnly = true)
 public class DayServiceImpl implements DayService {
 
     private final DayGateway dayGateway;
-    private final DayMapper dayMapper;
 
     @Override
+    @Transactional
     public DayVO save(DayVO dayVO) {
         return dayGateway.save(dayVO);
     }
@@ -30,7 +33,7 @@ public class DayServiceImpl implements DayService {
     }
 
     @Override
-    public DayVO findById(String dayId) {
+    public DayVO findById(UUID dayId) {
         return dayGateway.findById(dayId).orElseThrow(() -> {
             log.error(String.format("Day with such id:%s can't be " + "found", dayId));
             return new DayNotFoundException(String.format("Day with such id:%s can't be " + "found", dayId));
@@ -38,15 +41,17 @@ public class DayServiceImpl implements DayService {
     }
 
     @Override
-    public DayVO updateDay(String dayId, DayVO changedDayVO) {
-        changedDayVO.setId(dayId);
-        DayVO dayVO = findById(dayMapper.toDay(changedDayVO).getId());
+    @Transactional
+    public DayVO updateDay(UUID dayId, DayVO changedDayVO) {
+        DayVO dayVO = findById(dayId);
         dayVO.setDayName(changedDayVO.getDayName());
         return dayGateway.save(dayVO);
     }
 
     @Override
-    public void deleteById(String dayId) {
+    @Transactional
+    public void deleteById(UUID dayId) {
+        dayGateway.deleteAllDayTodos(dayId);
         dayGateway.deleteById(dayId);
     }
 }

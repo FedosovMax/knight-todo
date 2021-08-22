@@ -2,7 +2,6 @@ package com.knighttodo.knighttodo.gateway.privatedb.mapper;
 
 import com.knighttodo.knighttodo.domain.DayVO;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Day;
-
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

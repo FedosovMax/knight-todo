@@ -10,13 +10,13 @@ import org.mapstruct.Named;
 import java.util.List;
 
 @Named("RoutineTodoMapper")
-@Mapper(componentModel = "spring", uses = {RoutineMapper.class, DayMapper.class})
+@Mapper(componentModel = "spring", uses = {RoutineInstanceMapper.class})
 public interface RoutineTodoMapper {
 
     @Mapping(target = "routine", qualifiedByName = {"toRoutineTodoWithoutRoutine"})
     RoutineTodo toRoutineTodo(RoutineTodoVO routineTodoVO);
 
-    @Mapping(target = "routine", qualifiedByName = {"toRoutineTodoVOWithoutRoutine"})
+    @Mapping(target = "routineVO", qualifiedByName = {"toRoutineTodoVOWithoutRoutine"})
     RoutineTodoVO toRoutineTodoVO(RoutineTodo routineTodo);
 
     @Named("toRoutineTodos")
@@ -32,6 +32,6 @@ public interface RoutineTodoMapper {
     RoutineTodo toRoutineTodoWithoutRoutine(RoutineTodoVO routineTodoVO);
 
     @Named("toRoutineTodoVOWithoutRoutine")
-    @Mapping(target = "routine", ignore = true)
+    @Mapping(target = "routineVO", ignore = true)
     RoutineTodoVO toRoutineTodoVOWithoutRoutine(RoutineTodo routineTodo);
 }

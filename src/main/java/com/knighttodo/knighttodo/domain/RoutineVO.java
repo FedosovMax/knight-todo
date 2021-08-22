@@ -2,14 +2,13 @@ package com.knighttodo.knighttodo.domain;
 
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scariness;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -17,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class RoutineVO {
 
-    private String id;
+    private UUID id;
 
     private String name;
 
@@ -25,9 +24,7 @@ public class RoutineVO {
 
     private Scariness scariness;
 
-    private String templateId;
+    private List<RoutineInstanceVO> routineInstanceVOs;
 
-    private boolean ready;
-
-    private List<RoutineTodoVO> routineTodos = new ArrayList<>();
+    private List<RoutineTodoVO> routineTodos;
 }

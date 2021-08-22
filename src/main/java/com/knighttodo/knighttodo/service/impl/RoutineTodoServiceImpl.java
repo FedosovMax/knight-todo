@@ -4,28 +4,32 @@ import com.knighttodo.knighttodo.domain.RoutineTodoVO;
 import com.knighttodo.knighttodo.exception.RoutineTodoNotFoundException;
 import com.knighttodo.knighttodo.exception.UnchangeableFieldUpdateException;
 import com.knighttodo.knighttodo.gateway.RoutineTodoGateway;
-import com.knighttodo.knighttodo.gateway.experience.ExperienceGateway;
 import com.knighttodo.knighttodo.service.RoutineService;
 import com.knighttodo.knighttodo.service.RoutineTodoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class RoutineTodoServiceImpl implements RoutineTodoService {
 
     private final RoutineTodoGateway routineTodoGateway;
     private final RoutineService routineService;
-    private final ExperienceGateway experienceGateway;
 
     @Override
-    public RoutineTodoVO save(String routineId, RoutineTodoVO routineTodoVO) {
-        routineTodoVO.setRoutine(routineService.findById(routineId));
-        return routineTodoGateway.save(routineTodoVO);
+    @Transactional
+    public RoutineTodoVO save(UUID routineId, RoutineTodoVO routineTodoVO) {
+        routineTodoVO.setRoutineVO(routineService.findById(routineId));
+        RoutineTodoVO savedRoutineTodo = routineTodoGateway.save(routineTodoVO);
+        savedRoutineTodo.setRoutineVO(routineTodoVO.getRoutineVO());
+        return savedRoutineTodo;
     }
 
     @Override
@@ -34,7 +38,7 @@ public class RoutineTodoServiceImpl implements RoutineTodoService {
     }
 
     @Override
-    public RoutineTodoVO findById(String routineTodoId) {
+    public RoutineTodoVO findById(UUID routineTodoId) {
         return routineTodoGateway.findById(routineTodoId)
                 .orElseThrow(() -> {
                     log.error(String.format("Routine Todo with such id:%s can't be found", routineTodoId));
@@ -44,7 +48,8 @@ public class RoutineTodoServiceImpl implements RoutineTodoService {
     }
 
     @Override
-    public RoutineTodoVO updateRoutineTodo(String routineTodoId, RoutineTodoVO changedRoutineTodoVO) {
+    @Transactional
+    public RoutineTodoVO updateRoutineTodo(UUID routineTodoId, RoutineTodoVO changedRoutineTodoVO) {
         RoutineTodoVO routineTodoVO = findById(routineTodoId);
 
         checkUpdatePossibility(routineTodoVO, changedRoutineTodoVO);
@@ -68,21 +73,14 @@ public class RoutineTodoServiceImpl implements RoutineTodoService {
     }
 
     @Override
-    public void deleteById(String routineTodoId) {
+    @Transactional
+    public void deleteById(UUID routineTodoId) {
+        routineTodoGateway.deleteAllRoutineTodoInstancesByRoutineTodoId(routineTodoId);
         routineTodoGateway.deleteById(routineTodoId);
     }
 
     @Override
-    public List<RoutineTodoVO> findByRoutineId(String routineId) {
+    public List<RoutineTodoVO> findByRoutineId(UUID routineId) {
         return routineTodoGateway.findByRoutineId(routineId);
-    }
-
-    @Override
-    public RoutineTodoVO updateIsReady(String routineId, String routineTodoId, boolean isReady) {
-        RoutineTodoVO routineTodoVO = findById(routineTodoId);
-        routineTodoVO.setRoutine(routineService.findById(routineId));
-        routineTodoVO.setReady(isReady);
-        routineTodoVO = routineTodoGateway.save(routineTodoVO);
-        return experienceGateway.calculateExperience(routineTodoVO);
     }
 }

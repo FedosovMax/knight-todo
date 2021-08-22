@@ -3,6 +3,7 @@ package com.knighttodo.knighttodo.service;
 import com.knighttodo.knighttodo.domain.DayVO;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface DayService {
 
@@ -10,9 +11,9 @@ public interface DayService {
 
     List<DayVO> findAll();
 
-    DayVO findById(String dayId);
+    DayVO findById(UUID dayId);
 
-    DayVO updateDay(String dayId, DayVO changedDayVO);
+    DayVO updateDay(UUID dayId, DayVO changedDayVO);
 
-    void deleteById(String dayId);
+    void deleteById(UUID dayId);
 }

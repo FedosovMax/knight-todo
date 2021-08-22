@@ -3,9 +3,10 @@ package com.knighttodo.knighttodo.gateway.privatedb.representation;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scariness;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "routine_todo")
@@ -17,13 +18,9 @@ import javax.persistence.*;
 public class RoutineTodo {
 
     @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(
-        name = "uuid",
-        strategy = "org.hibernate.id.UUIDGenerator"
-    )
+    @GeneratedValue
     @Column(name = "id")
-    private String id;
+    private UUID id;
 
     @Column(name = "routine_todo_name")
     private String routineTodoName;
@@ -42,4 +39,7 @@ public class RoutineTodo {
     @ManyToOne
     @JoinColumn(name = "routine_id")
     private Routine routine;
+
+    @OneToMany(mappedBy = "routineTodo")
+    private List<RoutineTodoInstance> routineTodoInstances;
 }

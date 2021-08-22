@@ -1,28 +1,29 @@
 package com.knighttodo.knighttodo.service.impl;
 
+import com.knighttodo.knighttodo.domain.RoutineTodoInstanceVO;
 import com.knighttodo.knighttodo.domain.RoutineTodoVO;
 import com.knighttodo.knighttodo.domain.RoutineVO;
 import com.knighttodo.knighttodo.exception.RoutineNotFoundException;
 import com.knighttodo.knighttodo.gateway.RoutineGateway;
-import com.knighttodo.knighttodo.gateway.RoutineTodoGateway;
 import com.knighttodo.knighttodo.service.RoutineService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Slf4j
 @Service
+@Transactional(readOnly = true)
 public class RoutineServiceImpl implements RoutineService {
 
     private final RoutineGateway routineGateway;
-    private final RoutineTodoGateway routineTodoGateway;
 
     @Override
+    @Transactional
     public RoutineVO save(RoutineVO routineVO) {
         return routineGateway.save(routineVO);
     }
@@ -33,7 +34,7 @@ public class RoutineServiceImpl implements RoutineService {
     }
 
     @Override
-    public RoutineVO findById(String routineId) {
+    public RoutineVO findById(UUID routineId) {
         return routineGateway.findById(routineId)
                 .orElseThrow(() -> {
                     log.error(String.format("Routine with such id:%s can't be " + "found", routineId));
@@ -43,55 +44,38 @@ public class RoutineServiceImpl implements RoutineService {
     }
 
     @Override
-    public RoutineVO updateRoutine(String routineId, RoutineVO changedRoutineVO) {
+    @Transactional
+    public RoutineVO updateRoutine(UUID routineId, RoutineVO changedRoutineVO) {
         RoutineVO routineVO = findById(routineId);
-        synchronizeRoutineTodosInRoutineVO(routineVO, changedRoutineVO);
         routineVO.setName(changedRoutineVO.getName());
-        routineVO.setTemplateId(routineId);
         routineVO.setHardness(changedRoutineVO.getHardness());
         routineVO.setScariness(changedRoutineVO.getScariness());
-        routineVO.setReady(changedRoutineVO.isReady());
         return routineGateway.save(routineVO);
     }
 
-    private void synchronizeRoutineTodosInRoutineVO(RoutineVO routineVO, RoutineVO changedRoutineVO) {
-        unmapRoutineTodosExcludedFromRoutine(routineVO, changedRoutineVO);
-        mapRoutineTodosAddedToRoutine(routineVO, changedRoutineVO);
-    }
-
-    private void unmapRoutineTodosExcludedFromRoutine(RoutineVO routineVO, RoutineVO changedRoutineVO) {
-        List<String> changedRoutineVOTodoIds = extractTodoIds(changedRoutineVO);
-        routineVO.getRoutineTodos().stream()
-                .filter(routineTodoVO -> !changedRoutineVOTodoIds.contains(routineTodoVO.getId()))
-                .forEach(routineTodoVO -> routineTodoVO.setRoutine(null));
-    }
-
-    private List<String> extractTodoIds(RoutineVO routineVO) {
-        return routineVO.getRoutineTodos().stream().map(RoutineTodoVO::getId).collect(Collectors.toList());
-    }
-
-    private void mapRoutineTodosAddedToRoutine(RoutineVO routineVO, RoutineVO changedRoutineVO) {
-        List<String> routineVOTodoIds = extractTodoIds(routineVO);
-        List<String> addedRoutineTodoIds = extractTodoIds(changedRoutineVO).stream()
-                .filter(routineTodoId -> !routineVOTodoIds.contains(routineTodoId))
-                .collect(Collectors.toList());
-        routineVO.getRoutineTodos().addAll(fetchRoutineTodosByIds(addedRoutineTodoIds));
-    }
-
-    private List<RoutineTodoVO> fetchRoutineTodosByIds(List<String> routineTodoIds) {
-        return routineTodoIds.stream()
-                .map(routineTodoGateway::findById)
-                .map(Optional::orElseThrow)
-                .collect(Collectors.toList());
-    }
-
     @Override
-    public void deleteById(String routineId) {
+    @Transactional
+    public void deleteById(UUID routineId) {
+        routineGateway.deleteAllRoutineInstancesByRoutineId(routineId);
+        routineGateway.deleteAllRoutineTodosByRoutineId(routineId);
         routineGateway.deleteById(routineId);
     }
 
     @Override
-    public List<RoutineVO> findAllTemplates() {
-        return routineGateway.findAllTemplates();
+    @Transactional
+    public List<RoutineTodoInstanceVO> updateRoutineTodoInstances(UUID routineId,
+                                                                  List<RoutineTodoInstanceVO> routineTodoInstanceVOs) {
+        RoutineVO routineVO = findById(routineId);
+        List<RoutineTodoVO> routineTodoVOs = routineVO.getRoutineTodos();
+        for (RoutineTodoVO routineTodoVO : routineTodoVOs) {
+            routineTodoInstanceVOs.forEach(routineTodoInstanceVO -> {
+                if (routineTodoInstanceVO.getRoutineTodo().getId().equals(routineTodoVO.getId())) {
+                    routineTodoInstanceVO.setHardness(routineTodoVO.getHardness());
+                    routineTodoInstanceVO.setScariness(routineTodoVO.getScariness());
+                    routineTodoInstanceVO.setRoutineTodoName(routineTodoVO.getRoutineTodoName());
+                }
+            });
+        }
+        return routineTodoInstanceVOs;
     }
 }

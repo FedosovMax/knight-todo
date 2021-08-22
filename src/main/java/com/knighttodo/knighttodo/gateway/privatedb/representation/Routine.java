@@ -2,28 +2,12 @@ package com.knighttodo.knighttodo.gateway.privatedb.representation;
 
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scariness;
+import lombok.*;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import org.hibernate.annotations.GenericGenerator;
+import java.util.UUID;
 
 @Entity
 @Table(name = "routine")
@@ -31,15 +15,12 @@ import org.hibernate.annotations.GenericGenerator;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Routine {
 
     @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(
-        name = "uuid",
-        strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    private String id;
+    @GeneratedValue
+    private UUID id;
 
     private String name;
 
@@ -49,11 +30,9 @@ public class Routine {
     @Enumerated(EnumType.STRING)
     private Hardness hardness;
 
-    private boolean ready;
+    @OneToMany(mappedBy = "routine", cascade =  CascadeType.MERGE)
+    private List<RoutineInstance> routineInstances = new ArrayList<>();
 
-    @Column(name = "template_id")
-    private String templateId;
-
-    @OneToMany(mappedBy = "routine", cascade = CascadeType.REMOVE)
-    private List<RoutineTodo> routineTodos = new ArrayList<>();
+    @OneToMany(mappedBy = "routine")
+    private List<RoutineTodo> routineTodos;
 }

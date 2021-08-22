@@ -1,12 +1,21 @@
 package com.knighttodo.knighttodo.gateway.privatedb.repository;
 
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Routine;
-import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-public interface RoutineRepository extends JpaRepository<Routine, String> {
+import java.util.UUID;
 
-    @Query("from Routine r where r.templateId = r.id")
-    List<Routine> findAllTemplates();
+public interface RoutineRepository extends JpaRepository<Routine, UUID> {
+
+    @Modifying
+    @Query("delete from RoutineInstance ri where ri.routine.id=:routineId")
+    void deleteAllRoutineInstancesByRoutineId(@Param("routineId") UUID routineId);
+
+    @Modifying
+    @Query("delete from RoutineTodo rt where rt.routine.id=:routineId")
+    void deleteAllRoutineTodosByRoutineId(@Param("routineId") UUID routineId);
+
 }
