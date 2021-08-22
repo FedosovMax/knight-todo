@@ -18,6 +18,7 @@ import java.util.UUID;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class RoutineTodoInstanceServiceImpl implements RoutineTodoInstanceService {
 
     private final RoutineTodoInstanceGateway routineTodoInstanceGateway;

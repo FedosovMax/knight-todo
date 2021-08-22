@@ -16,6 +16,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Slf4j
 @Service
+@Transactional(readOnly = true)
 public class DayServiceImpl implements DayService {
 
     private final DayGateway dayGateway;
