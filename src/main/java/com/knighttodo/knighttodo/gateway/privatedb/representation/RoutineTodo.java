@@ -37,7 +37,6 @@ public class RoutineTodo {
     private boolean ready = false;
 
     @ManyToOne
-    @JoinColumn(name = "routine_id")
     private Routine routine;
 
     @OneToMany(mappedBy = "routineTodo")

@@ -87,9 +87,9 @@ public class DayResource {
         try {
             DayVO dayVO = dayService.findById(dayId);
             return dayRestMapper.toDayResponseDto(dayVO);
-        } catch (RuntimeException ex) {
-            log.error("Day can't be found.", ex);
-            throw new FindDayByIdException("Day can't be found.", ex);
+        } catch (DayNotFoundException e) {
+            log.error("Day can't be found.", e);
+            throw new DayNotFoundException(e.getMessage());
         }
     }
 

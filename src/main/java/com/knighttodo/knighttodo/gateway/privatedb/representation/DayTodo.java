@@ -36,6 +36,5 @@ public class DayTodo {
     private boolean ready = false;
 
     @ManyToOne
-    @JoinColumn(name = "day_id")
     private Day day;
 }

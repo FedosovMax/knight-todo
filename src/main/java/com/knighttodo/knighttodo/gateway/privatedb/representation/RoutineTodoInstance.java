@@ -36,10 +36,8 @@ public class RoutineTodoInstance {
     private boolean ready = false;
 
     @ManyToOne
-    @JoinColumn(name = "routine_instance_id")
     private RoutineInstance routineInstance;
 
     @ManyToOne
-    @JoinColumn(name = "routine_todo_id")
     private RoutineTodo routineTodo;
 }
