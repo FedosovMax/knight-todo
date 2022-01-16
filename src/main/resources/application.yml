@@ -1,7 +1,5 @@
 server:
   port: 6031
-  servlet:
-    context-path: /api
 
 logging:
   level:
@@ -11,7 +9,6 @@ spring:
   output:
     ansi:
       enabled: NEVER
-  #Datasource
   datasource:
     url: jdbc:postgresql://localhost:5432/knight?currentSchema=knight_todo
     username: postgre
