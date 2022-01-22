@@ -1,14 +1,8 @@
 package com.knighttodo.knighttodo;
 
-import static com.knighttodo.knighttodo.Constants.API_BASE_DAYS;
-import static com.knighttodo.knighttodo.Constants.API_BASE_ROUTINES;
-import static com.knighttodo.knighttodo.Constants.API_BASE_TODOS;
-import static com.knighttodo.knighttodo.Constants.BASE_READY;
+import java.util.UUID;
 
-import com.knighttodo.knighttodo.gateway.privatedb.representation.Day;
-import com.knighttodo.knighttodo.gateway.privatedb.representation.DayTodo;
-import com.knighttodo.knighttodo.gateway.privatedb.representation.Routine;
-import com.knighttodo.knighttodo.gateway.privatedb.representation.RoutineTodo;
+import static com.knighttodo.knighttodo.Constants.*;
 
 public class TestConstants {
 
@@ -16,52 +10,60 @@ public class TestConstants {
     public static final String PARAMETER_FALSE = "false";
     public static final String PARAMETER_TRUE = "true";
 
-    public static String buildGetDayByIdUrl(String id) {
-        return API_BASE_DAYS + "/" + id;
+    public static String buildGetDayByIdUrl(UUID id) {
+        return API_BASE_URL_V1 + API_BASE_DAYS + "/" + id;
     }
 
-    public static String buildDeleteDayByIdUrl(String id) {
-        return API_BASE_DAYS + "/" + id;
+    public static String buildDeleteDayByIdUrl(UUID id) {
+        return API_BASE_URL_V1 + API_BASE_DAYS + "/" + id;
     }
 
-    public static String buildGetDayTodoByIdUrl(String dayId, String id) {
-        return API_BASE_DAYS + "/" + dayId + API_BASE_TODOS + "/" + id;
+    public static String buildGetDayTodoByIdUrl(UUID dayId, UUID id) {
+        return API_BASE_URL_V1 + API_BASE_DAYS + "/" + dayId + API_BASE_TODOS + "/" + id;
     }
 
-    public static String buildGetRoutineTodoByIdUrl(String routineId, String id) {
-        return API_BASE_ROUTINES + "/" + routineId + API_BASE_TODOS + "/" + id;
+    public static String buildGetRoutineTodoByIdUrl(UUID routineId, UUID id) {
+        return API_BASE_URL_V1 + API_BASE_ROUTINES + "/" + routineId + API_BASE_TODOS + "/" + id;
     }
 
-    public static String buildGetRoutineByIdUrl(String id) {
-        return API_BASE_ROUTINES + "/" + id;
+    public static String buildGetRoutineByIdUrl(UUID id) {
+        return API_BASE_URL_V1 + API_BASE_ROUTINES + "/" + id;
     }
 
-    public static String buildDeleteRoutineByIdUrl(String routineId) {
-        return API_BASE_ROUTINES + "/" + routineId;
+    public static String buildGetRoutineInstanceByIdUrl(UUID routineId, UUID id) {
+        return API_BASE_URL_V1 + API_BASE_ROUTINES + "/" + routineId + API_BASE_ROUTINES_INSTANCES + "/" + id;
     }
 
-    public static String buildDeleteTodoByIdUrl(String dayId, String id) {
-        return API_BASE_DAYS + "/" + dayId + API_BASE_TODOS + "/" + id;
+    public static String buildDeleteRoutineByIdUrl(UUID routineId) {
+        return API_BASE_URL_V1 + API_BASE_ROUTINES + "/" + routineId;
     }
 
-    public static String buildDeleteRoutineTodoByIdUrl(String routineId, String id) {
-        return API_BASE_ROUTINES + "/" + routineId + API_BASE_TODOS + "/" + id;
+    public static String buildDeleteRoutineInstanceByIdUrl(UUID routineId, UUID routineInstanceId) {
+        return API_BASE_URL_V1 + API_BASE_ROUTINES + "/" + routineId + API_BASE_ROUTINES_INSTANCES + "/" + routineInstanceId;
     }
 
-    public static String buildGetTodosByDayIdUrl(String dayId) {
-        return API_BASE_DAYS + "/" + dayId + API_BASE_TODOS;
+    public static String buildDeleteTodoByIdUrl(UUID dayId, UUID id) {
+        return API_BASE_URL_V1 + API_BASE_DAYS + "/" + dayId + API_BASE_TODOS + "/" + id;
     }
 
-    public static String buildGetRoutineTodosByDayIdUrl(String routineId) {
-        return API_BASE_ROUTINES + "/" + routineId + API_BASE_TODOS;
+    public static String buildDeleteRoutineTodoByIdUrl(UUID routineId, UUID id) {
+        return API_BASE_URL_V1 + API_BASE_ROUTINES + "/" + routineId + API_BASE_TODOS + "/" + id;
     }
 
-    public static String buildUpdateTodoReadyBaseUrl(String dayId, String dayTodoId) {
-        return API_BASE_DAYS + "/" + dayId + API_BASE_TODOS + "/" + dayTodoId + BASE_READY;
+    public static String buildGetTodosByDayIdUrl(UUID dayId) {
+        return API_BASE_URL_V1 + API_BASE_DAYS + "/" + dayId + API_BASE_TODOS;
     }
 
-    public static String buildUpdateRoutineTodoReadyBaseUrl(String routineId, String routineTodoId) {
-        return API_BASE_ROUTINES + "/" + routineId + API_BASE_TODOS + "/" + routineTodoId + BASE_READY;
+    public static String buildGetRoutineTodosByDayIdUrl(UUID routineId) {
+        return API_BASE_URL_V1 + API_BASE_ROUTINES + "/" + routineId + API_BASE_TODOS;
+    }
+
+    public static String buildUpdateTodoReadyBaseUrl(UUID dayId, UUID dayTodoId) {
+        return API_BASE_URL_V1 + API_BASE_DAYS + "/" + dayId + API_BASE_TODOS + "/" + dayTodoId + BASE_READY;
+    }
+
+    public static String buildUpdateRoutineTodoReadyBaseUrl(UUID routineId, UUID routineTodoId) {
+        return API_BASE_URL_V1 + API_BASE_ROUTINES + "/" + routineId + API_BASE_TODOS + "/" + routineTodoId + BASE_READY;
     }
 
     public static String buildJsonPathToId() {
@@ -100,16 +102,16 @@ public class TestConstants {
         return JSON_ROOT + "routineId";
     }
 
+    public static String buildJsonPathToRoutineInstanceId() {
+        return JSON_ROOT + "routineInstance";
+    }
+
     public static String buildJsonPathToExperience() {
         return JSON_ROOT + "experience";
     }
 
     public static String buildJsonPathToDayName() {
         return JSON_ROOT + "dayName";
-    }
-
-    public static String buildJsonPathToTemplateIdName() {
-        return JSON_ROOT + "templateId";
     }
 
     public static String buildJsonPathToReadyName() {
@@ -122,6 +124,10 @@ public class TestConstants {
 
     public static String buildJsonPathToRoutineTodoIdInTodosListByIndex(int index) {
         return JSON_ROOT + "routineTodos.[" + index + "].id";
+    }
+
+    public static String buildJsonPathToRoutineInstanceIdInInstancesListByIndex(int index) {
+        return JSON_ROOT + "routineInstances.[" + index + "].id";
     }
 
     public static String buildJsonPathToRoutineIdInRoutinesListByIndex(int index) {

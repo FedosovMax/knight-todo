@@ -3,20 +3,21 @@ package com.knighttodo.knighttodo.service;
 import com.knighttodo.knighttodo.domain.DayTodoVO;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface DayTodoService {
 
-    DayTodoVO save(String dayId, DayTodoVO dayTodoVO);
+    DayTodoVO save(UUID dayId, DayTodoVO dayTodoVO);
 
     List<DayTodoVO> findAll();
 
-    DayTodoVO findById(String todoId);
+    DayTodoVO findById(UUID todoId);
 
-    DayTodoVO updateDayTodo(String todoId, DayTodoVO changedDayTodoVO);
+    DayTodoVO updateDayTodo(UUID todoId, DayTodoVO changedDayTodoVO);
 
-    void deleteById(String todoId);
+    void deleteById(UUID todoId);
 
-    List<DayTodoVO> findByDayId(String dayId);
+    List<DayTodoVO> findByDayId(UUID dayId);
 
-    DayTodoVO updateIsReady(String dayId, String todoId, boolean isReady);
+    DayTodoVO updateIsReady(UUID dayId, UUID todoId, boolean isReady);
 }

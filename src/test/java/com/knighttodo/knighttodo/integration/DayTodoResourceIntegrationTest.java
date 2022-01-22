@@ -1,43 +1,6 @@
 package com.knighttodo.knighttodo.integration;
 
-import static com.knighttodo.knighttodo.Constants.API_BASE_DAYS;
-import static com.knighttodo.knighttodo.Constants.API_BASE_TODOS;
-import static com.knighttodo.knighttodo.Constants.PARAM_READY;
-import static com.knighttodo.knighttodo.TestConstants.PARAMETER_FALSE;
-import static com.knighttodo.knighttodo.TestConstants.PARAMETER_TRUE;
-import static com.knighttodo.knighttodo.TestConstants.buildDeleteTodoByIdUrl;
-import static com.knighttodo.knighttodo.TestConstants.buildGetDayTodoByIdUrl;
-import static com.knighttodo.knighttodo.TestConstants.buildGetTodosByDayIdUrl;
-import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToDayId;
-import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToExperience;
-import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToHardness;
-import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToId;
-import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToLength;
-import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToReadyName;
-import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToScariness;
-import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToTodoName;
-import static com.knighttodo.knighttodo.TestConstants.buildUpdateTodoReadyBaseUrl;
-
-import static org.aspectj.bridge.MessageUtil.fail;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.knighttodo.knighttodo.exception.UnchangeableFieldUpdateException;
 import com.knighttodo.knighttodo.factories.DayFactory;
 import com.knighttodo.knighttodo.factories.DayTodoFactory;
@@ -47,10 +10,8 @@ import com.knighttodo.knighttodo.gateway.privatedb.repository.DayTodoRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Day;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.DayTodo;
 import com.knighttodo.knighttodo.rest.request.DayTodoRequestDto;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -69,6 +30,17 @@ import org.springframework.web.client.RestTemplate;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+
+import static com.knighttodo.knighttodo.Constants.*;
+import static com.knighttodo.knighttodo.TestConstants.*;
+import static org.aspectj.bridge.MessageUtil.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -129,12 +101,12 @@ public class DayTodoResourceIntegrationTest {
         DayTodoRequestDto requestDto = DayTodoFactory.createDayTodoRequestDto();
 
         mockMvc.perform(
-            post(API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS)
-                .content(objectMapper.writeValueAsString(requestDto))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(status().isCreated())
-            .andExpect(jsonPath(buildJsonPathToDayId()).isNotEmpty())
-            .andExpect(jsonPath(buildJsonPathToId()).exists());
+                post(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS)
+                        .content(objectMapper.writeValueAsString(requestDto))
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath(buildJsonPathToDayId()).isNotEmpty())
+                .andExpect(jsonPath(buildJsonPathToId()).exists());
 
         assertThat(dayTodoRepository.count()).isEqualTo(1);
     }
@@ -145,10 +117,10 @@ public class DayTodoResourceIntegrationTest {
         DayTodoRequestDto requestDto = DayTodoFactory.createDayTodoRequestDtoWithoutName();
 
         mockMvc.perform(
-            post(API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS)
-                .content(objectMapper.writeValueAsString(requestDto))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(status().isBadRequest());
+                post(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS)
+                        .content(objectMapper.writeValueAsString(requestDto))
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isBadRequest());
 
         assertThat(dayTodoRepository.count()).isEqualTo(0);
     }
@@ -158,10 +130,10 @@ public class DayTodoResourceIntegrationTest {
         Day day = dayRepository.save(DayFactory.dayInstance());
         DayTodoRequestDto requestDto = DayTodoFactory.createDayTodoRequestDtoWithNameConsistingOfSpaces();
 
-        mockMvc.perform(post(API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS)
-            .content(objectMapper.writeValueAsString(requestDto))
-            .contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(status().isBadRequest());
+        mockMvc.perform(post(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS)
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isBadRequest());
 
         assertThat(dayTodoRepository.count()).isEqualTo(0);
     }
@@ -171,10 +143,10 @@ public class DayTodoResourceIntegrationTest {
         Day day = dayRepository.save(DayFactory.dayInstance());
         DayTodoRequestDto requestDto = DayTodoFactory.createDayTodoRequestDtoWithoutScariness();
 
-        mockMvc.perform(post(API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS)
-            .content(objectMapper.writeValueAsString(requestDto))
-            .contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(status().isBadRequest());
+        mockMvc.perform(post(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS)
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isBadRequest());
 
         assertThat(dayTodoRepository.count()).isEqualTo(0);
     }
@@ -184,10 +156,10 @@ public class DayTodoResourceIntegrationTest {
         Day day = dayRepository.save(DayFactory.dayInstance());
         DayTodoRequestDto requestDto = DayTodoFactory.createDayTodoRequestDtoWithoutHardness();
 
-        mockMvc.perform(post(API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS)
-            .content(objectMapper.writeValueAsString(requestDto))
-            .contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(status().isBadRequest());
+        mockMvc.perform(post(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS)
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isBadRequest());
 
         assertThat(dayTodoRepository.count()).isEqualTo(0);
     }
@@ -198,9 +170,9 @@ public class DayTodoResourceIntegrationTest {
         dayTodoRepository.save(DayTodoFactory.dayTodoWithDayInstance(day));
         dayTodoRepository.save(DayTodoFactory.dayTodoWithDayInstance(day));
 
-        mockMvc.perform(get(API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS))
-            .andExpect(status().isFound())
-            .andExpect(jsonPath(buildJsonPathToLength()).value(2));
+        mockMvc.perform(get(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS))
+                .andExpect(status().isFound())
+                .andExpect(jsonPath(buildJsonPathToLength()).value(2));
     }
 
     @Test
@@ -209,8 +181,8 @@ public class DayTodoResourceIntegrationTest {
         DayTodo dayTodo = dayTodoRepository.save(DayTodoFactory.dayTodoWithDayInstance(day));
 
         mockMvc.perform(get(buildGetDayTodoByIdUrl(day.getId(), dayTodo.getId())))
-            .andExpect(status().isFound())
-            .andExpect(jsonPath(buildJsonPathToId()).value(dayTodo.getId()));
+                .andExpect(status().isFound())
+                .andExpect(jsonPath(buildJsonPathToId()).value(dayTodo.getId().toString()));
     }
 
     @Test
@@ -219,13 +191,13 @@ public class DayTodoResourceIntegrationTest {
         DayTodo dayTodo = dayTodoRepository.save(DayTodoFactory.dayTodoWithDayInstance(day));
         DayTodoRequestDto requestDto = DayTodoFactory.updateDayTodoRequestDto(day);
 
-        mockMvc.perform(put(API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS + "/" + dayTodo.getId())
-            .content(objectMapper.writeValueAsString(requestDto))
-            .contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath(buildJsonPathToTodoName()).value(requestDto.getDayTodoName()))
-            .andExpect(jsonPath(buildJsonPathToScariness()).value(requestDto.getScariness().toString()))
-            .andExpect(jsonPath(buildJsonPathToHardness()).value(requestDto.getHardness().toString()));
+        mockMvc.perform(put(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS + "/" + dayTodo.getId())
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath(buildJsonPathToTodoName()).value(requestDto.getDayTodoName()))
+                .andExpect(jsonPath(buildJsonPathToScariness()).value(requestDto.getScariness().toString()))
+                .andExpect(jsonPath(buildJsonPathToHardness()).value(requestDto.getHardness().toString()));
 
         assertThat(dayTodoRepository.findById(dayTodo.getId()).get().getDayTodoName()).isEqualTo(requestDto.getDayTodoName());
     }
@@ -236,10 +208,10 @@ public class DayTodoResourceIntegrationTest {
         DayTodo dayTodo = dayTodoRepository.save(DayTodoFactory.dayTodoWithDayInstance(day));
         DayTodoRequestDto requestDto = DayTodoFactory.updateDayTodoRequestDtoWithoutName(day);
 
-        mockMvc.perform(put(API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS + "/" + dayTodo.getId())
-            .content(objectMapper.writeValueAsString(requestDto))
-            .contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(status().isBadRequest());
+        mockMvc.perform(put(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS + "/" + dayTodo.getId())
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -247,12 +219,12 @@ public class DayTodoResourceIntegrationTest {
         Day day = dayRepository.save(DayFactory.dayInstance());
         DayTodo dayTodo = dayTodoRepository.save(DayTodoFactory.dayTodoWithDayInstance(day));
         DayTodoRequestDto requestDto = DayTodoFactory
-            .updateDayTodoRequestDtoWithNameConsistingOfSpaces(day);
+                .updateDayTodoRequestDtoWithNameConsistingOfSpaces(day);
 
-        mockMvc.perform(put(API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS + "/" + dayTodo.getId())
-            .content(objectMapper.writeValueAsString(requestDto))
-            .contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(status().isBadRequest());
+        mockMvc.perform(put(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS + "/" + dayTodo.getId())
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -261,10 +233,10 @@ public class DayTodoResourceIntegrationTest {
         DayTodo dayTodo = dayTodoRepository.save(DayTodoFactory.dayTodoWithDayInstance(day));
         DayTodoRequestDto requestDto = DayTodoFactory.updateDayTodoRequestDtoWithoutScariness(day);
 
-        mockMvc.perform(put(API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS + "/" + dayTodo.getId())
-            .content(objectMapper.writeValueAsString(requestDto))
-            .contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(status().isBadRequest());
+        mockMvc.perform(put(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS + "/" + dayTodo.getId())
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -273,10 +245,10 @@ public class DayTodoResourceIntegrationTest {
         DayTodo dayTodo = dayTodoRepository.save(DayTodoFactory.dayTodoWithDayInstance(day));
         DayTodoRequestDto requestDto = DayTodoFactory.updateDayTodoRequestDtoWithoutHardness(day);
 
-        mockMvc.perform(put(API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS + "/" + dayTodo.getId())
-            .content(objectMapper.writeValueAsString(requestDto))
-            .contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(status().isBadRequest());
+        mockMvc.perform(put(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS + "/" + dayTodo.getId())
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -285,13 +257,13 @@ public class DayTodoResourceIntegrationTest {
         DayTodo dayTodo = dayTodoRepository.save(DayTodoFactory.dayTodoWithDayReadyInstance(day));
         DayTodoRequestDto requestDto = DayTodoFactory.updateDayTodoRequestReadyDto();
 
-        mockMvc.perform(put(API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS + "/" + dayTodo.getId())
-            .content(objectMapper.writeValueAsString(requestDto))
-            .contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath(buildJsonPathToTodoName()).value(requestDto.getDayTodoName()))
-            .andExpect(jsonPath(buildJsonPathToScariness()).value(requestDto.getScariness().toString()))
-            .andExpect(jsonPath(buildJsonPathToHardness()).value(requestDto.getHardness().toString()));
+        mockMvc.perform(put(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS + "/" + dayTodo.getId())
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath(buildJsonPathToTodoName()).value(requestDto.getDayTodoName()))
+                .andExpect(jsonPath(buildJsonPathToScariness()).value(requestDto.getScariness().toString()))
+                .andExpect(jsonPath(buildJsonPathToHardness()).value(requestDto.getHardness().toString()));
 
         assertThat(dayTodoRepository.findById(dayTodo.getId()).get().getScariness()).isEqualTo(requestDto.getScariness());
         assertThat(dayTodoRepository.findById(dayTodo.getId()).get().getHardness()).isEqualTo(requestDto.getHardness());
@@ -304,9 +276,9 @@ public class DayTodoResourceIntegrationTest {
         DayTodoRequestDto requestDto = DayTodoFactory.updateDayTodoRequestReadyDtoWithChangedScariness();
 
         try {
-            mockMvc.perform(put(API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS + "/" + dayTodo.getId())
-                .content(objectMapper.writeValueAsString(requestDto))
-                .contentType(MediaType.APPLICATION_JSON_VALUE));
+            mockMvc.perform(put(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS + "/" + dayTodo.getId())
+                    .content(objectMapper.writeValueAsString(requestDto))
+                    .contentType(MediaType.APPLICATION_JSON_VALUE));
             fail("Exception wasn't thrown");
         } catch (Exception e) {
             assertEquals(UnchangeableFieldUpdateException.class, e.getCause().getClass());
@@ -322,9 +294,9 @@ public class DayTodoResourceIntegrationTest {
         DayTodoRequestDto requestDto = DayTodoFactory.updateDayTodoRequestReadyDtoWithChangedHardness();
 
         try {
-            mockMvc.perform(put(API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS + "/" + dayTodo.getId())
-                .content(objectMapper.writeValueAsString(requestDto))
-                .contentType(MediaType.APPLICATION_JSON_VALUE));
+            mockMvc.perform(put(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS + "/" + dayTodo.getId())
+                    .content(objectMapper.writeValueAsString(requestDto))
+                    .contentType(MediaType.APPLICATION_JSON_VALUE));
             fail("Exception wasn't thrown");
         } catch (Exception e) {
             assertEquals(UnchangeableFieldUpdateException.class, e.getCause().getClass());
@@ -342,7 +314,7 @@ public class DayTodoResourceIntegrationTest {
         dayTodoRepository.save(dayTodo);
 
         mockMvc.perform(delete(buildDeleteTodoByIdUrl(day.getId(), dayTodo.getId())))
-            .andExpect(status().isOk());
+                .andExpect(status().isOk());
 
         assertThat(dayTodoRepository.findById(dayTodo.getId())).isEmpty();
         assertThat(dayTodoRepository.count()).isEqualTo(0);
@@ -355,8 +327,8 @@ public class DayTodoResourceIntegrationTest {
         dayTodoRepository.save(DayTodoFactory.dayTodoWithDayInstance(day));
 
         mockMvc.perform(get(buildGetTodosByDayIdUrl(day.getId())))
-            .andExpect(status().isFound())
-            .andExpect(jsonPath(buildJsonPathToLength()).value(2));
+                .andExpect(status().isFound())
+                .andExpect(jsonPath(buildJsonPathToLength()).value(2));
     }
 
     @Test
@@ -366,14 +338,14 @@ public class DayTodoResourceIntegrationTest {
         ExperienceResponse experienceResponse = DayTodoFactory.experienceResponseInstance(dayTodo.getId());
 
         when(restTemplate.postForEntity(anyString(), any(), eq(ExperienceResponse.class)))
-            .thenReturn(new ResponseEntity<>(experienceResponse, HttpStatus.OK));
+                .thenReturn(new ResponseEntity<>(experienceResponse, HttpStatus.OK));
 
         mockMvc.perform(put(buildUpdateTodoReadyBaseUrl(day.getId(), dayTodo.getId()))
-            .param(PARAM_READY, PARAMETER_TRUE))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath(buildJsonPathToDayId()).isNotEmpty())
-            .andExpect(jsonPath(buildJsonPathToExperience()).isNotEmpty())
-            .andExpect(jsonPath(buildJsonPathToReadyName()).value(true));
+                .param(PARAM_READY, PARAMETER_TRUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath(buildJsonPathToDayId()).isNotEmpty())
+                .andExpect(jsonPath(buildJsonPathToExperience()).isNotEmpty())
+                .andExpect(jsonPath(buildJsonPathToReadyName()).value(true));
 
         assertThat(dayTodoRepository.findById(dayTodo.getId()).get().isReady()).isEqualTo(true);
     }
@@ -385,11 +357,11 @@ public class DayTodoResourceIntegrationTest {
         ExperienceResponse experienceResponse = DayTodoFactory.experienceResponseInstance(dayTodoWithReadyTrue.getId());
 
         when(restTemplate.postForEntity(anyString(), any(), eq(ExperienceResponse.class)))
-            .thenReturn(new ResponseEntity<>(experienceResponse, HttpStatus.OK));
+                .thenReturn(new ResponseEntity<>(experienceResponse, HttpStatus.OK));
 
         mockMvc.perform(put(buildUpdateTodoReadyBaseUrl(day.getId(), dayTodoWithReadyTrue.getId()))
-            .param(PARAM_READY, PARAMETER_FALSE))
-            .andExpect(status().isOk());
+                .param(PARAM_READY, PARAMETER_FALSE))
+                .andExpect(status().isOk());
 
         assertThat(dayTodoRepository.findById(dayTodoWithReadyTrue.getId()).get().isReady()).isEqualTo(false);
     }

@@ -1,17 +1,42 @@
 package com.knighttodo.knighttodo.gateway;
 
 import com.knighttodo.knighttodo.domain.DayVO;
+import com.knighttodo.knighttodo.gateway.privatedb.mapper.DayMapper;
+import com.knighttodo.knighttodo.gateway.privatedb.repository.DayRepository;
+import com.knighttodo.knighttodo.gateway.privatedb.representation.Day;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
-public interface DayGateway {
+@RequiredArgsConstructor
+@Component
+public class DayGateway {
 
-    DayVO save(DayVO dayVO);
+    private final DayRepository dayRepository;
+    private final DayMapper dayMapper;
 
-    List<DayVO> findAll();
+    public DayVO save(DayVO dayVO) {
+        Day savedDay = dayRepository.save(dayMapper.toDay(dayVO));
+        return dayMapper.toDayVO(savedDay);
+    }
 
-    Optional<DayVO> findById(String dayId);
+    public List<DayVO> findAll() {
+        return dayRepository.findAll().stream().map(dayMapper::toDayVO).collect(Collectors.toList());
+    }
 
-    void deleteById(String dayId);
+    public Optional<DayVO> findById(UUID dayId) {
+        return dayRepository.findById(dayId).map(dayMapper::toDayVO);
+    }
+
+    public void deleteById(UUID dayId) {
+        dayRepository.deleteById(dayId);
+    }
+
+    public void deleteAllDayTodos(UUID dayId) {
+        dayRepository.deleteAllDayTodosByDayId(dayId);
+    }
 }

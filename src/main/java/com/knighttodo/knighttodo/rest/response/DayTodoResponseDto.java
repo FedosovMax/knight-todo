@@ -7,13 +7,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class DayTodoResponseDto {
 
-    private String id;
+    private UUID id;
 
     private String dayTodoName;
 
@@ -23,5 +25,5 @@ public class DayTodoResponseDto {
 
     private boolean ready;
 
-    private String dayId;
+    private UUID dayId;
 }

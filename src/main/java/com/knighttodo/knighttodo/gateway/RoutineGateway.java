@@ -1,19 +1,46 @@
 package com.knighttodo.knighttodo.gateway;
 
 import com.knighttodo.knighttodo.domain.RoutineVO;
+import com.knighttodo.knighttodo.gateway.privatedb.mapper.RoutineMapper;
+import com.knighttodo.knighttodo.gateway.privatedb.repository.RoutineRepository;
+import com.knighttodo.knighttodo.gateway.privatedb.representation.Routine;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
-public interface RoutineGateway {
+@RequiredArgsConstructor
+@Component
+public class RoutineGateway {
 
-    RoutineVO save(RoutineVO routineVO);
+    private final RoutineRepository routineRepository;
+    private final RoutineMapper routineMapper;
 
-    List<RoutineVO> findAll();
+    public RoutineVO save(RoutineVO routineVO) {
+        Routine savedRoutine = routineRepository.save(routineMapper.toRoutine(routineVO));
+        return routineMapper.toRoutineVO(savedRoutine);
+    }
 
-    Optional<RoutineVO> findById(String routineId);
+    public List<RoutineVO> findAll() {
+        return routineRepository.findAll().stream().map(routineMapper::toRoutineVO).collect(Collectors.toList());
+    }
 
-    void deleteById(String routineId);
+    public Optional<RoutineVO> findById(UUID routineId) {
+        return routineRepository.findById(routineId).map(routineMapper::toRoutineVO);
+    }
 
-    List<RoutineVO> findAllTemplates();
+    public void deleteById(UUID routineId) {
+        routineRepository.deleteById(routineId);
+    }
+
+    public void deleteAllRoutineInstancesByRoutineId(UUID routineId) {
+        routineRepository.deleteAllRoutineInstancesByRoutineId(routineId);
+    }
+
+    public void deleteAllRoutineTodosByRoutineId(UUID routineId) {
+        routineRepository.deleteAllRoutineTodosByRoutineId(routineId);
+    }
 }

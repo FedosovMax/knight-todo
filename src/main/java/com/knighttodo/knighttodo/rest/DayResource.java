@@ -17,15 +17,17 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.knighttodo.knighttodo.Constants.API_BASE_DAYS;
+import static com.knighttodo.knighttodo.Constants.API_BASE_URL_V1;
 
 @Api(value = "DayResource controller")
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(API_BASE_DAYS)
+@RequestMapping(API_BASE_URL_V1 + API_BASE_DAYS)
 public class DayResource {
 
     private final DayService dayService;
@@ -81,13 +83,13 @@ public class DayResource {
             @ApiResponse(code = 404, message = "Resource not found"),
             @ApiResponse(code = 500, message = "Unexpected error")
     })
-    public DayResponseDto findDayById(@PathVariable String dayId) {
+    public DayResponseDto findDayById(@PathVariable UUID dayId) {
         try {
             DayVO dayVO = dayService.findById(dayId);
             return dayRestMapper.toDayResponseDto(dayVO);
-        } catch (RuntimeException ex) {
-            log.error("Day can't be found.", ex);
-            throw new FindDayByIdException("Day can't be found.", ex);
+        } catch (DayNotFoundException e) {
+            log.error("Day can't be found.", e);
+            throw new DayNotFoundException(e.getMessage());
         }
     }
 
@@ -101,7 +103,7 @@ public class DayResource {
             @ApiResponse(code = 404, message = "Resource not found"),
             @ApiResponse(code = 500, message = "Unexpected error")
     })
-    public DayResponseDto updateDay(@PathVariable String dayId, @Valid @RequestBody DayRequestDto requestDto) {
+    public DayResponseDto updateDay(@PathVariable UUID dayId, @Valid @RequestBody DayRequestDto requestDto) {
         try {
             DayVO dayVO = dayRestMapper.toDayVO(requestDto);
             DayVO updatedDayVO = dayService.updateDay(dayId, dayVO);
@@ -125,7 +127,7 @@ public class DayResource {
             @ApiResponse(code = 404, message = "Resource not found"),
             @ApiResponse(code = 500, message = "Unexpected error")
     })
-    public void deleteDay(@PathVariable String dayId) {
+    public void deleteDay(@PathVariable UUID dayId) {
         try {
             dayService.deleteById(dayId);
         } catch (RuntimeException ex) {

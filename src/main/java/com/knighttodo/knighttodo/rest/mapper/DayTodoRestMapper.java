@@ -8,6 +8,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
+import java.util.UUID;
+
 @Mapper(componentModel = "spring")
 public interface DayTodoRestMapper {
 
@@ -18,7 +20,7 @@ public interface DayTodoRestMapper {
 
     @Named("fromIdToDayTodoVOWithId")
     @Mapping(target = "id", source = "dayTodoId")
-    DayTodoVO toDayTodoVO(String dayTodoId);
+    DayTodoVO toDayTodoVO(UUID dayTodoId);
 
     @Mapping(target = "dayId", source = "day.id")
     DayTodoReadyResponseDto toDayTodoReadyResponseDto(DayTodoVO dayTodoVO);

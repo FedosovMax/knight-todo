@@ -1,16 +1,13 @@
 package com.knighttodo.knighttodo.validation.validator;
 
 import com.knighttodo.knighttodo.validation.annotation.ValidReady;
-
-import java.util.List;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.stereotype.Component;
+import java.util.List;
 
 @Component
 @Slf4j
@@ -33,7 +30,7 @@ public class ReadyValidator implements ConstraintValidator<ValidReady, String> {
             }
         } catch (IllegalArgumentException ex) {
             setValidationResultMessage(constraintValidatorContext,
-                String.format("Your readiness status: \"%s\", isn't valid", readyStatus));
+                    String.format("Your readiness status: \"%s\", isn't valid", readyStatus));
             return false;
         }
     }

@@ -1,10 +1,10 @@
-### Http request to create day
+### create day
 POST {{host}}/days
 Content-Type: application/json
 
 < ../../http/json/createDay.json
 
-### Http request to update day
+### update day
 PUT {{host}}/days/{{dayId}}
 Content-Type: application/json
 
@@ -12,7 +12,6 @@ Content-Type: application/json
 
 ### get all days
 GET {{host}}/days
-Authorization: {{token}}
 
 ### get day by id
 GET {{host}}/days/{{dayId}}

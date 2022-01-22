@@ -4,6 +4,9 @@ import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scariness;
 import lombok.*;
 
+import java.util.List;
+import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -11,7 +14,7 @@ import lombok.*;
 @ToString
 public class RoutineTodoVO implements TodoVO {
 
-    private String id;
+    private UUID id;
 
     private String routineTodoName;
 
@@ -21,7 +24,11 @@ public class RoutineTodoVO implements TodoVO {
 
     private boolean ready;
 
-    private RoutineVO routine;
+    private RoutineVO routineVO;
+
+    private List<RoutineTodoInstanceVO> routineTodoInstances;
+
+    private List<RoutineTodoInstanceVO> routineInstances;
 
     private int experience;
 }

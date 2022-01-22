@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.knighttodo.knighttodo.Constants.*;
@@ -28,7 +29,7 @@ import static com.knighttodo.knighttodo.Constants.*;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(API_BASE_DAYS + "/{dayId}" + API_BASE_TODOS)
+@RequestMapping(API_BASE_URL_V1 + API_BASE_DAYS + "/{dayId}" + API_BASE_TODOS)
 public class DayTodoResource {
 
     private final DayTodoService dayTodoService;
@@ -43,7 +44,7 @@ public class DayTodoResource {
             @ApiResponse(code = 403, message = "Operation forbidden"),
             @ApiResponse(code = 500, message = "Unexpected error")
     })
-    public DayTodoResponseDto addDayTodo(@PathVariable String dayId, @Valid @RequestBody DayTodoRequestDto requestDto) {
+    public DayTodoResponseDto addDayTodo(@PathVariable UUID dayId, @Valid @RequestBody DayTodoRequestDto requestDto) {
         try {
             DayTodoVO dayTodoVO = dayTodoRestMapper.toDayTodoVO(requestDto);
             DayTodoVO savedDayTodoVO = dayTodoService.save(dayId, dayTodoVO);
@@ -63,7 +64,7 @@ public class DayTodoResource {
             @ApiResponse(code = 403, message = "Operation forbidden"),
             @ApiResponse(code = 500, message = "Unexpected error")
     })
-    public List<DayTodoResponseDto> findDayTodosByDayId(@PathVariable String dayId) {
+    public List<DayTodoResponseDto> findDayTodosByDayId(@PathVariable UUID dayId) {
         try {
             return dayTodoService.findByDayId(dayId)
                     .stream()
@@ -84,7 +85,7 @@ public class DayTodoResource {
             @ApiResponse(code = 404, message = "Resource not found"),
             @ApiResponse(code = 500, message = "Unexpected error")
     })
-    public DayTodoReadyResponseDto findDayTodoById(@PathVariable String dayTodoId) {
+    public DayTodoReadyResponseDto findDayTodoById(@PathVariable UUID dayTodoId) {
         try {
             DayTodoVO dayTodoVO = dayTodoService.findById(dayTodoId);
             return dayTodoRestMapper.toDayTodoReadyResponseDto(dayTodoVO);
@@ -104,7 +105,7 @@ public class DayTodoResource {
             @ApiResponse(code = 404, message = "Resource not found"),
             @ApiResponse(code = 500, message = "Unexpected error")
     })
-    public DayTodoResponseDto updateDayTodo(@PathVariable String dayTodoId,
+    public DayTodoResponseDto updateDayTodo(@PathVariable UUID dayTodoId,
                                             @Valid @RequestBody DayTodoRequestDto requestDto) {
         try {
             DayTodoVO dayTodoVO = dayTodoRestMapper.toDayTodoVO(requestDto);
@@ -131,7 +132,7 @@ public class DayTodoResource {
     })
     public void deleteTodo(@PathVariable String dayTodoId) {
         try {
-            dayTodoService.deleteById(dayTodoId);
+            dayTodoService.deleteById(UUID.fromString(dayTodoId));
         } catch (RuntimeException ex) {
             log.error("Day todo can't be deleted.", ex);
             throw new DayTodoCanNotBeDeletedException("Day todo can't be deleted.", ex);
@@ -148,12 +149,12 @@ public class DayTodoResource {
             @ApiResponse(code = 404, message = "Resource not found"),
             @ApiResponse(code = 500, message = "Unexpected error")
     })
-    public DayTodoReadyResponseDto updateIsReady(@PathVariable String dayId, @PathVariable String dayTodoId,
+    public DayTodoReadyResponseDto updateIsReady(@PathVariable UUID dayId, @PathVariable UUID dayTodoId,
                                                  @RequestParam String ready) {
         try {
-        boolean isReady = Boolean.parseBoolean(ready);
-        DayTodoVO dayTodoVO = dayTodoService.updateIsReady(dayId, dayTodoId, isReady);
-        return dayTodoRestMapper.toDayTodoReadyResponseDto(dayTodoVO);
+            boolean isReady = Boolean.parseBoolean(ready);
+            DayTodoVO dayTodoVO = dayTodoService.updateIsReady(dayId, dayTodoId, isReady);
+            return dayTodoRestMapper.toDayTodoReadyResponseDto(dayTodoVO);
         } catch (RuntimeException ex) {
             log.error("Day todo ready can't be updated.", ex);
             throw new DayTodoReadyCanNotBeUpdatedException("Day todo ready can't be updated.", ex);

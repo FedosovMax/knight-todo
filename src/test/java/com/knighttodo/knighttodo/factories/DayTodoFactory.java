@@ -7,6 +7,8 @@ import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness
 import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scariness;
 import com.knighttodo.knighttodo.rest.request.DayTodoRequestDto;
 
+import java.util.UUID;
+
 public class DayTodoFactory {
 
     public static final String TODO_NAME = "Write integration tests";
@@ -138,7 +140,7 @@ public class DayTodoFactory {
         return request;
     }
 
-    public static ExperienceResponse experienceResponseInstance(String todoId) {
+    public static ExperienceResponse experienceResponseInstance(UUID todoId) {
         return ExperienceResponse.builder().todoId(todoId).experience(HARD_SCARY_EXPERIENCE).build();
     }
 }

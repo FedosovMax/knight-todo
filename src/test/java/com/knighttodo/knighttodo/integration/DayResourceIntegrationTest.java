@@ -6,14 +6,12 @@ import com.knighttodo.knighttodo.factories.DayTodoFactory;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.DayRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.repository.DayTodoRepository;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.Day;
-import com.knighttodo.knighttodo.gateway.privatedb.representation.DayTodo;
 import com.knighttodo.knighttodo.rest.request.DayRequestDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.MediaType;
@@ -26,10 +24,18 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static com.knighttodo.knighttodo.Constants.API_BASE_DAYS;
-import static com.knighttodo.knighttodo.TestConstants.*;
+import static com.knighttodo.knighttodo.Constants.API_BASE_URL_V1;
+import static com.knighttodo.knighttodo.TestConstants.buildDeleteDayByIdUrl;
+import static com.knighttodo.knighttodo.TestConstants.buildGetDayByIdUrl;
+import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToDayName;
+import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToId;
+import static com.knighttodo.knighttodo.TestConstants.buildJsonPathToLength;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -87,11 +93,11 @@ public class DayResourceIntegrationTest {
         DayRequestDto requestDto = DayFactory.createDayRequestDto();
 
         mockMvc.perform(
-            post(API_BASE_DAYS)
-                .content(objectMapper.writeValueAsString(requestDto))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(status().isCreated())
-            .andExpect(jsonPath(buildJsonPathToId()).exists());
+                post(API_BASE_URL_V1 + API_BASE_DAYS)
+                        .content(objectMapper.writeValueAsString(requestDto))
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath(buildJsonPathToId()).exists());
 
         assertThat(dayRepository.count()).isEqualTo(1);
     }
@@ -101,10 +107,10 @@ public class DayResourceIntegrationTest {
         DayRequestDto requestDto = DayFactory.createDayRequestDtoWithoutName();
 
         mockMvc.perform(
-            post(API_BASE_DAYS)
-                .content(objectMapper.writeValueAsString(requestDto))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(status().isBadRequest());
+                post(API_BASE_URL_V1 + API_BASE_DAYS)
+                        .content(objectMapper.writeValueAsString(requestDto))
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isBadRequest());
 
         assertThat(dayRepository.count()).isEqualTo(0);
     }
@@ -114,10 +120,10 @@ public class DayResourceIntegrationTest {
         DayRequestDto requestDto = DayFactory.createDayRequestDtoWithNameConsistingOfSpaces();
 
         mockMvc.perform(
-            post(API_BASE_DAYS)
-                .content(objectMapper.writeValueAsString(requestDto))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(status().isBadRequest());
+                post(API_BASE_URL_V1 + API_BASE_DAYS)
+                        .content(objectMapper.writeValueAsString(requestDto))
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isBadRequest());
 
         assertThat(dayRepository.count()).isEqualTo(0);
     }
@@ -128,9 +134,9 @@ public class DayResourceIntegrationTest {
         dayRepository.save(DayFactory.dayInstance());
 
         mockMvc.perform(
-            get(API_BASE_DAYS))
-            .andExpect(status().isFound())
-            .andExpect(jsonPath(buildJsonPathToLength()).value(2));
+                get(API_BASE_URL_V1 + API_BASE_DAYS))
+                .andExpect(status().isFound())
+                .andExpect(jsonPath(buildJsonPathToLength()).value(2));
     }
 
     @Test
@@ -138,9 +144,9 @@ public class DayResourceIntegrationTest {
         Day day = dayRepository.save(DayFactory.dayInstance());
 
         mockMvc.perform(
-            get(buildGetDayByIdUrl(day.getId())))
-            .andExpect(status().isFound())
-            .andExpect(jsonPath(buildJsonPathToId()).value(day.getId()));
+                get(buildGetDayByIdUrl(day.getId())))
+                .andExpect(status().isFound())
+                .andExpect(jsonPath(buildJsonPathToId()).value(day.getId().toString()));
     }
 
     @Test
@@ -148,11 +154,11 @@ public class DayResourceIntegrationTest {
         Day day = dayRepository.save(DayFactory.dayInstance());
         DayRequestDto requestDto = DayFactory.updateDayRequestDto();
 
-        mockMvc.perform(put(API_BASE_DAYS + "/" + day.getId())
-            .content(objectMapper.writeValueAsString(requestDto))
-            .contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath(buildJsonPathToDayName()).value(requestDto.getDayName()));
+        mockMvc.perform(put(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId())
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath(buildJsonPathToDayName()).value(requestDto.getDayName()));
     }
 
     @Test
@@ -160,43 +166,38 @@ public class DayResourceIntegrationTest {
         Day day = dayRepository.save(DayFactory.dayInstance());
         DayRequestDto requestDto = DayFactory.updateDayRequestDtoWithoutName();
 
-        mockMvc.perform(put(API_BASE_DAYS + "/" + day.getId())
-            .content(objectMapper.writeValueAsString(requestDto))
-            .contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(status().isBadRequest());
+        mockMvc.perform(put(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId())
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
     public void updateDay_shouldRespondWithBadRequestStatus_whenDayNameConsistsOfSpaces() throws Exception {
         Day day = dayRepository.save(DayFactory.dayInstance());
         DayRequestDto requestDto = DayFactory
-            .updateDayRequestDtoWithNameConsistingOfSpaces();
+                .updateDayRequestDtoWithNameConsistingOfSpaces();
 
-        mockMvc.perform(put(API_BASE_DAYS + "/" + day.getId())
-            .content(objectMapper.writeValueAsString(requestDto))
-            .contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(status().isBadRequest());
+        mockMvc.perform(put(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId())
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
     public void updateDay_shouldUpdateDayNameAndCheckReturnFields_whenResponseIsCorrect() throws Exception {
         Day day = dayRepository.save(DayFactory.dayInstance());
-
-        DayTodo firstDayTodo = DayTodoFactory.dayTodoWithDayInstance(day);
-        firstDayTodo.setDay(day);
-        dayTodoRepository.save(firstDayTodo);
-        DayTodo secondDayTodo = DayTodoFactory.dayTodoWithDayInstance(day);
-        secondDayTodo.setDay(day);
-        dayTodoRepository.save(secondDayTodo);
+        dayTodoRepository.save(DayTodoFactory.dayTodoWithDayInstance(day));
+        dayTodoRepository.save(DayTodoFactory.dayTodoWithDayInstance(day));
 
         DayRequestDto dayRequestDto = DayFactory.createDayRequestDto();
 
-        mockMvc.perform(put(API_BASE_DAYS + "/" + day.getId())
-            .content(objectMapper.writeValueAsString(dayRequestDto))
-            .contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath(buildJsonPathToDayName()).value(dayRequestDto.getDayName()))
-            .andExpect(jsonPath(buildJsonPathToId()).exists());
+        mockMvc.perform(put(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId())
+                .content(objectMapper.writeValueAsString(dayRequestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath(buildJsonPathToDayName()).value(dayRequestDto.getDayName()))
+                .andExpect(jsonPath(buildJsonPathToId()).exists());
 
         assertThat(dayRepository.count()).isEqualTo(1);
         assertThat(dayTodoRepository.count()).isEqualTo(2);
@@ -208,8 +209,22 @@ public class DayResourceIntegrationTest {
         Day day = dayRepository.save(DayFactory.dayInstance());
 
         mockMvc.perform(delete(buildDeleteDayByIdUrl(day.getId())))
-            .andExpect(status().isOk());
+                .andExpect(status().isOk());
 
         assertThat(dayRepository.findById(day.getId())).isEmpty();
+    }
+
+    @Test
+    @Transactional
+    public void deleteDay_shouldDeleteDayWithAllDayTodos_whenIdIsCorrect() throws Exception {
+        Day day = dayRepository.save(DayFactory.dayInstance());
+        dayTodoRepository.save(DayTodoFactory.dayTodoWithDayInstance(day));
+        dayTodoRepository.save(DayTodoFactory.dayTodoWithDayInstance(day));
+
+        mockMvc.perform(delete(buildDeleteDayByIdUrl(day.getId())))
+                .andExpect(status().isOk());
+
+        assertThat(dayRepository.findById(day.getId())).isEmpty();
+        assertThat(dayTodoRepository.findAll().isEmpty());
     }
 }
