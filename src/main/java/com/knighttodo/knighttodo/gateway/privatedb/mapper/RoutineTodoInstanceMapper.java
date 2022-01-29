@@ -1,41 +1,31 @@
 package com.knighttodo.knighttodo.gateway.privatedb.mapper;
 
+import com.knighttodo.knighttodo.domain.RoutineInstanceVO;
 import com.knighttodo.knighttodo.domain.RoutineTodoInstanceVO;
-import com.knighttodo.knighttodo.domain.RoutineTodoVO;
-import com.knighttodo.knighttodo.gateway.privatedb.representation.RoutineTodo;
+import com.knighttodo.knighttodo.gateway.privatedb.representation.RoutineInstance;
 import com.knighttodo.knighttodo.gateway.privatedb.representation.RoutineTodoInstance;
-import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
-import java.util.List;
-
 @Named("RoutineTodoInstanceMapper")
-@Mapper(componentModel = "spring", uses = {RoutineInstanceMapper.class})
+@Mapper(componentModel = "spring", uses = {RoutineInstanceMapper.class, RoutineTodoMapper.class})
 public interface RoutineTodoInstanceMapper {
 
     @Mapping(target = "routineInstance", qualifiedByName = {"toRoutineTodoInstanceWithoutRoutineInstance"})
     @Mapping(target = "routineTodo", source = "routineTodoVO")
     RoutineTodoInstance toRoutineTodoInstance(RoutineTodoInstanceVO routineTodoInstanceVO);
 
-    @Mapping(target = "routineInstanceVO", qualifiedByName = {"toRoutineTodoVOWithoutRoutineInstance"})
-    @Mapping(target = "routineTodoVO", source = "routineTodo")
+    @Mapping(target = "routineInstanceVO", source = "routineInstance", qualifiedByName = "toRoutineInstanceVOWithoutRoutineTodoInstances")
+    @Mapping(target = "routineTodoVO", source = "routineTodo", qualifiedByName = "toRoutineTodoVOWithoutRoutineAndRoutineTodoInstances")
     RoutineTodoInstanceVO toRoutineTodoInstanceVO(RoutineTodoInstance routineTodoInstance);
-
-    @Named("toRoutineTodos")
-    @IterableMapping(qualifiedByName = "toRoutineTodoWithoutRoutineInstance")
-    List<RoutineTodo> toRoutineTodos(List<RoutineTodoVO> routineTodoVOS);
-
-    @Named("toRoutineTodoVOs")
-    @IterableMapping(qualifiedByName = "toRoutineTodoVOWithoutRoutineInstance")
-    List<RoutineTodoVO> toRoutineTodoVOs(List<RoutineTodo> routineTodos);
 
     @Named("toRoutineTodoInstanceWithoutRoutineInstance")
     @Mapping(target = "routineInstance", ignore = true)
     RoutineTodoInstance toRoutineTodoInstanceWithoutRoutineInstance(RoutineTodoInstanceVO routineTodoInstanceVO);
 
-    @Named("toRoutineTodoVOWithoutRoutineInstance")
-    @Mapping(target = "routineInstanceVO", ignore = true)
-    RoutineTodoInstanceVO toRoutineTodoInstanceVOWithoutRoutineInstance(RoutineTodoInstance routineTodoInstance);
+    @Named("toRoutineInstanceVOWithoutRoutineTodoInstances")
+    @Mapping(target = "routineTodoInstances", ignore = true)
+    @Mapping(target = "routine", ignore = true)
+    RoutineInstanceVO toRoutineInstanceVOWithoutRoutineTodoInstances(RoutineInstance routineInstance);
 }

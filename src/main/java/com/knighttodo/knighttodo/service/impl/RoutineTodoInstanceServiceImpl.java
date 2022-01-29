@@ -42,18 +42,22 @@ public class RoutineTodoInstanceServiceImpl implements RoutineTodoInstanceServic
     @Override
     @Transactional
     public RoutineTodoInstanceVO findById(UUID routineTodoInstanceId) {
-        RoutineTodoInstanceVO routineTodoInstanceVO = routineTodoInstanceGateway.findById(routineTodoInstanceId)
+        RoutineTodoInstanceVO routineTodoInstanceVO = findRoutineTodoInstanceVO(routineTodoInstanceId);
+        return synchronizeWithRoutineTodoAndReturn(routineTodoInstanceVO);
+    }
+
+    private RoutineTodoInstanceVO findRoutineTodoInstanceVO(UUID routineTodoInstanceId) {
+        return routineTodoInstanceGateway.findById(routineTodoInstanceId)
                 .orElseThrow(() -> {
                     log.error(String.format("Routine Todo Instance with such id:%s can't be found", routineTodoInstanceId));
                     return new RoutineTodoNotFoundException(String
                             .format("Routine Todo Instance with such id:%s can't be found", routineTodoInstanceId));
                 });
-        return synchronizeWithRoutineTodoAndReturn(routineTodoInstanceVO);
     }
 
     private RoutineTodoInstanceVO synchronizeWithRoutineTodoAndReturn(RoutineTodoInstanceVO routineTodoInstanceVO) {
         RoutineTodoVO routineTodoVO = routineTodoInstanceVO.getRoutineTodoVO();
-        routineTodoInstanceVO.setRoutineTodoName(routineTodoVO.getRoutineTodoName());
+        routineTodoInstanceVO.setRoutineTodoInstanceName(routineTodoVO.getRoutineTodoName());
         routineTodoInstanceVO.setHardness(routineTodoVO.getHardness());
         routineTodoInstanceVO.setScariness(routineTodoVO.getScariness());
         routineTodoInstanceGateway.save(routineTodoInstanceVO);
@@ -74,8 +78,8 @@ public class RoutineTodoInstanceServiceImpl implements RoutineTodoInstanceServic
     @Override
     @Transactional
     public RoutineTodoInstanceVO updateIsReady(UUID routineId, UUID routineTodoId, boolean isReady) {
-        RoutineTodoInstanceVO routineTodoInstanceVO = findById(routineTodoId);
-        routineTodoInstanceVO.setRoutineInstanceVO(routineInstanceService.findById(routineId));
+        RoutineTodoInstanceVO routineTodoInstanceVO = findRoutineTodoInstanceVO(routineTodoId);
+        routineTodoInstanceVO.setRoutineInstanceVO(routineInstanceService.findRoutineInstanceVO(routineId));
         routineTodoInstanceVO.setReady(isReady);
         routineTodoInstanceGateway.save(routineTodoInstanceVO);
         return experienceGateway.calculateExperience(routineTodoInstanceVO);

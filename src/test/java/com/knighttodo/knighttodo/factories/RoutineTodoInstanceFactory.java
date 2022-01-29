@@ -24,7 +24,7 @@ public class RoutineTodoInstanceFactory {
     public static RoutineTodoInstance routineTodoInstanceWithRoutineInstance(RoutineInstance routineInstance) {
         return RoutineTodoInstance
                 .builder()
-                .routineTodoName(ROUTINE_TODO_INSTANCE_NAME)
+                .routineTodoInstanceName(ROUTINE_TODO_INSTANCE_NAME)
                 .scariness(SCARINESS_TODO)
                 .hardness(HARDNESS_TODO)
                 .routineInstance(routineInstance)
@@ -35,7 +35,7 @@ public class RoutineTodoInstanceFactory {
     public static RoutineTodoInstance routineTodoInstanceWithRoutineAndRoutineTodoInstance(RoutineInstance routineInstance, RoutineTodo routineTodo) {
         return RoutineTodoInstance
                 .builder()
-                .routineTodoName(ROUTINE_TODO_INSTANCE_NAME)
+                .routineTodoInstanceName(ROUTINE_TODO_INSTANCE_NAME)
                 .scariness(SCARINESS_TODO)
                 .hardness(HARDNESS_TODO)
                 .routineInstance(routineInstance)
@@ -48,7 +48,7 @@ public class RoutineTodoInstanceFactory {
                                                                                            RoutineTodo routineTodo) {
         return RoutineTodoInstance
                 .builder()
-                .routineTodoName(ROUTINE_TODO_INSTANCE_NAME)
+                .routineTodoInstanceName(ROUTINE_TODO_INSTANCE_NAME)
                 .scariness(SCARINESS_TODO)
                 .hardness(HARDNESS_TODO)
                 .routineInstance(routineInstance)
@@ -57,13 +57,15 @@ public class RoutineTodoInstanceFactory {
                 .build();
     }
 
-    public static RoutineTodoInstance routineTodoInstanceWithRoutineReadyInstance(RoutineInstance routineInstance) {
+    public static RoutineTodoInstance routineTodoInstanceWithRoutineReadyInstance(RoutineInstance routineInstance,
+                                                                                  RoutineTodo routineTodo) {
         return RoutineTodoInstance
                 .builder()
-                .routineTodoName(ROUTINE_TODO_INSTANCE_NAME)
+                .routineTodoInstanceName(ROUTINE_TODO_INSTANCE_NAME)
                 .scariness(SCARINESS_TODO)
                 .hardness(HARDNESS_TODO)
                 .routineInstance(routineInstance)
+                .routineTodo(routineTodo)
                 .ready(TRUE_TODO_READY)
                 .build();
     }

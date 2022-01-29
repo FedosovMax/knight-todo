@@ -17,6 +17,7 @@ public interface RoutineInstanceRestMapper {
             qualifiedByName = {"RoutineTodoInstanceRestMapper", "fromIdToRoutineTodoInstanceVOWithId"})
     RoutineInstanceVO toRoutineInstanceVO(RoutineInstanceRequestDto requestDto);
 
+    @Mapping(target = "routineTodoInstances", source = "routineTodoInstances", qualifiedByName = "toRoutineTodoInstanceResponseDto")
     RoutineInstanceResponseDto toRoutineInstanceResponseDto(RoutineInstanceVO routineVO);
 
     @Named("fromIdToRoutineInstanceVOWithId")

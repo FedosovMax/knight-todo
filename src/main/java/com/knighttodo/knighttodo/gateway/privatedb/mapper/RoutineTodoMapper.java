@@ -34,4 +34,9 @@ public interface RoutineTodoMapper {
     @Named("toRoutineTodoVOWithoutRoutine")
     @Mapping(target = "routineVO", ignore = true)
     RoutineTodoVO toRoutineTodoVOWithoutRoutine(RoutineTodo routineTodo);
+
+    @Named("toRoutineTodoVOWithoutRoutineAndRoutineTodoInstances")
+    @Mapping(target = "routineVO", ignore = true)
+    @Mapping(target = "routineTodoInstances", ignore = true)
+    RoutineTodoVO toRoutineTodoVOWithoutRoutineAndRoutineTodoInstances(RoutineTodo routineTodo);
 }

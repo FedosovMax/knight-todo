@@ -13,6 +13,8 @@ public interface RoutineInstanceService {
 
     RoutineInstanceVO findById(UUID routineInstanceId);
 
+    RoutineInstanceVO findRoutineInstanceVO(UUID routineInstanceId);
+
     RoutineInstanceVO update(UUID routineInstanceId, RoutineInstanceVO changedRoutineInstanceVO);
 
     void deleteById(UUID routineId);

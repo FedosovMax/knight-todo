@@ -5,6 +5,7 @@ import com.knighttodo.knighttodo.domain.RoutineTodoVO;
 import com.knighttodo.knighttodo.domain.RoutineVO;
 import com.knighttodo.knighttodo.exception.RoutineNotFoundException;
 import com.knighttodo.knighttodo.gateway.RoutineGateway;
+import com.knighttodo.knighttodo.gateway.RoutineTodoGateway;
 import com.knighttodo.knighttodo.service.RoutineService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,7 @@ import java.util.UUID;
 public class RoutineServiceImpl implements RoutineService {
 
     private final RoutineGateway routineGateway;
+    private final RoutineTodoGateway routineTodoGateway;
 
     @Override
     @Transactional
@@ -66,13 +68,13 @@ public class RoutineServiceImpl implements RoutineService {
     public List<RoutineTodoInstanceVO> updateRoutineTodoInstances(UUID routineId,
                                                                   List<RoutineTodoInstanceVO> routineTodoInstanceVOs) {
         RoutineVO routineVO = findById(routineId);
-        List<RoutineTodoVO> routineTodoVOs = routineVO.getRoutineTodos();
+        List<RoutineTodoVO> routineTodoVOs = routineTodoGateway.findByRoutineId(routineVO.getId());
         for (RoutineTodoVO routineTodoVO : routineTodoVOs) {
             routineTodoInstanceVOs.forEach(routineTodoInstanceVO -> {
-                if (routineTodoInstanceVO.getRoutineTodo().getId().equals(routineTodoVO.getId())) {
+                if (routineTodoInstanceVO.getRoutineTodoVO().getId().equals(routineTodoVO.getId())) {
                     routineTodoInstanceVO.setHardness(routineTodoVO.getHardness());
                     routineTodoInstanceVO.setScariness(routineTodoVO.getScariness());
-                    routineTodoInstanceVO.setRoutineTodoName(routineTodoVO.getRoutineTodoName());
+                    routineTodoInstanceVO.setRoutineTodoInstanceName(routineTodoVO.getRoutineTodoName());
                 }
             });
         }

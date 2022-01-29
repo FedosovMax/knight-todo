@@ -5,6 +5,7 @@ import com.knighttodo.knighttodo.domain.RoutineTodoInstanceVO;
 import com.knighttodo.knighttodo.domain.RoutineVO;
 import com.knighttodo.knighttodo.exception.RoutineInstanceNotFoundException;
 import com.knighttodo.knighttodo.gateway.RoutineInstanceGateway;
+import com.knighttodo.knighttodo.gateway.RoutineTodoInstanceGateway;
 import com.knighttodo.knighttodo.service.RoutineInstanceService;
 import com.knighttodo.knighttodo.service.RoutineService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ public class RoutineInstanceServiceImpl implements RoutineInstanceService {
 
     private final RoutineInstanceGateway routineInstanceGateway;
     private final RoutineService routineService;
+    private final RoutineTodoInstanceGateway routineTodoInstanceGateway;
 
     @Override
     @Transactional
@@ -40,15 +42,19 @@ public class RoutineInstanceServiceImpl implements RoutineInstanceService {
     @Override
     @Transactional
     public RoutineInstanceVO findById(UUID routineInstanceId) {
-        RoutineInstanceVO routineInstanceVO = routineInstanceGateway.findById(routineInstanceId)
+        RoutineInstanceVO routineInstanceVO = findRoutineInstanceVO(routineInstanceId);
+        List<RoutineTodoInstanceVO> routineTodoInstances = routineTodoInstanceGateway.findByRoutineId(routineInstanceId);
+        routineService.updateRoutineTodoInstances(routineInstanceVO.getRoutine().getId(), routineTodoInstances);
+        return routineInstanceVO;
+    }
+
+    public RoutineInstanceVO findRoutineInstanceVO(UUID routineInstanceId) {
+        return routineInstanceGateway.findById(routineInstanceId)
                 .orElseThrow(() -> {
                     log.error(String.format("Routine Instance with such id:%s can't be " + "found", routineInstanceId));
                     return new RoutineInstanceNotFoundException(
                             String.format("Routine Instance with such id:%s can't be " + "found", routineInstanceId));
                 });
-        List<RoutineTodoInstanceVO> routineTodoInstances = routineInstanceVO.getRoutineTodoInstances();
-        routineService.updateRoutineTodoInstances(routineInstanceVO.getRoutine().getId(), routineTodoInstances);
-        return routineInstanceVO;
     }
 
     @Override
