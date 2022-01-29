@@ -17,13 +17,13 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          #          issuer-uri: http://localhost:8080/auth/realms/development
-          jwk-set-uri: http://localhost:8080/auth/realms/development/protocol/openid-connect/certs
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        order_by:
+          default_null_ordering: last
 
 baseUrl:
   experience: "http://localhost:6070"
