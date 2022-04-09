@@ -1,0 +1,20 @@
+### create routine
+POST {{host}}/routines
+Content-Type: application/json
+
+< json/routine/createRoutine.json
+
+### update routine by id
+PUT {{host}}/routines/{{routineId}}
+Content-Type: application/json
+
+< json/routine/updateRoutine.json
+
+### get all routines
+GET {{host}}/routines
+
+### get routines by id
+GET {{host}}/routines/{{routineId}}
+
+### gelete routine by id
+DELETE {{host}}/routines/{{routineId}}
