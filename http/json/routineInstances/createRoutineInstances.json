@@ -1,0 +1,7 @@
+{
+  "name": "SomeInstance",
+  "hardness": "HARD",
+  "scariness": "SCARY",
+  "ready": "false",
+  "routineTodoInstancesIds": []
+}
