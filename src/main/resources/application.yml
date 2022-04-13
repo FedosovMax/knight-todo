@@ -11,8 +11,8 @@ spring:
       enabled: NEVER
   datasource:
     url: jdbc:postgresql://localhost:5432/knight?currentSchema=knight_todo
-    username: postgres
-    password: ZaRAPer1404
+    username: postgre
+    password: postgre
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
