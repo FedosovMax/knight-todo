@@ -1,19 +1,50 @@
 package com.knighttodo.knighttodo.service;
 
 import com.knighttodo.knighttodo.domain.DayVO;
+import com.knighttodo.knighttodo.exception.DayNotFoundException;
+import com.knighttodo.knighttodo.gateway.DayGateway;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
 
-public interface DayService {
+@RequiredArgsConstructor
+@Slf4j
+@Service
+@Transactional(readOnly = true)
+public class DayService {
 
-    DayVO save(DayVO dayVO);
+    private final DayGateway dayGateway;
 
-    List<DayVO> findAll();
+    @Transactional
+    public DayVO save(DayVO dayVO) {
+        return dayGateway.save(dayVO);
+    }
 
-    DayVO findById(UUID dayId);
+    public List<DayVO> findAll() {
+        return dayGateway.findAll();
+    }
 
-    DayVO updateDay(UUID dayId, DayVO changedDayVO);
+    public DayVO findById(UUID dayId) {
+        return dayGateway.findById(dayId).orElseThrow(() -> {
+            log.error(String.format("Day with such id:%s can't be " + "found", dayId));
+            return new DayNotFoundException(String.format("Day with such id:%s can't be " + "found", dayId));
+        });
+    }
 
-    void deleteById(UUID dayId);
+    @Transactional
+    public DayVO updateDay(UUID dayId, DayVO changedDayVO) {
+        DayVO dayVO = findById(dayId);
+        dayVO.setDayName(changedDayVO.getDayName());
+        return dayGateway.save(dayVO);
+    }
+
+    @Transactional
+    public void deleteById(UUID dayId) {
+        dayGateway.deleteAllDayTodos(dayId);
+        dayGateway.deleteById(dayId);
+    }
 }
