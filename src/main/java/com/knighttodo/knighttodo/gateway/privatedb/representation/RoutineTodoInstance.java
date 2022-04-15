@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Table(name = "routine_todo")
+@Table(name = "routine_todo_instance")
 @Data
 @Builder
 @AllArgsConstructor
