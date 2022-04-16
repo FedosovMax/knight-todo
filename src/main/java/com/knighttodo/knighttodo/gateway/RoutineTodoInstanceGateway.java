@@ -26,12 +26,12 @@ public class RoutineTodoInstanceGateway {
     }
 
     public List<RoutineTodoInstanceVO> findAll() {
-        return routineTodoInstanceRepository.findAll().stream()
+        return routineTodoInstanceRepository.findAllValid().stream()
                 .map(routineTodoInstanceMapper::toRoutineTodoInstanceVO).collect(Collectors.toList());
     }
 
     public Optional<RoutineTodoInstanceVO> findById(UUID routineTodoInstanceId) {
-        return routineTodoInstanceRepository.findById(routineTodoInstanceId).map(routineTodoInstanceMapper::toRoutineTodoInstanceVO);
+        return routineTodoInstanceRepository.findByIdValid(routineTodoInstanceId).map(routineTodoInstanceMapper::toRoutineTodoInstanceVO);
     }
 
     public void deleteById(UUID routineTodoId) {
@@ -39,7 +39,7 @@ public class RoutineTodoInstanceGateway {
     }
 
     public List<RoutineTodoInstanceVO> findByRoutineId(UUID routineInstanceId) {
-        return routineTodoInstanceRepository.findByRoutineInstanceId(routineInstanceId).stream()
+        return routineTodoInstanceRepository.findByRoutineInstanceIdValid(routineInstanceId).stream()
                 .map(routineTodoInstanceMapper::toRoutineTodoInstanceVO)
                 .collect(Collectors.toList());
     }

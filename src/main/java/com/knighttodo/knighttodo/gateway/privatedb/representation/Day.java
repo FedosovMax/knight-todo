@@ -26,6 +26,11 @@ public class Day {
     @Column(name = "day_name")
     private String dayName;
 
+    @Column(name = "removed")
+    private boolean removed;
+
+
+
     @OneToMany(mappedBy = "day", cascade = CascadeType.MERGE)
     private List<DayTodo> dayTodos = new ArrayList<>();
 }

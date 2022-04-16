@@ -35,6 +35,9 @@ public class RoutineTodoInstance {
     @Column(name = "ready")
     private boolean ready = false;
 
+    @Column(name = "removed")
+    private boolean removed;
+
     @ManyToOne
     private RoutineInstance routineInstance;
 

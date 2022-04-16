@@ -23,6 +23,7 @@ public class RoutineInstance {
     @Column(name = "id")
     private UUID id;
 
+    @Column(name = "name")
     private String name;
 
     @Enumerated(EnumType.STRING)
@@ -31,7 +32,11 @@ public class RoutineInstance {
     @Enumerated(EnumType.STRING)
     private Hardness hardness;
 
+    @Column(name = "ready")
     private boolean ready;
+
+    @Column(name = "removed")
+    private boolean removed;
 
     @ManyToOne
     private Routine routine;

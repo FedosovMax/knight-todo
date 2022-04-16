@@ -30,6 +30,9 @@ public class Routine {
     @Enumerated(EnumType.STRING)
     private Hardness hardness;
 
+    @Column(name = "removed")
+    private boolean removed;
+
     @OneToMany(mappedBy = "routine", cascade =  CascadeType.MERGE)
     private List<RoutineInstance> routineInstances = new ArrayList<>();
 

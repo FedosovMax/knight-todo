@@ -7,13 +7,28 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface RoutineTodoRepository extends JpaRepository<RoutineTodo, UUID> {
 
-    List<RoutineTodo> findByRoutineId(UUID id);
+    @Modifying
+    @Query("select rt from RoutineTodo rt where rt.removed=false")
+    List<RoutineTodo> findAllValid();
 
     @Modifying
-    @Query("delete from RoutineTodoInstance rti where rti.routineTodo.id=:routineTodoId")
-    void deleteAllRoutineTodoInstancesByRoutineTodoId(@Param("routineTodoId") UUID routineTodoId);
+    @Query("select rt from RoutineTodo rt where rt.id=:routineTodoId and rt.removed=false")
+    Optional<RoutineTodo> findByIdValid(@Param("routineTodoId") UUID routineTodoId);
+
+    @Modifying
+    @Query("select rt from RoutineTodo rt where rt.id=:routineTodoId and rt.removed=false")
+    List<RoutineTodo> findByRoutineIdValid(UUID routineId);
+
+    @Modifying
+    @Query("update RoutineTodo rt set rt.removed=true where rt.id=:routineTodoId")
+    void softDeleteById(@Param("routineTodoId") UUID routineTodoId);
+
+    @Modifying
+    @Query("update RoutineTodoInstance rti set rti.removed=true where rti.routineTodo.id=:routineTodoId")
+    void softDeleteAllRoutineTodoInstancesByRoutineTodoId(@Param("routineTodoId") UUID routineTodoId);
 }
