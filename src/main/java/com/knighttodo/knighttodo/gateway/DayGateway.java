@@ -25,11 +25,11 @@ public class DayGateway {
     }
 
     public List<DayVO> findAll() {
-        return dayRepository.findAllValid().stream().map(dayMapper::toDayVO).collect(Collectors.toList());
+        return dayRepository.findAllAlive().stream().map(dayMapper::toDayVO).collect(Collectors.toList());
     }
 
     public Optional<DayVO> findById(UUID dayId) {
-        return dayRepository.findByIdValid(dayId).map(dayMapper::toDayVO);
+        return dayRepository.findByIdAlive(dayId).map(dayMapper::toDayVO);
     }
 
     public void deleteById(UUID dayId) {

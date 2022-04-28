@@ -14,16 +14,16 @@ public interface RoutineTodoInstanceRepository extends JpaRepository<RoutineTodo
 
     @Modifying
     @Query("select rti from RoutineTodoInstance  rti where rti.removed=false")
-    List<RoutineTodoInstance> findAllValid();
+    List<RoutineTodoInstance> findAllAlive();
 
     @Modifying
     @Query("select rti from RoutineTodoInstance rti where rti.id=:routineTodoInstanceId and rti.removed=false ")
-    Optional<RoutineTodoInstance> findByIdValid(@Param("routineTodoInstanceId") UUID routineTodoInstanceId);
+    Optional<RoutineTodoInstance> findByIdAlive(@Param("routineTodoInstanceId") UUID routineTodoInstanceId);
 
     @Modifying
     @Query("select rti from RoutineTodoInstance rti where rti.routineInstance.id=:routineInstanceId and " +
             "rti.removed=false")
-    List<RoutineTodoInstance> findByRoutineInstanceIdValid(@Param("routineInstanceId")UUID routineInstanceId);
+    List<RoutineTodoInstance> findByRoutineInstanceIdAlive(@Param("routineInstanceId")UUID routineInstanceId);
 
     @Modifying
     @Query("update RoutineTodoInstance rti set rti.removed=true where rti.id=:routineTodoInstanceId")

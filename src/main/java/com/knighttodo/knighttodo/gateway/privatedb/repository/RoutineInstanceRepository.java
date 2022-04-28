@@ -14,11 +14,11 @@ public interface RoutineInstanceRepository extends JpaRepository<RoutineInstance
 
     @Modifying
     @Query("select ri from RoutineInstance ri where ri.removed=false")
-    List<RoutineInstance> findAllValid();
+    List<RoutineInstance> findAllAlive();
 
     @Modifying
     @Query("select ri from RoutineInstance ri where ri.id=:routineInstanceId and ri.removed=false")
-    Optional<RoutineInstance> findByIdValid(@Param("routineInstanceId") UUID routineInstanceId);
+    Optional<RoutineInstance> findByIdAlive(@Param("routineInstanceId") UUID routineInstanceId);
 
 
     @Modifying

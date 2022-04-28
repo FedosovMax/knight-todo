@@ -14,15 +14,15 @@ public interface DayTodoRepository extends JpaRepository<DayTodo, UUID> {
 
     @Modifying
     @Query("select dt from DayTodo dt where dt.id=:dayTodoId and dt.removed=false")
-    Optional<DayTodo> findByIdValid(@Param("dayTodoId") UUID dayTodoId);
+    Optional<DayTodo> findByIdAlive(@Param("dayTodoId") UUID dayTodoId);
 
     @Modifying
     @Query("select dt from DayTodo dt where dt.removed=false")
-    List<DayTodo> findAllValid();
+    List<DayTodo> findAllAlive();
 
     @Modifying
     @Query("select dt from DayTodo dt where dt.day.id=:dayId and dt.removed=false and dt.day.removed=false")
-    List<DayTodo> findByDayIdValid(@Param("dayId") UUID dayId);
+    List<DayTodo> findByDayIdAlive(@Param("dayId") UUID dayId);
 
     @Modifying
     @Query("update DayTodo td set td.removed=true where td.id=:dayTodoId")

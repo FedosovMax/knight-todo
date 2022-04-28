@@ -25,11 +25,11 @@ public class RoutineGateway {
     }
 
     public List<RoutineVO> findAll() {
-        return routineRepository.findAllValid().stream().map(routineMapper::toRoutineVO).collect(Collectors.toList());
+        return routineRepository.findAllAlive().stream().map(routineMapper::toRoutineVO).collect(Collectors.toList());
     }
 
     public Optional<RoutineVO> findById(UUID routineId) {
-        return routineRepository.findByIdValid(routineId).map(routineMapper::toRoutineVO);
+        return routineRepository.findByIdAlive(routineId).map(routineMapper::toRoutineVO);
     }
 
     public void deleteById(UUID routineId) {

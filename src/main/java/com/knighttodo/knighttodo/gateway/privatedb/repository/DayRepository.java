@@ -14,11 +14,11 @@ public interface DayRepository extends JpaRepository<Day, UUID> {
 
     @Modifying
     @Query("select d from Day d")
-    List<Day> findAllValid();
+    List<Day> findAllAlive();
 
     @Modifying
     @Query("select d from Day d where d.id=:dayId and d.removed = false")
-    Optional<Day> findByIdValid(@Param("dayId") UUID dayId);
+    Optional<Day> findByIdAlive(@Param("dayId") UUID dayId);
 
     @Modifying
     @Query("update Day d set d.removed = true where d.id=:dayId")

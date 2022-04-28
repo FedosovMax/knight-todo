@@ -25,11 +25,11 @@ public class DayTodoGateway {
     }
 
     public List<DayTodoVO> findAll() {
-        return dayTodoRepository.findAllValid().stream().map(dayTodoMapper::toTodoVO).collect(Collectors.toList());
+        return dayTodoRepository.findAllAlive().stream().map(dayTodoMapper::toTodoVO).collect(Collectors.toList());
     }
 
     public Optional<DayTodoVO> findById(UUID todoId) {
-        return dayTodoRepository.findByIdValid(todoId).map(dayTodoMapper::toTodoVO);
+        return dayTodoRepository.findByIdAlive(todoId).map(dayTodoMapper::toTodoVO);
     }
 
     public void deleteById(UUID todoId) {
@@ -37,7 +37,7 @@ public class DayTodoGateway {
     }
 
     public List<DayTodoVO> findByDayId(UUID dayId) {
-        return dayTodoRepository.findByDayIdValid(dayId).stream().map(dayTodoMapper::toTodoVO)
+        return dayTodoRepository.findByDayIdAlive(dayId).stream().map(dayTodoMapper::toTodoVO)
                 .collect(Collectors.toList());
     }
 }
