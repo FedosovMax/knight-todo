@@ -15,7 +15,7 @@ public class RoutineTodoInstanceVO implements TodoVO {
 
     private UUID id;
 
-    private String routineTodoName;
+    private String routineTodoInstanceName;
 
     private Scariness scariness;
 
@@ -24,8 +24,6 @@ public class RoutineTodoInstanceVO implements TodoVO {
     private boolean ready;
 
     private RoutineInstanceVO routineInstanceVO;
-
-    private RoutineTodoVO routineTodo;
 
     private RoutineTodoVO routineTodoVO;
 

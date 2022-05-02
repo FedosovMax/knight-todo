@@ -11,7 +11,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString
+@ToString(exclude = "routineTodoInstances")
 public class RoutineTodoVO implements TodoVO {
 
     private UUID id;
@@ -27,8 +27,6 @@ public class RoutineTodoVO implements TodoVO {
     private RoutineVO routineVO;
 
     private List<RoutineTodoInstanceVO> routineTodoInstances;
-
-    private List<RoutineTodoInstanceVO> routineInstances;
 
     private int experience;
 }

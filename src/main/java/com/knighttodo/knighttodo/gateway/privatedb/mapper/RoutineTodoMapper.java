@@ -10,13 +10,13 @@ import org.mapstruct.Named;
 import java.util.List;
 
 @Named("RoutineTodoMapper")
-@Mapper(componentModel = "spring", uses = {RoutineInstanceMapper.class})
+@Mapper(componentModel = "spring", uses = {RoutineInstanceMapper.class, RoutineMapper.class})
 public interface RoutineTodoMapper {
 
-    @Mapping(target = "routine", qualifiedByName = {"toRoutineTodoWithoutRoutine"})
+    @Mapping(target = "routine", source = "routineVO", qualifiedByName = {"toRoutineWithoutRoutineTodos"})
     RoutineTodo toRoutineTodo(RoutineTodoVO routineTodoVO);
 
-    @Mapping(target = "routineVO", qualifiedByName = {"toRoutineTodoVOWithoutRoutine"})
+    @Mapping(target = "routineVO", source = "routine", qualifiedByName = {"toRoutineVOWithoutRoutineTodos"})
     RoutineTodoVO toRoutineTodoVO(RoutineTodo routineTodo);
 
     @Named("toRoutineTodos")
@@ -34,4 +34,9 @@ public interface RoutineTodoMapper {
     @Named("toRoutineTodoVOWithoutRoutine")
     @Mapping(target = "routineVO", ignore = true)
     RoutineTodoVO toRoutineTodoVOWithoutRoutine(RoutineTodo routineTodo);
+
+    @Named("toRoutineTodoVOWithoutRoutineAndRoutineTodoInstances")
+    @Mapping(target = "routineVO", ignore = true)
+    @Mapping(target = "routineTodoInstances", ignore = true)
+    RoutineTodoVO toRoutineTodoVOWithoutRoutineAndRoutineTodoInstances(RoutineTodo routineTodo);
 }

@@ -14,6 +14,7 @@ import java.util.UUID;
 @Mapper(componentModel = "spring")
 public interface RoutineTodoInstanceRestMapper {
 
+    @Named("toRoutineTodoInstanceResponseDto")
     @Mapping(target = "routineInstanceId", source = "routineInstanceVO.id")
     RoutineTodoInstanceResponseDto toRoutineTodoInstanceResponseDto(RoutineTodoInstanceVO routineTodoInstanceVO);
 
