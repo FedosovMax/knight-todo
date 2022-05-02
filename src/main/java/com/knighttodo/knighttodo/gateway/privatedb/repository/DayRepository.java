@@ -12,11 +12,9 @@ import java.util.UUID;
 
 public interface DayRepository extends JpaRepository<Day, UUID> {
 
-    @Modifying
     @Query("select d from Day d")
     List<Day> findAllAlive();
 
-    @Modifying
     @Query("select d from Day d where d.id=:dayId and d.removed = false")
     Optional<Day> findByIdAlive(@Param("dayId") UUID dayId);
 

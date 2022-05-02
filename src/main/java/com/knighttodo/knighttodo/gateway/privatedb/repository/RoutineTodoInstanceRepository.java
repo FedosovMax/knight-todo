@@ -12,15 +12,12 @@ import java.util.UUID;
 
 public interface RoutineTodoInstanceRepository extends JpaRepository<RoutineTodoInstance, UUID> {
 
-    @Modifying
     @Query("select rti from RoutineTodoInstance  rti where rti.removed=false")
     List<RoutineTodoInstance> findAllAlive();
 
-    @Modifying
     @Query("select rti from RoutineTodoInstance rti where rti.id=:routineTodoInstanceId and rti.removed=false ")
     Optional<RoutineTodoInstance> findByIdAlive(@Param("routineTodoInstanceId") UUID routineTodoInstanceId);
 
-    @Modifying
     @Query("select rti from RoutineTodoInstance rti where rti.routineInstance.id=:routineInstanceId and " +
             "rti.removed=false")
     List<RoutineTodoInstance> findByRoutineInstanceIdAlive(@Param("routineInstanceId")UUID routineInstanceId);

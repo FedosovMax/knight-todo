@@ -12,11 +12,9 @@ import java.util.UUID;
 
 public interface RoutineRepository extends JpaRepository<Routine, UUID> {
 
-    @Modifying
     @Query("select r from Routine r where r.id=:routineId and r.removed=false")
-    Optional<Routine> findByIdAlive(@Param("routineId")UUID uuid);
+    Optional<Routine> findByIdAlive(@Param("routineId")UUID routineId);
 
-    @Modifying
     @Query("select r from Routine r where r.removed=false")
     List<Routine> findAllAlive();
 

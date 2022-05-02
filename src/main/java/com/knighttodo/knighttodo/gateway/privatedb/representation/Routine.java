@@ -15,18 +15,21 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class Routine {
 
     @Id
     @GeneratedValue
+    @Column(name = "id")
     private UUID id;
 
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "scaryness")
     @Enumerated(EnumType.STRING)
     private Scariness scariness;
 
+    @Column(name = "hardness")
     @Enumerated(EnumType.STRING)
     private Hardness hardness;
 

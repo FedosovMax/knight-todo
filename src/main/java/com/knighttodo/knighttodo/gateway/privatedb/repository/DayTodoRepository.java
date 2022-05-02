@@ -12,15 +12,12 @@ import java.util.UUID;
 
 public interface DayTodoRepository extends JpaRepository<DayTodo, UUID> {
 
-    @Modifying
     @Query("select dt from DayTodo dt where dt.id=:dayTodoId and dt.removed=false")
     Optional<DayTodo> findByIdAlive(@Param("dayTodoId") UUID dayTodoId);
 
-    @Modifying
     @Query("select dt from DayTodo dt where dt.removed=false")
     List<DayTodo> findAllAlive();
 
-    @Modifying
     @Query("select dt from DayTodo dt where dt.day.id=:dayId and dt.removed=false and dt.day.removed=false")
     List<DayTodo> findByDayIdAlive(@Param("dayId") UUID dayId);
 

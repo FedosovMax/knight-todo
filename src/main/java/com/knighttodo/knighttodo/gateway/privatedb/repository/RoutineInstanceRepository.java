@@ -12,21 +12,17 @@ import java.util.UUID;
 
 public interface RoutineInstanceRepository extends JpaRepository<RoutineInstance, UUID> {
 
-    @Modifying
     @Query("select ri from RoutineInstance ri where ri.removed=false")
     List<RoutineInstance> findAllAlive();
 
-    @Modifying
     @Query("select ri from RoutineInstance ri where ri.id=:routineInstanceId and ri.removed=false")
     Optional<RoutineInstance> findByIdAlive(@Param("routineInstanceId") UUID routineInstanceId);
-
 
     @Modifying
     @Query("update RoutineInstance ri set ri.removed=true where ri.id=:routineInstanceId")
     void softDeleteById(@Param("routineInstanceId") UUID routineInstanceId);
 
     @Modifying
-    @Query("update RoutineTodoInstance rti set rti.removed=true where rti.routineInstance.id=:routineInstanceId " +
-            "and rti.removed=false")
+    @Query("update RoutineTodoInstance rti set rti.removed=true where rti.routineInstance.id=:routineInstanceId and rti.removed=false")
     void softDeleteAllRoutineTodoInstancesByRoutineInstanceId(@Param("routineInstanceId") UUID routineInstanceId);
 }
