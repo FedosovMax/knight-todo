@@ -15,4 +15,12 @@ public interface RoutineMapper {
 
     @Mapping(target = "routineInstanceVOs", ignore = true)
     RoutineVO toRoutineVO(Routine routine);
+
+    @Named("toRoutineWithoutRoutineTodos")
+    @Mapping(target = "routineTodos", ignore = true)
+    Routine toRoutineWithoutRoutineTodo(RoutineVO routine);
+
+    @Named("toRoutineVOWithoutRoutineTodos")
+    @Mapping(target = "routineTodos", ignore = true)
+    RoutineVO toRoutineWithoutRoutineTodo(Routine routine);
 }

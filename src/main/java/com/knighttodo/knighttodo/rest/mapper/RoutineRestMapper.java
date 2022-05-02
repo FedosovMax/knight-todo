@@ -10,7 +10,7 @@ import org.mapstruct.Mapping;
 public interface RoutineRestMapper {
 
     @Mapping(source = "routineInstanceIds", target = "routineInstanceVOs",
-            qualifiedByName = {"RoutineInstanceRestMapper", "fromIdToRoutineInstanceVOWithId"})
+            qualifiedByName = {"fromIdToRoutineInstanceVOWithId"})
     RoutineVO toRoutineVO(RoutineRequestDto requestDto);
 
     @Mapping(source = "routineInstanceVOs", target = "routineInstances")

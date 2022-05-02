@@ -12,7 +12,7 @@ import org.mapstruct.Named;
 @Mapper(componentModel = "spring", uses = {RoutineInstanceMapper.class, RoutineTodoMapper.class})
 public interface RoutineTodoInstanceMapper {
 
-    @Mapping(target = "routineInstance", qualifiedByName = {"toRoutineTodoInstanceWithoutRoutineInstance"})
+    @Mapping(target = "routineInstance", source = "routineInstanceVO", qualifiedByName = {"toRoutineInstanceWithoutRoutineTodoInstances"})
     @Mapping(target = "routineTodo", source = "routineTodoVO")
     RoutineTodoInstance toRoutineTodoInstance(RoutineTodoInstanceVO routineTodoInstanceVO);
 
