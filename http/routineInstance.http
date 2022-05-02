@@ -1,0 +1,13 @@
+### create routineInstances
+POST {{host}}/routines/{{routineId}}/routineInstances
+Content-Type: application/json
+
+< json/routineInstances/createRoutineInstances.json
+
+### get all routineInstances
+GET {{host}}/routines/{{routineId}}/routineInstances
+
+### get all routineInstances
+GET {{host}}/routines/{{routineId}}/routineInstances/{{routineInstancesId}}
+
+

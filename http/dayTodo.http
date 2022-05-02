@@ -1,0 +1,23 @@
+### create day todo
+POST {{host}}/days/{{dayId}}/todos
+Content-Type: application/json
+
+< json/dayTodo/createDayTodo.json
+
+### update dayTodo
+PUT {{host}}/days/{{dayId}}/todos/{{dayTodoId}}
+Content-Type: application/json
+
+< json/dayTodo/updateDayTodo.json
+
+### update dayTodo to ready
+PUT {{host}}/days/{{dayId}}/todos/{{dayTodoId}}/ready?ready=true
+
+### get all dayTodos by day
+GET {{host}}/days/{{dayId}}/todos
+
+### get dayTodo by id
+GET {{host}}/days/{{dayId}}/todos/{{dayTodoId}}
+
+### delete dayTodo by id
+DELETE {{host}}/days/{{dayId}}/todos/{{dayTodoId}}
