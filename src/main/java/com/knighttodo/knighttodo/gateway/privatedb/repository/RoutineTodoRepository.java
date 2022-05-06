@@ -18,7 +18,7 @@ public interface RoutineTodoRepository extends JpaRepository<RoutineTodo, UUID> 
     @Query("select rt from RoutineTodo rt where rt.id=:routineTodoId and rt.removed=false")
     Optional<RoutineTodo> findByIdAlive(@Param("routineTodoId") UUID routineTodoId);
 
-    @Query("select rt from RoutineTodo rt where rt.id=:routineId and rt.removed=false")
+    @Query("select rt from RoutineTodo rt where rt.routine.id=:routineId and rt.removed=false")
     List<RoutineTodo> findByRoutineIdAlive(@Param("routineId")UUID routineId);
 
     @Modifying

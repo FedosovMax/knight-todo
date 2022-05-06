@@ -67,6 +67,7 @@ public class RoutineTodoResourceIntegrationTest {
 
     @AfterEach
     public void tearDown() {
+        routineTodoInstanceRepository.deleteAll();
         routineInstanceRepository.deleteAll();
         routineTodoRepository.deleteAll();
         routineRepository.deleteAll();
@@ -85,7 +86,7 @@ public class RoutineTodoResourceIntegrationTest {
         public void initialize(ConfigurableApplicationContext applicationContext) {
 
             TestPropertySourceUtils.addInlinedPropertiesToEnvironment(
-                    applicationContext,
+                     applicationContext,
                     "spring.datasource.url=" + postgresqlContainer.getJdbcUrl(),
                     "spring.datasource.username=" + postgresqlContainer.getUsername(),
                     "spring.datasource.password=" + postgresqlContainer.getPassword()
