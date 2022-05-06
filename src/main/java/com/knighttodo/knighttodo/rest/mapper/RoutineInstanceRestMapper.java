@@ -14,9 +14,10 @@ import java.util.UUID;
 public interface RoutineInstanceRestMapper {
 
     @Mapping(target = "routineTodoInstances", source = "routineTodoInstancesIds",
-            qualifiedByName = {"RoutineTodoInstanceRestMapper", "fromIdToRoutineTodoInstanceVOWithId"})
+            qualifiedByName = {"fromIdToRoutineTodoInstanceVOWithId"})
     RoutineInstanceVO toRoutineInstanceVO(RoutineInstanceRequestDto requestDto);
 
+    @Mapping(target = "routineTodoInstances", source = "routineTodoInstances", qualifiedByName = "toRoutineTodoInstanceResponseDto")
     RoutineInstanceResponseDto toRoutineInstanceResponseDto(RoutineInstanceVO routineVO);
 
     @Named("fromIdToRoutineInstanceVOWithId")

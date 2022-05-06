@@ -8,12 +8,12 @@ import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Table(name = "routine_todo")
+@Table(name = "routine_todo_instance")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = {"routineInstance"})
+@ToString
 public class RoutineTodoInstance {
 
     @Id
@@ -21,8 +21,8 @@ public class RoutineTodoInstance {
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "routine_todo_name")
-    private String routineTodoName;
+    @Column(name = "routine_todo_instance_name")
+    private String routineTodoInstanceName;
 
     @Column(name = "scaryness")
     @Enumerated(EnumType.STRING)
@@ -38,9 +38,9 @@ public class RoutineTodoInstance {
     @Column(name = "removed")
     private boolean removed;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private RoutineInstance routineInstance;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private RoutineTodo routineTodo;
 }

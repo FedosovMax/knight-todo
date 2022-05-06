@@ -27,5 +27,5 @@ public class RoutineInstanceResponseDto {
 
     private boolean ready;
 
-    private List<RoutineTodoResponseDto> routineTodos = new ArrayList<>();
+    private List<RoutineTodoInstanceResponseDto> routineTodoInstances;
 }

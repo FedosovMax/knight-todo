@@ -5,6 +5,7 @@ import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scarines
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,7 +16,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = "routine")
+@ToString(exclude = {"routineTodoInstances"})
 public class RoutineInstance {
 
     @Id
@@ -38,9 +39,9 @@ public class RoutineInstance {
     @Column(name = "removed")
     private boolean removed;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Routine routine;
 
-    @OneToMany(mappedBy = "routineInstance", cascade = CascadeType.MERGE)
-    private List<RoutineTodoInstance> routineTodoInstances;
+    @OneToMany(mappedBy = "routineInstance", cascade =  {CascadeType.MERGE})
+    private List<RoutineTodoInstance> routineTodoInstances = new ArrayList<>();
 }

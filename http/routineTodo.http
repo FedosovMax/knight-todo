@@ -1,0 +1,20 @@
+### create routineTodo
+POST {{host}}/routines/{{routineId}}/todos
+Content-Type: application/json
+
+< json/routineTodo/createRoutineTodo.json
+
+### update routineTodo
+PUT {{host}}/routines/{{routineId}}/todos/{{routineTodoId}}
+Content-Type: application/json
+
+< json/routineTodo/updateRoutineTodo.json
+
+### find all routineTodos dy routineId
+GET {{host}}/routines/{{routineId}}/todos
+
+### find routineTodo dy id
+GET {{host}}/routines/{{routineId}}/todos/{{routineTodoId}}
+
+### delete routineTodo by id
+DELETE {{host}}/routines/{{routineId}}/todos/{{routineTodoId}}

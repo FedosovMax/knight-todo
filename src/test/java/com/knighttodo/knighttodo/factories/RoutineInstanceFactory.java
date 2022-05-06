@@ -81,7 +81,7 @@ public class RoutineInstanceFactory {
                 .scariness(Scariness.SCARY)
                 .name(ROUTINE_NAME)
                 .ready(false)
-                .routineTodos(new ArrayList<>())
+                .routineTodoInstances(new ArrayList<>())
                 .build();
     }
 

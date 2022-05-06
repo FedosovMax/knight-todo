@@ -15,6 +15,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = {"routineInstances", "routineTodos"})
 public class Routine {
 
     @Id
@@ -36,9 +37,9 @@ public class Routine {
     @Column(name = "removed")
     private boolean removed;
 
-    @OneToMany(mappedBy = "routine", cascade =  CascadeType.MERGE)
+    @OneToMany(mappedBy = "routine", cascade =  {CascadeType.MERGE})
     private List<RoutineInstance> routineInstances = new ArrayList<>();
 
-    @OneToMany(mappedBy = "routine")
-    private List<RoutineTodo> routineTodos;
+    @OneToMany(mappedBy = "routine", cascade =  {CascadeType.MERGE})
+    private List<RoutineTodo> routineTodos = new ArrayList<>();
 }
