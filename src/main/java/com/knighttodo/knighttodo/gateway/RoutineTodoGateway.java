@@ -25,23 +25,23 @@ public class RoutineTodoGateway {
     }
 
     public List<RoutineTodoVO> findAll() {
-        return routineTodoRepository.findAll().stream().map(routineTodoMapper::toRoutineTodoVO).collect(Collectors.toList());
+        return routineTodoRepository.findAllAlive().stream().map(routineTodoMapper::toRoutineTodoVO).collect(Collectors.toList());
     }
 
     public Optional<RoutineTodoVO> findById(UUID routineTodoId) {
-        return routineTodoRepository.findById(routineTodoId).map(routineTodoMapper::toRoutineTodoVO);
+        return routineTodoRepository.findByIdAlive(routineTodoId).map(routineTodoMapper::toRoutineTodoVO);
     }
 
     public void deleteById(UUID routineTodoId) {
-        routineTodoRepository.deleteById(routineTodoId);
+        routineTodoRepository.softDeleteById(routineTodoId);
     }
 
     public List<RoutineTodoVO> findByRoutineId(UUID routineId) {
-        return routineTodoRepository.findByRoutineId(routineId).stream().map(routineTodoMapper::toRoutineTodoVO)
+        return routineTodoRepository.findByRoutineIdAlive(routineId).stream().map(routineTodoMapper::toRoutineTodoVO)
                 .collect(Collectors.toList());
     }
 
     public void deleteAllRoutineTodoInstancesByRoutineTodoId(UUID routineTodoId) {
-        routineTodoRepository.deleteAllRoutineTodoInstancesByRoutineTodoId(routineTodoId);
+        routineTodoRepository.softDeleteAllRoutineTodoInstancesByRoutineTodoId(routineTodoId);
     }
 }

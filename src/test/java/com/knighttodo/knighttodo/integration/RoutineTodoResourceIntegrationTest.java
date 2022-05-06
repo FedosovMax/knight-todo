@@ -67,6 +67,7 @@ public class RoutineTodoResourceIntegrationTest {
 
     @AfterEach
     public void tearDown() {
+        routineTodoInstanceRepository.deleteAll();
         routineInstanceRepository.deleteAll();
         routineTodoRepository.deleteAll();
         routineRepository.deleteAll();
@@ -85,7 +86,7 @@ public class RoutineTodoResourceIntegrationTest {
         public void initialize(ConfigurableApplicationContext applicationContext) {
 
             TestPropertySourceUtils.addInlinedPropertiesToEnvironment(
-                    applicationContext,
+                     applicationContext,
                     "spring.datasource.url=" + postgresqlContainer.getJdbcUrl(),
                     "spring.datasource.username=" + postgresqlContainer.getUsername(),
                     "spring.datasource.password=" + postgresqlContainer.getPassword()
@@ -198,7 +199,7 @@ public class RoutineTodoResourceIntegrationTest {
                 .andExpect(jsonPath(buildJsonPathToScariness()).value(requestDto.getScariness().toString()))
                 .andExpect(jsonPath(buildJsonPathToHardness()).value(requestDto.getHardness().toString()));
 
-        assertThat(routineTodoRepository.findById(routineTodo.getId()).get().getRoutineTodoName())
+        assertThat(routineTodoRepository.findByIdAlive(routineTodo.getId()).get().getRoutineTodoName())
                 .isEqualTo(requestDto.getRoutineTodoName());
     }
 
@@ -270,8 +271,8 @@ public class RoutineTodoResourceIntegrationTest {
                 .andExpect(jsonPath(buildJsonPathToScariness()).value(requestDto.getScariness().toString()))
                 .andExpect(jsonPath(buildJsonPathToHardness()).value(requestDto.getHardness().toString()));
 
-        assertThat(routineTodoRepository.findById(routineTodo.getId()).get().getScariness()).isEqualTo(requestDto.getScariness());
-        assertThat(routineTodoRepository.findById(routineTodo.getId()).get().getHardness()).isEqualTo(requestDto.getHardness());
+        assertThat(routineTodoRepository.findByIdAlive(routineTodo.getId()).get().getScariness()).isEqualTo(requestDto.getScariness());
+        assertThat(routineTodoRepository.findByIdAlive(routineTodo.getId()).get().getHardness()).isEqualTo(requestDto.getHardness());
     }
 
     @Test
@@ -290,7 +291,7 @@ public class RoutineTodoResourceIntegrationTest {
             assertEquals(UnchangeableFieldUpdateException.class, e.getCause().getClass());
             assertEquals("Can not update routine todo's field in ready state", e.getCause().getMessage());
         }
-        assertThat(routineTodoRepository.findById(routineTodo.getId()).get().getScariness()).isEqualTo(routineTodo.getScariness());
+        assertThat(routineTodoRepository.findByIdAlive(routineTodo.getId()).get().getScariness()).isEqualTo(routineTodo.getScariness());
     }
 
     @Test
@@ -309,7 +310,7 @@ public class RoutineTodoResourceIntegrationTest {
             assertEquals(UnchangeableFieldUpdateException.class, e.getCause().getClass());
             assertEquals("Can not update routine todo's field in ready state", e.getCause().getMessage());
         }
-        assertThat(routineTodoRepository.findById(routineTodo.getId()).get().getHardness()).isEqualTo(routineTodo.getHardness());
+        assertThat(routineTodoRepository.findByIdAlive(routineTodo.getId()).get().getHardness()).isEqualTo(routineTodo.getHardness());
     }
 
     @Test
@@ -321,8 +322,8 @@ public class RoutineTodoResourceIntegrationTest {
         mockMvc.perform(delete(buildDeleteRoutineTodoByIdUrl(routine.getId(), routineTodo.getId())))
                 .andExpect(status().isOk());
 
-        assertThat(routineTodoRepository.findById(routineTodo.getId())).isEmpty();
-        assertThat(routineTodoRepository.count()).isEqualTo(0);
+        assertThat(routineTodoRepository.findByIdAlive(routineTodo.getId())).isEmpty();
+        assertThat(routineTodoRepository.count()).isEqualTo(1);
     }
 
     @Test
@@ -336,9 +337,9 @@ public class RoutineTodoResourceIntegrationTest {
         mockMvc.perform(delete(buildDeleteRoutineTodoByIdUrl(routine.getId(), routineTodo.getId())))
                 .andExpect(status().isOk());
 
-        assertThat(routineTodoRepository.findById(routineTodo.getId())).isEmpty();
-        assertThat(routineTodoRepository.count()).isEqualTo(0);
-        assertThat(routineTodoInstanceRepository.count()).isEqualTo(0);
+        assertThat(routineTodoRepository.findByIdAlive(routineTodo.getId())).isEmpty();
+        assertThat(routineTodoRepository.count()).isEqualTo(1);
+        assertThat(routineTodoInstanceRepository.count()).isEqualTo(1);
     }
 
 

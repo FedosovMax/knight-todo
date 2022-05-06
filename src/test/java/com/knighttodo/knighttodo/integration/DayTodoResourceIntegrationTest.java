@@ -199,7 +199,7 @@ public class DayTodoResourceIntegrationTest {
                 .andExpect(jsonPath(buildJsonPathToScariness()).value(requestDto.getScariness().toString()))
                 .andExpect(jsonPath(buildJsonPathToHardness()).value(requestDto.getHardness().toString()));
 
-        assertThat(dayTodoRepository.findById(dayTodo.getId()).get().getDayTodoName()).isEqualTo(requestDto.getDayTodoName());
+        assertThat(dayTodoRepository.findByIdAlive(dayTodo.getId()).get().getDayTodoName()).isEqualTo(requestDto.getDayTodoName());
     }
 
     @Test
@@ -265,8 +265,8 @@ public class DayTodoResourceIntegrationTest {
                 .andExpect(jsonPath(buildJsonPathToScariness()).value(requestDto.getScariness().toString()))
                 .andExpect(jsonPath(buildJsonPathToHardness()).value(requestDto.getHardness().toString()));
 
-        assertThat(dayTodoRepository.findById(dayTodo.getId()).get().getScariness()).isEqualTo(requestDto.getScariness());
-        assertThat(dayTodoRepository.findById(dayTodo.getId()).get().getHardness()).isEqualTo(requestDto.getHardness());
+        assertThat(dayTodoRepository.findByIdAlive(dayTodo.getId()).get().getScariness()).isEqualTo(requestDto.getScariness());
+        assertThat(dayTodoRepository.findByIdAlive(dayTodo.getId()).get().getHardness()).isEqualTo(requestDto.getHardness());
     }
 
     @Test
@@ -284,7 +284,7 @@ public class DayTodoResourceIntegrationTest {
             assertEquals(UnchangeableFieldUpdateException.class, e.getCause().getClass());
             assertEquals("Can not update day todo's field in ready state", e.getCause().getMessage());
         }
-        assertThat(dayTodoRepository.findById(dayTodo.getId()).get().getScariness()).isEqualTo(dayTodo.getScariness());
+        assertThat(dayTodoRepository.findByIdAlive(dayTodo.getId()).get().getScariness()).isEqualTo(dayTodo.getScariness());
     }
 
     @Test
@@ -302,7 +302,7 @@ public class DayTodoResourceIntegrationTest {
             assertEquals(UnchangeableFieldUpdateException.class, e.getCause().getClass());
             assertEquals("Can not update day todo's field in ready state", e.getCause().getMessage());
         }
-        assertThat(dayTodoRepository.findById(dayTodo.getId()).get().getHardness()).isEqualTo(dayTodo.getHardness());
+        assertThat(dayTodoRepository.findByIdAlive(dayTodo.getId()).get().getHardness()).isEqualTo(dayTodo.getHardness());
     }
 
     @Test
@@ -316,8 +316,8 @@ public class DayTodoResourceIntegrationTest {
         mockMvc.perform(delete(buildDeleteTodoByIdUrl(day.getId(), dayTodo.getId())))
                 .andExpect(status().isOk());
 
-        assertThat(dayTodoRepository.findById(dayTodo.getId())).isEmpty();
-        assertThat(dayTodoRepository.count()).isEqualTo(0);
+        assertThat(dayTodoRepository.findByIdAlive(dayTodo.getId())).isEmpty();
+        assertThat(dayTodoRepository.count()).isEqualTo(1);
     }
 
     @Test
@@ -347,7 +347,7 @@ public class DayTodoResourceIntegrationTest {
                 .andExpect(jsonPath(buildJsonPathToExperience()).isNotEmpty())
                 .andExpect(jsonPath(buildJsonPathToReadyName()).value(true));
 
-        assertThat(dayTodoRepository.findById(dayTodo.getId()).get().isReady()).isEqualTo(true);
+        assertThat(dayTodoRepository.findByIdAlive(dayTodo.getId()).get().isReady()).isEqualTo(true);
     }
 
     @Test
@@ -363,6 +363,6 @@ public class DayTodoResourceIntegrationTest {
                 .param(PARAM_READY, PARAMETER_FALSE))
                 .andExpect(status().isOk());
 
-        assertThat(dayTodoRepository.findById(dayTodoWithReadyTrue.getId()).get().isReady()).isEqualTo(false);
+        assertThat(dayTodoRepository.findByIdAlive(dayTodoWithReadyTrue.getId()).get().isReady()).isEqualTo(false);
     }
 }

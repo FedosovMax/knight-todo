@@ -211,7 +211,7 @@ public class DayResourceIntegrationTest {
         mockMvc.perform(delete(buildDeleteDayByIdUrl(day.getId())))
                 .andExpect(status().isOk());
 
-        assertThat(dayRepository.findById(day.getId())).isEmpty();
+        assertThat(dayRepository.findByIdAlive(day.getId())).isEmpty();
     }
 
     @Test
@@ -224,7 +224,7 @@ public class DayResourceIntegrationTest {
         mockMvc.perform(delete(buildDeleteDayByIdUrl(day.getId())))
                 .andExpect(status().isOk());
 
-        assertThat(dayRepository.findById(day.getId())).isEmpty();
-        assertThat(dayTodoRepository.findAll().isEmpty());
+        assertThat(dayRepository.findByIdAlive(day.getId())).isEmpty();
+        assertThat(dayTodoRepository.findAllAlive().isEmpty());
     }
 }

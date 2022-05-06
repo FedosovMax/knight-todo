@@ -25,22 +25,22 @@ public class RoutineGateway {
     }
 
     public List<RoutineVO> findAll() {
-        return routineRepository.findAll().stream().map(routineMapper::toRoutineVO).collect(Collectors.toList());
+        return routineRepository.findAllAlive().stream().map(routineMapper::toRoutineVO).collect(Collectors.toList());
     }
 
     public Optional<RoutineVO> findById(UUID routineId) {
-        return routineRepository.findById(routineId).map(routineMapper::toRoutineVO);
+        return routineRepository.findByIdAlive(routineId).map(routineMapper::toRoutineVO);
     }
 
     public void deleteById(UUID routineId) {
-        routineRepository.deleteById(routineId);
+        routineRepository.softDeleteById(routineId);
     }
 
     public void deleteAllRoutineInstancesByRoutineId(UUID routineId) {
-        routineRepository.deleteAllRoutineInstancesByRoutineId(routineId);
+        routineRepository.softDeleteAllRoutineInstancesByRoutineId(routineId);
     }
 
     public void deleteAllRoutineTodosByRoutineId(UUID routineId) {
-        routineRepository.deleteAllRoutineTodosByRoutineId(routineId);
+        routineRepository.softDeleteAllRoutineTodosByRoutineId(routineId);
     }
 }

@@ -145,7 +145,7 @@ public class RoutineResourceIntegrationTest {
                 .andExpect(jsonPath(buildJsonPathToId()).exists());
 
         assertThat(routineRepository.count()).isEqualTo(1);
-        assertThat(routineRepository.findById(routine.getId()).get().getName()).isEqualTo(requestDto.getName());
+        assertThat(routineRepository.findByIdAlive(routine.getId()).get().getName()).isEqualTo(requestDto.getName());
     }
 
     @Test
@@ -170,8 +170,8 @@ public class RoutineResourceIntegrationTest {
         mockMvc.perform(delete(buildDeleteRoutineByIdUrl(routine.getId())))
                 .andExpect(status().isOk());
 
-        assertThat(routineRepository.findById(routine.getId())).isEmpty();
-        assertThat(routineRepository.count()).isEqualTo(0);
+        assertThat(routineRepository.findByIdAlive(routine.getId())).isEmpty();
+        assertThat(routineRepository.count()).isEqualTo(1);
     }
 
     @Test
@@ -184,9 +184,9 @@ public class RoutineResourceIntegrationTest {
         mockMvc.perform(delete(buildDeleteRoutineByIdUrl(routine.getId())))
                 .andExpect(status().isOk());
 
-        assertThat(routineRepository.findById(routine.getId())).isEmpty();
-        assertThat(routineRepository.count()).isEqualTo(0);
-        assertThat(routineTodoRepository.count()).isEqualTo(0);
-        assertThat(routineInstanceRepository.count()).isEqualTo(0);
+        assertThat(routineRepository.findByIdAlive(routine.getId())).isEmpty();
+        assertThat(routineRepository.count()).isEqualTo(1);
+        assertThat(routineTodoRepository.count()).isEqualTo(1);
+        assertThat(routineInstanceRepository.count()).isEqualTo(1);
     }
 }

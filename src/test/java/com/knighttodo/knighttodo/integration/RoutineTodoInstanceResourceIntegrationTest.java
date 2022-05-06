@@ -154,7 +154,7 @@ public class RoutineTodoInstanceResourceIntegrationTest {
                 .andExpect(jsonPath(buildJsonPathToExperience()).isNotEmpty())
                 .andExpect(jsonPath(buildJsonPathToReadyName()).value(true));
 
-        assertThat(routineTodoInstanceRepository.findById(savedRoutineTodoInstance.getId()).get().isReady()).isEqualTo(true);
+        assertThat(routineTodoInstanceRepository.findByIdAlive(savedRoutineTodoInstance.getId()).get().isReady()).isEqualTo(true);
     }
 
     @Test
@@ -177,6 +177,6 @@ public class RoutineTodoInstanceResourceIntegrationTest {
                 .param(PARAM_READY, PARAMETER_FALSE))
                 .andExpect(status().isOk());
 
-        assertThat(routineTodoInstanceRepository.findById(savedRoutineTodoInstanceReadyTrue.getId()).get().isReady()).isEqualTo(false);
+        assertThat(routineTodoInstanceRepository.findByIdAlive(savedRoutineTodoInstanceReadyTrue.getId()).get().isReady()).isEqualTo(false);
     }
 }

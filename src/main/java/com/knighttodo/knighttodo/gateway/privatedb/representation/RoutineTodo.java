@@ -37,6 +37,9 @@ public class RoutineTodo {
     @Column(name = "ready")
     private boolean ready = false;
 
+    @Column(name = "removed")
+    private boolean removed;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Routine routine;
 
