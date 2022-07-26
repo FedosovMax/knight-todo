@@ -1,0 +1,27 @@
+### create role
+POST {{host}}/roles
+Content-Type: application/json
+
+< json/user/createRole.json
+
+
+### create user
+POST {{host}}/users
+Content-Type: application/json
+
+< json/user/createUser.json
+
+### update day
+PUT {{host}}/days/{{dayId}}
+Content-Type: application/json
+
+< json/day/updateDay.json
+
+### get all days
+GET {{host}}/days
+
+### get day by id
+GET {{host}}/days/{{dayId}}
+
+### delete day by id
+DELETE {{host}}/days/{{dayId}}
