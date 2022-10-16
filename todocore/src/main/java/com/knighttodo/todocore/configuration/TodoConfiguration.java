@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@PropertySource(value = "classpath:application-todo.yml")
+@PropertySource(value = "classpath:application.yml")
 public class TodoConfiguration {
 
 }

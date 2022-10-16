@@ -1,12 +1,12 @@
 spring:
   datasource:
-    driverClassName: org.postgresql.Driver
+#    driverClassName: org.postgresql.Driver
     username: postgre
     password: postgre
     url: jdbc:postgresql://localhost:5432/knight?currentSchema=knight_todo
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQL10Dialect

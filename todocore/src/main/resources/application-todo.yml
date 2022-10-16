@@ -1,9 +1,0 @@
-jwt:
-  token:
-    secret: somesecret
-    expired: 3600000
-
-logging:
-  level:
-    com.knighttodo.todocore: INFO
-

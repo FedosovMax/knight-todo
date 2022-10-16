@@ -63,8 +63,8 @@ public class DayTodoResourceIntegrationTest {
     @MockBean
     private RestTemplate restTemplate;
 
-    @Value("${baseUrl.experience}")
-    private String experienceUrl;
+//    @Value("${baseUrl.experience}")
+//    private String experienceUrl;
 
     @AfterEach
     public void tearDown() {

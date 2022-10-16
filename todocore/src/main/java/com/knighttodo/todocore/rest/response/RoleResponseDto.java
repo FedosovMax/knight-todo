@@ -2,9 +2,11 @@ package com.knighttodo.todocore.rest.response;
 
 import lombok.Data;
 
+import java.util.UUID;
+
 @Data
 public class RoleResponseDto {
 
-    private String id;
+    private UUID id;
     private String name;
 }

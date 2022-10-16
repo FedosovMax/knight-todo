@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "user")
+@Table(name = "todo_user")
 @Data
 @Builder
 @AllArgsConstructor
@@ -30,7 +30,6 @@ public class User {
 
     @Id
     @GeneratedValue
-    @Column(name = "id")
     private UUID id;
 
     @Column(name = "login")
@@ -39,9 +38,9 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_roles",
-        joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
-        inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
-    private List<Role> roles = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(name = "todo_user_todo_roles",
+        joinColumns = {@JoinColumn(name = "todo_user_id", referencedColumnName = "id")},
+        inverseJoinColumns = {@JoinColumn(name = "todo_role_id", referencedColumnName = "id")})
+    private List<Role> roles;
 }

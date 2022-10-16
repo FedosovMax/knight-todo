@@ -1,0 +1,49 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    #      driverClassName: org.postgresql.Driver
+    username: postgre
+    password: postgre
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/knight?currentSchema=knight_todo
+  jpa:
+    hibernate:
+      ddl-auto: create
+      generate-ddl: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    show-sql: false
+
+management:
+  endpoints:
+    enabled-by-default: false
+    web:
+      base-path: /
+      path-mapping:
+        health: healthcheck
+  endpoint:
+    health:
+      enabled: true
+    liquibase:
+      enabled: true
+    loggers:
+      enabled: true
+    web:
+      exposure:
+        include: '*'
+
+jwt:
+  token:
+    secret: somesecret
+    expired: 3600000
+
+logging:
+  level:
+    com.knighttodo.todocore: INFO
+
