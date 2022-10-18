@@ -4,13 +4,13 @@ server:
 spring:
   datasource:
     #      driverClassName: org.postgresql.Driver
-    username: postgre
+    username: postgres
     password: postgre
     platform: postgres
-    url: jdbc:postgresql://localhost:5432/knight?currentSchema=knight_todo
+    url: jdbc:postgresql://localhost:5433/knight?currentSchema=knight_todo
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
       generate-ddl: true
     properties:
       hibernate:
