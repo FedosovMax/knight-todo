@@ -1,5 +1,4 @@
 #!/usr/bin/env
-# Docker entrypoint command
 set -o pipefail
 
 # if the env var DB_URL is not empty
