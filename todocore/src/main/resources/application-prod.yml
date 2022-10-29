@@ -1,16 +1,16 @@
 server:
-  port: 8080
+  port: 5000
 
 spring:
 #  profiles:
 #    active: @spring.profiles.active@
   datasource:
-    driverClassName: org.postgresql.Driver
+#    driverClassName: org.postgresql.Driver
     username: postgres
     password: postgres
     platform: postgres
-    url: jdbc:postgresql://localhost:5432/knight?currentSchema=knight_todo
-#    url: jdbc:postgresql://awseb-e-6kdfjg4g2j-stack-awsebrdsdatabase-8zxnwioh7p2j.cfetsdvsvkiq.eu-central-1.rds.amazonaws.com:5432/ebdb
+#    url: jdbc:postgresql://localhost:5432/knight?currentSchema=knight_todo
+    url: jdbc:postgresql://awseb-e-6kdfjg4g2j-stack-awsebrdsdatabase-8zxnwioh7p2j.cfetsdvsvkiq.eu-central-1.rds.amazonaws.com:5432/ebdb
   jpa:
     hibernate:
       ddl-auto: validate
