@@ -1,5 +1,5 @@
 server:
-  port: 6031
+  port:
 
 logging:
   level:
@@ -10,9 +10,9 @@ spring:
     ansi:
       enabled: NEVER
   datasource:
-    url: jdbc:postgresql://localhost:5432/knight?currentSchema=knight_todo
-    username: postgre
-    password: postgre
+    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=knight_todo
+    username: postgres
+    password: 123
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:

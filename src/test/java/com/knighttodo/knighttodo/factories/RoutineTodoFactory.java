@@ -1,10 +1,10 @@
 package com.knighttodo.knighttodo.factories;
 
-import com.knighttodo.knighttodo.gateway.experience.response.ExperienceResponse;
-import com.knighttodo.knighttodo.gateway.privatedb.representation.Routine;
-import com.knighttodo.knighttodo.gateway.privatedb.representation.RoutineTodo;
-import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
-import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scariness;
+import com.knighttodo.knighttodo.service.expirience.response.ExperienceResponse;
+import com.knighttodo.knighttodo.service.privatedb.representation.Routine;
+import com.knighttodo.knighttodo.service.privatedb.representation.RoutineTodo;
+import com.knighttodo.knighttodo.service.privatedb.representation.enums.Hardness;
+import com.knighttodo.knighttodo.service.privatedb.representation.enums.Scariness;
 import com.knighttodo.knighttodo.rest.request.RoutineTodoRequestDto;
 
 import java.util.UUID;

@@ -3,7 +3,9 @@ package com.knighttodo.knighttodo.service;
 import com.knighttodo.knighttodo.domain.RoutineTodoVO;
 import com.knighttodo.knighttodo.exception.RoutineTodoNotFoundException;
 import com.knighttodo.knighttodo.exception.UnchangeableFieldUpdateException;
-import com.knighttodo.knighttodo.gateway.RoutineTodoGateway;
+import com.knighttodo.knighttodo.service.privatedb.mapper.RoutineTodoMapper;
+import com.knighttodo.knighttodo.service.privatedb.repositary.RoutineTodoRepository;
+import com.knighttodo.knighttodo.service.privatedb.representation.RoutineTodo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -18,23 +21,27 @@ import java.util.UUID;
 @Transactional(readOnly = true)
 public class RoutineTodoService {
 
-    private final RoutineTodoGateway routineTodoGateway;
+
     private final RoutineService routineService;
+    private final RoutineTodoRepository routineTodoRepository;
+    private final RoutineTodoMapper routineTodoMapper;
 
     @Transactional
     public RoutineTodoVO save(UUID routineId, RoutineTodoVO routineTodoVO) {
         routineTodoVO.setRoutineVO(routineService.findById(routineId));
-        RoutineTodoVO savedRoutineTodo = routineTodoGateway.save(routineTodoVO);
-        savedRoutineTodo.setRoutineVO(routineTodoVO.getRoutineVO());
-        return savedRoutineTodo;
+        RoutineTodo savedRoutineTodo = routineTodoRepository.save(routineTodoMapper.toRoutineTodo(routineTodoVO));
+
+        RoutineTodoVO savedRoutineTodoVO = routineTodoMapper.toRoutineTodoVO(savedRoutineTodo);
+        savedRoutineTodoVO.setRoutineVO(routineTodoVO.getRoutineVO());
+        return savedRoutineTodoVO;
     }
 
     public List<RoutineTodoVO> findAll() {
-        return routineTodoGateway.findAll();
+        return routineTodoRepository.findAllAlive().stream().map(routineTodoMapper::toRoutineTodoVO).collect(Collectors.toList());
     }
 
     public RoutineTodoVO findById(UUID routineTodoId) {
-        return routineTodoGateway.findById(routineTodoId)
+        return routineTodoRepository.findByIdAlive(routineTodoId).map(routineTodoMapper::toRoutineTodoVO)
                 .orElseThrow(() -> {
                     log.error(String.format("Routine Todo with such id:%s can't be found", routineTodoId));
                     return new RoutineTodoNotFoundException(String
@@ -45,13 +52,11 @@ public class RoutineTodoService {
     @Transactional
     public RoutineTodoVO updateRoutineTodo(UUID routineTodoId, RoutineTodoVO changedRoutineTodoVO) {
         RoutineTodoVO routineTodoVO = findById(routineTodoId);
-
         checkUpdatePossibility(routineTodoVO, changedRoutineTodoVO);
-
         routineTodoVO.setRoutineTodoName(changedRoutineTodoVO.getRoutineTodoName());
         routineTodoVO.setScariness(changedRoutineTodoVO.getScariness());
         routineTodoVO.setHardness(changedRoutineTodoVO.getHardness());
-        return routineTodoGateway.save(routineTodoVO);
+        return routineTodoMapper.toRoutineTodoVO(routineTodoRepository.save(routineTodoMapper.toRoutineTodo(routineTodoVO)));
     }
 
     private void checkUpdatePossibility(RoutineTodoVO routineTodoVO, RoutineTodoVO changedRoutineTodoVO) {
@@ -68,11 +73,12 @@ public class RoutineTodoService {
 
     @Transactional
     public void deleteById(UUID routineTodoId) {
-        routineTodoGateway.deleteAllRoutineTodoInstancesByRoutineTodoId(routineTodoId);
-        routineTodoGateway.deleteById(routineTodoId);
+        routineTodoRepository.softDeleteAllRoutineTodoInstancesByRoutineTodoId(routineTodoId);
+        routineTodoRepository.softDeleteById(routineTodoId);
     }
 
     public List<RoutineTodoVO> findByRoutineId(UUID routineId) {
-        return routineTodoGateway.findByRoutineId(routineId);
+        return routineTodoRepository.findByRoutineIdAlive(routineId).stream().map(routineTodoMapper::toRoutineTodoVO)
+                .collect(Collectors.toList());
     }
 }

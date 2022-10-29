@@ -1,7 +1,7 @@
 package com.knighttodo.knighttodo.domain;
 
-import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Hardness;
-import com.knighttodo.knighttodo.gateway.privatedb.representation.enums.Scariness;
+import com.knighttodo.knighttodo.service.privatedb.representation.enums.Hardness;
+import com.knighttodo.knighttodo.service.privatedb.representation.enums.Scariness;
 import lombok.*;
 
 import java.util.List;

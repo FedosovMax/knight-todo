@@ -2,7 +2,7 @@ package com.knighttodo.knighttodo.rest;
 
 import com.knighttodo.knighttodo.domain.RoutineVO;
 import com.knighttodo.knighttodo.exception.*;
-import com.knighttodo.knighttodo.rest.mapper.RoutineRestMapper;
+import com.knighttodo.knighttodo.rest.request.mapper.RoutineRestMapper;
 import com.knighttodo.knighttodo.rest.request.RoutineRequestDto;
 import com.knighttodo.knighttodo.rest.response.RoutineResponseDto;
 import com.knighttodo.knighttodo.service.RoutineService;

@@ -3,8 +3,9 @@ package com.knighttodo.knighttodo.service;
 import com.knighttodo.knighttodo.domain.RoutineTodoInstanceVO;
 import com.knighttodo.knighttodo.domain.RoutineTodoVO;
 import com.knighttodo.knighttodo.exception.RoutineTodoNotFoundException;
-import com.knighttodo.knighttodo.gateway.RoutineTodoInstanceGateway;
-import com.knighttodo.knighttodo.gateway.experience.ExperienceGateway;
+import com.knighttodo.knighttodo.service.expirience.ExperienceServiceImpl;
+import com.knighttodo.knighttodo.service.privatedb.mapper.RoutineTodoInstanceMapper;
+import com.knighttodo.knighttodo.service.privatedb.repositary.RoutineTodoInstanceRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -19,20 +21,22 @@ import java.util.UUID;
 @Transactional(readOnly = true)
 public class RoutineTodoInstanceService {
 
-    private final RoutineTodoInstanceGateway routineTodoInstanceGateway;
+
     private final RoutineInstanceService routineInstanceService;
-    private final ExperienceGateway experienceGateway;
+    private final ExperienceServiceImpl experienceService;
+    private final RoutineTodoInstanceRepository routineTodoInstanceRepository;
+    private final RoutineTodoInstanceMapper routineTodoInstanceMapper;
 
     @Transactional
     public RoutineTodoInstanceVO save(UUID routineInstanceId, RoutineTodoInstanceVO routineTodoInstanceVO) {
         routineTodoInstanceVO.setRoutineInstanceVO(routineInstanceService.findById(routineInstanceId));
-        RoutineTodoInstanceVO savedRoutineTodoInstance = routineTodoInstanceGateway.save(routineTodoInstanceVO);
+        RoutineTodoInstanceVO savedRoutineTodoInstance = routineTodoInstanceMapper.toRoutineTodoInstanceVO(routineTodoInstanceRepository.save(routineTodoInstanceMapper.toRoutineTodoInstance(routineTodoInstanceVO)));
         savedRoutineTodoInstance.setRoutineInstanceVO(routineTodoInstanceVO.getRoutineInstanceVO());
         return savedRoutineTodoInstance;
     }
 
     public List<RoutineTodoInstanceVO> findAll() {
-        return routineTodoInstanceGateway.findAll();
+        return routineTodoInstanceRepository.findAllAlive().stream().map(routineTodoInstanceMapper::toRoutineTodoInstanceVO).collect(Collectors.toList());
     }
 
     @Transactional
@@ -42,12 +46,10 @@ public class RoutineTodoInstanceService {
     }
 
     private RoutineTodoInstanceVO findRoutineTodoInstanceVO(UUID routineTodoInstanceId) {
-        return routineTodoInstanceGateway.findById(routineTodoInstanceId)
-                .orElseThrow(() -> {
-                    log.error(String.format("Routine Todo Instance with such id:%s can't be found", routineTodoInstanceId));
-                    return new RoutineTodoNotFoundException(String
-                            .format("Routine Todo Instance with such id:%s can't be found", routineTodoInstanceId));
-                });
+        return routineTodoInstanceRepository.findByIdAlive(routineTodoInstanceId).map(routineTodoInstanceMapper::toRoutineTodoInstanceVO).orElseThrow(() -> {
+            log.error(String.format("Routine Todo Instance with such id:%s can't be found", routineTodoInstanceId));
+            return new RoutineTodoNotFoundException(String.format("Routine Todo Instance with such id:%s can't be found", routineTodoInstanceId));
+        });
     }
 
     private RoutineTodoInstanceVO synchronizeWithRoutineTodoAndReturn(RoutineTodoInstanceVO routineTodoInstanceVO) {
@@ -55,17 +57,17 @@ public class RoutineTodoInstanceService {
         routineTodoInstanceVO.setRoutineTodoInstanceName(routineTodoVO.getRoutineTodoName());
         routineTodoInstanceVO.setHardness(routineTodoVO.getHardness());
         routineTodoInstanceVO.setScariness(routineTodoVO.getScariness());
-        routineTodoInstanceGateway.save(routineTodoInstanceVO);
+        routineTodoInstanceRepository.save(routineTodoInstanceMapper.toRoutineTodoInstance(routineTodoInstanceVO));
         return routineTodoInstanceVO;
     }
 
     public List<RoutineTodoInstanceVO> findByRoutineInstanceId(UUID routineId) {
-        return routineTodoInstanceGateway.findByRoutineId(routineId);
+        return routineTodoInstanceRepository.findByRoutineInstanceIdAlive(routineId).stream().map(routineTodoInstanceMapper::toRoutineTodoInstanceVO).collect(Collectors.toList());
     }
 
     @Transactional
     public void deleteById(UUID routineTodoInstanceId) {
-        routineTodoInstanceGateway.deleteById(routineTodoInstanceId);
+        routineTodoInstanceRepository.deleteById(routineTodoInstanceId);
     }
 
     @Transactional
@@ -73,7 +75,7 @@ public class RoutineTodoInstanceService {
         RoutineTodoInstanceVO routineTodoInstanceVO = findRoutineTodoInstanceVO(routineTodoId);
         routineTodoInstanceVO.setRoutineInstanceVO(routineInstanceService.findRoutineInstanceVO(routineId));
         routineTodoInstanceVO.setReady(isReady);
-        routineTodoInstanceGateway.save(routineTodoInstanceVO);
-        return experienceGateway.calculateExperience(routineTodoInstanceVO);
+        routineTodoInstanceRepository.save(routineTodoInstanceMapper.toRoutineTodoInstance(routineTodoInstanceVO));
+        return experienceService.calculateExperience(routineTodoInstanceVO);
     }
 }

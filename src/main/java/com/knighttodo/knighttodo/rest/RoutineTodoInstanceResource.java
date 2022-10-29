@@ -4,7 +4,7 @@ import com.knighttodo.knighttodo.domain.RoutineTodoInstanceVO;
 import com.knighttodo.knighttodo.exception.FindAllRoutineTodoInstancesException;
 import com.knighttodo.knighttodo.exception.FindRoutineTodoInstanceByIdException;
 import com.knighttodo.knighttodo.exception.RoutineTodoInstanceReadyCanNotBeUpdatedException;
-import com.knighttodo.knighttodo.rest.mapper.RoutineTodoInstanceRestMapper;
+import com.knighttodo.knighttodo.rest.request.mapper.RoutineTodoInstanceRestMapper;
 import com.knighttodo.knighttodo.rest.response.RoutineTodoInstanceReadyResponseDto;
 import com.knighttodo.knighttodo.rest.response.RoutineTodoInstanceResponseDto;
 import com.knighttodo.knighttodo.service.RoutineTodoInstanceService;

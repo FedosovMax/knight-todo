@@ -2,7 +2,7 @@ package com.knighttodo.knighttodo.rest;
 
 import com.knighttodo.knighttodo.domain.DayTodoVO;
 import com.knighttodo.knighttodo.exception.*;
-import com.knighttodo.knighttodo.rest.mapper.DayTodoRestMapper;
+import com.knighttodo.knighttodo.rest.request.mapper.DayTodoRestMapper;
 import com.knighttodo.knighttodo.rest.request.DayTodoRequestDto;
 import com.knighttodo.knighttodo.rest.response.DayTodoReadyResponseDto;
 import com.knighttodo.knighttodo.rest.response.DayTodoResponseDto;
