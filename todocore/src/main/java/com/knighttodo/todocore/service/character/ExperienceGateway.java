@@ -1,4 +1,4 @@
-package com.knighttodo.todocore.gateway.character;
+package com.knighttodo.todocore.service.character;
 
 
 import com.knighttodo.todocore.domain.DayTodoVO;

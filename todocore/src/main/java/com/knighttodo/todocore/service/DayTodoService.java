@@ -4,7 +4,7 @@ import com.knighttodo.todocore.domain.DayTodoVO;
 import com.knighttodo.todocore.exception.DayTodoNotFoundException;
 import com.knighttodo.todocore.exception.UnchangeableFieldUpdateException;
 import com.knighttodo.todocore.gateway.DayTodoGateway;
-import com.knighttodo.todocore.gateway.character.ExperienceGateway;
+import com.knighttodo.todocore.service.character.ExperienceGateway;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

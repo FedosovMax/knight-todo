@@ -4,7 +4,7 @@ import com.knighttodo.todocore.domain.RoutineTodoInstanceVO;
 import com.knighttodo.todocore.domain.RoutineTodoVO;
 import com.knighttodo.todocore.exception.RoutineTodoNotFoundException;
 import com.knighttodo.todocore.gateway.RoutineTodoInstanceGateway;
-import com.knighttodo.todocore.gateway.character.ExperienceGateway;
+import com.knighttodo.todocore.service.character.ExperienceGateway;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
