@@ -2,10 +2,10 @@ package com.knighttodo.todocore.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.knighttodo.todocore.TestConstants;
-import com.knighttodo.todocore.character.gateway.privatedb.repository.ArmorRepository;
-import com.knighttodo.todocore.character.gateway.privatedb.repository.BonusRepository;
-import com.knighttodo.todocore.character.gateway.privatedb.representation.Armor;
-import com.knighttodo.todocore.character.gateway.privatedb.representation.Bonus;
+import com.knighttodo.todocore.character.service.privatedb.repository.ArmorRepository;
+import com.knighttodo.todocore.character.service.privatedb.repository.BonusRepository;
+import com.knighttodo.todocore.character.service.privatedb.representation.Armor;
+import com.knighttodo.todocore.character.service.privatedb.representation.Bonus;
 import com.knighttodo.todocore.character.rest.request.ArmorRequestDto;
 import com.knighttodo.todocore.factories.ArmorFactory;
 import com.knighttodo.todocore.factories.BonusFactory;

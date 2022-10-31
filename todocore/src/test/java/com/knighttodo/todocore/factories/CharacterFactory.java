@@ -1,6 +1,6 @@
 package com.knighttodo.todocore.factories;
 
-import com.knighttodo.todocore.character.gateway.privatedb.representation.Character;
+import com.knighttodo.todocore.character.service.privatedb.representation.Character;
 import com.knighttodo.todocore.character.rest.request.CharacterRequestDto;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

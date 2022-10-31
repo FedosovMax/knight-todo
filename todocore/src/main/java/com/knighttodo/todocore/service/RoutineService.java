@@ -4,8 +4,10 @@ import com.knighttodo.todocore.domain.RoutineTodoInstanceVO;
 import com.knighttodo.todocore.domain.RoutineTodoVO;
 import com.knighttodo.todocore.domain.RoutineVO;
 import com.knighttodo.todocore.exception.RoutineNotFoundException;
-import com.knighttodo.todocore.gateway.RoutineGateway;
-import com.knighttodo.todocore.gateway.RoutineTodoGateway;
+import com.knighttodo.todocore.service.privatedb.mapper.RoutineMapper;
+import com.knighttodo.todocore.service.privatedb.mapper.RoutineTodoMapper;
+import com.knighttodo.todocore.service.privatedb.repository.RoutineRepository;
+import com.knighttodo.todocore.service.privatedb.repository.RoutineTodoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -20,20 +23,22 @@ import java.util.UUID;
 @Transactional(readOnly = true)
 public class RoutineService {
 
-    private final RoutineGateway routineGateway;
-    private final RoutineTodoGateway routineTodoGateway;
+    private final RoutineRepository routineRepository;
+    private final RoutineMapper routineMapper;
+    private final RoutineTodoRepository routineTodoRepository;
+    private final RoutineTodoMapper routineTodoMapper;
 
     @Transactional
     public RoutineVO save(RoutineVO routineVO) {
-        return routineGateway.save(routineVO);
+        return routineMapper.toRoutineVO(routineRepository.save(routineMapper.toRoutine(routineVO)));
     }
 
     public List<RoutineVO> findAll() {
-        return routineGateway.findAll();
+        return routineRepository.findAllAlive().stream().map(routineMapper::toRoutineVO).collect(Collectors.toList());
     }
 
     public RoutineVO findById(UUID routineId) {
-        return routineGateway.findById(routineId)
+        return routineRepository.findByIdAlive(routineId).map(routineMapper::toRoutineVO)
                 .orElseThrow(() -> {
                     log.error(String.format("Routine with such id:%s can't be " + "found", routineId));
                     return new RoutineNotFoundException(
@@ -47,21 +52,22 @@ public class RoutineService {
         routineVO.setName(changedRoutineVO.getName());
         routineVO.setHardness(changedRoutineVO.getHardness());
         routineVO.setScariness(changedRoutineVO.getScariness());
-        return routineGateway.save(routineVO);
+        return routineMapper.toRoutineVO(routineRepository.save(routineMapper.toRoutine(routineVO)));
     }
 
     @Transactional
     public void deleteById(UUID routineId) {
-        routineGateway.deleteAllRoutineInstancesByRoutineId(routineId);
-        routineGateway.deleteAllRoutineTodosByRoutineId(routineId);
-        routineGateway.deleteById(routineId);
+        routineRepository.softDeleteAllRoutineInstancesByRoutineId(routineId);
+        routineRepository.softDeleteAllRoutineTodosByRoutineId(routineId);
+        routineRepository.softDeleteById(routineId);
     }
 
     @Transactional
     public List<RoutineTodoInstanceVO> updateRoutineTodoInstances(UUID routineId,
                                                                   List<RoutineTodoInstanceVO> routineTodoInstanceVOs) {
         RoutineVO routineVO = findById(routineId);
-        List<RoutineTodoVO> routineTodoVOs = routineTodoGateway.findByRoutineId(routineVO.getId());
+        List<RoutineTodoVO> routineTodoVOs = routineTodoRepository.findByRoutineIdAlive(routineId).stream().map(routineTodoMapper::toRoutineTodoVO)
+                .collect(Collectors.toList());
         for (RoutineTodoVO routineTodoVO : routineTodoVOs) {
             routineTodoInstanceVOs.forEach(routineTodoInstanceVO -> {
                 if (routineTodoInstanceVO.getRoutineTodoVO().getId().equals(routineTodoVO.getId())) {

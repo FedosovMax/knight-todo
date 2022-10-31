@@ -1,6 +1,6 @@
 package com.knighttodo.todocore.factories;
 
-import com.knighttodo.todocore.gateway.privatedb.representation.User;
+import com.knighttodo.todocore.service.privatedb.representation.User;
 import com.knighttodo.todocore.rest.request.UserRequestDto;
 
 public class UserFactory {

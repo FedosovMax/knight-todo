@@ -2,7 +2,7 @@ package com.knighttodo.todocore.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.knighttodo.todocore.TestConstants;
-import com.knighttodo.todocore.character.gateway.privatedb.repository.CharacterRepository;
+import com.knighttodo.todocore.character.service.privatedb.repository.CharacterRepository;
 import com.knighttodo.todocore.character.rest.request.ExperienceRequestDto;
 import com.knighttodo.todocore.factories.CharacterFactory;
 import com.knighttodo.todocore.factories.ExperienceFactory;

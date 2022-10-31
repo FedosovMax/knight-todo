@@ -3,9 +3,10 @@ package com.knighttodo.todocore.character.service.impl;
 import com.knighttodo.todocore.character.domain.BonusVO;
 import com.knighttodo.todocore.character.domain.WeaponVO;
 import com.knighttodo.todocore.character.exception.WeaponNotFoundException;
-import com.knighttodo.todocore.character.gateway.WeaponGateway;
 import com.knighttodo.todocore.character.service.BonusService;
 import com.knighttodo.todocore.character.service.WeaponService;
+import com.knighttodo.todocore.character.service.privatedb.mapper.WeaponMapper;
+import com.knighttodo.todocore.character.service.privatedb.repository.WeaponRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,13 +17,14 @@ import java.util.stream.Collectors;
 @Service
 public class WeaponServiceImpl implements WeaponService {
 
-    private final WeaponGateway weaponGateway;
+    private final WeaponRepository weaponRepository;
+    private final WeaponMapper weaponMapper;
     private final BonusService bonusService;
 
     @Override
     public WeaponVO save(WeaponVO weaponVO) {
         weaponVO.setBonuses(fetchBonusesForWeapon(weaponVO));
-        return weaponGateway.save(weaponVO);
+        return weaponMapper.toWeaponVO(weaponRepository.save(weaponMapper.toWeapon(weaponVO)));
     }
 
     private List<BonusVO> fetchBonusesForWeapon(WeaponVO weaponVO) {
@@ -34,12 +36,13 @@ public class WeaponServiceImpl implements WeaponService {
 
     @Override
     public List<WeaponVO> findAll() {
-        return weaponGateway.findAll();
+
+        return weaponRepository.findAll().stream().map(weaponMapper::toWeaponVO).collect(Collectors.toList());
     }
 
     @Override
     public WeaponVO findById(String weaponId) {
-        return weaponGateway.findById(weaponId).orElseThrow(
+        return weaponRepository.findById(weaponId).map(weaponMapper::toWeaponVO).orElseThrow(
             () -> new WeaponNotFoundException(String.format("Weapon with such id:%s can't be found", weaponId)));
     }
 
@@ -58,11 +61,10 @@ public class WeaponServiceImpl implements WeaponService {
         weaponVO.setRequiredStrength(changedWeaponVO.getRequiredStrength());
         weaponVO.setBonuses(fetchBonusesForWeapon(changedWeaponVO));
 
-        return weaponGateway.save(weaponVO);
+        return weaponMapper.toWeaponVO(weaponRepository.save(weaponMapper.toWeapon(weaponVO)));
     }
 
     @Override
-    public void deleteById(String weaponId) {
-        weaponGateway.deleteById(weaponId);
+    public void deleteById(String weaponId) {weaponRepository.deleteById(weaponId);
     }
 }

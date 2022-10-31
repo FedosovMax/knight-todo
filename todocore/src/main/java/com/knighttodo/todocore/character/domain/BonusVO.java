@@ -1,6 +1,6 @@
 package com.knighttodo.todocore.character.domain;
 
-import com.knighttodo.todocore.character.gateway.privatedb.representation.enums.Rarity;
+import com.knighttodo.todocore.character.service.privatedb.representation.enums.Rarity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

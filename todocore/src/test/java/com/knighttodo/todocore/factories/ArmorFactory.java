@@ -1,9 +1,9 @@
 package com.knighttodo.todocore.factories;
 
-import com.knighttodo.todocore.character.gateway.privatedb.representation.Armor;
-import com.knighttodo.todocore.character.gateway.privatedb.representation.Bonus;
-import com.knighttodo.todocore.character.gateway.privatedb.representation.enums.ArmorType;
-import com.knighttodo.todocore.character.gateway.privatedb.representation.enums.Rarity;
+import com.knighttodo.todocore.character.service.privatedb.representation.Armor;
+import com.knighttodo.todocore.character.service.privatedb.representation.Bonus;
+import com.knighttodo.todocore.character.service.privatedb.representation.enums.ArmorType;
+import com.knighttodo.todocore.character.service.privatedb.representation.enums.Rarity;
 import com.knighttodo.todocore.character.rest.request.ArmorRequestDto;
 import lombok.experimental.UtilityClass;
 
