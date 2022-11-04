@@ -30,9 +30,9 @@ public class BonusServiceImpl implements BonusService {
 
     @Override
     public BonusVO findById(String bonusId) {
-        return bonusRepository.findById(bonusId).map(bonusMapper::toBonusVO)
-                .orElseThrow(() -> new BonusNotFoundException(
-                        String.format("Bonus with such id:%s can't be found", bonusId)));
+        return bonusRepository.findById(bonusId)
+                .map(bonusMapper::toBonusVO)
+                .orElseThrow(() -> new BonusNotFoundException(String.format("Bonus with such id:%s can't be found", bonusId)));
     }
 
     @Override

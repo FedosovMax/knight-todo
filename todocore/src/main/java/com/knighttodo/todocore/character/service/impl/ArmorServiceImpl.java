@@ -7,6 +7,7 @@ import com.knighttodo.todocore.character.service.ArmorService;
 import com.knighttodo.todocore.character.service.BonusService;
 import com.knighttodo.todocore.character.service.privatedb.mapper.ArmorMapper;
 import com.knighttodo.todocore.character.service.privatedb.repository.ArmorRepository;
+import com.knighttodo.todocore.character.service.privatedb.representation.Armor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,11 +25,15 @@ public class ArmorServiceImpl implements ArmorService {
     @Override
     public ArmorVO save(ArmorVO armorVO) {
         armorVO.setBonuses(fetchBonusesForArmor(armorVO));
-        return armorMapper.toArmorVO(armorRepository.save(armorMapper.toArmor(armorVO)));
+        Armor armor = armorRepository.save((armorMapper.toArmor(armorVO)));
+        return armorMapper.toArmorVO(armor);
     }
 
     private List<BonusVO> fetchBonusesForArmor(ArmorVO armorVO) {
-        return armorVO.getBonuses().stream().map(BonusVO::getId).map(bonusService::findById).collect(Collectors.toList());
+        return armorVO.getBonuses().stream()
+                .map(BonusVO::getId)
+                .map(bonusService::findById)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -38,7 +43,9 @@ public class ArmorServiceImpl implements ArmorService {
 
     @Override
     public ArmorVO findById(String armorId) {
-        return armorRepository.findById(armorId).map(armorMapper::toArmorVO).orElseThrow(() -> new ArmorNotFoundException(String.format("Armor with such id:%s can't be found", armorId)));
+        return armorRepository.findById(armorId)
+                .map(armorMapper::toArmorVO)
+                .orElseThrow(() -> new ArmorNotFoundException(String.format("Armor with such id:%s can't be found", armorId)));
     }
 
     @Override

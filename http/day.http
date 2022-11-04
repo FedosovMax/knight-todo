@@ -5,7 +5,7 @@ Content-Type: application/json
 < json/day/createDay.json
 
 ### update day
-PUT {{host}}/days/{{dayId}}
+PUT {{localhost}}/days/{{dayId}}
 Content-Type: application/json
 
 < json/day/updateDay.json

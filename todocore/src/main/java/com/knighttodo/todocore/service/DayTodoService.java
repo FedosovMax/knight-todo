@@ -3,7 +3,7 @@ package com.knighttodo.todocore.service;
 import com.knighttodo.todocore.domain.DayTodoVO;
 import com.knighttodo.todocore.exception.DayTodoNotFoundException;
 import com.knighttodo.todocore.exception.UnchangeableFieldUpdateException;
-import com.knighttodo.todocore.service.character.ExperienceService;
+import com.knighttodo.todocore.service.character.ExperienceServ;
 import com.knighttodo.todocore.service.privatedb.mapper.DayTodoMapper;
 import com.knighttodo.todocore.service.privatedb.repository.DayTodoRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class DayTodoService {
 
     private final DayService dayService;
-    private final ExperienceService experienceService;
+    private final ExperienceServ experienceService;
     private final DayTodoRepository dayTodoRepository;
     private final DayTodoMapper dayTodoMapper;
 

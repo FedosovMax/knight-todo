@@ -3,7 +3,7 @@ package com.knighttodo.todocore.service;
 import com.knighttodo.todocore.domain.RoutineTodoInstanceVO;
 import com.knighttodo.todocore.domain.RoutineTodoVO;
 import com.knighttodo.todocore.exception.RoutineTodoNotFoundException;
-import com.knighttodo.todocore.service.character.ExperienceService;
+import com.knighttodo.todocore.service.character.ExperienceServ;
 import com.knighttodo.todocore.service.privatedb.mapper.RoutineTodoInstanceMapper;
 import com.knighttodo.todocore.service.privatedb.repository.RoutineTodoInstanceRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class RoutineTodoInstanceService {
 
     private final RoutineInstanceService routineInstanceService;
-    private final ExperienceService experienceService;
+    private final ExperienceServ experienceService;
     private final RoutineTodoInstanceRepository routineTodoInstanceRepository;
     private final RoutineTodoInstanceMapper routineTodoInstanceMapper;
 
