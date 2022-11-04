@@ -7,6 +7,7 @@ import com.knighttodo.todocore.character.service.BonusService;
 import com.knighttodo.todocore.character.service.SkillService;
 import com.knighttodo.todocore.character.service.privatedb.mapper.SkillMapper;
 import com.knighttodo.todocore.character.service.privatedb.repository.SkillRepository;
+import com.knighttodo.todocore.character.service.privatedb.representation.Skill;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,8 @@ public class SkillServiceImpl implements SkillService {
     @Override
     public SkillVO save(SkillVO skillVO) {
         skillVO.setBonuses(fetchBonusesForSkill(skillVO));
-        return skillMapper.toSkillVO(skillRepository.save(skillMapper.toSkill(skillVO)));
+        Skill skill = skillRepository.save(skillMapper.toSkill(skillVO));
+        return skillMapper.toSkillVO(skill);
     }
 
     private List<BonusVO> fetchBonusesForSkill(SkillVO skillVO) {
@@ -54,7 +56,8 @@ public class SkillServiceImpl implements SkillService {
         skillVO.setDescription(changedSkillVO.getDescription());
         skillVO.setBonuses(fetchBonusesForSkill(changedSkillVO));
 
-        return skillMapper.toSkillVO(skillRepository.save(skillMapper.toSkill(skillVO)));
+        Skill skill = skillRepository.save(skillMapper.toSkill(skillVO));
+        return skillMapper.toSkillVO(skill);
     }
 
     @Override

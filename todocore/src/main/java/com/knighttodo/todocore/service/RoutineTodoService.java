@@ -5,6 +5,7 @@ import com.knighttodo.todocore.exception.RoutineTodoNotFoundException;
 import com.knighttodo.todocore.exception.UnchangeableFieldUpdateException;
 import com.knighttodo.todocore.service.privatedb.mapper.RoutineTodoMapper;
 import com.knighttodo.todocore.service.privatedb.repository.RoutineTodoRepository;
+import com.knighttodo.todocore.service.privatedb.representation.RoutineTodo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,8 @@ public class RoutineTodoService {
     @Transactional
     public RoutineTodoVO save(UUID routineId, RoutineTodoVO routineTodoVO) {
         routineTodoVO.setRoutineVO(routineService.findById(routineId));
-        RoutineTodoVO savedRoutineTodo = routineTodoMapper.toRoutineTodoVO(routineTodoRepository.save(routineTodoMapper.toRoutineTodo(routineTodoVO)));
+        RoutineTodo routineTodo = routineTodoRepository.save(routineTodoMapper.toRoutineTodo(routineTodoVO));
+        RoutineTodoVO savedRoutineTodo = routineTodoMapper.toRoutineTodoVO(routineTodo);
         savedRoutineTodo.setRoutineVO(routineTodoVO.getRoutineVO());
         return savedRoutineTodo;
     }

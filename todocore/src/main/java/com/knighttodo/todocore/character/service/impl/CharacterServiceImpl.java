@@ -5,6 +5,7 @@ import com.knighttodo.todocore.character.exception.CharacterNotFoundException;
 import com.knighttodo.todocore.character.service.CharacterService;
 import com.knighttodo.todocore.character.service.privatedb.mapper.CharacterMapper;
 import com.knighttodo.todocore.character.service.privatedb.repository.CharacterRepository;
+import com.knighttodo.todocore.character.service.privatedb.representation.Character;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,13 +21,15 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public CharacterVO save(CharacterVO characterVO) {
-        return characterMapper.toCharacterVO(characterRepository.save(characterMapper.toCharacter(characterVO)));
+        Character character = characterRepository.save(characterMapper.toCharacter(characterVO));
+        return characterMapper.toCharacterVO(character);
     }
 
     @Override
     public List<CharacterVO> findAll() {
-
-        return characterRepository.findAll().stream().map(characterMapper::toCharacterVO).collect(Collectors.toList());
+        return characterRepository.findAll().stream()
+                .map(characterMapper::toCharacterVO)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -40,7 +43,8 @@ public class CharacterServiceImpl implements CharacterService {
     public CharacterVO updateCharacter(CharacterVO changedCharacterVO, String characterId) {
         CharacterVO characterVO = findById(characterId);
         characterVO.setName(changedCharacterVO.getName());
-        return characterMapper.toCharacterVO(characterRepository.save(characterMapper.toCharacter(characterVO)));
+        Character character = characterRepository.save(characterMapper.toCharacter(characterVO));
+        return characterMapper.toCharacterVO(character);
     }
 
     @Override

@@ -9,11 +9,11 @@ spring:
     username: postgres
     password: 123
     platform: postgres
-    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=knight_todo
+    url: jdbc:postgresql://localhost:5432/knight?currentSchema=knight_todo
 #    url: jdbc:postgresql://awseb-e-6kdfjg4g2j-stack-awsebrdsdatabase-8zxnwioh7p2j.cfetsdvsvkiq.eu-central-1.rds.amazonaws.com:5432/ebdb
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
       generate-ddl: true
     properties:
       hibernate:

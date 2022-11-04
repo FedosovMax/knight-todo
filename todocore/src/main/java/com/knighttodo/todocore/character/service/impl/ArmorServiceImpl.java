@@ -25,7 +25,7 @@ public class ArmorServiceImpl implements ArmorService {
     @Override
     public ArmorVO save(ArmorVO armorVO) {
         armorVO.setBonuses(fetchBonusesForArmor(armorVO));
-        Armor armor = armorRepository.save((armorMapper.toArmor(armorVO)));
+        Armor armor = armorRepository.save(armorMapper.toArmor(armorVO));
         return armorMapper.toArmorVO(armor);
     }
 
@@ -38,14 +38,17 @@ public class ArmorServiceImpl implements ArmorService {
 
     @Override
     public List<ArmorVO> findAll() {
-        return armorRepository.findAll().stream().map(armorMapper::toArmorVO).collect(Collectors.toList());
+        return armorRepository.findAll().stream()
+                .map(armorMapper::toArmorVO)
+                .collect(Collectors.toList());
     }
 
     @Override
     public ArmorVO findById(String armorId) {
         return armorRepository.findById(armorId)
                 .map(armorMapper::toArmorVO)
-                .orElseThrow(() -> new ArmorNotFoundException(String.format("Armor with such id:%s can't be found", armorId)));
+                .orElseThrow(() -> new ArmorNotFoundException(
+                        String.format("Armor with such id:%s can't be found", armorId)));
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.knighttodo.todocore.character.service.BonusService;
 import com.knighttodo.todocore.character.service.WeaponService;
 import com.knighttodo.todocore.character.service.privatedb.mapper.WeaponMapper;
 import com.knighttodo.todocore.character.service.privatedb.repository.WeaponRepository;
+import com.knighttodo.todocore.character.service.privatedb.representation.Weapon;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,8 @@ public class WeaponServiceImpl implements WeaponService {
     @Override
     public WeaponVO save(WeaponVO weaponVO) {
         weaponVO.setBonuses(fetchBonusesForWeapon(weaponVO));
-        return weaponMapper.toWeaponVO(weaponRepository.save(weaponMapper.toWeapon(weaponVO)));
+        Weapon weapon = weaponRepository.save(weaponMapper.toWeapon(weaponVO));
+        return weaponMapper.toWeaponVO(weapon);
     }
 
     private List<BonusVO> fetchBonusesForWeapon(WeaponVO weaponVO) {
@@ -61,7 +63,8 @@ public class WeaponServiceImpl implements WeaponService {
         weaponVO.setRequiredStrength(changedWeaponVO.getRequiredStrength());
         weaponVO.setBonuses(fetchBonusesForWeapon(changedWeaponVO));
 
-        return weaponMapper.toWeaponVO(weaponRepository.save(weaponMapper.toWeapon(weaponVO)));
+        Weapon weapon = weaponRepository.save(weaponMapper.toWeapon(weaponVO));
+        return weaponMapper.toWeaponVO(weapon);
     }
 
     @Override

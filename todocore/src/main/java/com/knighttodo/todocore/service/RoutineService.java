@@ -8,6 +8,7 @@ import com.knighttodo.todocore.service.privatedb.mapper.RoutineMapper;
 import com.knighttodo.todocore.service.privatedb.mapper.RoutineTodoMapper;
 import com.knighttodo.todocore.service.privatedb.repository.RoutineRepository;
 import com.knighttodo.todocore.service.privatedb.repository.RoutineTodoRepository;
+import com.knighttodo.todocore.service.privatedb.representation.Routine;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,8 @@ public class RoutineService {
 
     @Transactional
     public RoutineVO save(RoutineVO routineVO) {
-        return routineMapper.toRoutineVO(routineRepository.save(routineMapper.toRoutine(routineVO)));
+        Routine routine = routineRepository.save(routineMapper.toRoutine(routineVO));
+        return routineMapper.toRoutineVO(routine);
     }
 
     public List<RoutineVO> findAll() {
@@ -52,7 +54,8 @@ public class RoutineService {
         routineVO.setName(changedRoutineVO.getName());
         routineVO.setHardness(changedRoutineVO.getHardness());
         routineVO.setScariness(changedRoutineVO.getScariness());
-        return routineMapper.toRoutineVO(routineRepository.save(routineMapper.toRoutine(routineVO)));
+        Routine routine = routineRepository.save(routineMapper.toRoutine(routineVO));
+        return routineMapper.toRoutineVO(routine);
     }
 
     @Transactional

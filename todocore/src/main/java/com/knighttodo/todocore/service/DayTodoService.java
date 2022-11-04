@@ -6,6 +6,7 @@ import com.knighttodo.todocore.exception.UnchangeableFieldUpdateException;
 import com.knighttodo.todocore.service.character.ExperienceServ;
 import com.knighttodo.todocore.service.privatedb.mapper.DayTodoMapper;
 import com.knighttodo.todocore.service.privatedb.repository.DayTodoRepository;
+import com.knighttodo.todocore.service.privatedb.representation.DayTodo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,8 @@ public class DayTodoService {
     @Transactional
     public DayTodoVO save(UUID dayId, DayTodoVO dayTodoVO) {
         dayTodoVO.setDay(dayService.findById(dayId));
-        return dayTodoMapper.toTodoVO(dayTodoRepository.save(dayTodoMapper.toTodo(dayTodoVO)));
+        DayTodo dayTodo = dayTodoRepository.save(dayTodoMapper.toTodo(dayTodoVO));
+        return dayTodoMapper.toTodoVO(dayTodo);
     }
 
     public List<DayTodoVO> findAll() {
@@ -52,7 +54,8 @@ public class DayTodoService {
         dayTodoVO.setDayTodoName(changedDayTodoVO.getDayTodoName());
         dayTodoVO.setScariness(changedDayTodoVO.getScariness());
         dayTodoVO.setHardness(changedDayTodoVO.getHardness());
-        return dayTodoMapper.toTodoVO(dayTodoRepository.save(dayTodoMapper.toTodo(dayTodoVO)));
+        DayTodo dayTodo = dayTodoRepository.save(dayTodoMapper.toTodo(dayTodoVO));
+        return dayTodoMapper.toTodoVO(dayTodo);
     }
 
     private void checkUpdatePossibility(DayTodoVO dayTodoVO, DayTodoVO changedDayTodoVO) {

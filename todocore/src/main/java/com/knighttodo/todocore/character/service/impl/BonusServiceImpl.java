@@ -5,6 +5,7 @@ import com.knighttodo.todocore.character.exception.BonusNotFoundException;
 import com.knighttodo.todocore.character.service.BonusService;
 import com.knighttodo.todocore.character.service.privatedb.mapper.BonusMapper;
 import com.knighttodo.todocore.character.service.privatedb.repository.BonusRepository;
+import com.knighttodo.todocore.character.service.privatedb.representation.Bonus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,8 @@ public class BonusServiceImpl implements BonusService {
 
     @Override
     public BonusVO save(BonusVO bonusVO) {
-        return bonusMapper.toBonusVO(bonusRepository.save(bonusMapper.toBonus(bonusVO)));
+        Bonus bonus = bonusRepository.save(bonusMapper.toBonus(bonusVO));
+        return bonusMapper.toBonusVO(bonus);
     }
 
     @Override
@@ -32,7 +34,8 @@ public class BonusServiceImpl implements BonusService {
     public BonusVO findById(String bonusId) {
         return bonusRepository.findById(bonusId)
                 .map(bonusMapper::toBonusVO)
-                .orElseThrow(() -> new BonusNotFoundException(String.format("Bonus with such id:%s can't be found", bonusId)));
+                .orElseThrow(() -> new BonusNotFoundException(
+                        String.format("Bonus with such id:%s can't be found", bonusId)));
     }
 
     @Override

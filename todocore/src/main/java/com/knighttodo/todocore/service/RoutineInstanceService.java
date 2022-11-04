@@ -8,6 +8,7 @@ import com.knighttodo.todocore.service.privatedb.mapper.RoutineInstanceMapper;
 import com.knighttodo.todocore.service.privatedb.mapper.RoutineTodoInstanceMapper;
 import com.knighttodo.todocore.service.privatedb.repository.RoutineInstanceRepository;
 import com.knighttodo.todocore.service.privatedb.repository.RoutineTodoInstanceRepository;
+import com.knighttodo.todocore.service.privatedb.representation.RoutineInstance;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,8 @@ public class RoutineInstanceService {
     public RoutineInstanceVO save(RoutineInstanceVO routineInstanceVO, UUID routineId) {
         RoutineVO foundRoutine = routineService.findById(routineId);
         routineInstanceVO.setRoutine(foundRoutine);
-        return routineInstanceMapper.toRoutineInstanceVO(routineInstanceRepository.save(routineInstanceMapper.toRoutineInstance(routineInstanceVO)));
+        RoutineInstance routineInstance = routineInstanceRepository.save(routineInstanceMapper.toRoutineInstance(routineInstanceVO));
+        return routineInstanceMapper.toRoutineInstanceVO(routineInstance);
     }
 
     public List<RoutineInstanceVO> findAll() {
@@ -66,7 +68,8 @@ public class RoutineInstanceService {
         routineInstanceVO.setHardness(changedRoutineInstanceVO.getHardness());
         routineInstanceVO.setScariness(changedRoutineInstanceVO.getScariness());
         routineInstanceVO.setReady(changedRoutineInstanceVO.isReady());
-        return routineInstanceMapper.toRoutineInstanceVO(routineInstanceRepository.save(routineInstanceMapper.toRoutineInstance(routineInstanceVO)));
+        RoutineInstance routineInstance = routineInstanceRepository.save(routineInstanceMapper.toRoutineInstance(routineInstanceVO));
+        return routineInstanceMapper.toRoutineInstanceVO(routineInstance);
     }
 
     @Transactional

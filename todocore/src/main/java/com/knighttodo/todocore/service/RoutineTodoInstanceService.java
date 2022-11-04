@@ -6,6 +6,7 @@ import com.knighttodo.todocore.exception.RoutineTodoNotFoundException;
 import com.knighttodo.todocore.service.character.ExperienceServ;
 import com.knighttodo.todocore.service.privatedb.mapper.RoutineTodoInstanceMapper;
 import com.knighttodo.todocore.service.privatedb.repository.RoutineTodoInstanceRepository;
+import com.knighttodo.todocore.service.privatedb.representation.RoutineTodoInstance;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,8 @@ public class RoutineTodoInstanceService {
 
     public List<RoutineTodoInstanceVO> findAll() {
         return routineTodoInstanceRepository.findAllAlive().stream()
-                .map(routineTodoInstanceMapper::toRoutineTodoInstanceVO).collect(Collectors.toList());
+                .map(routineTodoInstanceMapper::toRoutineTodoInstanceVO)
+                .collect(Collectors.toList());
     }
 
     @Transactional
@@ -60,8 +62,8 @@ public class RoutineTodoInstanceService {
         routineTodoInstanceVO.setRoutineTodoInstanceName(routineTodoVO.getRoutineTodoName());
         routineTodoInstanceVO.setHardness(routineTodoVO.getHardness());
         routineTodoInstanceVO.setScariness(routineTodoVO.getScariness());
-        routineTodoInstanceMapper.toRoutineTodoInstanceVO(routineTodoInstanceRepository.save(routineTodoInstanceMapper.toRoutineTodoInstance(routineTodoInstanceVO)));
-        return routineTodoInstanceVO;
+        RoutineTodoInstance routineTodoInstance = routineTodoInstanceRepository.save(routineTodoInstanceMapper.toRoutineTodoInstance(routineTodoInstanceVO));
+        return routineTodoInstanceMapper.toRoutineTodoInstanceVO(routineTodoInstance);
     }
 
     public List<RoutineTodoInstanceVO> findByRoutineInstanceId(UUID routineId) {

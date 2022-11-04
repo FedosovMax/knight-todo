@@ -4,6 +4,7 @@ import com.knighttodo.todocore.domain.DayVO;
 import com.knighttodo.todocore.exception.DayNotFoundException;
 import com.knighttodo.todocore.service.privatedb.mapper.DayMapper;
 import com.knighttodo.todocore.service.privatedb.repository.DayRepository;
+import com.knighttodo.todocore.service.privatedb.representation.Day;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,8 @@ public class DayService {
 
     @Transactional
     public DayVO save(DayVO dayVO) {
-        return dayMapper.toDayVO(dayRepository.save(dayMapper.toDay(dayVO)));
+        Day day = dayRepository.save(dayMapper.toDay(dayVO));
+        return dayMapper.toDayVO(day);
     }
 
     public List<DayVO> findAll() {
@@ -42,7 +44,8 @@ public class DayService {
     public DayVO updateDay(UUID dayId, DayVO changedDayVO) {
         DayVO dayVO = findById(dayId);
         dayVO.setDayName(changedDayVO.getDayName());
-        return dayMapper.toDayVO(dayRepository.save(dayMapper.toDay(dayVO)));
+        Day day = dayRepository.save(dayMapper.toDay(dayVO));
+        return dayMapper.toDayVO(day);
     }
 
     @Transactional
