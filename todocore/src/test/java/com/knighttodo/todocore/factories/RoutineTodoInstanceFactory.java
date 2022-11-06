@@ -1,6 +1,5 @@
 package com.knighttodo.todocore.factories;
 
-import com.knighttodo.todocore.character.rest.response.ExperienceResponseDto;
 import com.knighttodo.todocore.service.privatedb.representation.RoutineInstance;
 import com.knighttodo.todocore.service.privatedb.representation.RoutineTodo;
 import com.knighttodo.todocore.service.privatedb.representation.RoutineTodoInstance;
@@ -68,9 +67,5 @@ public class RoutineTodoInstanceFactory {
                 .routineTodo(routineTodo)
                 .ready(TRUE_TODO_READY)
                 .build();
-    }
-
-    public static ExperienceResponseDto experienceResponseDtoInstance(UUID todoInstanceId) {
-        return ExperienceResponseDto.builder().todoId(todoInstanceId.toString()).experience(HARD_SCARY_EXPERIENCE).build();
     }
 }

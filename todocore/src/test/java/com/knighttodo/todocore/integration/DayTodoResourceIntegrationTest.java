@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.knighttodo.todocore.exception.UnchangeableFieldUpdateException;
 import com.knighttodo.todocore.factories.DayFactory;
 import com.knighttodo.todocore.factories.DayTodoFactory;
-import com.knighttodo.todocore.character.rest.response.ExperienceResponseDto;
 import com.knighttodo.todocore.service.privatedb.repository.DayRepository;
 import com.knighttodo.todocore.service.privatedb.repository.DayTodoRepository;
 import com.knighttodo.todocore.service.privatedb.representation.Day;
@@ -330,38 +329,4 @@ public class DayTodoResourceIntegrationTest {
                 .andExpect(jsonPath(buildJsonPathToLength()).value(2));
     }
 
-    @Test
-    public void updateIsReady_shouldReturnOk_shouldMakeIsReadyTrue_whenDayTodoIdIsCorrect() throws Exception {
-        Day day = dayRepository.save(DayFactory.dayInstance());
-        DayTodo dayTodo = dayTodoRepository.save(DayTodoFactory.dayTodoWithDayInstance(day));
-        ExperienceResponseDto experienceResponseDto = DayTodoFactory.experienceResponseDtoInstance(dayTodo.getId());
-
-        when(restTemplate.postForEntity(anyString(), any(), eq(ExperienceResponseDto.class)))
-                .thenReturn(new ResponseEntity<>(experienceResponseDto, HttpStatus.OK));
-
-        mockMvc.perform(put(buildUpdateTodoReadyBaseUrl(day.getId(), dayTodo.getId()))
-                .param(PARAM_READY, PARAMETER_TRUE))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath(buildJsonPathToDayId()).isNotEmpty())
-                .andExpect(jsonPath(buildJsonPathToExperience()).isNotEmpty())
-                .andExpect(jsonPath(buildJsonPathToReadyName()).value(true));
-
-        assertThat(dayTodoRepository.findByIdAlive(dayTodo.getId()).get().isReady()).isEqualTo(true);
-    }
-
-    @Test
-    public void updateIsReady_shouldReturnOk_shouldMakeIsReadyFalse_whenDayTodoIdIsCorrect() throws Exception {
-        Day day = dayRepository.save(DayFactory.dayInstance());
-        DayTodo dayTodoWithReadyTrue = dayTodoRepository.save(DayTodoFactory.dayTodoWithDayReadyInstance(day));
-        ExperienceResponseDto experienceResponseDto = DayTodoFactory.experienceResponseDtoInstance(dayTodoWithReadyTrue.getId());
-
-        when(restTemplate.postForEntity(anyString(), any(), eq(ExperienceResponseDto.class)))
-                .thenReturn(new ResponseEntity<>(experienceResponseDto, HttpStatus.OK));
-
-        mockMvc.perform(put(buildUpdateTodoReadyBaseUrl(day.getId(), dayTodoWithReadyTrue.getId()))
-                .param(PARAM_READY, PARAMETER_FALSE))
-                .andExpect(status().isOk());
-
-        assertThat(dayTodoRepository.findByIdAlive(dayTodoWithReadyTrue.getId()).get().isReady()).isEqualTo(false);
-    }
 }
