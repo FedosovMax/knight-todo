@@ -28,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
 import java.util.List;
 
@@ -65,7 +66,7 @@ class ArmorResourceIntegrationTest {
     }
 
     @Container
-    public static PostgreSQLContainer<?> postgresqlContainer = new PostgreSQLContainer<>("postgres");
+    public static PostgreSQLContainer<?> postgresqlContainer = new PostgreSQLContainer<>(DockerImageName.parse("postgres"));
 
     static {
         postgresqlContainer.start();

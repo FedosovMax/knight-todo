@@ -5,6 +5,7 @@ import com.knighttodo.todocore.Constants;
 import com.knighttodo.todocore.factories.UserFactory;
 import com.knighttodo.todocore.service.privatedb.repository.RoleRepository;
 import com.knighttodo.todocore.service.privatedb.repository.UserRepository;
+import com.knighttodo.todocore.service.privatedb.representation.Role;
 import com.knighttodo.todocore.service.privatedb.representation.User;
 import com.knighttodo.todocore.rest.request.UserRequestDto;
 import org.junit.jupiter.api.Test;
@@ -83,19 +84,19 @@ public class UserResourceIntegrationTest {
         assertTrue(postgresqlContainer.isRunning());
     }
 
-//    @Test
-//    public void addUser_shouldAddUserAndReturnIt_whenRequestIsCorrect() throws Exception {
-//        UserRequestDto userRequestDto = UserFactory.createUserRequestDtoInstance();
-//        roleRepository.save(Role.builder().name("ROLE_USER").build());
-//
-//        mockMvc.perform(post(API_BASE_URL_V1 + USERS_BASE_URL)
-//                        .content(objectMapper.writeValueAsString(userRequestDto))
-//                        .contentType(MediaType.APPLICATION_JSON_VALUE))
-//                .andExpect(status().isCreated())
-//                .andExpect(jsonPath(buildLoginJsonPath()).exists());
-//
-//        assertThat(userRepository.count()).isEqualTo(1);
-//    }
+    @Test
+    public void addUser_shouldAddUserAndReturnIt_whenRequestIsCorrect() throws Exception {
+        UserRequestDto userRequestDto = UserFactory.createUserRequestDtoInstance();
+        roleRepository.save(Role.builder().name("ROLE_USER").build());
+
+        mockMvc.perform(post(API_BASE_URL_V1 + USERS_BASE_URL)
+                        .content(objectMapper.writeValueAsString(userRequestDto))
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath(buildLoginJsonPath()).exists());
+
+        assertThat(userRepository.count()).isEqualTo(1);
+    }
 
     @Test
     public void addUser_shouldRespondWithBadRequestStatus_whenLoginIsNull() throws Exception {
@@ -131,20 +132,20 @@ public class UserResourceIntegrationTest {
                 .andExpect(jsonPath(buildJsonPathToLength()).value(2));
     }
 
-//    @Test
-//    public void getUserById_shouldReturnExistingUser_whenIdIsCorrect() throws Exception {
-//        User user = userRepository.save(UserFactory.createUserInstance());
-//
-//        mockMvc.perform(MockMvcRequestBuilders.get(Constants.buildGetUserByIdBaseUrl(user.getId())))
-//                .andExpect(status().isFound())
-//                .andExpect(jsonPath(buildIdJsonPath()).value(user.getId()))
-//                .andExpect(jsonPath(buildLoginJsonPath()).value(user.getLogin()));
-//    }
+    @Test
+    public void getUserById_shouldReturnExistingUser_whenIdIsCorrect() throws Exception {
+        User user = userRepository.save(UserFactory.createUserInstance());
+
+        mockMvc.perform(MockMvcRequestBuilders.get(Constants.buildGetUserByIdBaseUrl(user.getId())))
+                .andExpect(status().isFound())
+                .andExpect(jsonPath(buildIdJsonPath()).value(user.getId()))
+                .andExpect(jsonPath(buildLoginJsonPath()).value(user.getLogin()));
+    }
 
     @Test
     public void updateUser_shouldUpdateUserAndReturnIt_whenRequestIsCorrect() throws Exception {
         User user = userRepository.save(UserFactory.createUserInstance());
-        UserRequestDto userRequestDto = UserFactory.updateUserRequestDtoInstance();
+        UserRequestDto userRequestDto = UserFactory.createUserRequestDtoInstance();
 
         mockMvc.perform(MockMvcRequestBuilders.put(Constants.buildUpdateUserBaseUrl(user.getId()))
                         .content(objectMapper.writeValueAsString(userRequestDto))

@@ -56,7 +56,7 @@ public class DayResourceIntegrationTest {
     }
 
     @Container
-    public static PostgreSQLContainer<?> postgresqlContainer = new PostgreSQLContainer<>("postgres:11.1");
+    public static PostgreSQLContainer<?> postgresqlContainer = new PostgreSQLContainer<>("postgres:13.2");
 
     static {
         postgresqlContainer.start();
