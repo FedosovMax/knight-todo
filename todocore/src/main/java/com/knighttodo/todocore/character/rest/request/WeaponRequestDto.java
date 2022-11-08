@@ -1,6 +1,6 @@
 package com.knighttodo.todocore.character.rest.request;
 
-import com.knighttodo.todocore.character.gateway.privatedb.representation.enums.WeaponType;
+import com.knighttodo.todocore.character.service.privatedb.representation.enums.WeaponType;
 import com.knighttodo.todocore.character.validation.annotation.ValidEnumValue;
 import lombok.AllArgsConstructor;
 import lombok.Data;

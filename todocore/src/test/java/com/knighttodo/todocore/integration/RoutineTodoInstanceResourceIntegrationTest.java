@@ -4,15 +4,14 @@ import com.knighttodo.todocore.factories.RoutineFactory;
 import com.knighttodo.todocore.factories.RoutineInstanceFactory;
 import com.knighttodo.todocore.factories.RoutineTodoFactory;
 import com.knighttodo.todocore.factories.RoutineTodoInstanceFactory;
-import com.knighttodo.todocore.gateway.character.response.ExperienceResponse;
-import com.knighttodo.todocore.gateway.privatedb.repository.RoutineInstanceRepository;
-import com.knighttodo.todocore.gateway.privatedb.repository.RoutineRepository;
-import com.knighttodo.todocore.gateway.privatedb.repository.RoutineTodoInstanceRepository;
-import com.knighttodo.todocore.gateway.privatedb.repository.RoutineTodoRepository;
-import com.knighttodo.todocore.gateway.privatedb.representation.Routine;
-import com.knighttodo.todocore.gateway.privatedb.representation.RoutineInstance;
-import com.knighttodo.todocore.gateway.privatedb.representation.RoutineTodo;
-import com.knighttodo.todocore.gateway.privatedb.representation.RoutineTodoInstance;
+import com.knighttodo.todocore.service.privatedb.repository.RoutineInstanceRepository;
+import com.knighttodo.todocore.service.privatedb.repository.RoutineRepository;
+import com.knighttodo.todocore.service.privatedb.repository.RoutineTodoInstanceRepository;
+import com.knighttodo.todocore.service.privatedb.repository.RoutineTodoRepository;
+import com.knighttodo.todocore.service.privatedb.representation.Routine;
+import com.knighttodo.todocore.service.privatedb.representation.RoutineInstance;
+import com.knighttodo.todocore.service.privatedb.representation.RoutineTodo;
+import com.knighttodo.todocore.service.privatedb.representation.RoutineTodoInstance;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,48 +133,4 @@ public class RoutineTodoInstanceResourceIntegrationTest {
                 .andExpect(jsonPath(buildJsonPathToLength()).value(2));
     }
 
-    @Test
-    public void updateIsReady_shouldReturnOk_shouldMakeIsReadyTrue_whenRoutineTodoInstanceIdIsCorrect() throws Exception {
-        Routine routine = routineRepository.save(RoutineFactory.routineInstance());
-        RoutineInstance routineInstance = routineInstanceRepository.save(RoutineInstanceFactory.routineInstanceWithRoutine(routine));
-        RoutineTodoInstance savedRoutineTodoInstance = routineTodoInstanceRepository.save(RoutineTodoInstanceFactory.
-                routineTodoInstanceWithRoutineInstance(routineInstance));
-        ExperienceResponse experienceResponse = RoutineTodoInstanceFactory.experienceResponseInstance(savedRoutineTodoInstance.getId());
-
-        when(restTemplate.postForEntity(anyString(), any(), eq(ExperienceResponse.class)))
-                .thenReturn(new ResponseEntity<>(experienceResponse, HttpStatus.OK));
-
-        mockMvc.perform(put(API_BASE_URL_V1 + API_BASE_ROUTINES_INSTANCES + "/" + routineInstance.getId() +
-                API_BASE_ROUTINES_TODO_INSTANCES + "/" + savedRoutineTodoInstance.getId() + BASE_READY)
-                .param(PARAM_READY, PARAMETER_TRUE))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath(buildJsonPathToRoutineId()).isNotEmpty())
-                .andExpect(jsonPath(buildJsonPathToExperience()).isNotEmpty())
-                .andExpect(jsonPath(buildJsonPathToReadyName()).value(true));
-
-        assertThat(routineTodoInstanceRepository.findByIdAlive(savedRoutineTodoInstance.getId()).get().isReady()).isEqualTo(true);
-    }
-
-    @Test
-    public void updateIsReady_shouldReturnOk_shouldMakeIsReadyFalse_whenRoutineTodoIdIsCorrect() throws Exception {
-        Routine routine = RoutineFactory.routineInstance();
-        Routine savedRoutine = routineRepository.save(routine);
-        RoutineTodo routineTodo = routineTodoRepository.save(RoutineTodoFactory.routineTodoWithRoutine(routine));
-        routine.setRoutineTodos(List.of(routineTodo));
-
-        RoutineInstance routineInstance = routineInstanceRepository.save(RoutineInstanceFactory.routineInstanceWithRoutine(savedRoutine));
-        RoutineTodoInstance savedRoutineTodoInstanceReadyTrue = routineTodoInstanceRepository.save(RoutineTodoInstanceFactory.
-                routineTodoInstanceWithRoutineReadyInstance(routineInstance, routineTodo));
-        ExperienceResponse experienceResponse = RoutineTodoInstanceFactory.experienceResponseInstance(savedRoutineTodoInstanceReadyTrue.getId());
-
-        when(restTemplate.postForEntity(anyString(), any(), eq(ExperienceResponse.class)))
-                .thenReturn(new ResponseEntity<>(experienceResponse, HttpStatus.OK));
-
-        mockMvc.perform(put(API_BASE_URL_V1 + API_BASE_ROUTINES_INSTANCES + "/" + routineInstance.getId() +
-                API_BASE_ROUTINES_TODO_INSTANCES + "/" + savedRoutineTodoInstanceReadyTrue.getId() + BASE_READY)
-                .param(PARAM_READY, PARAMETER_FALSE))
-                .andExpect(status().isOk());
-
-        assertThat(routineTodoInstanceRepository.findByIdAlive(savedRoutineTodoInstanceReadyTrue.getId()).get().isReady()).isEqualTo(false);
-    }
 }

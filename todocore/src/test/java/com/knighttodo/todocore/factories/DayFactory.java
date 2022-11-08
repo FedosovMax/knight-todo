@@ -1,6 +1,6 @@
 package com.knighttodo.todocore.factories;
 
-import com.knighttodo.todocore.gateway.privatedb.representation.Day;
+import com.knighttodo.todocore.service.privatedb.representation.Day;
 import com.knighttodo.todocore.rest.request.DayRequestDto;
 
 import java.util.ArrayList;

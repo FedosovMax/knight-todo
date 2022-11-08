@@ -29,6 +29,7 @@
         <swagger2.version>3.0.0</swagger2.version>
         <zalando.version>0.25.2</zalando.version>
         <testcontainers.version>1.15.2</testcontainers.version>
+        <lombok.version>1.18.22</lombok.version>
     </properties>
 
     <dependencies>

@@ -1,8 +1,8 @@
 package com.knighttodo.todocore.factories;
 
-import com.knighttodo.todocore.gateway.privatedb.representation.Routine;
-import com.knighttodo.todocore.gateway.privatedb.representation.enums.Hardness;
-import com.knighttodo.todocore.gateway.privatedb.representation.enums.Scariness;
+import com.knighttodo.todocore.service.privatedb.representation.Routine;
+import com.knighttodo.todocore.service.privatedb.representation.enums.Hardness;
+import com.knighttodo.todocore.service.privatedb.representation.enums.Scariness;
 import com.knighttodo.todocore.rest.request.RoutineRequestDto;
 import com.knighttodo.todocore.rest.response.RoutineResponseDto;
 

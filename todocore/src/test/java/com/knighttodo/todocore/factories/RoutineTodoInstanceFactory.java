@@ -1,11 +1,10 @@
 package com.knighttodo.todocore.factories;
 
-import com.knighttodo.todocore.gateway.character.response.ExperienceResponse;
-import com.knighttodo.todocore.gateway.privatedb.representation.RoutineInstance;
-import com.knighttodo.todocore.gateway.privatedb.representation.RoutineTodo;
-import com.knighttodo.todocore.gateway.privatedb.representation.RoutineTodoInstance;
-import com.knighttodo.todocore.gateway.privatedb.representation.enums.Hardness;
-import com.knighttodo.todocore.gateway.privatedb.representation.enums.Scariness;
+import com.knighttodo.todocore.service.privatedb.representation.RoutineInstance;
+import com.knighttodo.todocore.service.privatedb.representation.RoutineTodo;
+import com.knighttodo.todocore.service.privatedb.representation.RoutineTodoInstance;
+import com.knighttodo.todocore.service.privatedb.representation.enums.Hardness;
+import com.knighttodo.todocore.service.privatedb.representation.enums.Scariness;
 
 import java.util.UUID;
 
@@ -68,9 +67,5 @@ public class RoutineTodoInstanceFactory {
                 .routineTodo(routineTodo)
                 .ready(TRUE_TODO_READY)
                 .build();
-    }
-
-    public static ExperienceResponse experienceResponseInstance(UUID todoInstanceId) {
-        return ExperienceResponse.builder().todoId(todoInstanceId).experience(HARD_SCARY_EXPERIENCE).build();
     }
 }

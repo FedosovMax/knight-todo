@@ -1,10 +1,10 @@
 package com.knighttodo.todocore.factories;
 
-import com.knighttodo.todocore.gateway.character.response.ExperienceResponse;
-import com.knighttodo.todocore.gateway.privatedb.representation.Day;
-import com.knighttodo.todocore.gateway.privatedb.representation.DayTodo;
-import com.knighttodo.todocore.gateway.privatedb.representation.enums.Hardness;
-import com.knighttodo.todocore.gateway.privatedb.representation.enums.Scariness;
+
+import com.knighttodo.todocore.service.privatedb.representation.Day;
+import com.knighttodo.todocore.service.privatedb.representation.DayTodo;
+import com.knighttodo.todocore.service.privatedb.representation.enums.Hardness;
+import com.knighttodo.todocore.service.privatedb.representation.enums.Scariness;
 import com.knighttodo.todocore.rest.request.DayTodoRequestDto;
 
 import java.util.UUID;
@@ -140,7 +140,4 @@ public class DayTodoFactory {
         return request;
     }
 
-    public static ExperienceResponse experienceResponseInstance(UUID todoId) {
-        return ExperienceResponse.builder().todoId(todoId).experience(HARD_SCARY_EXPERIENCE).build();
-    }
 }

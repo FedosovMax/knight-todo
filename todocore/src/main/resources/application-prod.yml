@@ -13,7 +13,7 @@ spring:
     url: jdbc:postgresql://awseb-e-6kdfjg4g2j-stack-awsebrdsdatabase-8zxnwioh7p2j.cfetsdvsvkiq.eu-central-1.rds.amazonaws.com:5432/ebdb
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create
       generate-ddl: true
     properties:
       hibernate:

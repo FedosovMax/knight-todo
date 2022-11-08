@@ -3,9 +3,11 @@ package com.knighttodo.todocore.character.service.impl;
 import com.knighttodo.todocore.character.domain.BonusVO;
 import com.knighttodo.todocore.character.domain.SkillVO;
 import com.knighttodo.todocore.character.exception.SkillNotFoundException;
-import com.knighttodo.todocore.character.gateway.SkillGateway;
 import com.knighttodo.todocore.character.service.BonusService;
 import com.knighttodo.todocore.character.service.SkillService;
+import com.knighttodo.todocore.character.service.privatedb.mapper.SkillMapper;
+import com.knighttodo.todocore.character.service.privatedb.repository.SkillRepository;
+import com.knighttodo.todocore.character.service.privatedb.representation.Skill;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,13 +18,15 @@ import java.util.stream.Collectors;
 @Service
 public class SkillServiceImpl implements SkillService {
 
-    private final SkillGateway skillGateway;
+    private final SkillRepository skillRepository;
+    private final SkillMapper skillMapper;
     private final BonusService bonusService;
 
     @Override
     public SkillVO save(SkillVO skillVO) {
         skillVO.setBonuses(fetchBonusesForSkill(skillVO));
-        return skillGateway.save(skillVO);
+        Skill skill = skillRepository.save(skillMapper.toSkill(skillVO));
+        return skillMapper.toSkillVO(skill);
     }
 
     private List<BonusVO> fetchBonusesForSkill(SkillVO skillVO) {
@@ -35,12 +39,12 @@ public class SkillServiceImpl implements SkillService {
 
     @Override
     public List<SkillVO> findAll() {
-        return skillGateway.findAll();
+        return skillRepository.findAll().stream().map(skillMapper::toSkillVO).collect(Collectors.toList());
     }
 
     @Override
     public SkillVO findById(String skillId) {
-        return skillGateway.findById(skillId).orElseThrow(
+        return skillRepository.findById(skillId).map(skillMapper::toSkillVO).orElseThrow(
             () -> new SkillNotFoundException(String.format("Skill with such id:%s can't be found", skillId)));
     }
 
@@ -52,11 +56,12 @@ public class SkillServiceImpl implements SkillService {
         skillVO.setDescription(changedSkillVO.getDescription());
         skillVO.setBonuses(fetchBonusesForSkill(changedSkillVO));
 
-        return skillGateway.save(skillVO);
+        Skill skill = skillRepository.save(skillMapper.toSkill(skillVO));
+        return skillMapper.toSkillVO(skill);
     }
 
     @Override
     public void deleteById(String skillId) {
-        skillGateway.deleteById(skillId);
+        skillRepository.deleteById(skillId);
     }
 }

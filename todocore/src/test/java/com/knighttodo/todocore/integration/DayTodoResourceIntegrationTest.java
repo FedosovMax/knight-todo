@@ -4,16 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.knighttodo.todocore.exception.UnchangeableFieldUpdateException;
 import com.knighttodo.todocore.factories.DayFactory;
 import com.knighttodo.todocore.factories.DayTodoFactory;
-import com.knighttodo.todocore.gateway.character.response.ExperienceResponse;
-import com.knighttodo.todocore.gateway.privatedb.repository.DayRepository;
-import com.knighttodo.todocore.gateway.privatedb.repository.DayTodoRepository;
-import com.knighttodo.todocore.gateway.privatedb.representation.Day;
-import com.knighttodo.todocore.gateway.privatedb.representation.DayTodo;
+import com.knighttodo.todocore.service.privatedb.repository.DayRepository;
+import com.knighttodo.todocore.service.privatedb.repository.DayTodoRepository;
+import com.knighttodo.todocore.service.privatedb.representation.Day;
+import com.knighttodo.todocore.service.privatedb.representation.DayTodo;
 import com.knighttodo.todocore.rest.request.DayTodoRequestDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -73,7 +71,7 @@ public class DayTodoResourceIntegrationTest {
     }
 
     @Container
-    public static PostgreSQLContainer<?> postgresqlContainer = new PostgreSQLContainer<>("postgres:11.1");
+    public static PostgreSQLContainer<?> postgresqlContainer = new PostgreSQLContainer<>("postgres:13.2");
 
     static {
         postgresqlContainer.start();
@@ -331,38 +329,4 @@ public class DayTodoResourceIntegrationTest {
                 .andExpect(jsonPath(buildJsonPathToLength()).value(2));
     }
 
-    @Test
-    public void updateIsReady_shouldReturnOk_shouldMakeIsReadyTrue_whenDayTodoIdIsCorrect() throws Exception {
-        Day day = dayRepository.save(DayFactory.dayInstance());
-        DayTodo dayTodo = dayTodoRepository.save(DayTodoFactory.dayTodoWithDayInstance(day));
-        ExperienceResponse experienceResponse = DayTodoFactory.experienceResponseInstance(dayTodo.getId());
-
-        when(restTemplate.postForEntity(anyString(), any(), eq(ExperienceResponse.class)))
-                .thenReturn(new ResponseEntity<>(experienceResponse, HttpStatus.OK));
-
-        mockMvc.perform(put(buildUpdateTodoReadyBaseUrl(day.getId(), dayTodo.getId()))
-                .param(PARAM_READY, PARAMETER_TRUE))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath(buildJsonPathToDayId()).isNotEmpty())
-                .andExpect(jsonPath(buildJsonPathToExperience()).isNotEmpty())
-                .andExpect(jsonPath(buildJsonPathToReadyName()).value(true));
-
-        assertThat(dayTodoRepository.findByIdAlive(dayTodo.getId()).get().isReady()).isEqualTo(true);
-    }
-
-    @Test
-    public void updateIsReady_shouldReturnOk_shouldMakeIsReadyFalse_whenDayTodoIdIsCorrect() throws Exception {
-        Day day = dayRepository.save(DayFactory.dayInstance());
-        DayTodo dayTodoWithReadyTrue = dayTodoRepository.save(DayTodoFactory.dayTodoWithDayReadyInstance(day));
-        ExperienceResponse experienceResponse = DayTodoFactory.experienceResponseInstance(dayTodoWithReadyTrue.getId());
-
-        when(restTemplate.postForEntity(anyString(), any(), eq(ExperienceResponse.class)))
-                .thenReturn(new ResponseEntity<>(experienceResponse, HttpStatus.OK));
-
-        mockMvc.perform(put(buildUpdateTodoReadyBaseUrl(day.getId(), dayTodoWithReadyTrue.getId()))
-                .param(PARAM_READY, PARAMETER_FALSE))
-                .andExpect(status().isOk());
-
-        assertThat(dayTodoRepository.findByIdAlive(dayTodoWithReadyTrue.getId()).get().isReady()).isEqualTo(false);
-    }
 }

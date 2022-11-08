@@ -3,8 +3,10 @@ package com.knighttodo.todocore.service;
 import com.knighttodo.todocore.domain.DayTodoVO;
 import com.knighttodo.todocore.exception.DayTodoNotFoundException;
 import com.knighttodo.todocore.exception.UnchangeableFieldUpdateException;
-import com.knighttodo.todocore.gateway.DayTodoGateway;
-import com.knighttodo.todocore.gateway.character.ExperienceGateway;
+import com.knighttodo.todocore.service.character.ExperienceServ;
+import com.knighttodo.todocore.service.privatedb.mapper.DayTodoMapper;
+import com.knighttodo.todocore.service.privatedb.repository.DayTodoRepository;
+import com.knighttodo.todocore.service.privatedb.representation.DayTodo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -20,21 +23,23 @@ import java.util.UUID;
 public class DayTodoService {
 
     private final DayService dayService;
-    private final DayTodoGateway dayTodoGateway;
-    private final ExperienceGateway experienceGateway;
+    private final ExperienceServ experienceService;
+    private final DayTodoRepository dayTodoRepository;
+    private final DayTodoMapper dayTodoMapper;
 
     @Transactional
     public DayTodoVO save(UUID dayId, DayTodoVO dayTodoVO) {
         dayTodoVO.setDay(dayService.findById(dayId));
-        return dayTodoGateway.save(dayTodoVO);
+        DayTodo dayTodo = dayTodoRepository.save(dayTodoMapper.toTodo(dayTodoVO));
+        return dayTodoMapper.toTodoVO(dayTodo);
     }
 
     public List<DayTodoVO> findAll() {
-        return dayTodoGateway.findAll();
+        return dayTodoRepository.findAllAlive().stream().map(dayTodoMapper::toTodoVO).collect(Collectors.toList());
     }
 
     public DayTodoVO findById(UUID dayTodoId) {
-        return dayTodoGateway.findById(dayTodoId)
+        return dayTodoRepository.findByIdAlive(dayTodoId).map(dayTodoMapper::toTodoVO)
                 .orElseThrow(() -> {
                     log.error(String.format("Day Todo with such id:%s can't be found", dayTodoId));
                     return new DayTodoNotFoundException(String.format("Day Todo with such id:%s can't be found", dayTodoId));
@@ -49,7 +54,8 @@ public class DayTodoService {
         dayTodoVO.setDayTodoName(changedDayTodoVO.getDayTodoName());
         dayTodoVO.setScariness(changedDayTodoVO.getScariness());
         dayTodoVO.setHardness(changedDayTodoVO.getHardness());
-        return dayTodoGateway.save(dayTodoVO);
+        DayTodo dayTodo = dayTodoRepository.save(dayTodoMapper.toTodo(dayTodoVO));
+        return dayTodoMapper.toTodoVO(dayTodo);
     }
 
     private void checkUpdatePossibility(DayTodoVO dayTodoVO, DayTodoVO changedDayTodoVO) {
@@ -66,11 +72,12 @@ public class DayTodoService {
 
     @Transactional
     public void deleteById(UUID dayTodoId) {
-        dayTodoGateway.deleteById(dayTodoId);
+        dayTodoRepository.softDeleteById(dayTodoId);
     }
 
     public List<DayTodoVO> findByDayId(UUID dayId) {
-        return dayTodoGateway.findByDayId(dayId);
+        return dayTodoRepository.findByDayIdAlive(dayId).stream().map(dayTodoMapper::toTodoVO)
+                .collect(Collectors.toList());
     }
 
     @Transactional
@@ -78,8 +85,8 @@ public class DayTodoService {
         DayTodoVO dayTodoVO = findById(dayTodoId);
         dayTodoVO.setDay(dayService.findById(dayId));
         dayTodoVO.setReady(isReady);
-        dayTodoVO = dayTodoGateway.save(dayTodoVO);
-        return experienceGateway.calculateExperience(dayTodoVO);
+        dayTodoVO = dayTodoMapper.toTodoVO(dayTodoRepository.save(dayTodoMapper.toTodo(dayTodoVO)));
+        return experienceService.calculateExperience(dayTodoVO);
     }
 }
 

@@ -3,9 +3,9 @@ package com.knighttodo.todocore.integration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.knighttodo.todocore.factories.DayFactory;
 import com.knighttodo.todocore.factories.DayTodoFactory;
-import com.knighttodo.todocore.gateway.privatedb.repository.DayRepository;
-import com.knighttodo.todocore.gateway.privatedb.repository.DayTodoRepository;
-import com.knighttodo.todocore.gateway.privatedb.representation.Day;
+import com.knighttodo.todocore.service.privatedb.repository.DayRepository;
+import com.knighttodo.todocore.service.privatedb.repository.DayTodoRepository;
+import com.knighttodo.todocore.service.privatedb.representation.Day;
 import com.knighttodo.todocore.rest.request.DayRequestDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -56,7 +56,7 @@ public class DayResourceIntegrationTest {
     }
 
     @Container
-    public static PostgreSQLContainer<?> postgresqlContainer = new PostgreSQLContainer<>("postgres:11.1");
+    public static PostgreSQLContainer<?> postgresqlContainer = new PostgreSQLContainer<>("postgres:13.2");
 
     static {
         postgresqlContainer.start();
