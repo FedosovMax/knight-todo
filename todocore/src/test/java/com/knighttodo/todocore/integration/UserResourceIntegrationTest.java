@@ -132,15 +132,15 @@ public class UserResourceIntegrationTest {
                 .andExpect(jsonPath(buildJsonPathToLength()).value(2));
     }
 
-    @Test
-    public void getUserById_shouldReturnExistingUser_whenIdIsCorrect() throws Exception {
-        User user = userRepository.save(UserFactory.createUserInstance());
-
-        mockMvc.perform(MockMvcRequestBuilders.get(Constants.buildGetUserByIdBaseUrl(user.getId())))
-                .andExpect(status().isFound())
-                .andExpect(jsonPath(buildIdJsonPath()).value(user.getId()))
-                .andExpect(jsonPath(buildLoginJsonPath()).value(user.getLogin()));
-    }
+//    @Test
+//    public void getUserById_shouldReturnExistingUser_whenIdIsCorrect() throws Exception {
+//        User user = userRepository.save(UserFactory.createUserInstance());
+//
+//        mockMvc.perform(MockMvcRequestBuilders.get(Constants.buildGetUserByIdBaseUrl(user.getId())))
+//                .andExpect(status().isFound())
+//                .andExpect(jsonPath(buildIdJsonPath()).value(user.getId()))
+//                .andExpect(jsonPath(buildLoginJsonPath()).value(user.getLogin()));
+//    }
 
     @Test
     public void updateUser_shouldUpdateUserAndReturnIt_whenRequestIsCorrect() throws Exception {

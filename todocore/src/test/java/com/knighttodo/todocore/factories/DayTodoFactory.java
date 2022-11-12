@@ -1,13 +1,11 @@
 package com.knighttodo.todocore.factories;
 
 
+import com.knighttodo.todocore.rest.request.DayTodoRequestDto;
 import com.knighttodo.todocore.service.privatedb.representation.Day;
 import com.knighttodo.todocore.service.privatedb.representation.DayTodo;
 import com.knighttodo.todocore.service.privatedb.representation.enums.Hardness;
 import com.knighttodo.todocore.service.privatedb.representation.enums.Scariness;
-import com.knighttodo.todocore.rest.request.DayTodoRequestDto;
-
-import java.util.UUID;
 
 public class DayTodoFactory {
 
@@ -20,7 +18,7 @@ public class DayTodoFactory {
     public static final int HARD_SCARY_EXPERIENCE = 37;
     public static final Scariness UPDATED_SCARINESS_TODO = Scariness.SCARY;
     public static final Hardness UPDATED_HARDNESS_TODO = Hardness.HARD;
-
+    public static final String UPDATED_COLOR_TODO = "Green";
     private DayTodoFactory() {
     }
 
@@ -31,6 +29,7 @@ public class DayTodoFactory {
             .scariness(SCARINESS_TODO)
             .hardness(HARDNESS_TODO)
             .ready(FALSE_TODO_READY)
+            .color(UPDATED_COLOR_TODO)
             .build();
     }
 
@@ -58,6 +57,12 @@ public class DayTodoFactory {
         return request;
     }
 
+    public static DayTodoRequestDto createDayTodoRequestDtoWithoutColor() {
+        DayTodoRequestDto request = createDayTodoRequestDto();
+        request.setColor(null);
+        return request;
+    }
+
     public static DayTodo dayTodoWithDayInstance(Day day) {
         return DayTodo
             .builder()
@@ -66,6 +71,7 @@ public class DayTodoFactory {
             .hardness(HARDNESS_TODO)
             .day(day)
             .ready(FALSE_TODO_READY)
+            .color(UPDATED_COLOR_TODO)
             .build();
     }
 
@@ -77,6 +83,7 @@ public class DayTodoFactory {
             .hardness(HARDNESS_TODO)
             .day(day)
             .ready(TRUE_TODO_READY)
+            .color(UPDATED_COLOR_TODO)
             .build();
     }
 
@@ -86,6 +93,7 @@ public class DayTodoFactory {
             .scariness(UPDATED_SCARINESS_TODO)
             .hardness(UPDATED_HARDNESS_TODO)
             .ready(FALSE_TODO_READY)
+            .color(UPDATED_COLOR_TODO)
             .build();
     }
 
@@ -95,6 +103,7 @@ public class DayTodoFactory {
             .scariness(SCARINESS_TODO)
             .hardness(HARDNESS_TODO)
             .ready(TRUE_TODO_READY)
+            .color(UPDATED_COLOR_TODO)
             .build();
     }
 
@@ -104,6 +113,7 @@ public class DayTodoFactory {
             .scariness(UPDATED_SCARINESS_TODO)
             .hardness(HARDNESS_TODO)
             .ready(TRUE_TODO_READY)
+            .color(UPDATED_COLOR_TODO)
             .build();
     }
 
@@ -113,6 +123,7 @@ public class DayTodoFactory {
             .scariness(SCARINESS_TODO)
             .hardness(UPDATED_HARDNESS_TODO)
             .ready(TRUE_TODO_READY)
+            .color(UPDATED_COLOR_TODO)
             .build();
     }
 
@@ -125,6 +136,12 @@ public class DayTodoFactory {
     public static DayTodoRequestDto updateDayTodoRequestDtoWithNameConsistingOfSpaces(Day savedDay) {
         DayTodoRequestDto request = updateDayTodoRequestDto(savedDay);
         request.setDayTodoName("    ");
+        return request;
+    }
+
+    public static DayTodoRequestDto updateDayTodoRequestDtoWithColorConsistingOfSpaces(Day savedDay) {
+        DayTodoRequestDto request = updateDayTodoRequestDto(savedDay);
+        request.setColor("    ");
         return request;
     }
 

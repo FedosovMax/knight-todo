@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.awt.*;
 import java.util.UUID;
 
 @Data
@@ -28,6 +29,8 @@ public class DayTodoVO implements TodoVO {
     private boolean ready;
 
     private DayVO day;
+
+    private String color;
 
     private int experience;
 }

@@ -5,9 +5,9 @@ services:
     image: postgres:13.2
     restart: always
     environment:
-      - POSTGRES_USER=postgre
-      - POSTGRES_PASSWORD=postgre
-      - POSTGRES_DB=knight
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=postgres
     ports:
       - '5432:5432'
     volumes:

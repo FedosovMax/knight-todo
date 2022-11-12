@@ -25,5 +25,8 @@ public class DayTodoRequestDto {
     @NotNull
     private Hardness hardness;
 
+    @NotNull
+    private String color;
+
     private boolean ready;
 }
