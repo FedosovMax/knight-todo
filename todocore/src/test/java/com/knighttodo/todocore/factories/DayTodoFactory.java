@@ -9,11 +9,15 @@ import com.knighttodo.todocore.service.privatedb.representation.enums.Scariness;
 
 public class DayTodoFactory {
 
+    public static final Integer ORDER_NUMBER = 1;
     public static final String TODO_NAME = "Write integration tests";
     public static final Scariness SCARINESS_TODO = Scariness.NOT_SCARY;
     public static final Hardness HARDNESS_TODO = Hardness.EXTRAORDINARY;
     public static final boolean FALSE_TODO_READY = false;
     public static final boolean TRUE_TODO_READY = true;
+    public static final String COLOR_TODO = "Red";
+
+    public static final Integer UPDATED_ORDER_NUMBER = 2;
     public static final String UPDATED_TODO_NAME = "Write more integration tests";
     public static final int HARD_SCARY_EXPERIENCE = 37;
     public static final Scariness UPDATED_SCARINESS_TODO = Scariness.SCARY;
@@ -25,11 +29,12 @@ public class DayTodoFactory {
     public static DayTodoRequestDto createDayTodoRequestDto() {
         return DayTodoRequestDto
             .builder()
+            .orderNumber(ORDER_NUMBER)
             .dayTodoName(TODO_NAME)
             .scariness(SCARINESS_TODO)
             .hardness(HARDNESS_TODO)
             .ready(FALSE_TODO_READY)
-            .color(UPDATED_COLOR_TODO)
+            .color(COLOR_TODO)
             .build();
     }
 
@@ -63,32 +68,42 @@ public class DayTodoFactory {
         return request;
     }
 
+    public static DayTodoRequestDto createDayTodoRequestDtoWithoutOrderNumber() {
+        DayTodoRequestDto request = createDayTodoRequestDto();
+        request.setOrderNumber(null);
+        return request;
+    }
+
+
     public static DayTodo dayTodoWithDayInstance(Day day) {
         return DayTodo
             .builder()
+            .orderNumber(ORDER_NUMBER)
             .dayTodoName(TODO_NAME)
             .scariness(SCARINESS_TODO)
             .hardness(HARDNESS_TODO)
             .day(day)
             .ready(FALSE_TODO_READY)
-            .color(UPDATED_COLOR_TODO)
+            .color(COLOR_TODO)
             .build();
     }
 
     public static DayTodo dayTodoWithDayReadyInstance(Day day) {
         return DayTodo
             .builder()
+            .orderNumber(ORDER_NUMBER)
             .dayTodoName(TODO_NAME)
             .scariness(SCARINESS_TODO)
             .hardness(HARDNESS_TODO)
             .day(day)
             .ready(TRUE_TODO_READY)
-            .color(UPDATED_COLOR_TODO)
+            .color(COLOR_TODO)
             .build();
     }
 
     public static DayTodoRequestDto updateDayTodoRequestDto(Day savedDay) {
         return DayTodoRequestDto.builder()
+            .orderNumber(UPDATED_ORDER_NUMBER)
             .dayTodoName(UPDATED_TODO_NAME)
             .scariness(UPDATED_SCARINESS_TODO)
             .hardness(UPDATED_HARDNESS_TODO)
@@ -99,6 +114,7 @@ public class DayTodoFactory {
 
     public static DayTodoRequestDto updateDayTodoRequestReadyDto() {
         return DayTodoRequestDto.builder()
+            .orderNumber(UPDATED_ORDER_NUMBER)
             .dayTodoName(UPDATED_TODO_NAME)
             .scariness(SCARINESS_TODO)
             .hardness(HARDNESS_TODO)
@@ -109,6 +125,7 @@ public class DayTodoFactory {
 
     public static DayTodoRequestDto updateDayTodoRequestReadyDtoWithChangedScariness() {
         return DayTodoRequestDto.builder()
+            .orderNumber(UPDATED_ORDER_NUMBER)
             .dayTodoName(UPDATED_TODO_NAME)
             .scariness(UPDATED_SCARINESS_TODO)
             .hardness(HARDNESS_TODO)
@@ -119,6 +136,7 @@ public class DayTodoFactory {
 
     public static DayTodoRequestDto updateDayTodoRequestReadyDtoWithChangedHardness() {
         return DayTodoRequestDto.builder()
+            .orderNumber(UPDATED_ORDER_NUMBER)
             .dayTodoName(UPDATED_TODO_NAME)
             .scariness(SCARINESS_TODO)
             .hardness(UPDATED_HARDNESS_TODO)
@@ -136,12 +154,6 @@ public class DayTodoFactory {
     public static DayTodoRequestDto updateDayTodoRequestDtoWithNameConsistingOfSpaces(Day savedDay) {
         DayTodoRequestDto request = updateDayTodoRequestDto(savedDay);
         request.setDayTodoName("    ");
-        return request;
-    }
-
-    public static DayTodoRequestDto updateDayTodoRequestDtoWithColorConsistingOfSpaces(Day savedDay) {
-        DayTodoRequestDto request = updateDayTodoRequestDto(savedDay);
-        request.setColor("    ");
         return request;
     }
 

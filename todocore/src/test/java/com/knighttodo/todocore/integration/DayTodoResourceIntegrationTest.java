@@ -343,5 +343,19 @@ public class DayTodoResourceIntegrationTest {
 
         assertThat(dayTodoRepository.count()).isEqualTo(0);
     }
+
+    @Test
+    public void addDayTodo_shouldRespondWithBadRequestStatus_whenOrderNumberIsNull() throws Exception {
+        Day day = dayRepository.save(DayFactory.dayInstance());
+        DayTodoRequestDto requestDto = DayTodoFactory.createDayTodoRequestDtoWithoutOrderNumber();
+
+        mockMvc.perform(post(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS)
+                        .content(objectMapper.writeValueAsString(requestDto))
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isBadRequest());
+
+        assertThat(dayTodoRepository.count()).isEqualTo(0);
+    }
+
 }
 
