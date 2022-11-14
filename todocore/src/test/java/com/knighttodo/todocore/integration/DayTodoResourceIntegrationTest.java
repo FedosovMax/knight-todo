@@ -101,9 +101,9 @@ public class DayTodoResourceIntegrationTest {
         DayTodoRequestDto requestDto = DayTodoFactory.createDayTodoRequestDto();
 
         mockMvc.perform(
-                        post(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS)
-                                .content(objectMapper.writeValueAsString(requestDto))
-                                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                post(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS)
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath(buildJsonPathToDayId()).isNotEmpty())
                 .andExpect(jsonPath(buildJsonPathToId()).exists());
@@ -116,10 +116,9 @@ public class DayTodoResourceIntegrationTest {
         Day day = dayRepository.save(DayFactory.dayInstance());
         DayTodoRequestDto requestDto = DayTodoFactory.createDayTodoRequestDtoWithoutName();
 
-        mockMvc.perform(
-                        post(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS)
-                                .content(objectMapper.writeValueAsString(requestDto))
-                                .contentType(MediaType.APPLICATION_JSON_VALUE))
+        mockMvc.perform(post(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS)
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isBadRequest());
 
         assertThat(dayTodoRepository.count()).isEqualTo(0);
@@ -131,8 +130,8 @@ public class DayTodoResourceIntegrationTest {
         DayTodoRequestDto requestDto = DayTodoFactory.createDayTodoRequestDtoWithNameConsistingOfSpaces();
 
         mockMvc.perform(post(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS)
-                        .content(objectMapper.writeValueAsString(requestDto))
-                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isBadRequest());
 
         assertThat(dayTodoRepository.count()).isEqualTo(0);
@@ -144,8 +143,8 @@ public class DayTodoResourceIntegrationTest {
         DayTodoRequestDto requestDto = DayTodoFactory.createDayTodoRequestDtoWithoutScariness();
 
         mockMvc.perform(post(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS)
-                        .content(objectMapper.writeValueAsString(requestDto))
-                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isBadRequest());
 
         assertThat(dayTodoRepository.count()).isEqualTo(0);
@@ -157,8 +156,8 @@ public class DayTodoResourceIntegrationTest {
         DayTodoRequestDto requestDto = DayTodoFactory.createDayTodoRequestDtoWithoutHardness();
 
         mockMvc.perform(post(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS)
-                        .content(objectMapper.writeValueAsString(requestDto))
-                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isBadRequest());
 
         assertThat(dayTodoRepository.count()).isEqualTo(0);
@@ -192,8 +191,8 @@ public class DayTodoResourceIntegrationTest {
         DayTodoRequestDto requestDto = DayTodoFactory.updateDayTodoRequestDto(day);
 
         mockMvc.perform(put(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS + "/" + dayTodo.getId())
-                        .content(objectMapper.writeValueAsString(requestDto))
-                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath(buildJsonPathToTodoName()).value(requestDto.getDayTodoName()))
                 .andExpect(jsonPath(buildJsonPathToScariness()).value(requestDto.getScariness().toString()))
@@ -209,8 +208,8 @@ public class DayTodoResourceIntegrationTest {
         DayTodoRequestDto requestDto = DayTodoFactory.updateDayTodoRequestDtoWithoutName(day);
 
         mockMvc.perform(put(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS + "/" + dayTodo.getId())
-                        .content(objectMapper.writeValueAsString(requestDto))
-                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isBadRequest());
     }
 
@@ -222,8 +221,8 @@ public class DayTodoResourceIntegrationTest {
                 .updateDayTodoRequestDtoWithNameConsistingOfSpaces(day);
 
         mockMvc.perform(put(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS + "/" + dayTodo.getId())
-                        .content(objectMapper.writeValueAsString(requestDto))
-                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isBadRequest());
     }
 
@@ -234,8 +233,8 @@ public class DayTodoResourceIntegrationTest {
         DayTodoRequestDto requestDto = DayTodoFactory.updateDayTodoRequestDtoWithoutScariness(day);
 
         mockMvc.perform(put(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS + "/" + dayTodo.getId())
-                        .content(objectMapper.writeValueAsString(requestDto))
-                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isBadRequest());
     }
 
@@ -246,8 +245,8 @@ public class DayTodoResourceIntegrationTest {
         DayTodoRequestDto requestDto = DayTodoFactory.updateDayTodoRequestDtoWithoutHardness(day);
 
         mockMvc.perform(put(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS + "/" + dayTodo.getId())
-                        .content(objectMapper.writeValueAsString(requestDto))
-                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isBadRequest());
     }
 
@@ -258,8 +257,8 @@ public class DayTodoResourceIntegrationTest {
         DayTodoRequestDto requestDto = DayTodoFactory.updateDayTodoRequestReadyDto();
 
         mockMvc.perform(put(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS + "/" + dayTodo.getId())
-                        .content(objectMapper.writeValueAsString(requestDto))
-                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath(buildJsonPathToTodoName()).value(requestDto.getDayTodoName()))
                 .andExpect(jsonPath(buildJsonPathToScariness()).value(requestDto.getScariness().toString()))
@@ -329,19 +328,6 @@ public class DayTodoResourceIntegrationTest {
         mockMvc.perform(get(buildGetTodosByDayIdUrl(day.getId())))
                 .andExpect(status().isFound())
                 .andExpect(jsonPath(buildJsonPathToLength()).value(2));
-    }
-
-    @Test
-    public void addDayTodo_shouldRespondWithBadRequestStatus_whenColorIsNull() throws Exception {
-        Day day = dayRepository.save(DayFactory.dayInstance());
-        DayTodoRequestDto requestDto = DayTodoFactory.createDayTodoRequestDtoWithoutColor();
-
-        mockMvc.perform(post(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS)
-                        .content(objectMapper.writeValueAsString(requestDto))
-                        .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isBadRequest());
-
-        assertThat(dayTodoRepository.count()).isEqualTo(0);
     }
 }
 
