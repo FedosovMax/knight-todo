@@ -19,6 +19,8 @@ public class DayTodoVO implements TodoVO {
 
     private UUID id;
 
+    private Integer orderNumber;
+
     private String dayTodoName;
 
     private Scariness scariness;

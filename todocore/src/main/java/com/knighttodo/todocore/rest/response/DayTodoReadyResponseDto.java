@@ -17,6 +17,8 @@ public class DayTodoReadyResponseDto {
 
     private UUID id;
 
+    private Integer orderNumber;
+
     private String dayTodoName;
 
     private Scariness scariness;

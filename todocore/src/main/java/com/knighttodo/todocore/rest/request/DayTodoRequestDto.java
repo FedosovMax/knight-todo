@@ -16,6 +16,9 @@ import javax.validation.constraints.NotNull;
 @Builder
 public class DayTodoRequestDto {
 
+    @NotNull
+    private Integer orderNumber;
+
     @NotBlank
     private String dayTodoName;
 
