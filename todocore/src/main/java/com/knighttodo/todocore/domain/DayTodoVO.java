@@ -19,7 +19,7 @@ public class DayTodoVO implements TodoVO {
 
     private UUID id;
 
-    private Integer orderNumber;
+    private int orderNumber;
 
     private String dayTodoName;
 
