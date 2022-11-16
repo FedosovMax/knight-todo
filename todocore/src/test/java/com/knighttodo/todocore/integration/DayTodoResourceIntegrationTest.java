@@ -329,5 +329,4 @@ public class DayTodoResourceIntegrationTest {
                 .andExpect(jsonPath(buildJsonPathToLength()).value(2));
     }
 
-
 }
