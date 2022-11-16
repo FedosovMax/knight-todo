@@ -33,7 +33,7 @@ public class DayTodo {
     private UUID id;
 
     @Column(name = "order_number")
-    private Integer orderNumber;
+    private int orderNumber;
 
     @Column(name = "day_todo_name")
     private String dayTodoName;

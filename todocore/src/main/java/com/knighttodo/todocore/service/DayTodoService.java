@@ -89,5 +89,11 @@ public class DayTodoService {
         dayTodoVO = dayTodoMapper.toTodoVO(dayTodoRepository.save(dayTodoMapper.toTodo(dayTodoVO)));
         return experienceService.calculateExperience(dayTodoVO);
     }
+
+    @Transactional
+    public List<DayTodoVO> findByDayIdAliveOrderNumber(UUID dayId) {
+        return dayTodoRepository.findAllWithOrderNumberAlive(dayId).stream().map(dayTodoMapper::toTodoVO)
+                .collect(Collectors.toList());
+    }
 }
 

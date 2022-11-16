@@ -17,7 +17,7 @@ public class DayTodoResponseDto {
 
     private UUID id;
 
-    private Integer orderNumber;
+    private int orderNumber;
 
     private String dayTodoName;
 
