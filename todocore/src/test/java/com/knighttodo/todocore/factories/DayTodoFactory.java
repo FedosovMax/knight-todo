@@ -6,7 +6,6 @@ import com.knighttodo.todocore.service.privatedb.representation.DayTodo;
 import com.knighttodo.todocore.service.privatedb.representation.enums.Hardness;
 import com.knighttodo.todocore.service.privatedb.representation.enums.Scariness;
 import com.knighttodo.todocore.rest.request.DayTodoRequestDto;
-import io.swagger.models.auth.In;
 
 import java.util.UUID;
 
