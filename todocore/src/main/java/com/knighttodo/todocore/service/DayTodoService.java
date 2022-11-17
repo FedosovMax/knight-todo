@@ -3,6 +3,7 @@ package com.knighttodo.todocore.service;
 import com.knighttodo.todocore.domain.DayTodoVO;
 import com.knighttodo.todocore.exception.DayTodoNotFoundException;
 import com.knighttodo.todocore.exception.UnchangeableFieldUpdateException;
+import com.knighttodo.todocore.rest.response.DayTodoReadyResponseDto;
 import com.knighttodo.todocore.service.character.ExperienceServ;
 import com.knighttodo.todocore.service.privatedb.mapper.DayTodoMapper;
 import com.knighttodo.todocore.service.privatedb.repository.DayTodoRepository;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.knighttodo.todocore.rest.mapper.DayTodoRestMapper;
 
 import java.util.List;
 import java.util.UUID;
@@ -76,8 +78,8 @@ public class DayTodoService {
         dayTodoRepository.softDeleteById(dayTodoId);
     }
 
-    public List<DayTodoVO> findByDayId(UUID dayId) {
-        return dayTodoRepository.findByDayIdAlive(dayId).stream().map(dayTodoMapper::toTodoVO)
+    public List<DayTodoVO> findByDayOrderNumber(UUID dayId) {
+        return dayTodoRepository.findAllWithOrderNumberAlive(dayId).stream().map(dayTodoMapper::toTodoVO)
                 .collect(Collectors.toList());
     }
 
@@ -88,12 +90,6 @@ public class DayTodoService {
         dayTodoVO.setReady(isReady);
         dayTodoVO = dayTodoMapper.toTodoVO(dayTodoRepository.save(dayTodoMapper.toTodo(dayTodoVO)));
         return experienceService.calculateExperience(dayTodoVO);
-    }
-
-    @Transactional
-    public List<DayTodoVO> findByDayIdAliveOrderNumber(UUID dayId) {
-        return dayTodoRepository.findAllWithOrderNumberAlive(dayId).stream().map(dayTodoMapper::toTodoVO)
-                .collect(Collectors.toList());
     }
 }
 

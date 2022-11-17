@@ -75,7 +75,7 @@ public class DayTodoResource {
     })
     public List<DayTodoResponseDto> findDayTodosByDayId(@PathVariable UUID dayId) {
         try {
-            return dayTodoService.findByDayId(dayId)
+            return dayTodoService.findByDayOrderNumber(dayId)
                     .stream()
                     .map(dayTodoRestMapper::toDayTodoResponseDto)
                     .collect(Collectors.toList());
@@ -167,25 +167,6 @@ public class DayTodoResource {
         } catch (RuntimeException ex) {
             log.error("Day todo ready can't be updated.", ex);
             throw new DayTodoReadyCanNotBeUpdatedException("Day todo ready can't be updated.", ex);
-        }
-    }
-
-    @GetMapping("/allTodos/{dayTodoId}")
-    @ResponseStatus(HttpStatus.FOUND)
-    @ApiOperation(value = "Find the all Todos by day id", response = DayTodoResponseDto.class, responseContainer = "List")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Todos found"),
-            @ApiResponse(code = 400, message = "Invalid operation"),
-            @ApiResponse(code = 404, message = "Resource not found"),
-            @ApiResponse(code = 500, message = "Unexpected error")
-    })
-    public List<DayTodoReadyResponseDto> findTodosByDayId(@PathVariable UUID dayTodoId) {
-        try {
-            List<DayTodoVO> dayTodoVO = dayTodoService.findByDayIdAliveOrderNumber(dayTodoId);
-            return dayTodoVO.stream().map(dayTodoRestMapper::toDayTodoReadyResponseDto).collect(Collectors.toList());
-        } catch (RuntimeException ex) {
-            log.error("Day todo with order number can't be found.", ex);
-            throw new FindDayTodoOrderIdException("Day todo with order number can't be found.", ex);
         }
     }
 }

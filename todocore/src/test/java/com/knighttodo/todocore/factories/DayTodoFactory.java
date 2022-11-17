@@ -17,12 +17,12 @@ public class DayTodoFactory {
     public static final Hardness HARDNESS_TODO = Hardness.EXTRAORDINARY;
     public static final boolean FALSE_TODO_READY = false;
     public static final boolean TRUE_TODO_READY = true;
-    public static final Integer TODO_ORDER_NUMBER = 111;
+    public static final int TODO_ORDER_NUMBER = 111;
     public static final String UPDATED_TODO_NAME = "Write more integration tests";
     public static final int HARD_SCARY_EXPERIENCE = 37;
     public static final Scariness UPDATED_SCARINESS_TODO = Scariness.SCARY;
     public static final Hardness UPDATED_HARDNESS_TODO = Hardness.HARD;
-    public static final Integer UPDATED_TODO_ORDER_NUMBER = 222;
+    public static final int UPDATED_TODO_ORDER_NUMBER = 222;
 
     private DayTodoFactory() {
     }
