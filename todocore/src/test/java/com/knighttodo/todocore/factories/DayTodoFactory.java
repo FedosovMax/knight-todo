@@ -58,12 +58,6 @@ public class DayTodoFactory {
         return request;
     }
 
-    public static DayTodoRequestDto createDayTodoRequestDtoWithoutColor() {
-        DayTodoRequestDto request = createDayTodoRequestDto();
-        request.setColor(null);
-        return request;
-    }
-
     public static DayTodo dayTodoWithDayInstance(Day day) {
         return DayTodo
             .builder()
@@ -137,12 +131,6 @@ public class DayTodoFactory {
     public static DayTodoRequestDto updateDayTodoRequestDtoWithNameConsistingOfSpaces(Day savedDay) {
         DayTodoRequestDto request = updateDayTodoRequestDto(savedDay);
         request.setDayTodoName("    ");
-        return request;
-    }
-
-    public static DayTodoRequestDto updateDayTodoRequestDtoWithColorConsistingOfSpaces(Day savedDay) {
-        DayTodoRequestDto request = updateDayTodoRequestDto(savedDay);
-        request.setColor("    ");
         return request;
     }
 
