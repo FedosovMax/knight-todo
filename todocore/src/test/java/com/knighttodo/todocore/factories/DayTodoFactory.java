@@ -20,6 +20,7 @@ public class DayTodoFactory {
     public static final Scariness UPDATED_SCARINESS_TODO = Scariness.SCARY;
     public static final Hardness UPDATED_HARDNESS_TODO = Hardness.HARD;
     public static final String UPDATED_COLOR_TODO = "6e6e6e";
+
     private DayTodoFactory() {
     }
 
