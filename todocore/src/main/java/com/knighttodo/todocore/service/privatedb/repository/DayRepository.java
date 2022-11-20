@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface DayRepository extends JpaRepository<Day, UUID> {
+public interface    DayRepository extends JpaRepository<Day, UUID> {
 
     @Query("select d from Day d")
     List<Day> findAllAlive();

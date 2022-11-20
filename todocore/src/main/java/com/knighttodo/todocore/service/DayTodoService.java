@@ -77,7 +77,7 @@ public class DayTodoService {
     }
 
     public List<DayTodoVO> findByDayOrderNumber(UUID dayId) {
-        return dayTodoRepository.findAllWithOrderNumberAlive(dayId).stream().map(dayTodoMapper::toTodoVO)
+        return dayTodoRepository.findAllWithOrderNumber(dayId).stream().map(dayTodoMapper::toTodoVO)
                 .collect(Collectors.toList());
     }
 
