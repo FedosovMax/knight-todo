@@ -19,12 +19,9 @@ public interface DayTodoRepository extends JpaRepository<DayTodo, UUID> {
     List<DayTodo> findAllAlive();
 
     @Query("select dt from DayTodo dt where dt.day.id=:dayId and dt.removed=false and dt.day.removed=false")
-    List<DayTodo> findAllWithOrderNumber(@Param("dayId") UUID dayId);
+    List<DayTodo> findByDayIdAlive(@Param("dayId") UUID dayId);
 
     @Modifying
     @Query("update DayTodo td set td.removed=true where td.id=:dayTodoId")
     void softDeleteById(@Param("dayTodoId") UUID dayTodoId);
-
-
-
 }
