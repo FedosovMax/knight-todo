@@ -81,7 +81,7 @@ public class DayTodoResource {
     })
     public List<DayTodoResponseDto> findDayTodosByDayId(@PathVariable UUID dayId) {
         try {
-            return dayTodoService.findByDayOrderNumber(dayId)
+            return dayTodoService.findByDayId(dayId)
                     .stream()
                     .map(dayTodoRestMapper::toDayTodoResponseDto)
                     .collect(Collectors.toList());

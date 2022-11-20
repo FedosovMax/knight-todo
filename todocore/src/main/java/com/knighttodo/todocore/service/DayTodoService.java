@@ -76,7 +76,7 @@ public class DayTodoService {
         dayTodoRepository.softDeleteById(dayTodoId);
     }
 
-    public List<DayTodoVO> findByDayOrderNumber(UUID dayId) {
+    public List<DayTodoVO> findByDayId(UUID dayId) {
         return dayTodoRepository.findAllWithOrderNumber(dayId).stream().map(dayTodoMapper::toTodoVO)
                 .collect(Collectors.toList());
     }
