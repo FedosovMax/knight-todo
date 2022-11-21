@@ -106,6 +106,9 @@ public class TestConstants {
     public static String buildJsonPathToHardness() {
         return JSON_ROOT + "hardness";
     }
+    public static String buildJsonPathToColor() {
+        return JSON_ROOT +"color";
+    }
     public static String buildJsonPathToDayId() {
         return JSON_ROOT + "dayId";
     }

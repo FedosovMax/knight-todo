@@ -29,5 +29,7 @@ public class DayTodoVO implements TodoVO {
 
     private DayVO day;
 
+    private String color;
+
     private int experience;
 }

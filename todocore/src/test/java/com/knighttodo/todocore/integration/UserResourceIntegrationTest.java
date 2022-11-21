@@ -138,8 +138,8 @@ public class UserResourceIntegrationTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get(Constants.buildGetUserByIdBaseUrl(user.getId())))
                 .andExpect(status().isFound())
-                .andExpect(jsonPath(buildIdJsonPath()).value(user.getId()))
-                .andExpect(jsonPath(buildLoginJsonPath()).value(user.getLogin()));
+                .andExpect(jsonPath(buildIdJsonPath()).value(user.getId().toString()))
+                .andExpect(jsonPath(buildLoginJsonPath()).value(user.getLogin().toString()));
     }
 
     @Test
