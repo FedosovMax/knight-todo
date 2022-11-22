@@ -51,6 +51,7 @@ public class DayTodoService {
         DayTodoVO dayTodoVO = findById(dayTodoId);
         checkUpdatePossibility(dayTodoVO, changedDayTodoVO);
 
+        dayTodoVO.setOrderNumber(changedDayTodoVO.getOrderNumber());
         dayTodoVO.setDayTodoName(changedDayTodoVO.getDayTodoName());
         dayTodoVO.setScariness(changedDayTodoVO.getScariness());
         dayTodoVO.setHardness(changedDayTodoVO.getHardness());

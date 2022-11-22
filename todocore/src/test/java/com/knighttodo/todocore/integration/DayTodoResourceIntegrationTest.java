@@ -197,6 +197,7 @@ public class DayTodoResourceIntegrationTest {
                 .andExpect(jsonPath(buildJsonPathToTodoName()).value(requestDto.getDayTodoName()))
                 .andExpect(jsonPath(buildJsonPathToScariness()).value(requestDto.getScariness().toString()))
                 .andExpect(jsonPath(buildJsonPathToHardness()).value(requestDto.getHardness().toString()))
+                .andExpect(jsonPath(buildJsonPathToOrderNumber()).value(requestDto.getOrderNumber()));
                 .andExpect(jsonPath(buildJsonPathToColor()).value(requestDto.getColor()));
 
         assertThat(dayTodoRepository.findByIdAlive(dayTodo.getId()).get().getDayTodoName()).isEqualTo(requestDto.getDayTodoName());
