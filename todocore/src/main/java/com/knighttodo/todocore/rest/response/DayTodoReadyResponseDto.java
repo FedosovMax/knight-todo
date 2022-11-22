@@ -30,4 +30,6 @@ public class DayTodoReadyResponseDto {
     private UUID dayId;
 
     private int experience;
+
+    private String color;
 }

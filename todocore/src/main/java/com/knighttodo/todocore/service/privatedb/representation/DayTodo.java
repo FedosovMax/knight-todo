@@ -52,6 +52,9 @@ public class DayTodo {
     @Column(name = "removed")
     private boolean removed;
 
+    @Column(name = "color")
+    private String color;
+
     @ManyToOne
     private Day day;
 }

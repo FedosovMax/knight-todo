@@ -1,19 +1,18 @@
 package com.knighttodo.todocore.factories;
 
 
+import com.knighttodo.todocore.rest.request.DayTodoRequestDto;
 import com.knighttodo.todocore.service.privatedb.representation.Day;
 import com.knighttodo.todocore.service.privatedb.representation.DayTodo;
 import com.knighttodo.todocore.service.privatedb.representation.enums.Hardness;
 import com.knighttodo.todocore.service.privatedb.representation.enums.Scariness;
-import com.knighttodo.todocore.rest.request.DayTodoRequestDto;
-
-import java.util.UUID;
 
 public class DayTodoFactory {
 
     public static final String TODO_NAME = "Write integration tests";
     public static final Scariness SCARINESS_TODO = Scariness.NOT_SCARY;
     public static final Hardness HARDNESS_TODO = Hardness.EXTRAORDINARY;
+    public static final String COLOR_TODO = "A5FFC9";
     public static final boolean FALSE_TODO_READY = false;
     public static final boolean TRUE_TODO_READY = true;
     public static final int TODO_ORDER_NUMBER = 111;
@@ -22,6 +21,7 @@ public class DayTodoFactory {
     public static final Scariness UPDATED_SCARINESS_TODO = Scariness.SCARY;
     public static final Hardness UPDATED_HARDNESS_TODO = Hardness.HARD;
     public static final int UPDATED_TODO_ORDER_NUMBER = 222;
+    public static final String UPDATED_COLOR_TODO = "6e6e6e";
 
     private DayTodoFactory() {
     }
@@ -34,6 +34,7 @@ public class DayTodoFactory {
             .scariness(SCARINESS_TODO)
             .hardness(HARDNESS_TODO)
             .ready(FALSE_TODO_READY)
+            .color(COLOR_TODO)
             .build();
     }
 
@@ -70,6 +71,7 @@ public class DayTodoFactory {
             .hardness(HARDNESS_TODO)
             .day(day)
             .ready(FALSE_TODO_READY)
+            .color(COLOR_TODO)
             .build();
     }
 
@@ -82,6 +84,7 @@ public class DayTodoFactory {
             .hardness(HARDNESS_TODO)
             .day(day)
             .ready(TRUE_TODO_READY)
+            .color(COLOR_TODO)
             .build();
     }
 
@@ -92,6 +95,7 @@ public class DayTodoFactory {
             .scariness(UPDATED_SCARINESS_TODO)
             .hardness(UPDATED_HARDNESS_TODO)
             .ready(FALSE_TODO_READY)
+            .color(UPDATED_COLOR_TODO)
             .build();
     }
 
@@ -102,6 +106,7 @@ public class DayTodoFactory {
             .scariness(SCARINESS_TODO)
             .hardness(HARDNESS_TODO)
             .ready(TRUE_TODO_READY)
+            .color(UPDATED_COLOR_TODO)
             .build();
     }
 
@@ -112,6 +117,7 @@ public class DayTodoFactory {
             .scariness(UPDATED_SCARINESS_TODO)
             .hardness(HARDNESS_TODO)
             .ready(TRUE_TODO_READY)
+            .color(UPDATED_COLOR_TODO)
             .build();
     }
 
@@ -122,6 +128,7 @@ public class DayTodoFactory {
             .scariness(SCARINESS_TODO)
             .hardness(UPDATED_HARDNESS_TODO)
             .ready(TRUE_TODO_READY)
+            .color(UPDATED_COLOR_TODO)
             .build();
     }
 

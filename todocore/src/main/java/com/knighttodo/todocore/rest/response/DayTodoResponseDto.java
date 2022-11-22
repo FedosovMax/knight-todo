@@ -28,4 +28,6 @@ public class DayTodoResponseDto {
     private boolean ready;
 
     private UUID dayId;
+
+    private String color;
 }

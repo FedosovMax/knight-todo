@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.knighttodo.todocore.exception.UnchangeableFieldUpdateException;
 import com.knighttodo.todocore.factories.DayFactory;
 import com.knighttodo.todocore.factories.DayTodoFactory;
+import com.knighttodo.todocore.factories.UserFactory;
+import com.knighttodo.todocore.rest.request.UserRequestDto;
 import com.knighttodo.todocore.service.privatedb.repository.DayRepository;
 import com.knighttodo.todocore.service.privatedb.repository.DayTodoRepository;
 import com.knighttodo.todocore.service.privatedb.representation.Day;
@@ -100,8 +102,8 @@ public class DayTodoResourceIntegrationTest {
 
         mockMvc.perform(
                 post(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS)
-                        .content(objectMapper.writeValueAsString(requestDto))
-                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath(buildJsonPathToDayId()).isNotEmpty())
                 .andExpect(jsonPath(buildJsonPathToId()).exists());
@@ -114,10 +116,9 @@ public class DayTodoResourceIntegrationTest {
         Day day = dayRepository.save(DayFactory.dayInstance());
         DayTodoRequestDto requestDto = DayTodoFactory.createDayTodoRequestDtoWithoutName();
 
-        mockMvc.perform(
-                post(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS)
-                        .content(objectMapper.writeValueAsString(requestDto))
-                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+        mockMvc.perform(post(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS)
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isBadRequest());
 
         assertThat(dayTodoRepository.count()).isEqualTo(0);
@@ -197,6 +198,8 @@ public class DayTodoResourceIntegrationTest {
                 .andExpect(jsonPath(buildJsonPathToScariness()).value(requestDto.getScariness().toString()))
                 .andExpect(jsonPath(buildJsonPathToHardness()).value(requestDto.getHardness().toString()))
                 .andExpect(jsonPath(buildJsonPathToOrderNumber()).value(requestDto.getOrderNumber()));
+                .andExpect(jsonPath(buildJsonPathToColor()).value(requestDto.getColor()));
+
         assertThat(dayTodoRepository.findByIdAlive(dayTodo.getId()).get().getDayTodoName()).isEqualTo(requestDto.getDayTodoName());
     }
 
@@ -328,5 +331,5 @@ public class DayTodoResourceIntegrationTest {
                 .andExpect(status().isFound())
                 .andExpect(jsonPath(buildJsonPathToLength()).value(2));
     }
-
 }
+

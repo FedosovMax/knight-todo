@@ -55,6 +55,7 @@ public class DayTodoService {
         dayTodoVO.setDayTodoName(changedDayTodoVO.getDayTodoName());
         dayTodoVO.setScariness(changedDayTodoVO.getScariness());
         dayTodoVO.setHardness(changedDayTodoVO.getHardness());
+        dayTodoVO.setColor(changedDayTodoVO.getColor());
         DayTodo dayTodo = dayTodoRepository.save(dayTodoMapper.toTodo(dayTodoVO));
         return dayTodoMapper.toTodoVO(dayTodo);
     }
