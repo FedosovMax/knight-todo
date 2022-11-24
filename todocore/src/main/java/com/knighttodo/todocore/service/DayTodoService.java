@@ -90,5 +90,17 @@ public class DayTodoService {
         dayTodoVO = dayTodoMapper.toTodoVO(dayTodoRepository.save(dayTodoMapper.toTodo(dayTodoVO)));
         return experienceService.calculateExperience(dayTodoVO);
     }
+
+    @Transactional
+    public DayTodoVO updateDayTodoById(UUID dayTodoId, Integer newDayTodoOrderNumber) {
+        DayTodoVO dayTodoVO = findById(dayTodoId);
+        dayTodoVO.setOrderNumber(newDayTodoOrderNumber);
+        DayTodo dayTodo = dayTodoRepository.save(dayTodoMapper.toTodo(dayTodoVO));
+        return dayTodoMapper.toTodoVO(dayTodo);
+    }
+
+    public boolean isExistDayTodo(UUID dayTodoId) {
+        return dayTodoRepository.findByIdAlive(dayTodoId).isPresent();
+    }
 }
 
