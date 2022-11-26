@@ -191,14 +191,10 @@ public class DayTodoResource {
     public List<DayTodoResponseDto> changeDayTodoOrderNumber(@PathVariable Map<UUID,Integer> orderNumbersMap) {
         try {
             orderNumbersMap.keySet().stream().map(dayTodoService::findById);
-
             List<DayTodoVO> dayTodoVOS = orderNumbersMap.entrySet().stream()
                     .map(entry ->dayTodoService.orderNumberUpdate(entry.getKey(),entry.getValue()))
                     .collect(Collectors.toList());
-
-            return dayTodoVOS.stream().map(dayTodoRestMapper::toDayTodoResponseDto)
-                    .collect(Collectors.toList());
-
+            return dayTodoVOS.stream().map(dayTodoRestMapper::toDayTodoResponseDto).collect(Collectors.toList());
         } catch (RuntimeException ex) {
             log.error("Order number does not updated.", ex);
             throw new UpdateOrderNumberException("Order number does not updated.", ex);
