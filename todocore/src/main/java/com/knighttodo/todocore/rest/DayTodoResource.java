@@ -1,13 +1,7 @@
 package com.knighttodo.todocore.rest;
 
 import com.knighttodo.todocore.domain.DayTodoVO;
-import com.knighttodo.todocore.exception.CreateDayTodoException;
-import com.knighttodo.todocore.exception.DayTodoCanNotBeDeletedException;
-import com.knighttodo.todocore.exception.DayTodoNotFoundException;
-import com.knighttodo.todocore.exception.DayTodoReadyCanNotBeUpdatedException;
-import com.knighttodo.todocore.exception.FindAllDayTodosException;
-import com.knighttodo.todocore.exception.FindDayTodoByIdException;
-import com.knighttodo.todocore.exception.UpdateDayTodoException;
+import com.knighttodo.todocore.exception.*;
 import com.knighttodo.todocore.rest.mapper.DayTodoRestMapper;
 import com.knighttodo.todocore.rest.request.DayTodoRequestDto;
 import com.knighttodo.todocore.rest.response.DayTodoReadyResponseDto;
@@ -179,7 +173,7 @@ public class DayTodoResource {
     }
 
     @PatchMapping
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Change orderNumber id existed Todo", response = DayTodoResponseDto.class, responseContainer = "List")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Created"),
@@ -187,22 +181,20 @@ public class DayTodoResource {
             @ApiResponse(code = 403, message = "Operation forbidden"),
             @ApiResponse(code = 500, message = "Unexpected error")
     })
-    public List<DayTodoResponseDto> changeOrderNumberDayTodo(@PathVariable Map<UUID,Integer> map ) {
+    public List<DayTodoResponseDto> changeDayTodoOrderNumber(@PathVariable Map<UUID,Integer> orderNumbersMap) {
         try {
-            Map<UUID,Integer> mapExistDayTodo = map.entrySet().stream()
-                    .filter(entry -> dayTodoService.isExistDayTodo(entry.getKey()))
-                    .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue()));
+            orderNumbersMap.keySet().stream().map(dayTodoService::findById);
 
-            List<DayTodoVO> dayTodoVOS = mapExistDayTodo.entrySet().stream()
-                    .map(entry ->dayTodoService.updateDayTodoById(entry.getKey(),entry.getValue()))
+            List<DayTodoVO> dayTodoVOS = orderNumbersMap.entrySet().stream()
+                    .map(entry ->dayTodoService.orderNumberUpdate(entry.getKey(),entry.getValue()))
                     .collect(Collectors.toList());
 
-            return dayTodoVOS.stream().map(dayTodoVO -> dayTodoRestMapper.toDayTodoResponseDto(dayTodoVO))
+            return dayTodoVOS.stream().map(dayTodoRestMapper::toDayTodoResponseDto)
                     .collect(Collectors.toList());
 
         } catch (RuntimeException ex) {
-            log.error("Order number does not changed.", ex);
-            throw new CreateDayTodoException("Order number does not changed.", ex);
+            log.error("Order number does not updated.", ex);
+            throw new UpdateOrderNumberException("Order number does not updated.", ex);
         }
     }
 }
