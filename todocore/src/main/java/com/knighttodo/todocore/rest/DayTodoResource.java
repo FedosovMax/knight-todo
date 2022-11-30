@@ -179,7 +179,7 @@ public class DayTodoResource {
         }
     }
 
-    @PatchMapping
+    @PatchMapping("")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Change orderNumber id existed Todo", response = DayTodoResponseDto.class, responseContainer = "List")
     @ApiResponses(value = {
@@ -188,7 +188,7 @@ public class DayTodoResource {
             @ApiResponse(code = 403, message = "Operation forbidden"),
             @ApiResponse(code = 500, message = "Unexpected error")
     })
-    public List<DayTodoResponseDto> changeDayTodoOrderNumber(@PathVariable Map<UUID,Integer> orderNumbersMap) {
+    public List<DayTodoResponseDto> changeDayTodoOrderNumber(@RequestBody Map<UUID,Integer> orderNumbersMap) {
         try {
             orderNumbersMap.keySet().stream().map(dayTodoService::findById);
             List<DayTodoVO> dayTodoVOS = orderNumbersMap.entrySet().stream()

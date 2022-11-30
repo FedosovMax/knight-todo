@@ -107,9 +107,13 @@ public class TestConstants {
         return JSON_ROOT + "hardness";
     }
 
-    public static String buildJsonPathToOrderNumber() {
-        return JSON_ROOT +"orderNumber";
+    public static String buildJsonPathMap(UUID id) {
+        return JSON_ROOT + id.toString();
+    }
 
+    public static String buildJsonPathToOrderNumber() {
+        return JSON_ROOT + "orderNumber";
+    }
     public static String buildJsonPathToColor() {
         return JSON_ROOT +"color";
 
