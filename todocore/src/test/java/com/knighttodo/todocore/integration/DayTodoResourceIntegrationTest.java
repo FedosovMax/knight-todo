@@ -1,13 +1,9 @@
 package com.knighttodo.todocore.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.knighttodo.todocore.domain.DayTodoVO;
 import com.knighttodo.todocore.exception.UnchangeableFieldUpdateException;
 import com.knighttodo.todocore.factories.DayFactory;
 import com.knighttodo.todocore.factories.DayTodoFactory;
-import com.knighttodo.todocore.factories.UserFactory;
-import com.knighttodo.todocore.rest.request.UserRequestDto;
-import com.knighttodo.todocore.rest.response.DayTodoResponseDto;
 import com.knighttodo.todocore.service.privatedb.repository.DayRepository;
 import com.knighttodo.todocore.service.privatedb.repository.DayTodoRepository;
 import com.knighttodo.todocore.service.privatedb.representation.Day;
@@ -21,15 +17,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.support.TestPropertySourceUtils;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.client.RestTemplate;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -37,7 +29,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 import static com.knighttodo.todocore.Constants.*;
@@ -45,8 +36,6 @@ import static com.knighttodo.todocore.TestConstants.*;
 import static org.aspectj.bridge.MessageUtil.fail;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -353,7 +342,7 @@ public class DayTodoResourceIntegrationTest {
                 .content(objectMapper.writeValueAsString(map))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(status().isOk())
-                .andExpect(jsonPath(buildJson(0)).value(777));
+                .andExpect(jsonPath(buildJsonPathForExtractOrderNumber(0)).value(777));
 
         assertThat(dayTodoRepository.findById(firstDayTodo.getId()).get().getOrderNumber()).isEqualTo(777);
     }

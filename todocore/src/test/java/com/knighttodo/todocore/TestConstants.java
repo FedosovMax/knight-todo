@@ -426,7 +426,7 @@ public class TestConstants {
         return JSON_ROOT + "[" + index + "]." + PARAMETER_ARMOR_TYPE;
     }
 
-    public static String buildJson( int index){
+    public static String buildJsonPathForExtractOrderNumber(int index){
         return  JSON_ROOT + "[" + index +  "]." + PARAMETER_ORDER_NUMBER  ;
     }
 }
