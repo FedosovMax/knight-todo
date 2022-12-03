@@ -179,21 +179,18 @@ public class DayTodoResource {
         }
     }
 
-    @PatchMapping("")
+    @PatchMapping()
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "Change orderNumber id existed Todo", response = DayTodoResponseDto.class, responseContainer = "List")
+    @ApiOperation(value = "Change orderNumber id in existing Todo.", response = DayTodoResponseDto.class, responseContainer = "List")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Created"),
             @ApiResponse(code = 400, message = "Invalid operation"),
             @ApiResponse(code = 403, message = "Operation forbidden"),
             @ApiResponse(code = 500, message = "Unexpected error")
     })
-    public List<DayTodoResponseDto> changeDayTodoOrderNumber(@RequestBody Map<UUID,Integer> orderNumbersMap) {
+    public List<DayTodoResponseDto> changeDayTodoOrderNumber(@RequestBody Map<UUID,Integer> orderNumbers) {
         try {
-            orderNumbersMap.keySet().stream().map(dayTodoService::findById);
-            List<DayTodoVO> dayTodoVOS = orderNumbersMap.entrySet().stream()
-                    .map(entry ->dayTodoService.orderNumberUpdate(entry.getKey(),entry.getValue()))
-                    .collect(Collectors.toList());
+            List<DayTodoVO> dayTodoVOS = dayTodoService.orderNumberUpdate(orderNumbers);
             return dayTodoVOS.stream().map(dayTodoRestMapper::toDayTodoResponseDto).collect(Collectors.toList());
         } catch (RuntimeException ex) {
             log.error("Order number does not updated.", ex);

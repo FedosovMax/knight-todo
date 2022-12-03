@@ -35,6 +35,8 @@ public class TestConstants {
     public static final String PARAMETER_DEFENCE = "defence";
     public static final String PARAMETER_ARMOR_TYPE = "armorType";
 
+    public static final String PARAMETER_ORDER_NUMBER = "orderNumber";
+
     public static final Integer HARD_SCARY_EXPERIENCE_AMOUNT = 13;
 
     public static String buildIdJsonPath() {
@@ -422,5 +424,9 @@ public class TestConstants {
 
     public static String buildJsonPathToArmorTypeInListByIndex(int index) {
         return JSON_ROOT + "[" + index + "]." + PARAMETER_ARMOR_TYPE;
+    }
+
+    public static String buildJson( int index){
+        return  JSON_ROOT + "[" + index +  "]." + PARAMETER_ORDER_NUMBER  ;
     }
 }

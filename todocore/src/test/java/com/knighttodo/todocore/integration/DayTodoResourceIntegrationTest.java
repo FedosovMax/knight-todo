@@ -340,7 +340,6 @@ public class DayTodoResourceIntegrationTest {
                 .andExpect(status().isFound())
                 .andExpect(jsonPath(buildJsonPathToLength()).value(2));
     }
-    //my test
     @Test
     public void updateOrderNumberByDayTodoId_shouldReturnUpdatedTodo_whenAllDayIdTodoExist() throws Exception {
         Day day = dayRepository.save(DayFactory.dayInstance());
@@ -353,7 +352,8 @@ public class DayTodoResourceIntegrationTest {
         mockMvc.perform(patch(API_BASE_URL_V1 + API_BASE_DAYS + "/" + day.getId() + API_BASE_TODOS)
                 .content(objectMapper.writeValueAsString(map))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
-        .andExpect(status().isOk());
+        .andExpect(status().isOk())
+                .andExpect(jsonPath(buildJson(0)).value(777));
 
         assertThat(dayTodoRepository.findById(firstDayTodo.getId()).get().getOrderNumber()).isEqualTo(777);
     }
