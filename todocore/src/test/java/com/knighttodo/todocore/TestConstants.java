@@ -108,8 +108,8 @@ public class TestConstants {
     }
 
     public static String buildJsonPathToOrderNumber() {
-        return JSON_ROOT +"orderNumber";
-
+        return JSON_ROOT + "orderNumber";
+    }
     public static String buildJsonPathToColor() {
         return JSON_ROOT +"color";
 
