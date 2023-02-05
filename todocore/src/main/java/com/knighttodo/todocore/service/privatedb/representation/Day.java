@@ -1,19 +1,13 @@
 package com.knighttodo.todocore.service.privatedb.representation;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenerationTime;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,6 +24,11 @@ public class Day {
     @GeneratedValue
     @Column(name = "id")
     private UUID id;
+
+    @CreationTimestamp
+    @Temporal(javax.persistence.TemporalType.DATE)
+    @Column(name = "date")
+    private Date date = new java.sql.Date(new java.util.Date().getTime());;
 
     @Column(name = "day_name")
     private String dayName;

@@ -23,6 +23,8 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.util.Date;
+
 import static com.knighttodo.todocore.Constants.API_BASE_DAYS;
 import static com.knighttodo.todocore.Constants.API_BASE_URL_V1;
 import static com.knighttodo.todocore.TestConstants.*;
@@ -219,5 +221,16 @@ public class DayResourceIntegrationTest {
 
         assertThat(dayRepository.findByIdAlive(day.getId())).isEmpty();
         assertThat(dayTodoRepository.findAllAlive().isEmpty());
+    }
+
+    @Test
+    @Transactional
+    public void findDayByDate_shouldReturnExistingDay_whenDateIsCorrect() throws Exception {
+        Day day = dayRepository.save(DayFactory.dayInstance());
+        Date date = new java.sql.Date(new java.util.Date().getTime());
+        mockMvc.perform(
+                        get(buildGetDayByDate(date)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath(buildJsonPathToIdDate()).value(day.getId().toString()));
     }
 }
