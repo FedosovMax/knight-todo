@@ -2,9 +2,9 @@ package com.knighttodo.todocore.service;
 
 import com.knighttodo.todocore.domain.DayVO;
 import com.knighttodo.todocore.exception.DayNotFoundException;
-import com.knighttodo.todocore.service.privatedb.mapper.DayMapper;
-import com.knighttodo.todocore.service.privatedb.repository.DayRepository;
-import com.knighttodo.todocore.service.privatedb.representation.Day;
+import com.knighttodo.todocore.gateway.privatedb.mapper.DayMapper;
+import com.knighttodo.todocore.gateway.privatedb.repository.DayRepository;
+import com.knighttodo.todocore.gateway.privatedb.representation.Day;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

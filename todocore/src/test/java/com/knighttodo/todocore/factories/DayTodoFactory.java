@@ -2,10 +2,10 @@ package com.knighttodo.todocore.factories;
 
 
 import com.knighttodo.todocore.rest.request.DayTodoRequestDto;
-import com.knighttodo.todocore.service.privatedb.representation.Day;
-import com.knighttodo.todocore.service.privatedb.representation.DayTodo;
-import com.knighttodo.todocore.service.privatedb.representation.enums.Hardness;
-import com.knighttodo.todocore.service.privatedb.representation.enums.Scariness;
+import com.knighttodo.todocore.gateway.privatedb.representation.Day;
+import com.knighttodo.todocore.gateway.privatedb.representation.DayTodo;
+import com.knighttodo.todocore.gateway.privatedb.representation.enums.Hardness;
+import com.knighttodo.todocore.gateway.privatedb.representation.enums.Scariness;
 
 public class DayTodoFactory {
 

@@ -1,4 +1,4 @@
-package com.knighttodo.todocore.service.privatedb.representation.enums;
+package com.knighttodo.todocore.gateway.privatedb.representation.enums;
 
 public enum Scariness {
     NOT_SCARY,

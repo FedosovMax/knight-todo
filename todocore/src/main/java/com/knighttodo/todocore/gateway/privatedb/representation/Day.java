@@ -1,4 +1,4 @@
-package com.knighttodo.todocore.service.privatedb.representation;
+package com.knighttodo.todocore.gateway.privatedb.representation;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

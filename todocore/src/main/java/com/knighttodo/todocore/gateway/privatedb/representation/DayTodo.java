@@ -1,7 +1,7 @@
-package com.knighttodo.todocore.service.privatedb.representation;
+package com.knighttodo.todocore.gateway.privatedb.representation;
 
-import com.knighttodo.todocore.service.privatedb.representation.enums.Hardness;
-import com.knighttodo.todocore.service.privatedb.representation.enums.Scariness;
+import com.knighttodo.todocore.gateway.privatedb.representation.enums.Hardness;
+import com.knighttodo.todocore.gateway.privatedb.representation.enums.Scariness;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +12,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -20,21 +19,24 @@ import javax.persistence.Table;
 import java.util.UUID;
 
 @Entity
-@Table(name = "routine_todo_instance")
+@Table(name = "day_todo")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-public class RoutineTodoInstance {
+@ToString(exclude = {"day"})
+public class DayTodo {
 
     @Id
     @GeneratedValue
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "routine_todo_instance_name")
-    private String routineTodoInstanceName;
+    @Column(name = "order_number")
+    private int orderNumber;
+
+    @Column(name = "day_todo_name")
+    private String dayTodoName;
 
     @Column(name = "scaryness")
     @Enumerated(EnumType.STRING)
@@ -50,9 +52,9 @@ public class RoutineTodoInstance {
     @Column(name = "removed")
     private boolean removed;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private RoutineInstance routineInstance;
+    @Column(name = "color")
+    private String color;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private RoutineTodo routineTodo;
+    @ManyToOne
+    private Day day;
 }

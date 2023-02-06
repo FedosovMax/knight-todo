@@ -1,6 +1,6 @@
-package com.knighttodo.todocore.service.privatedb.repository;
+package com.knighttodo.todocore.gateway.privatedb.repository;
 
-import com.knighttodo.todocore.service.privatedb.representation.User;
+import com.knighttodo.todocore.gateway.privatedb.representation.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

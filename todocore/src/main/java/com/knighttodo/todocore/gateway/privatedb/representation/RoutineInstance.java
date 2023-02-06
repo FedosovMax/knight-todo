@@ -1,11 +1,12 @@
-package com.knighttodo.todocore.service.privatedb.representation;
+package com.knighttodo.todocore.gateway.privatedb.representation;
 
-import com.knighttodo.todocore.service.privatedb.representation.enums.Hardness;
-import com.knighttodo.todocore.service.privatedb.representation.enums.Scariness;
+import com.knighttodo.todocore.gateway.privatedb.representation.enums.Scariness;
+import com.knighttodo.todocore.gateway.privatedb.representation.enums.Hardness;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.CascadeType;
@@ -24,32 +25,31 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "routine_todo")
-@Data
+@Table(name = "routine_instance")
 @Builder
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(exclude = {"routineTodoInstances"})
-public class RoutineTodo {
+public class RoutineInstance {
 
     @Id
     @GeneratedValue
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "routine_todo_name")
-    private String routineTodoName;
+    @Column(name = "name")
+    private String name;
 
-    @Column(name = "scaryness")
     @Enumerated(EnumType.STRING)
     private Scariness scariness;
 
-    @Column(name = "hardness")
     @Enumerated(EnumType.STRING)
     private Hardness hardness;
 
     @Column(name = "ready")
-    private boolean ready = false;
+    private boolean ready;
 
     @Column(name = "removed")
     private boolean removed;
@@ -57,6 +57,6 @@ public class RoutineTodo {
     @ManyToOne(fetch = FetchType.LAZY)
     private Routine routine;
 
-    @OneToMany(mappedBy = "routineTodo", cascade =  {CascadeType.MERGE})
+    @OneToMany(mappedBy = "routineInstance", cascade =  {CascadeType.MERGE})
     private List<RoutineTodoInstance> routineTodoInstances = new ArrayList<>();
 }
