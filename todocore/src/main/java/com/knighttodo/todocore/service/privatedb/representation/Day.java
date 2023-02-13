@@ -3,8 +3,10 @@ package com.knighttodo.todocore.service.privatedb.representation;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenerationTime;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,9 +28,8 @@ public class Day {
     private UUID id;
 
     @CreationTimestamp
-    @Temporal(javax.persistence.TemporalType.DATE)
-    @Column(name = "date")
-    private Date date = new java.sql.Date(new java.util.Date().getTime());;
+    @Column(name = "date", columnDefinition = "DATE")
+    private LocalDate date;
 
     @Column(name = "day_name")
     private String dayName;

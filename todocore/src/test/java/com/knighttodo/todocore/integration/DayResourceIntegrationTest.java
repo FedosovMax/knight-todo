@@ -23,6 +23,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import static com.knighttodo.todocore.Constants.API_BASE_DAYS;
@@ -227,10 +228,10 @@ public class DayResourceIntegrationTest {
     @Transactional
     public void findDayByDate_shouldReturnExistingDay_whenDateIsCorrect() throws Exception {
         Day day = dayRepository.save(DayFactory.dayInstance());
-        Date date = new java.sql.Date(new java.util.Date().getTime());
+        LocalDate date = LocalDate.now();
         mockMvc.perform(
                         get(buildGetDayByDate(date)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath(buildJsonPathToIdDate()).value(day.getId().toString()));
+                .andExpect(jsonPath(buildJsonPathToDate()).value(day.getDate().toString()));
     }
 }

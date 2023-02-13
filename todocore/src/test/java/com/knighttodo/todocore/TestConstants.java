@@ -1,5 +1,6 @@
 package com.knighttodo.todocore;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
@@ -47,7 +48,7 @@ public class TestConstants {
     public static String buildGetDayByIdUrl(UUID id) {
         return API_BASE_URL_V1 + API_BASE_DAYS + "/" + id;
     }
-    public static String buildGetDayByDate(Date date) {
+    public static String buildGetDayByDate(LocalDate date) {
         return API_BASE_URL_V1 + API_BASE_DAYS + "/date?date=" + date.toString();
     }
     public static String buildDeleteDayByIdUrl(UUID id) {
@@ -93,7 +94,10 @@ public class TestConstants {
         return JSON_ROOT + "id";
     }
     public static String buildJsonPathToIdDate() {
-        return JSON_ROOT + "[0].id";
+        return JSON_ROOT + ".id";
+    }
+    public static String buildJsonPathToDate() {
+        return JSON_ROOT + ".date";
     }
     public static String buildJsonPathToLength() {
         return JSON_ROOT + "length()";
