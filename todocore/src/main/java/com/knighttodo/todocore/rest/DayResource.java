@@ -163,7 +163,7 @@ public class DayResource {
         try {
             return dayRestMapper.toDayResponseDto(dayService.findDayByDate(date));
         } catch (RuntimeException ex) {
-            log.error("Days can't be found.", ex);
+            log.error("Days can't be found by date: " +date.toString(), ex);
             throw new FindAllDaysException("Days can't be found.", ex);
         }
     }
