@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
@@ -155,7 +154,7 @@ public class DayResource {
 
     @GetMapping("/date")
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "Find a day by Date", response = DayResponseDto.class, responseContainer = "List")
+    @ApiOperation(value = "Find a day by Date", response = DayResponseDto.class)
     @ApiParam(value = "Find day by date", example = "2023-02-06", required = true, readOnly = true)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Day found"),
