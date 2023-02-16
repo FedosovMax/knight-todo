@@ -31,6 +31,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -162,7 +164,7 @@ public class DayResource {
             @ApiResponse(code = 403, message = "Operation forbidden"),
             @ApiResponse(code = 500, message = "Unexpected error")
     })
-    public DayResponseDto findDayByDate(@RequestParam(name = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+    public DayResponseDto findDayByDate(@NotNull @NotBlank @RequestParam(name = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         try {
             return dayRestMapper.toDayResponseDto(dayService.findDayByDate(date));
         } catch (RuntimeException ex) {
