@@ -239,7 +239,7 @@ public class DayResourceIntegrationTest {
         Day day = dayRepository.save(DayFactory.dayInstance());
         String date = "";
         mockMvc.perform(get(buildGetDayByDateWithoutDate(date)))
-                        .andExpect(status().is5xxServerError());
+                        .andExpect(status().isInternalServerError());
     }
 
     @Test
