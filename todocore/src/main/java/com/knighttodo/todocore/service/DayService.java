@@ -1,25 +1,17 @@
 package com.knighttodo.todocore.service;
 
-import com.knighttodo.todocore.domain.DayTodoVO;
 import com.knighttodo.todocore.domain.DayVO;
-import com.knighttodo.todocore.exception.CreateDayException;
-import com.knighttodo.todocore.exception.CreateDayTodoException;
 import com.knighttodo.todocore.exception.DayNotFoundException;
-import com.knighttodo.todocore.exception.DayTodoNotFoundException;
 import com.knighttodo.todocore.service.privatedb.mapper.DayMapper;
 import com.knighttodo.todocore.service.privatedb.repository.DayRepository;
 import com.knighttodo.todocore.service.privatedb.representation.Day;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.jni.Local;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -65,10 +57,9 @@ public class DayService {
 
     @Transactional
     public DayVO findDayByDate(LocalDate date) {
-        return dayRepository.findDaysByDate(date).map(dayMapper::toDayVO).orElseThrow(() -> {
-            log.error(String.format("Day with such date:%s can't be " + "found", date));
-            return new DayNotFoundException(String.format("Day with such date:%s can't be " + "found", date));
+        return dayRepository.findDayByDate(date).map(dayMapper::toDayVO).orElseThrow(() -> {
+            log.error(String.format("Day with such date : %s can't be found", date));
+            return new DayNotFoundException(String.format("Day with such date:%s can't be found", date));
         });
     }
-
 }

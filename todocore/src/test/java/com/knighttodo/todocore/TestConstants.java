@@ -51,6 +51,11 @@ public class TestConstants {
     public static String buildGetDayByDate(LocalDate date) {
         return API_BASE_URL_V1 + API_BASE_DAYS + "/date?date=" + date.toString();
     }
+    public static String buildGetDayByDateWithoutDate(String date) {
+        return API_BASE_URL_V1 + API_BASE_DAYS + "/date?date=" + date;
+    }
+
+
     public static String buildDeleteDayByIdUrl(UUID id) {
         return API_BASE_URL_V1 + API_BASE_DAYS + "/" + id;
     }

@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -28,5 +27,5 @@ public interface DayRepository extends JpaRepository<Day, UUID> {
     @Query("update DayTodo dt set dt.removed = true where dt.day.id=:dayId")
     void softDeleteAllDayTodosByDayId(@Param("dayId") UUID dayId);
 
-    Optional<Day> findDaysByDate(@Param("date") LocalDate date);
+    Optional<Day> findDayByDate(@Param("date") LocalDate date);
 }

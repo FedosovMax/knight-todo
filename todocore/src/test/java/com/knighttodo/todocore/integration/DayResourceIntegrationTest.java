@@ -229,9 +229,24 @@ public class DayResourceIntegrationTest {
     public void findDayByDate_shouldReturnExistingDay_whenDateIsCorrect() throws Exception {
         Day day = dayRepository.save(DayFactory.dayInstance());
         LocalDate date = LocalDate.now();
-        mockMvc.perform(
-                        get(buildGetDayByDate(date)))
+        mockMvc.perform(get(buildGetDayByDate(date)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath(buildJsonPathToDate()).value(day.getDate().toString()));
+    }
+
+    @Test
+    public void findDayByDate_shouldRespondWithBadRequestStatus_whenWithoutDate() throws Exception {
+        Day day = dayRepository.save(DayFactory.dayInstance());
+        String date = "";
+        mockMvc.perform(get(buildGetDayByDateWithoutDate(date)))
+                        .andExpect(status().is5xxServerError());
+    }
+
+    @Test
+    public void findDayByDate_shouldRespondWithBadRequestStatus_whenDateIsNull() throws Exception {
+        Day day = dayRepository.save(DayFactory.dayInstance());
+        String date = null;
+        mockMvc.perform(get(buildGetDayByDateWithoutDate(date)))
+                .andExpect(status().isBadRequest());
     }
 }
