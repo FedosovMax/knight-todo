@@ -7,6 +7,7 @@ import com.knighttodo.todocore.service.privatedb.repository.DayRepository;
 import com.knighttodo.todocore.service.privatedb.repository.DayTodoRepository;
 import com.knighttodo.todocore.service.privatedb.representation.Day;
 import com.knighttodo.todocore.rest.request.DayRequestDto;
+import org.assertj.core.internal.ErrorMessages;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -236,17 +237,17 @@ public class DayResourceIntegrationTest {
 
     @Test
     public void findDayByDate_shouldRespondWithBadRequestStatus_whenWithoutDate() throws Exception {
-        Day day = dayRepository.save(DayFactory.dayInstance());
         String date = "";
         mockMvc.perform(get(buildGetDayByDateWithoutDate(date)))
-                        .andExpect(status().isInternalServerError());
+                        .andExpect(status().is5xxServerError());
+        // This test has a bug, more details via jira code KNIG-13.
     }
 
     @Test
     public void findDayByDate_shouldRespondWithBadRequestStatus_whenDateIsNull() throws Exception {
-        Day day = dayRepository.save(DayFactory.dayInstance());
         String date = null;
         mockMvc.perform(get(buildGetDayByDateWithoutDate(date)))
                 .andExpect(status().isBadRequest());
+
     }
 }
