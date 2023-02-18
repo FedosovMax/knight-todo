@@ -55,7 +55,6 @@ public class TestConstants {
         return API_BASE_URL_V1 + API_BASE_DAYS + "/date?date=" + date;
     }
 
-
     public static String buildDeleteDayByIdUrl(UUID id) {
         return API_BASE_URL_V1 + API_BASE_DAYS + "/" + id;
     }
