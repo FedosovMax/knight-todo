@@ -222,7 +222,6 @@ public class DayResourceIntegrationTest {
     }
 
     @Test
-    @Transactional
     public void findDayByDate_shouldReturnExistingDay_whenDateIsCorrect() throws Exception {
         Day day = dayRepository.save(DayFactory.dayInstance());
         LocalDate date = LocalDate.now();
@@ -234,6 +233,7 @@ public class DayResourceIntegrationTest {
     @Test
     public void findDayByDate_shouldRespondWithBadRequestStatus_whenWithoutDate() throws Exception {
         String date = "";
+
         mockMvc.perform(get(buildGetDayByDateWithoutDate(date)))
                         .andExpect(status().is5xxServerError());
         //TODO This test has a bug, more details via jira code KNIG-13.
@@ -242,8 +242,8 @@ public class DayResourceIntegrationTest {
     @Test
     public void findDayByDate_shouldRespondWithBadRequestStatus_whenDateIsNull() throws Exception {
         String date = null;
+
         mockMvc.perform(get(buildGetDayByDateWithoutDate(date)))
                 .andExpect(status().isBadRequest());
-
     }
 }
