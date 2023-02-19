@@ -49,7 +49,6 @@ public class DayResource {
     private final DayService dayService;
     private final DayRestMapper dayRestMapper;
 
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "Add the new Day", response = DayResponseDto.class)

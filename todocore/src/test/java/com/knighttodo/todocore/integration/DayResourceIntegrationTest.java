@@ -7,7 +7,6 @@ import com.knighttodo.todocore.service.privatedb.repository.DayRepository;
 import com.knighttodo.todocore.service.privatedb.repository.DayTodoRepository;
 import com.knighttodo.todocore.service.privatedb.representation.Day;
 import com.knighttodo.todocore.rest.request.DayRequestDto;
-import org.assertj.core.internal.ErrorMessages;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-
 import java.time.LocalDate;
-import java.util.Date;
-
 import static com.knighttodo.todocore.Constants.API_BASE_DAYS;
 import static com.knighttodo.todocore.Constants.API_BASE_URL_V1;
 import static com.knighttodo.todocore.TestConstants.*;
