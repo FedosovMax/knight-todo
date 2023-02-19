@@ -11,7 +11,7 @@ Content-Type: application/json
 < json/day/updateDay.json
 
 ### get all days
-GET {{host}}/api/v1/days
+GET {{host}}/days
 
 ### get day by id
 GET {{host}}/days/{{dayId}}
