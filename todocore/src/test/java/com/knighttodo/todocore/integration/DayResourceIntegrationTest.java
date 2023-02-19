@@ -236,7 +236,7 @@ public class DayResourceIntegrationTest {
         String date = "";
 
         mockMvc.perform(get(buildGetDayByDateWithoutDate(date)))
-                        .andExpect(status().is5xxServerError());
+                .andExpect(status().is5xxServerError());
         //TODO This test has a bug, more details via jira code KNIG-13.
     }
 
