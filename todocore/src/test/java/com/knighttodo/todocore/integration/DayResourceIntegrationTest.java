@@ -225,6 +225,7 @@ public class DayResourceIntegrationTest {
     public void findDayByDate_shouldReturnExistingDay_whenDateIsCorrect() throws Exception {
         Day day = dayRepository.save(DayFactory.dayInstance());
         LocalDate date = LocalDate.now();
+
         mockMvc.perform(get(buildGetDayByDate(date)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath(buildJsonPathToDate()).value(day.getDate().toString()));
