@@ -223,6 +223,7 @@ public class DayResourceIntegrationTest {
 
     @Test
     public void findDayByDate_shouldReturnExistingDay_whenDateIsCorrect() throws Exception {
+
         Day day = dayRepository.save(DayFactory.dayInstance());
         LocalDate date = LocalDate.now();
 
