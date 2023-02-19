@@ -4,9 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class FindDayByDateException extends RuntimeException {
+public class DayByDateNotFoundException extends RuntimeException {
 
-    public FindDayByDateException(String message, Throwable cause) {
+    public DayByDateNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }
 }

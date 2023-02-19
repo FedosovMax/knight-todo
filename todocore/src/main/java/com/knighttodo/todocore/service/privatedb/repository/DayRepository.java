@@ -27,5 +27,5 @@ public interface DayRepository extends JpaRepository<Day, UUID> {
     @Query("update DayTodo dt set dt.removed = true where dt.day.id=:dayId")
     void softDeleteAllDayTodosByDayId(@Param("dayId") UUID dayId);
 
-    Optional<Day> findDayByDate(@Param("date") LocalDate date);
+    Optional<Day> findDayByDate(LocalDate date);
 }

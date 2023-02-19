@@ -55,7 +55,7 @@ public class DayService {
         dayRepository.softDeleteById(dayId);
     }
 
-    @Transactional
+
     public DayVO findDayByDate(LocalDate date) {
         return dayRepository.findDayByDate(date).map(dayMapper::toDayVO).orElseThrow(() -> {
             log.error(String.format("Day with such date : %s can't be found", date));

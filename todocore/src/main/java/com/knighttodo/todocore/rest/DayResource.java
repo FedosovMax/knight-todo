@@ -5,7 +5,7 @@ import com.knighttodo.todocore.exception.CreateDayException;
 import com.knighttodo.todocore.exception.DayCanNotBeDeletedException;
 import com.knighttodo.todocore.exception.DayNotFoundException;
 import com.knighttodo.todocore.exception.FindAllDaysException;
-import com.knighttodo.todocore.exception.FindDayByDateException;
+import com.knighttodo.todocore.exception.DayByDateNotFoundException;
 import com.knighttodo.todocore.exception.UpdateDayException;
 import com.knighttodo.todocore.rest.mapper.DayRestMapper;
 import com.knighttodo.todocore.rest.request.DayRequestDto;
@@ -164,12 +164,12 @@ public class DayResource {
             @ApiResponse(code = 500, message = "Unexpected error")
     })
 
-    public DayResponseDto findDayByDate(@RequestParam(name = "date")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+    public DayResponseDto findDayByDate(@RequestParam(name = "date", required = true)  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         try {
             return dayRestMapper.toDayResponseDto(dayService.findDayByDate(date));
         } catch (RuntimeException ex) {
             log.error("Day can't be found by date : " + date.toString(), ex);
-            throw new FindDayByDateException("Day can't be found.", ex);
+            throw new DayByDateNotFoundException("Day can't be found.", ex);
         }
     }
 }

@@ -20,4 +20,4 @@ GET {{host}}/days/{{dayId}}
 DELETE {{host}}/days/{{dayId}}
 
 ### find day by date
-GET {{host}}/days/date?{{date}}}
+GET {{host}}/days/date?{{date}}
