@@ -24,9 +24,6 @@ public class DateValidator implements ConstraintValidator<ValidDate, String> {
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        if (value == null) {
-            return true;
-        }
         Matcher m = pattern.matcher(value);
 
         try {
