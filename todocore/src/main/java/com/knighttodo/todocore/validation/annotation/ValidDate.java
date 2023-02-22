@@ -1,7 +1,6 @@
 package com.knighttodo.todocore.validation.annotation;
 
 import com.knighttodo.todocore.validation.validator.DateValidator;
-
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.ElementType;

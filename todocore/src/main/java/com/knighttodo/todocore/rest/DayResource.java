@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
@@ -51,7 +50,6 @@ public class DayResource {
 
     private final DayService dayService;
     private final DayRestMapper dayRestMapper;
-    private final String regex = "^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$";
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
