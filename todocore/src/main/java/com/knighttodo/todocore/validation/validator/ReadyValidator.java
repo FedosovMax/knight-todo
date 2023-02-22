@@ -22,6 +22,7 @@ public class ReadyValidator implements ConstraintValidator<ValidReady, String> {
 
     @Override
     public boolean isValid(String readyStatus, ConstraintValidatorContext constraintValidatorContext) {
+        System.out.println(readyStatus + "777");
         try {
             if (validStatuses.contains(readyStatus.toLowerCase())) {
                 return true;
