@@ -247,4 +247,13 @@ public class DayResourceIntegrationTest {
         mockMvc.perform(get(buildGetDayByDateWithoutDate(date)))
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    public void findDayByDate_shouldReturnBadRequest_whenDateIsInCorrect() throws Exception {
+        Day day = dayRepository.save(DayFactory.dayInstance());
+        LocalDate date = day.getDate();
+        String invalidDate = date.toString().substring(1);
+        mockMvc.perform(get(buildGetDayByDateWithIncorrectDate(invalidDate)))
+                .andExpect(status().isBadRequest());
+    }
 }
