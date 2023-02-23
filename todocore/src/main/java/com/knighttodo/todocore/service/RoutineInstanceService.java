@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -58,6 +59,15 @@ public class RoutineInstanceService {
                     log.error(String.format("Routine Instance with such id:%s can't be " + "found", routineInstanceId));
                     return new RoutineInstanceNotFoundException(
                             String.format("Routine Instance with such id:%s can't be " + "found", routineInstanceId));
+                });
+    }
+
+    public RoutineInstanceVO findByCreationDate(LocalDate creationDate) {
+        return routineInstanceRepository.findByCreationDateAlive(creationDate).map(routineInstanceMapper::toRoutineInstanceVO)
+                .orElseThrow(() -> {
+                    log.error(String.format("Routine Instance with such id:%s can't be found", creationDate));
+                    return new RoutineInstanceNotFoundException(
+                            String.format("Routine Instance with such id:%s can't be found", creationDate));
                 });
     }
 

@@ -7,16 +7,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
+
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Column;
+import javax.persistence.Enumerated;
+import javax.persistence.EnumType;
+import javax.persistence.OneToMany;
+import javax.persistence.CascadeType;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -45,6 +48,10 @@ public class Routine {
     @Column(name = "hardness")
     @Enumerated(EnumType.STRING)
     private Hardness hardness;
+
+    @CreationTimestamp
+    @Column(name = "creation_date")
+    private LocalDate creationDate;
 
     @Column(name = "removed")
     private boolean removed;

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -14,6 +15,9 @@ public interface RoutineRepository extends JpaRepository<Routine, UUID> {
 
     @Query("select r from Routine r where r.id=:routineId and r.removed=false")
     Optional<Routine> findByIdAlive(@Param("routineId")UUID routineId);
+
+    @Query("select r from Routine r where r.creationDate=:creationDate and r.removed=false")
+    Optional<Routine> findByCreationDateAndIsAlive(@Param("creationDate")LocalDate routineCreationDate);
 
     @Query("select r from Routine r where r.removed=false")
     List<Routine> findAllAlive();

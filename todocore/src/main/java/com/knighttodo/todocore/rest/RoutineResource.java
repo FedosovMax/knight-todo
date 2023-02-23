@@ -1,34 +1,20 @@
 package com.knighttodo.todocore.rest;
 
 import com.knighttodo.todocore.domain.RoutineVO;
-import com.knighttodo.todocore.exception.CreateRoutineException;
-import com.knighttodo.todocore.exception.FindAllRoutinesException;
-import com.knighttodo.todocore.exception.FindRoutineByIdException;
-import com.knighttodo.todocore.exception.RoutineCanNotBeDeletedException;
-import com.knighttodo.todocore.exception.RoutineNotFoundException;
-import com.knighttodo.todocore.exception.UpdateRoutineException;
+import com.knighttodo.todocore.exception.*;
 import com.knighttodo.todocore.rest.mapper.RoutineRestMapper;
 import com.knighttodo.todocore.rest.request.RoutineRequestDto;
 import com.knighttodo.todocore.rest.response.RoutineResponseDto;
 import com.knighttodo.todocore.service.RoutineService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -103,6 +89,28 @@ public class RoutineResource {
         } catch (RuntimeException ex) {
             log.error("Routine can't be found.", ex);
             throw new FindRoutineByIdException("Routine can't be found.", ex);
+        }
+    }
+
+    @GetMapping("/date")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Find the routine by creation date", response = RoutineResponseDto.class)
+    @ApiParam(value = "Find a routine by creation date", example = "2023-02-20", required = true, readOnly = true)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Routine found"),
+            @ApiResponse(code = 400, message = "Invalid operation"),
+            @ApiResponse(code = 404, message = "Resource not found"),
+            @ApiResponse(code = 500, message = "Unexpected error")
+    })
+    public RoutineResponseDto findRoutineByCreationDate(
+            @RequestParam(name = "date", required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
+    ) {
+        try {
+            RoutineVO routineVO = routineService.findByCreationDate(date);
+            return routineRestMapper.toRoutineResponseDto(routineVO);
+        } catch (RuntimeException ex) {
+            log.error("Routine can't be found.", ex);
+            throw new RoutineByDateNotFoundedException("Routine can't be found.", ex);
         }
     }
 
