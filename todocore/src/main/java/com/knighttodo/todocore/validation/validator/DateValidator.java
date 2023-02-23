@@ -28,7 +28,7 @@ public class DateValidator implements ConstraintValidator<ValidDate, String> {
         if (m.matches()) {
             return true;
         } else {
-            throw new DateBadFormatException("Invalid dater format");
+            throw new DateBadFormatException("Invalid date format");
         }
     }
 }
