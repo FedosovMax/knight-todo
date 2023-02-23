@@ -1,14 +1,13 @@
 package com.knighttodo.todocore.validation.validator;
 
+import com.knighttodo.todocore.exception.DateBadFormatException;
 import com.knighttodo.todocore.validation.annotation.ValidDate;
-import lombok.extern.slf4j.Slf4j;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-@Slf4j
 public class DateValidator implements ConstraintValidator<ValidDate, String> {
 
     private Pattern pattern;
@@ -26,15 +25,10 @@ public class DateValidator implements ConstraintValidator<ValidDate, String> {
     public boolean isValid(String value, ConstraintValidatorContext context) {
         Matcher m = pattern.matcher(value);
 
-        try {
-            if (m.matches()) {
-                return true;
-            } else {
-                log.error("Date in bad format : " + value);
-                throw new IllegalArgumentException();
-            }
-        } catch (IllegalArgumentException ex) {
-            return false;
+        if (m.matches()) {
+            return true;
+        } else {
+            throw new DateBadFormatException("Invalid dater format");
         }
     }
 }
