@@ -236,8 +236,7 @@ public class DayResourceIntegrationTest {
         String date = "";
 
         mockMvc.perform(get(buildGetDayByDateWithoutDate(date)))
-                .andExpect(status().is5xxServerError());
-        //TODO This test has a bug, more details via jira code KNIG-13.
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -245,6 +244,15 @@ public class DayResourceIntegrationTest {
         String date = null;
 
         mockMvc.perform(get(buildGetDayByDateWithoutDate(date)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void findDayByDate_shouldReturnBadRequest_whenDateIsInCorrect() throws Exception {
+        Day day = dayRepository.save(DayFactory.dayInstance());
+        LocalDate date = day.getDate();
+        String invalidDate = date.toString().substring(1);
+        mockMvc.perform(get(buildGetDayByDateWithIncorrectDate(invalidDate)))
                 .andExpect(status().isBadRequest());
     }
 }
