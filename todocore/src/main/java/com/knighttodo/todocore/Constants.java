@@ -9,9 +9,10 @@ import java.util.UUID;
 public class Constants {
 
     public static final String API_BASE_URL = "/api";
-    public static final String API_BASE_URL_V1 = "/api/v1/";
+    public static final String API_BASE_URL_V1 = "/api/v1";
     public static final String API_BASE_TODOS = "/todos";
     public static final String API_BASE_DAYS = "/days";
+    public static final String API_BASE_REMINDER = "/reminders";
     public static final String API_BASE_ROUTINES = "/routines";
     public static final String API_BASE_ROUTINES_INSTANCES = "/routineInstances";
     public static final String API_BASE_ROUTINES_TODO_INSTANCES = "/routineTodoInstances";

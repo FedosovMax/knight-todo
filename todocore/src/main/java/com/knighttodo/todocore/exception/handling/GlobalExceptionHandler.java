@@ -1,5 +1,8 @@
 package com.knighttodo.todocore.exception.handling;
 
+import com.knighttodo.todocore.exception.InvalidReminderDateException;
+import com.knighttodo.todocore.exception.ReminderNotFoundException;
+import com.knighttodo.todocore.service.privatedb.representation.Reminder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +16,16 @@ import java.util.Objects;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler({InvalidReminderDateException.class})
+    public final ResponseEntity<Void> handleConflictException() {
+       return ResponseEntity.status(HttpStatus.CONFLICT).build();
+    }
+
+    @ExceptionHandler({ReminderNotFoundException.class})
+    public final ResponseEntity<Void> handleNotFoundException(Exception e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
 
     @ExceptionHandler(RuntimeException.class)
     public final ResponseEntity<Object> handleCustomRuntimeException(RuntimeException ex, WebRequest request) {
