@@ -25,7 +25,7 @@ public class RoutineResponseDto {
 
     private Hardness hardness;
 
-    private LocalDate created;
+    private LocalDate createdDate;
 
     private boolean ready;
 

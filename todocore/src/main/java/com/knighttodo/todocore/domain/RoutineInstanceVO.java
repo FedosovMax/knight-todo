@@ -29,7 +29,7 @@ public class RoutineInstanceVO {
 
     private boolean ready;
 
-    private LocalDate created;
+    private LocalDate createdDate;
 
     private RoutineVO routine;
 

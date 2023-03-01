@@ -65,19 +65,19 @@ public class TestConstants {
     public static String buildGetRoutineByIdUrl(UUID id) {
         return API_BASE_URL_V1 + API_BASE_ROUTINES + "/" + id;
     }
-    public static String buildGetRoutineByCreatedUrl(LocalDate creationDate) {
+    public static String buildGetRoutineByCreatedDateUrl(LocalDate creationDate) {
         return API_BASE_URL_V1 + API_BASE_ROUTINES + "/date?date=" + creationDate.toString();
     }
-    public static String buildGetRoutineByCreatedUrl(String creationDate) {
+    public static String buildGetRoutineByCreatedDateUrl(String creationDate) {
         return API_BASE_URL_V1 + API_BASE_ROUTINES + "/date?date=" + creationDate;
     }
     public static String buildGetRoutineInstanceByIdUrl(UUID routineId, UUID id) {
         return API_BASE_URL_V1 + API_BASE_ROUTINES + "/" + routineId + API_BASE_ROUTINES_INSTANCES + "/" + id;
     }
-    public static String buildGetRoutineInstanceCreatedUrl(LocalDate creationDate) {
+    public static String buildGetRoutineInstanceCreatedDateUrl(LocalDate creationDate) {
         return API_BASE_URL_V1 + API_BASE_ROUTINES + "/date?date=" + creationDate.toString();
     }
-    public static String buildGetRoutineInstanceCreatedUrl(String creationDate) {
+    public static String buildGetRoutineInstanceCreatedDateUrl(String creationDate) {
         return API_BASE_URL_V1 + API_BASE_ROUTINES + "/date?date=" + creationDate;
     }
     public static String buildDeleteRoutineByIdUrl(UUID routineId) {
@@ -113,8 +113,8 @@ public class TestConstants {
     public static String buildJsonPathToDate() {
         return JSON_ROOT + ".date";
     }
-    public static String buildJsonPathToCreated() {
-        return JSON_ROOT + "created";
+    public static String buildJsonPathToCreatedDate() {
+        return JSON_ROOT + "createdDate";
     }
     public static String buildJsonPathToLength() {
         return JSON_ROOT + "length()";

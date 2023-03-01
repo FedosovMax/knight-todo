@@ -54,8 +54,8 @@ public class RoutineInstance {
     private boolean ready;
 
     @CreationTimestamp
-    @Column(name = "created")
-    private LocalDate created;
+    @Column(name = "createdDate")
+    private LocalDate createdDate;
 
     @Column(name = "removed")
     private boolean removed;

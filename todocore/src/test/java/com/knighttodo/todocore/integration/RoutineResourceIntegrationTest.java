@@ -136,16 +136,16 @@ public class RoutineResourceIntegrationTest {
         Routine routine = routineRepository.save(RoutineFactory.routineInstance());
         LocalDate today = LocalDate.now();
 
-        mockMvc.perform(get(buildGetRoutineByCreatedUrl(today)))
+        mockMvc.perform(get(buildGetRoutineByCreatedDateUrl(today)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath(buildJsonPathToCreated()).value(routine.getCreated().toString()));
+                .andExpect(jsonPath(buildJsonPathToCreatedDate()).value(routine.getCreatedDate().toString()));
     }
 
     @Test
     public void findRoutineByCreationDate_shouldRespondWithBadRequestStatus_whenCreationDateIsEmpty() throws Exception {
         String date = "";
 
-        mockMvc.perform(get(buildGetRoutineByCreatedUrl(date)))
+        mockMvc.perform(get(buildGetRoutineByCreatedDateUrl(date)))
                 .andExpect(status().is5xxServerError());
         //todo:bug - not expected status
     }
@@ -154,7 +154,7 @@ public class RoutineResourceIntegrationTest {
     public void findRoutineByCreationDate_shouldRespondWithBadRequestStatus_whenCreationDateIsNull() throws Exception {
         String date = null;
 
-        mockMvc.perform(get(buildGetRoutineByCreatedUrl(date)))
+        mockMvc.perform(get(buildGetRoutineByCreatedDateUrl(date)))
                 .andExpect(status().isBadRequest());
     }
 

@@ -25,7 +25,7 @@ public class RoutineInstanceResponseDto {
 
     private Scariness scariness;
 
-    private LocalDate created;
+    private LocalDate createdDate;
 
     private boolean ready;
 
