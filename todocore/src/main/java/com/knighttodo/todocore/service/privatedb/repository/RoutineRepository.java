@@ -16,8 +16,8 @@ public interface RoutineRepository extends JpaRepository<Routine, UUID> {
     @Query("select r from Routine r where r.id=:routineId and r.removed=false")
     Optional<Routine> findByIdAlive(@Param("routineId")UUID routineId);
 
-    @Query("select r from Routine r where r.creationDate=:creationDate and r.removed=false")
-    Optional<Routine> findByCreationDateAndIsAlive(@Param("creationDate")LocalDate routineCreationDate);
+    @Query("select r from Routine r where r.created=:routineCreated and r.removed=false")
+    Optional<Routine> findByCreationDateAndIsAlive(@Param("routineCreated")LocalDate routineCreationDate);
 
     @Query("select r from Routine r where r.removed=false")
     List<Routine> findAllAlive();

@@ -50,8 +50,8 @@ public class Routine {
     private Hardness hardness;
 
     @CreationTimestamp
-    @Column(name = "creation_date")
-    private LocalDate creationDate;
+    @Column(name = "created")
+    private LocalDate created;
 
     @Column(name = "removed")
     private boolean removed;

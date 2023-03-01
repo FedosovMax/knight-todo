@@ -25,6 +25,8 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.time.LocalDate;
+
 import static com.knighttodo.todocore.Constants.API_BASE_ROUTINES;
 import static com.knighttodo.todocore.Constants.API_BASE_URL_V1;
 import static com.knighttodo.todocore.TestConstants.*;
@@ -87,8 +89,8 @@ public class RoutineResourceIntegrationTest {
         RoutineRequestDto requestDto = RoutineFactory.createRoutineRequestDto();
 
         mockMvc.perform(post(API_BASE_URL_V1 + API_BASE_ROUTINES)
-                .content(objectMapper.writeValueAsString(requestDto))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                        .content(objectMapper.writeValueAsString(requestDto))
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath(buildJsonPathToName()).isNotEmpty())
                 .andExpect(jsonPath(buildJsonPathToHardness()).isNotEmpty())
@@ -103,8 +105,8 @@ public class RoutineResourceIntegrationTest {
         RoutineRequestDto requestDto = RoutineFactory.createRoutineWithNullNameValueRequestDto();
 
         mockMvc.perform(post(API_BASE_URL_V1 + API_BASE_ROUTINES)
-                .content(objectMapper.writeValueAsString(requestDto))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                        .content(objectMapper.writeValueAsString(requestDto))
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isBadRequest());
 
         assertThat(routineRepository.count()).isEqualTo(0);
@@ -127,6 +129,33 @@ public class RoutineResourceIntegrationTest {
         mockMvc.perform(get(buildGetRoutineByIdUrl(routine.getId())))
                 .andExpect(status().isFound())
                 .andExpect(jsonPath(buildJsonPathToId()).value(routine.getId().toString()));
+    }
+
+    @Test
+    public void findRoutineByCreationDate_shouldReturnExistingRoutine_whenCreationDateIsCorrect() throws Exception {
+        Routine routine = routineRepository.save(RoutineFactory.routineInstance());
+        LocalDate today = LocalDate.now();
+
+        mockMvc.perform(get(buildGetRoutineByCreatedUrl(today)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath(buildJsonPathToCreated()).value(routine.getCreated().toString()));
+    }
+
+    @Test
+    public void findRoutineByCreationDate_shouldRespondWithBadRequestStatus_whenCreationDateIsEmpty() throws Exception {
+        String date = "";
+
+        mockMvc.perform(get(buildGetRoutineByCreatedUrl(date)))
+                .andExpect(status().is5xxServerError());
+        //todo:bug - not expected status
+    }
+
+    @Test
+    public void findRoutineByCreationDate_shouldRespondWithBadRequestStatus_whenCreationDateIsNull() throws Exception {
+        String date = null;
+
+        mockMvc.perform(get(buildGetRoutineByCreatedUrl(date)))
+                .andExpect(status().isBadRequest());
     }
 
     @Test

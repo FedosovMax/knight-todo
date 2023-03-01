@@ -103,14 +103,14 @@ public class RoutineResource {
             @ApiResponse(code = 500, message = "Unexpected error")
     })
     public RoutineResponseDto findRoutineByCreationDate(
-            @RequestParam(name = "date", required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
+            @RequestParam(name = "date", required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate created
     ) {
         try {
-            RoutineVO routineVO = routineService.findByCreationDate(date);
+            RoutineVO routineVO = routineService.findByCreationDate(created);
             return routineRestMapper.toRoutineResponseDto(routineVO);
         } catch (RuntimeException ex) {
             log.error("Routine can't be found.", ex);
-            throw new RoutineByDateNotFoundedException("Routine can't be found.", ex);
+            throw new FindRoutineByIdException("Routine can't be found.", ex);
         }
     }
 

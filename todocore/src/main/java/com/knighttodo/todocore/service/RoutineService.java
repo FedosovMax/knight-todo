@@ -49,13 +49,12 @@ public class RoutineService {
                 });
     }
 
-    public RoutineVO findByCreationDate(LocalDate routineCreationDate) {
-        return routineRepository.findByCreationDateAndIsAlive(routineCreationDate).map(routineMapper::toRoutineVO)
+    public RoutineVO findByCreationDate(LocalDate routineCreated) {
+        return routineRepository.findByCreationDateAndIsAlive(routineCreated).map(routineMapper::toRoutineVO)
                 .orElseThrow(() -> {
-                    //todo: create custom exception
-                    log.error(String.format("Routine with such creation date: %s can't be found", routineCreationDate));
+                    log.error(String.format("Routine with such creation date: %s can't be found", routineCreated));
                     return new RoutineNotFoundException(
-                            String.format("Routine with such creation date: %s can't be found", routineCreationDate));
+                            String.format("Routine with such creation date: %s can't be found", routineCreated));
                 });
     }
 

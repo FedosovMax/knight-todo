@@ -27,7 +27,7 @@ public class RoutineVO {
 
     private Hardness hardness;
 
-    private LocalDate creationDate;
+    private LocalDate created;
 
     private List<RoutineInstanceVO> routineInstanceVOs;
 

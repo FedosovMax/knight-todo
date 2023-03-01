@@ -112,7 +112,6 @@ public class RoutineInstanceResource {
             RoutineInstanceVO routineInstanceVO = routineInstanceService.findByCreationDate(creationDate);
             return routineInstanceRestMapper.toRoutineInstanceResponseDto(routineInstanceVO);
         } catch (RuntimeException ex) {
-            // TODO: 21.02.23 exceprion
             log.error("Routine Instance can't be found.", ex);
             throw new FindRoutineInstanceByCreationDateException("Routine Instance can't be found.", ex);
         }

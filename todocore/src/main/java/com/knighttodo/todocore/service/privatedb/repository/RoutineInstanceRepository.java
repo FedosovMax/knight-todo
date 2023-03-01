@@ -19,8 +19,8 @@ public interface RoutineInstanceRepository extends JpaRepository<RoutineInstance
     @Query("select ri from RoutineInstance ri where ri.id=:routineInstanceId and ri.removed=false")
     Optional<RoutineInstance> findByIdAlive(@Param("routineInstanceId") UUID routineInstanceId);
 
-    @Query("select ri from RoutineInstance ri where ri.created=:routineInstanceCreationDate and ri.removed=false")
-    Optional<RoutineInstance> findByCreationDateAlive(@Param("routineInstanceCreationDate")LocalDate creationDate);
+    @Query("select ri from RoutineInstance ri where ri.created=:routineInstanceCreated and ri.removed=false")
+    Optional<RoutineInstance> findByCreationDateAlive(@Param("routineInstanceCreated")LocalDate creationDate);
 
     @Modifying
     @Query("update RoutineInstance ri set ri.removed=true where ri.id=:routineInstanceId")
