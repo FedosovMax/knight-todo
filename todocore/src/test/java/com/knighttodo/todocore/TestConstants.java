@@ -37,6 +37,8 @@ public class TestConstants {
     public static final String PARAMETER_DEFENCE = "defence";
     public static final String PARAMETER_ARMOR_TYPE = "armorType";
 
+    public static final String PARAMETER_ORDER_NUMBER = "orderNumber";
+
     public static final Integer HARD_SCARY_EXPERIENCE_AMOUNT = 13;
 
     public static String buildIdJsonPath() {
@@ -124,6 +126,10 @@ public class TestConstants {
     }
     public static String buildJsonPathToHardness() {
         return JSON_ROOT + "hardness";
+    }
+
+    public static String buildJsonPathMap(UUID id) {
+        return JSON_ROOT + id.toString();
     }
 
     public static String buildJsonPathToOrderNumber() {
@@ -437,5 +443,9 @@ public class TestConstants {
 
     public static String buildJsonPathToArmorTypeInListByIndex(int index) {
         return JSON_ROOT + "[" + index + "]." + PARAMETER_ARMOR_TYPE;
+    }
+
+    public static String buildJsonPathForExtractOrderNumber(int index){
+        return  JSON_ROOT + "[" + index +  "]." + PARAMETER_ORDER_NUMBER  ;
     }
 }

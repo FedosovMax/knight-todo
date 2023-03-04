@@ -8,6 +8,7 @@ import com.knighttodo.todocore.exception.DayTodoReadyCanNotBeUpdatedException;
 import com.knighttodo.todocore.exception.FindAllDayTodosException;
 import com.knighttodo.todocore.exception.FindDayTodoByIdException;
 import com.knighttodo.todocore.exception.UpdateDayTodoException;
+import com.knighttodo.todocore.exception.UpdateOrderNumberException;
 import com.knighttodo.todocore.rest.mapper.DayTodoRestMapper;
 import com.knighttodo.todocore.rest.request.DayTodoRequestDto;
 import com.knighttodo.todocore.rest.response.DayTodoReadyResponseDto;
@@ -31,9 +32,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PatchMapping;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -173,6 +176,25 @@ public class DayTodoResource {
         } catch (RuntimeException ex) {
             log.error("Day todo ready can't be updated.", ex);
             throw new DayTodoReadyCanNotBeUpdatedException("Day todo ready can't be updated.", ex);
+        }
+    }
+
+    @PatchMapping()
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Change orderNumber id in existing Todo.", response = DayTodoResponseDto.class, responseContainer = "List")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Created"),
+            @ApiResponse(code = 400, message = "Invalid operation"),
+            @ApiResponse(code = 403, message = "Operation forbidden"),
+            @ApiResponse(code = 500, message = "Unexpected error")
+    })
+    public List<DayTodoResponseDto> changeDayTodoOrderNumber(@RequestBody Map<UUID,Integer> orderNumbers) {
+        try {
+            List<DayTodoVO> dayTodoVOS = dayTodoService.orderNumberUpdate(orderNumbers);
+            return dayTodoVOS.stream().map(dayTodoRestMapper::toDayTodoResponseDto).collect(Collectors.toList());
+        } catch (RuntimeException ex) {
+            log.error("Order number does not updated.", ex);
+            throw new UpdateOrderNumberException("Order number does not updated.", ex);
         }
     }
 }

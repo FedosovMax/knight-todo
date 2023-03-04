@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -89,6 +90,18 @@ public class DayTodoService {
         dayTodoVO.setReady(isReady);
         dayTodoVO = dayTodoMapper.toTodoVO(dayTodoRepository.save(dayTodoMapper.toTodo(dayTodoVO)));
         return experienceService.calculateExperience(dayTodoVO);
+    }
+
+    @Transactional
+    public List<DayTodoVO> orderNumberUpdate(Map<UUID,Integer> orderNumbers) {
+        return orderNumbers.entrySet().stream()
+                .map(entry -> {
+                    DayTodoVO dayTodoVO = findById(entry.getKey());
+                    dayTodoVO.setOrderNumber(entry.getValue());
+                    DayTodo dayTodo = dayTodoRepository.save(dayTodoMapper.toTodo(dayTodoVO));
+                    return dayTodoMapper.toTodoVO(dayTodo);
+                })
+                .collect(Collectors.toList());
     }
 }
 
