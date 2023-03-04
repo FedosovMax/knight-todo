@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-
+import java.time.LocalDate;
 import static com.knighttodo.todocore.Constants.API_BASE_DAYS;
 import static com.knighttodo.todocore.Constants.API_BASE_URL_V1;
 import static com.knighttodo.todocore.TestConstants.*;
@@ -219,5 +219,40 @@ public class DayResourceIntegrationTest {
 
         assertThat(dayRepository.findByIdAlive(day.getId())).isEmpty();
         assertThat(dayTodoRepository.findAllAlive().isEmpty());
+    }
+
+    @Test
+    public void findDayByDate_shouldReturnExistingDay_whenDateIsCorrect() throws Exception {
+        Day day = dayRepository.save(DayFactory.dayInstance());
+        LocalDate date = LocalDate.now();
+
+        mockMvc.perform(get(buildGetDayByDate(date)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath(buildJsonPathToDate()).value(day.getDate().toString()));
+    }
+
+    @Test
+    public void findDayByDate_shouldRespondWithBadRequestStatus_whenWithoutDate() throws Exception {
+        String date = "";
+
+        mockMvc.perform(get(buildGetDayByDateWithoutDate(date)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void findDayByDate_shouldRespondWithBadRequestStatus_whenDateIsNull() throws Exception {
+        String date = null;
+
+        mockMvc.perform(get(buildGetDayByDateWithoutDate(date)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void findDayByDate_shouldReturnBadRequest_whenDateIsInCorrect() throws Exception {
+        Day day = dayRepository.save(DayFactory.dayInstance());
+        LocalDate date = day.getDate();
+        String invalidDate = date.toString().substring(1);
+        mockMvc.perform(get(buildGetDayByDateWithIncorrectDate(invalidDate)))
+                .andExpect(status().isBadRequest());
     }
 }

@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -52,5 +53,13 @@ public class DayService {
     public void deleteById(UUID dayId) {
         dayRepository.softDeleteAllDayTodosByDayId(dayId);
         dayRepository.softDeleteById(dayId);
+    }
+
+
+    public DayVO findDayByDate(LocalDate date) {
+        return dayRepository.findDayByDate(date).map(dayMapper::toDayVO).orElseThrow(() -> {
+            log.error(String.format("Day with such date : %s can't be found", date));
+            return new DayNotFoundException(String.format("Day with such date : %s can't be found", date));
+        });
     }
 }
