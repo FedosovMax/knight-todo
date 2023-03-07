@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -20,6 +21,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -50,6 +52,10 @@ public class RoutineInstance {
 
     @Column(name = "ready")
     private boolean ready;
+
+    @CreationTimestamp
+    @Column(name = "createdDate")
+    private LocalDate createdDate;
 
     @Column(name = "removed")
     private boolean removed;

@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,9 +21,11 @@ public class RoutineResponseDto {
 
     private String name;
 
+    private Scariness scariness;
+
     private Hardness hardness;
 
-    private Scariness scariness;
+    private LocalDate createdDate;
 
     private boolean ready;
 

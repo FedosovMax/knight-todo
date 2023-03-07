@@ -4,8 +4,11 @@ Content-Type: application/json
 
 < json/routineInstances/createRoutineInstances.json
 
-### get all routineInstances
+### get all routineInstances by rotineId
 GET {{host}}/routines/{{routineId}}/routineInstances
+
+### get all routineInstances by rotineId and creation date
+GET {{host}}/routines/{{routineId}}/routineInstances/date?date={{date}}
 
 ### get all routineInstances
 GET {{host}}/routines/{{routineId}}/routineInstances/{{routineInstancesId}}

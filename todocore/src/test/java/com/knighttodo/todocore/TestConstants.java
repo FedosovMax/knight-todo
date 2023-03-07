@@ -1,7 +1,6 @@
 package com.knighttodo.todocore;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.UUID;
 
 import static com.knighttodo.todocore.Constants.*;
@@ -60,7 +59,6 @@ public class TestConstants {
     public static String buildGetDayByDateWithoutDate(String date) {
         return API_BASE_URL_V1 + API_BASE_DAYS + "/date?date=" + date;
     }
-
     public static String buildDeleteDayByIdUrl(UUID id) {
         return API_BASE_URL_V1 + API_BASE_DAYS + "/" + id;
     }
@@ -73,8 +71,20 @@ public class TestConstants {
     public static String buildGetRoutineByIdUrl(UUID id) {
         return API_BASE_URL_V1 + API_BASE_ROUTINES + "/" + id;
     }
+    public static String buildGetRoutineByCreatedDateUrl(LocalDate creationDate) {
+        return API_BASE_URL_V1 + API_BASE_ROUTINES + "/date?date=" + creationDate.toString();
+    }
+    public static String buildGetRoutineByCreatedDateUrl(String creationDate) {
+        return API_BASE_URL_V1 + API_BASE_ROUTINES + "/date?date=" + creationDate;
+    }
     public static String buildGetRoutineInstanceByIdUrl(UUID routineId, UUID id) {
         return API_BASE_URL_V1 + API_BASE_ROUTINES + "/" + routineId + API_BASE_ROUTINES_INSTANCES + "/" + id;
+    }
+    public static String buildGetRoutineInstanceCreatedDateUrl(LocalDate creationDate) {
+        return API_BASE_URL_V1 + API_BASE_ROUTINES + "/date?date=" + creationDate.toString();
+    }
+    public static String buildGetRoutineInstanceCreatedDateUrl(String creationDate) {
+        return API_BASE_URL_V1 + API_BASE_ROUTINES + "/date?date=" + creationDate;
     }
     public static String buildDeleteRoutineByIdUrl(UUID routineId) {
         return API_BASE_URL_V1 + API_BASE_ROUTINES + "/" + routineId;
@@ -108,6 +118,9 @@ public class TestConstants {
     }
     public static String buildJsonPathToDate() {
         return JSON_ROOT + ".date";
+    }
+    public static String buildJsonPathToCreatedDate() {
+        return JSON_ROOT + "createdDate";
     }
     public static String buildJsonPathToLength() {
         return JSON_ROOT + "length()";

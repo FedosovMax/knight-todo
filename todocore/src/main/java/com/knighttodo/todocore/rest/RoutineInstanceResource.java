@@ -3,6 +3,7 @@ package com.knighttodo.todocore.rest;
 import com.knighttodo.todocore.domain.RoutineInstanceVO;
 import com.knighttodo.todocore.exception.CreateRoutineInstanceException;
 import com.knighttodo.todocore.exception.FindAllRoutineInstancesException;
+import com.knighttodo.todocore.exception.RoutineInstanceByCreationDateNotFoundException;
 import com.knighttodo.todocore.exception.FindRoutineInstanceByIdException;
 import com.knighttodo.todocore.rest.mapper.RoutineInstanceRestMapper;
 import com.knighttodo.todocore.rest.request.RoutineInstanceRequestDto;
@@ -14,6 +15,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,8 +24,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -98,6 +102,25 @@ public class RoutineInstanceResource {
         } catch (RuntimeException ex) {
             log.error("Routine Instance can't be found.", ex);
             throw new FindRoutineInstanceByIdException("Routine Instance can't be found.", ex);
+        }
+    }
+
+    @GetMapping("/date")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Find the Routine Instances by creation date", response = RoutineInstanceResponseDto.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Routine found"),
+            @ApiResponse(code = 400, message = "Invalid operation"),
+            @ApiResponse(code = 404, message = "Routine not found"),
+            @ApiResponse(code = 500, message = "Unexpected error")
+    })
+    public RoutineInstanceResponseDto findRoutineInstanceByDate(@RequestParam(name = "date", required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate creationDate) {
+        try {
+            RoutineInstanceVO routineInstanceVO = routineInstanceService.findByCreationDate(creationDate);
+            return routineInstanceRestMapper.toRoutineInstanceResponseDto(routineInstanceVO);
+        } catch (RuntimeException ex) {
+            log.error("Routine Instance can't be found.", ex);
+            throw new RoutineInstanceByCreationDateNotFoundException("Routine Instance can't be found.", ex);
         }
     }
 }
