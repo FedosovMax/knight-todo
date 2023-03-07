@@ -65,7 +65,7 @@ public class RoutineInstanceService {
     public RoutineInstanceVO findByCreationDate(LocalDate creationDate) {
         return routineInstanceRepository.findByCreationDateAlive(creationDate).map(routineInstanceMapper::toRoutineInstanceVO)
                 .orElseThrow(() -> {
-                    log.error(String.format("Routine Instance with such id:%s can't be found", creationDate));
+                    log.error(String.format("Routine Instance with such date:%s can't be found", creationDate));
                     return new RoutineInstanceNotFoundException(
                             String.format("Routine Instance with such creation date:%s can't be found", creationDate));
                 });

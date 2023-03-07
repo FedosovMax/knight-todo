@@ -147,7 +147,6 @@ public class RoutineResourceIntegrationTest {
 
         mockMvc.perform(get(buildGetRoutineByCreatedDateUrl(date)))
                 .andExpect(status().is5xxServerError());
-        //todo:bug - not expected status
     }
 
     @Test
