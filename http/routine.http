@@ -16,5 +16,8 @@ GET {{host}}/routines
 ### get routines by id
 GET {{host}}/routines/{{routineId}}
 
+### get routines by creationDate
+GET {{host}}/routines/date?date={{date}}
+
 ### gelete routine by id
 DELETE {{host}}/routines/{{routineId}}

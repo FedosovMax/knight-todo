@@ -29,6 +29,8 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.time.LocalDate;
+
 import static com.knighttodo.todocore.Constants.*;
 import static com.knighttodo.todocore.TestConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -141,6 +143,33 @@ public class RoutineInstanceResourceIntegrationTest {
         mockMvc.perform(get(buildGetRoutineInstanceByIdUrl(routine.getId(), routineInstance.getId())))
                 .andExpect(status().isFound())
                 .andExpect(jsonPath(buildJsonPathToId()).value(routineInstance.getId().toString()));
+    }
+
+    @Test
+    public void findRoutineInstanceByCreationDate_shouldReturnExistingRoutineInstance_whenCreationDateIsCorrect() throws Exception {
+        Routine routine = routineRepository.save(RoutineFactory.routineInstance());
+        RoutineInstance routineInstance = routineInstanceRepository.save(RoutineInstanceFactory.routineInstanceWithRoutine(routine));
+        LocalDate today = LocalDate.now();
+
+        mockMvc.perform(get(buildGetRoutineInstanceCreatedDateUrl(today)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath(buildJsonPathToCreatedDate()).value(routineInstance.getCreatedDate().toString()));
+    }
+
+    @Test
+    public void findRoutineInstanceByCreationDate_shouldRespondWithBadRequestStatus_whenCreationDateIsEmpty() throws Exception {
+        String date = "";
+
+        mockMvc.perform(get(buildGetRoutineInstanceCreatedDateUrl(date)))
+                .andExpect(status().is5xxServerError());
+    }
+
+    @Test
+    public void findRoutineInstanceByCreationDate_shouldRespondWithBadRequestStatus_whenCreationDateIsNull() throws Exception {
+        String date = null;
+
+        mockMvc.perform(get(buildGetRoutineInstanceCreatedDateUrl(date)))
+                .andExpect(status().isBadRequest());
     }
 
     @Test

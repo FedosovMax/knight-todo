@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,9 +23,11 @@ public class RoutineVO {
 
     private String name;
 
+    private Scariness scariness;
+
     private Hardness hardness;
 
-    private Scariness scariness;
+    private LocalDate createdDate;
 
     private List<RoutineInstanceVO> routineInstanceVOs;
 

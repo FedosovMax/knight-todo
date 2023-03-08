@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -42,9 +43,18 @@ public class RoutineService {
     public RoutineVO findById(UUID routineId) {
         return routineRepository.findByIdAlive(routineId).map(routineMapper::toRoutineVO)
                 .orElseThrow(() -> {
-                    log.error(String.format("Routine with such id:%s can't be " + "found", routineId));
+                    log.error(String.format("Routine with such id: %s can't be " + "found", routineId));
                     return new RoutineNotFoundException(
-                            String.format("Routine with such id:%s can't be " + "found", routineId));
+                            String.format("Routine with such id: %s can't be " + "found", routineId));
+                });
+    }
+
+    public RoutineVO findByCreationDate(LocalDate routineCreated) {
+        return routineRepository.findByCreationDateAndIsAlive(routineCreated).map(routineMapper::toRoutineVO)
+                .orElseThrow(() -> {
+                    log.error(String.format("Routine with such creation date: %s can't be found", routineCreated));
+                    return new RoutineNotFoundException(
+                            String.format("Routine with such creation date: %s can't be found", routineCreated));
                 });
     }
 
