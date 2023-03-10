@@ -1,9 +1,9 @@
-package com.knighttodo.todocore.service.privatedb.mapper;
+package com.knighttodo.todocore.gateway.privatedb.mapper;
 
 import com.knighttodo.todocore.domain.RoutineInstanceVO;
 import com.knighttodo.todocore.domain.RoutineTodoInstanceVO;
-import com.knighttodo.todocore.service.privatedb.representation.RoutineInstance;
-import com.knighttodo.todocore.service.privatedb.representation.RoutineTodoInstance;
+import com.knighttodo.todocore.gateway.privatedb.representation.RoutineInstance;
+import com.knighttodo.todocore.gateway.privatedb.representation.RoutineTodoInstance;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;

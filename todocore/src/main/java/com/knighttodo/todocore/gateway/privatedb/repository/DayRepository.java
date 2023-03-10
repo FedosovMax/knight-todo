@@ -1,6 +1,6 @@
-package com.knighttodo.todocore.service.privatedb.repository;
+package com.knighttodo.todocore.gateway.privatedb.repository;
 
-import com.knighttodo.todocore.service.privatedb.representation.Day;
+import com.knighttodo.todocore.gateway.privatedb.representation.Day;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

@@ -1,14 +1,12 @@
-package com.knighttodo.todocore.service.privatedb.representation;
+package com.knighttodo.todocore.gateway.privatedb.representation;
 
-import com.knighttodo.todocore.service.privatedb.representation.enums.Hardness;
-import com.knighttodo.todocore.service.privatedb.representation.enums.Scariness;
+import com.knighttodo.todocore.gateway.privatedb.representation.enums.Hardness;
+import com.knighttodo.todocore.gateway.privatedb.representation.enums.Scariness;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,41 +19,37 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "routine_instance")
+@Table(name = "routine_todo")
+@Data
 @Builder
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(exclude = {"routineTodoInstances"})
-public class RoutineInstance {
+public class RoutineTodo {
 
     @Id
     @GeneratedValue
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "routine_todo_name")
+    private String routineTodoName;
 
+    @Column(name = "scaryness")
     @Enumerated(EnumType.STRING)
     private Scariness scariness;
 
+    @Column(name = "hardness")
     @Enumerated(EnumType.STRING)
     private Hardness hardness;
 
     @Column(name = "ready")
-    private boolean ready;
-
-    @CreationTimestamp
-    @Column(name = "createdDate")
-    private LocalDate createdDate;
+    private boolean ready = false;
 
     @Column(name = "removed")
     private boolean removed;
@@ -63,6 +57,6 @@ public class RoutineInstance {
     @ManyToOne(fetch = FetchType.LAZY)
     private Routine routine;
 
-    @OneToMany(mappedBy = "routineInstance", cascade =  {CascadeType.MERGE})
+    @OneToMany(mappedBy = "routineTodo", cascade =  {CascadeType.MERGE})
     private List<RoutineTodoInstance> routineTodoInstances = new ArrayList<>();
 }

@@ -1,7 +1,7 @@
-package com.knighttodo.todocore.service.privatedb.representation;
+package com.knighttodo.todocore.gateway.privatedb.representation;
 
-import com.knighttodo.todocore.service.privatedb.representation.enums.Hardness;
-import com.knighttodo.todocore.service.privatedb.representation.enums.Scariness;
+import com.knighttodo.todocore.gateway.privatedb.representation.enums.Hardness;
+import com.knighttodo.todocore.gateway.privatedb.representation.enums.Scariness;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

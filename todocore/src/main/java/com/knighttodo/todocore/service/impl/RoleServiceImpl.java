@@ -3,8 +3,8 @@ package com.knighttodo.todocore.service.impl;
 import com.knighttodo.todocore.domain.RoleVO;
 import com.knighttodo.todocore.exception.RoleNotFoundException;
 import com.knighttodo.todocore.service.RoleService;
-import com.knighttodo.todocore.service.privatedb.mapper.RoleMapper;
-import com.knighttodo.todocore.service.privatedb.repository.RoleRepository;
+import com.knighttodo.todocore.gateway.privatedb.mapper.RoleMapper;
+import com.knighttodo.todocore.gateway.privatedb.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
